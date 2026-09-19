@@ -9,3 +9,54 @@
 /* Build 0.4 — World & Expeditions */
 .adventure-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.exp-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#121a20,#0a0e12);border:1px solid #34404a;border-radius:14px;padding:18px;min-height:210px}.exp-kicker{font-size:9px;letter-spacing:1.5px;color:#c8a858;margin-bottom:9px}.region-card{background:radial-gradient(circle at 80% 20%,#34583f40,transparent 34%),linear-gradient(145deg,#101a15,#0a0e12)}.region-progress,.contract-bar{height:7px;background:#080b0e;border:1px solid #2f3942;border-radius:99px;overflow:hidden;margin:10px 0}.region-progress span,.contract-bar span{display:block;height:100%;background:linear-gradient(90deg,#8b6f32,#d2ab4c)}.north-region{margin-top:18px;padding:12px;border:1px solid #34404a;border-radius:9px;display:flex;flex-direction:column}.north-region.unlocked{border-color:#567b93;background:#101a21}.north-region.locked{opacity:.52}.north-region small{margin-top:4px;color:#8e9aa4}.boss-card{text-align:center;background:radial-gradient(circle at 50% 40%,#693a2d45,transparent 35%),linear-gradient(#171015,#090b0e)}.world-boss-icon{font-size:76px;filter:drop-shadow(0 10px 0 #0005);animation:bob 2.3s ease-in-out infinite}.bounty-grid{display:grid;gap:9px}.bounty-card{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;background:#10161b;border:1px solid #303a44;border-radius:11px;padding:11px}.bounty-card.claimed{opacity:.65;border-color:#44634b}.bounty-icon{font-size:30px;width:48px;height:48px;display:grid;place-items:center;background:#090d10;border:1px solid #35414b;border-radius:9px}.subheading{margin:20px 0 9px;color:#dfbf75}.achievement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.achievement{display:grid;grid-template-columns:38px 1fr auto;gap:8px;align-items:center;padding:10px;background:#0d1216;border:1px solid #2d3740;border-radius:9px;opacity:.55}.achievement.done{opacity:1;border-color:#7e6b38;background:#17150f}.achievement>span{font-size:24px}.achievement small{display:block;color:#87939d;font-size:9px;margin-top:3px}.achievement em{font-style:normal;color:#d2aa4f;font-weight:800}.bottom{overflow-x:auto}.navbtn{min-width:84px}
 @media(max-width:800px){.adventure-grid{grid-template-columns:1fr}.achievement-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.achievement-grid{grid-template-columns:1fr}.bounty-card{grid-template-columns:44px 1fr}.bounty-card>button{grid-column:2;width:100%}}
+
+
+/* Build 0.5 — pixel art sprites */
+.pixel-sprite{display:block;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+.class-icon,.preview-avatar,.mini-avatar,.hero-pixel,.player-pin,.entity-sprite,.battle-pet span,.social-avatar{display:flex;align-items:center;justify-content:center}
+.sprite-class-btn{width:68px;height:68px}
+.sprite-preview{width:92px;height:92px}
+.sprite-mini{width:42px;height:42px}
+.sprite-map-player{width:34px;height:34px}
+.sprite-entity{width:40px;height:40px}
+.sprite-hero{width:108px;height:108px}
+.sprite-social{width:54px;height:54px}
+.sprite-battle{width:220px;height:220px}
+.sprite-pet{width:42px;height:42px}
+.social-row{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center}
+.elite-star{position:absolute;top:-8px;right:-6px;font-size:12px;text-shadow:0 0 8px rgba(255,230,120,.7)}
+.entity-sprite{position:relative;min-width:40px;min-height:40px}
+.player-pin{width:42px;height:42px;background:#0d1216;border:1px solid #3a4550;border-radius:10px;box-shadow:0 6px 16px #0007}
+.preview-avatar{min-width:110px}
+.hero-pixel{min-height:120px}
+.mini-avatar{width:48px;height:48px;background:#10161b;border:1px solid #39444d;border-radius:10px;padding:2px}
+.class-btn .class-icon{height:80px;font-size:0}
+.class-btn.active .class-icon,.class-btn:hover .class-icon{transform:translateY(-1px)}
+.battle-sprite>div{display:flex;align-items:flex-end;justify-content:center}
+@media(max-width:650px){.sprite-battle{width:150px;height:150px}.sprite-hero{width:84px;height:84px}.sprite-class-btn{width:54px;height:54px}}
+
+
+/* Build 0.6 — atmosphere, NPCs, bestiary */
+.sprite-npc{width:96px;height:96px}
+.sprite-beast{width:88px;height:88px}
+.npc-card{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;padding:12px;margin-bottom:14px;background:linear-gradient(145deg,#12181d,#0c1014);border:1px solid #34404a;border-radius:12px}
+.npc-portrait{display:flex;align-items:center;justify-content:center;background:#0a0d10;border:1px solid #303942;border-radius:10px;padding:8px;min-height:110px}
+.npc-card p{margin:6px 0 0;color:#c9d0d6}
+.bestiary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.beast-card{display:grid;grid-template-columns:96px 1fr;gap:12px;background:linear-gradient(145deg,#11161a,#0b0f12);border:1px solid #303a44;border-radius:14px;padding:12px;align-items:center}
+.beast-art{display:flex;align-items:center;justify-content:center;background:#0a0d10;border:1px solid #303942;border-radius:12px;min-height:96px}
+.beast-copy b{font-size:15px}
+.beast-kills{margin-top:8px;color:#d6ae53;font-weight:700}.beast-kills span{font-size:18px}
+.theme-forest .battle-arena{background:radial-gradient(circle at 22% 28%,#9bc96a1a,transparent 22%),radial-gradient(circle at 78% 34%,#6ba96a18,transparent 20%),linear-gradient(#162129 0 45%,#1f3322 45% 72%,#101811)}
+.theme-crypt .battle-arena{background:radial-gradient(circle at 50% 26%,#8da3c71c,transparent 20%),linear-gradient(#11151c 0 45%,#1a1e25 45% 72%,#0b0d12)}
+.theme-inferno .battle-arena{background:radial-gradient(circle at 55% 30%,#ff8a2a22,transparent 18%),radial-gradient(circle at 80% 65%,#a43a2022,transparent 22%),linear-gradient(#23171a 0 45%,#351d18 45% 72%,#140c0c)}
+.theme-ember .battle-arena{background:radial-gradient(circle at 50% 25%,#ffb34822,transparent 18%),linear-gradient(#1f2225 0 45%,#372f24 45% 72%,#17130f)}
+.theme-storm .battle-arena{background:radial-gradient(circle at 70% 18%,#d7f2ff20,transparent 16%),radial-gradient(circle at 34% 24%,#8fb1f322,transparent 17%),linear-gradient(#151b25 0 45%,#1b2431 45% 72%,#0e131a)}
+.theme-forest .layer-back{opacity:.18}.theme-crypt .layer-back{opacity:.14}.theme-inferno .layer-back{opacity:.09}
+.location-overlay{backdrop-filter:blur(1px)}
+.scene-tavern .location-overlay{background:linear-gradient(90deg,#090c0ff0,#1d130ece)}
+.scene-smith .location-overlay{background:linear-gradient(90deg,#090c0ff0,#25140fce)}
+.scene-alchemist .location-overlay{background:linear-gradient(90deg,#090c0ff0,#0d1d18ce)}
+.scene-shop .location-overlay{background:linear-gradient(90deg,#090c0ff0,#231c10ce)}
+.scene-guild .location-overlay{background:linear-gradient(90deg,#090c0ff0,#111b2ace)}
+@media(max-width:700px){.npc-card,.beast-card{grid-template-columns:1fr}.npc-portrait,.beast-art{min-height:90px}.sprite-npc{width:78px;height:78px}}
