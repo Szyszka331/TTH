@@ -21,7 +21,9 @@ export const MONSTERS = [
  {id:'wyvern',name:'Popielna Wywerna',icon:'🐉',family:'Bestie',min:60,max:80,zone:'black',hp:420,atk:58,xp:920,gold:[70,120],weak:'przebicie'},
  {id:'shade',name:'Cień z Kurhanu',icon:'🌑',family:'Zjawy',min:18,max:32,zone:'yellow',hp:122,atk:21,xp:190,gold:[14,30],weak:'światło'},
  {id:'spider',name:'Leśny Tkacz',icon:'🕷️',family:'Owady',min:8,max:18,zone:'green',hp:82,atk:14,xp:96,gold:[8,18],weak:'ogień'},
- {id:'ogre',name:'Ogr Rozbójnik',icon:'👹',family:'Ludzie',min:32,max:48,zone:'yellow',hp:235,atk:31,xp:365,gold:[28,52],weak:'trucizna'}
+ {id:'ogre',name:'Ogr Rozbójnik',icon:'👹',family:'Ludzie',min:32,max:48,zone:'yellow',hp:235,atk:31,xp:365,gold:[28,52],weak:'trucizna'},
+ {id:'graveColossus',name:'Koloss z Kurhanu',icon:'🗿',family:'Nieumarli',min:8,max:45,zone:'red',hp:360,atk:33,xp:780,gold:[80,140],weak:'światło'},
+ {id:'stormDrake',name:'Smok Burzowy',icon:'🐲',family:'Bestie',min:12,max:55,zone:'red',hp:420,atk:38,xp:920,gold:[95,160],weak:'lód'}
 ];
 
 export const ITEMS = {
@@ -53,7 +55,10 @@ export const ITEMS = {
  bone:{id:'bone',name:'Kość nieumarłego',icon:'🦴',type:'material',rarity:'common',value:6},
  scrap:{id:'scrap',name:'Żelazny złom',icon:'🔩',type:'material',rarity:'common',value:6},
  crystal:{id:'crystal',name:'Odłamek kryształu',icon:'💎',type:'material',rarity:'rare',value:15},
- blackMedallion:{id:'blackMedallion',name:'Czarny medalion',icon:'📿',type:'quest',rarity:'epic',value:0}
+ blackMedallion:{id:'blackMedallion',name:'Czarny medalion',icon:'📿',type:'quest',rarity:'epic',value:0},
+ titanShard:{id:'titanShard',name:'Odłamek Tytana',icon:'🔶',type:'material',rarity:'legendary',value:90},
+ stormCrown:{id:'stormCrown',name:'Korona Burz',icon:'👑',type:'gear',slot:'helmet',rarity:'legendary',value:480,armor:10,crit:5,power:5},
+ cryptHeart:{id:'cryptHeart',name:'Serce Kurhanu',icon:'🫀',type:'trinket',slot:'amulet',rarity:'legendary',value:520,armor:5,crit:6,power:7}
 };
 
 export const SKILLS = {
@@ -135,7 +140,12 @@ export const QUESTS = [
  {id:'q12',chapter:'Cienie nad Doliną',name:'Nocny gość',level:8,desc:'Nocą do obozu ma przyjść ktoś ważny.',steps:[{type:'discover',target:'nightGuest',label:'Obserwuj spotkanie nocą'}],xp:1350,gold:200},
  {id:'q13',chapter:'Cienie nad Doliną',name:'Atak na wioskę',level:9,desc:'Gobliny ruszyły na wioskę. Broń mieszkańców.',steps:[{type:'kill',target:'any',count:5,label:'Pokonaj napastników'}],xp:1600,gold:250},
  {id:'q14',chapter:'Cienie nad Doliną',name:'Czarny medalion',level:9,desc:'Zanieś tajemniczy medalion pustelnikowi.',steps:[{type:'discover',target:'hermit',label:'Zanieś Czarny medalion pustelnikowi'}],xp:1500,gold:220},
- {id:'q15',chapter:'Cienie nad Doliną',name:'Droga na północ',level:10,desc:'Pierwszy rozdział dobiega końca. Otwiera się nowy region.',steps:[{type:'move',target:350,label:'Oddal się 350 m od wioski'}],xp:2200,gold:350}
+ {id:'q15',chapter:'Cienie nad Doliną',name:'Droga na północ',level:10,desc:'Pierwszy rozdział dobiega końca. Otwiera się nowy region.',steps:[{type:'move',target:350,label:'Oddal się 350 m od wioski'}],xp:2200,gold:350},
+ {id:'q16',chapter:'Północne Rubieże',name:'Za granicą doliny',level:11,desc:'Droga prowadzi w chłodniejsze i znacznie bardziej niebezpieczne ziemie.',steps:[{type:'move',target:430,label:'Dotrzyj na północne rubieże'}],xp:2400,gold:380},
+ {id:'q17',chapter:'Północne Rubieże',name:'Obóz bez ognia',level:11,desc:'Na wzgórzu stoi obóz, ale nigdzie nie widać dymu.',steps:[{type:'discover',target:'northCamp',label:'Zbadaj Obóz Północny'}],xp:2550,gold:400},
+ {id:'q18',chapter:'Północne Rubieże',name:'Ciężkie kroki',level:12,desc:'Ślady przy obozie są zbyt wielkie, by należały do człowieka.',steps:[{type:'kill',target:'ogre',count:2,label:'Pokonaj 2 ogry'}],xp:2800,gold:440},
+ {id:'q19',chapter:'Północne Rubieże',name:'Wieża w śniegu',level:13,desc:'Stary trakt prowadzi do zapomnianej wieży zakonu.',steps:[{type:'dungeon',target:'forgottenTower',label:'Ukończ Zapomnianą Wieżę'}],xp:3300,gold:520},
+ {id:'q20',chapter:'Północne Rubieże',name:'Znak mrozu',level:14,desc:'W ruinach znaleziono symbol, który odpowiada znakom ze starego sanktuarium.',steps:[{type:'discover',target:'coldShrine',label:'Odnajdź Mroźne Sanktuarium'},{type:'kill',target:'any',count:5,label:'Przetrwaj drogę przez północ'}],xp:3900,gold:650}
 ];
 
 export const BUILDINGS = [
