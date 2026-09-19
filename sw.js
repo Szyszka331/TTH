@@ -1,0 +1,5 @@
+const CACHE='time4heroes-v08';
+const CORE=['./','./index.html','./styles.css','./app.js','./data.js','./manifest.webmanifest','./assets/knight.png','./assets/mage.png','./assets/hunter.png','./assets/berserker.png','./assets/ranger.png','./assets/wolf.png','./assets/goblin.png','./assets/skeleton.png','./assets/spider.png','./assets/elemental.png','./assets/icon-192.png','./assets/icon-512.png'];
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(res=>{const copy=res.clone();caches.open(CACHE).then(c=>c.put(event.request,copy));return res}).catch(()=>caches.match('./index.html'))))});

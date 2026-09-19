@@ -1,47 +1,27 @@
-# GeoRPG — Build 0.7
+# Time4Heroes — Build 0.8
 
-## Visual Pack II
+## Mobile Edition
 
-Build 0.7 rozwija oprawę graficzną, ekran startowy, bestiariusz i animacje, zachowując systemy z poprzednich wersji.
+Time4Heroes to przeglądarkowa gra RPG GPS rozwijana jako instalowalna aplikacja mobilna PWA.
 
-### Nowości
-- nowa zakładka **Wyprawy**;
-- 3 codzienne kontrakty odnawiane każdego dnia;
-- reputacja wypraw;
-- dzienny boss świata z dodatkowym lootem;
-- 6 osiągnięć;
-- nowy rozdział fabularny **Północne Rubieże** (questy 16–20);
-- nowe lokacje: Obóz Północny, Zerwany Most, Mroźne Sanktuarium;
-- nowe potwory-bossowie: Koloss z Kurhanu i Smok Burzowy;
-- legendarny loot: Odłamek Tytana, Korona Burz, Serce Kurhanu;
-- automatyczna migracja zapisu z Build 0.6 / 0.5 / 0.4 / 0.3 / 0.2 / 0.1.
+### Nowe w 0.8
+- nowa nazwa gry: **Time4Heroes**;
+- pełny responsywny układ pod telefon;
+- większe przyciski i elementy mapy do obsługi dotykiem;
+- przebudowany ekran walki na małych ekranach;
+- mobilna nawigacja dolna;
+- instalacja na Androidzie / iOS z ekranu głównego;
+- manifest PWA i Service Worker;
+- automatyczna migracja zapisów z wersji 0.7 i starszych buildów;
+- zachowane systemy mapy GPS, walki, questów, lochów, ekwipunku, bestiariusza i miasta.
 
-### GitHub Pages
-Wgraj do katalogu głównego repozytorium:
-`index.html`, `app.js`, `data.js`, `styles.css`, `README.md` oraz cały folder `assets/`.
+### Pliki wymagane na GitHub Pages
+- `index.html`
+- `app.js`
+- `data.js`
+- `styles.css`
+- `manifest.webmanifest`
+- `sw.js`
+- folder `assets/`
 
-Nie twórz folderu `js` — `index.html` odwołuje się bezpośrednio do `app.js`.
-
-
-## Nowe w 0.5
-
-- podmienione emoji na pixel-artowe sprite'y dla klas;
-- pixel-artowe sprite'y dla części potworów (wilk, goblin, szkielet, pająk, żywiołak);
-- ulepszony wygląd walki, mapy i ekranu tworzenia postaci.
-
-
-## Nowe w 0.6
-
-- klimatyczne tła walki zależne od rodzaju przeciwnika;
-- bogatsze wnętrza miasta z portretami NPC;
-- bestiariusz z ilustracjami potworów;
-- dalsze szlify oprawy i interfejsu.
-
-
-## Nowe w 0.7
-
-- nowy ekran startowy z pełnoekranową grafiką;
-- galeria kierunku wizualnego 0.7;
-- klikane wpisy bestiariusza z dużą ilustracją i opisem;
-- mikroanimacje potworów na mapie i sprite'ów w walce;
-- dalsze szlify interfejsu i grafiki.
+Na Androidzie otwórz stronę w Chrome. Na iPhonie użyj Safari → Udostępnij → Do ekranu początkowego.
