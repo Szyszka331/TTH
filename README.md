@@ -1,14 +1,13 @@
-# Time4Heroes — Build 2.5.2
+# Time4Heroes — Build 2.5.3
 
-## Navigation Crash Hotfix
+## Map GPS & Building Navigation Hotfix
 
-Naprawia błąd `ReferenceError: renderMenuHub is not defined`, który blokował renderowanie ekranu.
-
-Dodatkowo:
-- usunięto podwójną nawigację na desktopie,
-- pasek nawigacji ma tylko: **Mapa / Bohater / Miasto / Zadania / Menu**,
-- **Plecak** i **Umiejętności** są wewnątrz ekranu Bohater,
-- podczas modali/karczmy dolna nawigacja pozostaje ukryta,
-- usunięto mały napis TIME4HEROES z paska nawigacji,
-- wyłączono pusty prawy panel, który pozostał po starszym układzie,
-- cache podniesiony do `2520`.
+Najważniejsze poprawki:
+- mapa to znowu przede wszystkim pełny OpenStreetMap, bez nagłówka „Mapa GPS / OpenStreetMap / Żywy świat”,
+- biome jest pokazany tylko jako mały znacznik na mapie; przycisk ⓘ otwiera opis i listę typowych potworów,
+- usunięte dolne podglądy Plecaka i Miasta z ekranu mapy,
+- GPS tworzy znacznik gracza również przy starych zapisach z zachowanym `gpsOrigin`,
+- GPS pobiera bieżącą pozycję od razu i potem śledzi ją przez `watchPosition`,
+- wnętrza budynków nie nakładają się już na mapę,
+- w każdej karczmie/sklepie/kuźni/alchemiku/gildii/aukcji jest stała nawigacja: Mapa / Bohater / Miasto / Zadania / Menu,
+- widok budynku jest pełnoekranowy, więc mapa nie prześwituje pod spodem.
