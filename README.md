@@ -1,20 +1,19 @@
-# Time4Heroes — Build 2.0C — Tavern Rework
+# Time4Heroes — Build 2.0D — Full Interior Rework
 
-Karczma została przebudowana jako wzorcowa lokacja RPG.
+Dalszy etap Visual Overhaul. Po wzorcowej karczmie przebudowane zostały wszystkie pozostałe wnętrza miasta.
 
-## Najważniejsze zmiany
-- czysta grafika wnętrza bez napisów i narysowanych przycisków;
-- osobne tło 16:9 na desktop i pionowe 9:16 na telefon;
-- trzy subtelne hotspoty: Dorian, tablica ogłoszeń i kominek;
-- interakcje są prawdziwym UI HTML/CSS, a nie częścią obrazu;
-- po kliknięciu panel wysuwa się nad sceną, więc karczma cały czas pozostaje widoczna;
-- na telefonie interakcje działają jako dolny panel;
-- zachowany przycisk powrotu do miasta;
-- zachowane anegdoty Doriana, stamina, odpoczynek i limit 4 questów.
+## Zmiany
+
+- Kuźnia, Alchemik, Sklep, Gildia i Dom aukcyjny używają teraz czystych scen bez tekstu i narysowanego UI.
+- Każda lokacja ma osobny wariant desktopowy i mobilny.
+- Interakcje są prawdziwymi hotspotami HTML/CSS nakładanymi na scenę.
+- Kliknięcie NPC otwiera rozmowę jako panel nad wnętrzem.
+- Kliknięcie stanowiska otwiera właściwą usługę bez opuszczania sceny.
+- Na telefonie panele wysuwają się od dołu, a wnętrze pozostaje w tle.
+- Zawsze widoczny przycisk wyjścia do miasta.
+- Brak napisów i przycisków w samych grafikach wnętrz.
+- Zachowano wszystkie systemy Build 2.0C.
 
 ## GitHub Pages
-Wgraj cały build, łącznie z nowymi plikami:
-- assets/tavern-scene-desktop.png
-- assets/tavern-scene-mobile.png
 
-Po wdrożeniu wykonaj Ctrl+F5 raz na desktopie.
+Podmień cały build i wykonaj Ctrl+F5 po wdrożeniu.

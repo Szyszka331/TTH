@@ -434,3 +434,35 @@ h1,h2,h3,h4,.section-title h2{font-family:Georgia,'Times New Roman',serif;color:
  .tavern-sheet .building-panel{padding:2px!important}.tavern-sheet .npc-card{grid-template-columns:64px 1fr!important}.tavern-sheet .npc-portrait{width:64px!important;height:64px!important}.tavern-sheet .tavern-menu{grid-template-columns:1fr 1fr!important;gap:6px}.tavern-sheet .tavern-menu button{font-size:10px;padding:8px 5px}
 }
 @media(max-width:390px){.tavern-sheet .tavern-menu{grid-template-columns:1fr!important}.tavern-tap-hint{font-size:9px}.tavern-hotspot>span{width:34px;height:34px}}
+
+/* === Time4Heroes 2.0D — Remaining clean interiors ======================= */
+.clean-room-modal{width:min(1240px,98vw)!important;max-width:1240px!important;background:#080503!important;border:1px solid #78532e!important;overflow:hidden!important}
+.clean-room-modal .location-overlay{padding:0!important;background:#080503!important;min-height:0!important}
+.clean-room-stage{position:relative;background:#070402;overflow:hidden;min-height:0;isolation:isolate}
+.clean-room-picture{display:block;width:100%;aspect-ratio:16/9;background:#080503}.clean-room-picture img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.97) contrast(1.03) brightness(.92)}
+.clean-room-vignette{position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(180deg,#00000012,transparent 42%,#00000024 72%,#00000072),radial-gradient(circle at 50% 44%,transparent 48%,#00000072 100%)}
+.clean-room-hotspots{position:absolute;inset:0;z-index:6}.clean-room-hotspot{position:absolute}.clean-room-hotspot>span{opacity:.84}
+.clean-room-hotspot-npc{left:27%;top:22%;width:31%;height:56%}.clean-room-hotspot-service{right:8%;top:28%;width:28%;height:48%}
+.room-smith .clean-room-hotspot-npc{left:29%;top:25%;width:34%;height:58%}.room-smith .clean-room-hotspot-service{right:3%;top:25%;width:29%;height:57%}
+.room-alchemist .clean-room-hotspot-npc{left:42%;top:18%;width:30%;height:62%}.room-alchemist .clean-room-hotspot-service{left:12%;top:38%;width:30%;height:42%}
+.room-shop .clean-room-hotspot-npc{left:25%;top:25%;width:34%;height:55%}.room-shop .clean-room-hotspot-service{right:6%;top:28%;width:29%;height:50%}
+.room-guild .clean-room-hotspot-npc{left:36%;top:34%;width:28%;height:42%}.room-guild .clean-room-hotspot-service{right:6%;top:25%;width:31%;height:50%}
+.room-auction .clean-room-hotspot-npc{left:41%;top:22%;width:29%;height:58%}.room-auction .clean-room-hotspot-service{left:7%;top:30%;width:30%;height:48%}
+.clean-room-tap-hint{bottom:14px}.clean-room-sheet{right:14px;left:auto}.clean-room-sheet .building-panel{min-height:100%}
+.clean-room-chrome{position:relative;z-index:50}
+
+@media(max-width:720px){
+ .clean-room-modal{width:100vw!important;max-width:none!important;height:100dvh!important;border:0!important;border-radius:0!important;margin:0!important}
+ .modal-back:has(.clean-room-modal){padding:0!important;align-items:stretch!important}
+ .modal:has(.clean-room-modal){width:100vw!important;max-width:none!important;height:100dvh!important;max-height:none!important;padding:0!important;border:0!important;border-radius:0!important;overflow:hidden!important}
+ .clean-room-stage{height:calc(100dvh - 52px);min-height:0}
+ .clean-room-picture{height:100%;aspect-ratio:auto}.clean-room-picture img{height:100%;object-fit:cover;object-position:center top}
+ .clean-room-hotspot-npc{left:18%;top:29%;width:48%;height:32%}.clean-room-hotspot-service{right:3%;top:48%;width:38%;height:28%}
+ .room-smith .clean-room-hotspot-npc{left:16%;top:34%;width:53%;height:34%}.room-smith .clean-room-hotspot-service{right:0;top:56%;width:42%;height:25%}
+ .room-alchemist .clean-room-hotspot-npc{left:28%;top:30%;width:49%;height:36%}.room-alchemist .clean-room-hotspot-service{left:2%;top:52%;width:42%;height:27%}
+ .room-shop .clean-room-hotspot-npc{left:18%;top:34%;width:50%;height:34%}.room-shop .clean-room-hotspot-service{right:0;top:54%;width:42%;height:27%}
+ .room-guild .clean-room-hotspot-npc{left:24%;top:43%;width:48%;height:29%}.room-guild .clean-room-hotspot-service{right:0;top:55%;width:40%;height:25%}
+ .room-auction .clean-room-hotspot-npc{left:28%;top:33%;width:50%;height:35%}.room-auction .clean-room-hotspot-service{left:0;top:55%;width:42%;height:25%}
+ .clean-room-tap-hint{bottom:18px}
+ .clean-room-sheet{left:8px;right:8px;top:auto;bottom:8px;width:auto;max-height:62%;border-radius:12px 12px 6px 6px}
+}

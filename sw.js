@@ -1,7 +1,7 @@
-const CACHE='time4heroes-v2004-tavern-rework';
+const CACHE='time4heroes-v2005-full-interiors';
 const CORE=[
-  './','./index.html','./styles.css?v=2004','./app.js?v=2004','./data.js?v=2004','./manifest.webmanifest',
-  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
+  './','./index.html','./styles.css?v=2005','./app.js?v=2005','./data.js?v=2005','./manifest.webmanifest',
+  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/smith-scene-desktop.jpg','./assets/smith-scene-mobile.jpg','./assets/alchemist-scene-desktop.jpg','./assets/alchemist-scene-mobile.jpg','./assets/shop-scene-desktop.jpg','./assets/shop-scene-mobile.jpg','./assets/guild-scene-desktop.jpg','./assets/guild-scene-mobile.jpg','./assets/auction-scene-desktop.jpg','./assets/auction-scene-mobile.jpg','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
 ];
 
 self.addEventListener('install',event=>{

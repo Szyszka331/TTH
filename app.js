@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2003';
+import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2005';
 
 const SAVE_KEY='time4heroes_build_115';
 const MIGRATION_KEYS=['time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
@@ -581,7 +581,7 @@ function showPrologue(){if(!state||state.tutorial?.introSeen)return;state.tutori
 
 function renderCreate(){
  let selected='knight';
- app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.0B.1 • EXIT HOTFIX</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • gotowe na telefon • instalowalne jak aplikacja</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
+ app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.0D • INTERIORS</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • gotowe na telefon • instalowalne jak aplikacja</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
  const desc=()=>{const c=CLASSES[selected];document.querySelector('#classDesc').innerHTML=`<div class="preview-avatar">${classVisual(selected,'sprite-preview')}</div><div><b>${c.name}</b><div class="muted">STR ${c.base.str} • AGI ${c.base.agi} • INT ${c.base.int} • VIT ${c.base.vit}</div><div>${c.desc}</div>${['hunter','ranger'].includes(selected)?'<div class="gold">🐺 Startujesz z chowańcem: Młody Wilk.</div>':''}</div>`};desc();
  document.querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{selected=b.dataset.class;document.querySelectorAll('[data-class]').forEach(x=>x.classList.toggle('active',x===b));desc()});
  document.querySelector('#startGame').onclick=()=>newGame(document.querySelector('#heroName').value.trim(),selected);
@@ -861,11 +861,11 @@ function monsterLore(m){
 }
 const CITY_INTERIORS={
  tavern:{title:'Karczma „Pod Krukiem”',npc:'Dorian',role:'Karczmarz • były wojownik',classId:'knight',bg:'assets/tavern-scene-desktop.png',quote:'„Miecz odwiesiłem na ścianę. Pamięć o potworach — nie.”'},
- shop:{title:'Sklep kupiecki',npc:'Selma',role:'Kupcowa',classId:'hunter',bg:'assets/interior-shop.png',quote:'„Towar musi mieć cenę. Dobra rada czasem jest gratis.”'},
- smith:{title:'Kuźnia Ragora',npc:'Ragor',role:'Kowal i runmistrz',classId:'berserker',bg:'assets/interior-forge.png',quote:'„Dobra stal ma duszę. Zła ma tylko cenę.”'},
- alchemist:{title:'Pracownia Ilyry',npc:'Ilyra',role:'Alchemiczka',classId:'mage',bg:'assets/interior-alchemist.png',quote:'„Rośliny mówią. Trzeba tylko wiedzieć, kiedy nie przeszkadzać.”'},
- auction:{title:'Dom aukcyjny',npc:'Varo',role:'Licytator',classId:'ranger',bg:'assets/interior-auction.png',quote:'„Każdy przedmiot ma wartość. Pytanie brzmi: dla kogo?”'},
- guild:{title:'Sala gildii',npc:'Edrin',role:'Mistrz Gildii',classId:'knight',bg:'assets/interior-guild.png',quote:'„Siła to nie tylko miecz. To ludzie, którzy wracają po swoich.”'}
+ shop:{title:'Sklep kupiecki',npc:'Selma',role:'Kupcowa',classId:'hunter',bg:'assets/shop-scene-desktop.jpg',bgDesktop:'assets/shop-scene-desktop.jpg',bgMobile:'assets/shop-scene-mobile.jpg',quote:'„Towar musi mieć cenę. Dobra rada czasem jest gratis.”'},
+ smith:{title:'Kuźnia Ragora',npc:'Ragor',role:'Kowal i runmistrz',classId:'berserker',bg:'assets/smith-scene-desktop.jpg',bgDesktop:'assets/smith-scene-desktop.jpg',bgMobile:'assets/smith-scene-mobile.jpg',quote:'„Dobra stal ma duszę. Zła ma tylko cenę.”'},
+ alchemist:{title:'Pracownia Ilyry',npc:'Ilyra',role:'Alchemiczka',classId:'mage',bg:'assets/alchemist-scene-desktop.jpg',bgDesktop:'assets/alchemist-scene-desktop.jpg',bgMobile:'assets/alchemist-scene-mobile.jpg',quote:'„Rośliny mówią. Trzeba tylko wiedzieć, kiedy nie przeszkadzać.”'},
+ auction:{title:'Dom aukcyjny',npc:'Varo',role:'Licytator',classId:'ranger',bg:'assets/auction-scene-desktop.jpg',bgDesktop:'assets/auction-scene-desktop.jpg',bgMobile:'assets/auction-scene-mobile.jpg',quote:'„Każdy przedmiot ma wartość. Pytanie brzmi: dla kogo?”'},
+ guild:{title:'Sala gildii',npc:'Edrin',role:'Mistrz Gildii',classId:'knight',bg:'assets/guild-scene-desktop.jpg',bgDesktop:'assets/guild-scene-desktop.jpg',bgMobile:'assets/guild-scene-mobile.jpg',quote:'„Siła to nie tylko miecz. To ludzie, którzy wracają po swoich.”'}
 };
 function renderTown(el){
  setAmbient('town');
@@ -891,11 +891,22 @@ function tavernSceneHTML(view='scene'){
    ${sheet}
  </div>`;
 }
-function buildingSceneHTML(id){
- if(id==='tavern')return tavernSceneHTML('scene');
+function buildingSceneHTML(id,view='scene'){
+ if(id==='tavern')return tavernSceneHTML(view);
  const c=CITY_INTERIORS[id];
- const actions=`<button class="scene-hotspot npc-zone" data-building-action="keeper"><span>💬</span><b>${c.npc}</b><small>${c.role}</small></button><button class="scene-hotspot service-zone" data-building-action="service"><span>${id==='smith'?'⚒️':id==='alchemist'?'⚗️':id==='shop'?'🛒':id==='auction'?'📖':'🛡️'}</span><b>${id==='smith'?'Warsztat':id==='alchemist'?'Stół alchemiczny':id==='shop'?'Handel':id==='auction'?'Księga aukcji':'Stół gildii'}</b><small>Kliknij, aby wejść w interakcję</small></button>`;
- return `<div class="city-interior immersive-room room-${id}" style="--room-bg:url('${c.bg}')"><div class="room-picture"></div><div class="room-vignette"></div><div class="room-titleplate"><span>WIOSKA POD KRUKIEM</span><h2>${c.title}</h2><small>${c.quote}</small></div><div class="room-click-hint">Kliknij podświetlony element wnętrza</div><div class="scene-hotspots">${actions}</div></div>`;
+ const icon=id==='smith'?'⚒️':id==='alchemist'?'⚗️':id==='shop'?'👜':id==='auction'?'🔨':'🛡️';
+ let sheet='';
+ if(view==='talk')sheet=`<aside class="tavern-sheet clean-room-sheet">${buildingTalkHTML(id)}</aside>`;
+ else if(view==='service')sheet=`<aside class="tavern-sheet clean-room-sheet">${buildingServiceHTML(id)}</aside>`;
+ const hotspots=view==='scene'?`<div class="tavern-hotspots clean-room-hotspots" aria-label="Interaktywne elementy wnętrza">
+   <button class="tavern-hotspot clean-room-hotspot clean-room-hotspot-npc" data-building-action="keeper" aria-label="Porozmawiaj z ${c.npc}" title="${c.npc}"><span>💬</span></button>
+   <button class="tavern-hotspot clean-room-hotspot clean-room-hotspot-service" data-building-action="service" aria-label="Otwórz usługę" title="Usługa"><span>${icon}</span></button>
+ </div><div class="tavern-tap-hint clean-room-tap-hint">Dotknij postaci albo stanowiska</div>`:'';
+ return `<div class="tavern-clean-stage clean-room-stage room-${id}">
+   <picture class="tavern-scene-picture clean-room-picture"><source media="(max-width:620px)" srcset="${c.bgMobile||c.bg}"><img src="${c.bgDesktop||c.bg}" alt="${c.title}"></picture>
+   <div class="tavern-scene-vignette clean-room-vignette"></div>
+   ${hotspots}${sheet}
+ </div>`;
 }
 function tavernBoardHTML(){ensureAdventureState();const story=nextStoryQuestAvailable(),bounties=state.adventure.bounties||[],active=activeTaskCount();return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Kartki przypięte do desek</h2></div><b>${active}/4 aktywne</b></div><div class="quest-board">${story?`<article class="quest-paper story-paper"><i></i><span>GŁÓWNY SZLAK • lvl ${story.level}</span><h3>${story.name}</h3><p>${story.desc}</p><strong>${story.xp} XP • ${story.gold} 🪙</strong><button class="secondary" data-accept-story="${story.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button></article>`:`<article class="quest-paper"><i></i><h3>Brak nowej kartki fabularnej</h3><p>Dokończ obecne zadanie albo zdobądź wymagany poziom.</p></article>`}${bounties.map(b=>`<article class="quest-paper contract-paper ${b.accepted?'accepted-paper':''}"><i></i><span>KONTRAKT DNIA</span><h3>${b.icon} ${b.name}</h3><p>Pokonaj ${b.need}× ${MONSTERS.find(m=>m.id===b.target)?.name||b.target}.</p><strong>${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</strong>${b.claimed?'<button disabled>Wykonano</button>':b.accepted?`<button disabled>Przyjęte • ${b.progress||0}/${b.need}</button>`:`<button class="secondary" data-accept-bounty="${b.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button>`}</article>`).join('')}</div><div class="quest-board-foot">Samouczek jest osobny i nie zajmuje żadnego z 4 miejsc.</div></div>`}
 function tavernKeeperHTML(){const p=state.player,st=p.stamina??100,max=p.maxStamina??100;return `<div class="building-panel"><button class="ghost panel-back" data-building-home>← Wróć do sali</button>${npcCard('Dorian','Karczmarz • były wojownik','knight','Dorian walczył kiedyś na północy. Zna nawyki potworów, a dziś pilnuje, żeby podróżni wracali na szlak w jednym kawałku.')}<div class="dialogue-bubble">${tavernAnecdote()}</div><div class="stamina-card"><b>⚡ Stamina ${st}/${max}</b><div class="mini-progress"><span style="width:${st/max*100}%"></span></div><small>Napitek i jedzenie przywracają siły przed dalszą drogą.</small></div><div class="tavern-menu"><button class="secondary" data-anecdote>🗣️ Kolejna anegdota</button><button class="secondary" data-stamina="10" data-cost="10" data-label="Piwo">🍺 Piwo • +10 staminy • 10 🪙</button><button class="secondary" data-stamina="25" data-cost="25" data-label="Solidny posiłek">🍲 Posiłek • +25 • 25 🪙</button><button class="secondary" data-stamina="50" data-cost="50" data-label="Karczemna uczta">🍗 Uczta • +50 • 50 🪙</button></div></div>`}
@@ -907,15 +918,11 @@ function openBuilding(id,view='scene'){
  const unlock=buildingUnlock(id);if(!unlock.ok)return toast(`Odblokujesz to: ${unlock.reason}.`);
  if(id==='tavern')tutorialEvent('tavern');
  const c=CITY_INTERIORS[id]||CITY_INTERIORS.tavern;
- let body=id==='tavern'?tavernSceneHTML(view):buildingSceneHTML(id);
- if(id!=='tavern'){
-   if(view==='talk')body=buildingTalkHTML(id);
-   else if(view==='service')body=buildingServiceHTML(id);
- }
+ let body=id==='tavern'?tavernSceneHTML(view):buildingSceneHTML(id,view);
  const top=id==='tavern'
    ? `<div class="tavern-chrome"><button class="building-exit tavern-exit" data-building-exit>← Miasto</button><div><b>Karczma „Pod Krukiem”</b><small>Dorian • kominek • tablica ogłoszeń</small></div><button class="close tavern-close" data-close title="Zamknij">×</button></div>`
-   : `<div class="modal-head"><div><h2>${c.title}</h2><div class="muted">Wioska Pod Krukiem • City 2.0C</div></div><button class="close" data-close title="Zamknij">×</button></div><button class="building-exit" data-building-exit>← Wyjdź do miasta</button>`;
- openModal(`<div class="location-scene scene-${id} city-modal ${id==='tavern'?'tavern-modal-clean':''}"><div class="location-overlay">${top}<div id="buildingBody">${body}</div></div></div>`);
+   : `<div class="tavern-chrome clean-room-chrome"><button class="building-exit tavern-exit" data-building-exit>← Miasto</button><div><b>${c.title}</b><small>${c.npc} • ${c.role}</small></div><button class="close tavern-close" data-close title="Zamknij">×</button></div>`;
+ openModal(`<div class="location-scene scene-${id} city-modal ${id==='tavern'?'tavern-modal-clean':'clean-room-modal'}"><div class="location-overlay">${top}<div id="buildingBody">${body}</div></div></div>`);
  bindBuilding(id,view)
 }
 
