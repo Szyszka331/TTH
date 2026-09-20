@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=1131';
+import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=1132';
 
 const SAVE_KEY='time4heroes_build_111';
 const MIGRATION_KEYS=['time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
@@ -163,8 +163,6 @@ function bindTutorialSkip(root=document){root.querySelector('[data-tutorial-go]'
 function buildingUnlock(id){if(id==='tavern')return {ok:true};const u=CORE_UNLOCKS[id];if(!u)return {ok:true};return {ok:state.player.level>=u.level,reason:u.label}}
 function activeQuestTargets(){const set=new Set();for(const qid of state.quests.active){const q=QUESTS.find(x=>x.id===qid);if(!q)continue;const prog=state.quests.progress[qid]||[];q.steps.forEach((s,i)=>{if((prog[i]||0)<(s.count||1)&&s.target)set.add(s.target)})}return set}
 function focusedEntityVisible(e){if(state.settings.mapMode!=='focused')return true;const d=dist(e,state.player.position),targets=activeQuestTargets(),specificMonster=e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template);if(e.type==='monster')return d<=165||(e.elite&&d<=300)||(specificMonster&&d<=320);if(e.type==='event')return d<=260;if(e.type==='dungeon')return targets.has(e.id)||d<=260||(state.player.dungeons.includes(e.id)&&d<=360);if(e.type==='poi')return targets.has(e.id)||d<=210||(state.player.discovered.includes(e.id)&&d<=260);return true}
-function regionSecretStats(){const staticE=(state.world.entities||[]).filter(e=>['poi','dungeon'].includes(e.type)&&Math.hypot(e.x||0,e.y||0)<=1000),done=staticE.filter(e=>state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id)).length;return {done,total:staticE.length}}
-function checkRegionRewards(){ensureCoreState();const pct=regionDiscoveryPercent();for(const mark of [25,50,75,100]){if(pct>=mark&&!state.world.regionRewards[mark]){state.world.regionRewards[mark]=true;const gold=mark===100?250:mark;state.player.gold+=gold;gainXp(mark===100?700:mark*4);toast(`Odkrycie regionu ${mark}%! +${gold} 🪙`);playSfx('discover');haptic(25)}}}
 document.addEventListener('click',e=>{if(e.target.closest('button'))playSfx('click')},{capture:true});
 
 
@@ -347,7 +345,6 @@ function registerExplorationProgress(x,y){
  return count;
 }
 function explorationStats(){ensureLivingWorld();const d=state.world.living.dailyExplore,count=Object.keys(d.cells||{}).length;return {count,goal:8,claimed:!!d.claimed,percent:Math.min(100,Math.round(count/8*100))}}
-function regionDiscoveryPercent(){const cells=new Set();for(const p of state.world.explored||[]){if(!state.world.gpsOrigin)continue;const o=state.world.gpsOrigin,y=(p[0]-o.lat)*111320,x=(p[1]-o.lng)*111320*Math.cos(o.lat*Math.PI/180);if(Math.hypot(x,y)<=1000)cells.add(explorationCell(x,y,100));}return Math.min(100,Math.round(cells.size/314*100))}
 function eventById(id){return (state.world.entities||[]).find(e=>e.type==='event'&&e.id===id)}
 function resolveWorldEvent(e){
  if(!e||e.type!=='event')return;ensureLivingWorld();

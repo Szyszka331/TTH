@@ -1,6 +1,6 @@
-const CACHE='time4heroes-v1131-hotfix';
+const CACHE='time4heroes-v1132-hotfix';
 const CORE=[
-  './','./index.html','./styles.css?v=1131','./app.js?v=1131','./data.js?v=1131','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=1132','./app.js?v=1132','./data.js?v=1132','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png'
 ];
 

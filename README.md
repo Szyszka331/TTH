@@ -1,20 +1,14 @@
-# Time4Heroes — Build 1.13.1 — Cache/UI Hotfix
+# Time4Heroes — Build 1.13.2 — Black Screen Hotfix
 
-Hotfix po Build 1.13.
+Naprawa błędu startowego z Build 1.13.1.
 
 ## Naprawione
 
-- naprawiono problem, w którym nowy `index.html` mógł działać razem ze starym `app.js` i `styles.css` z cache;
-- `app.js`, `data.js` i `styles.css` mają teraz cache-busting `?v=1131`;
-- Service Worker używa strategii network-first dla HTML/JS/CSS;
-- stare cache Time4Heroes są usuwane przy aktywacji nowego Service Workera;
-- zachowany został 5-elementowy interfejs: Mapa / Bohater / Przygoda / Miasto / Menu;
-- zachowana jest nowa mapa Leaflet z ikonami zamiast starego ekranu pełnego prostokątnych etykiet;
-- tryb skupiony pokazuje maksymalnie 12 najbliższych potworów i 18 ważnych punktów;
-- quest „pokonaj dowolne stwory” nie odsłania już wszystkich potworów na mapie;
-- konkretne cele questa mają złote podświetlenie;
-- wszystkie grafiki NPC i potworów z Build 1.13 pozostają w paczce.
+- usunięto podwójną deklarację `regionDiscoveryPercent`;
+- usunięto podwójne deklaracje `regionSecretStats` i `checkRegionRewards`;
+- `app.js` przechodzi walidację składni jako ES Module;
+- podbito wersję cache i query stringi do `v=1132`, aby GitHub Pages nie mieszał starych plików.
 
-## Wgrywanie na GitHub Pages
+## Wdrożenie
 
-Podmień cały komplet plików z paczki, nie tylko `index.html`. Po wdrożeniu wykonaj jedno twarde odświeżenie strony (Ctrl+F5). Dzięki cache-bustingowi kolejne ładowania powinny już korzystać ze spójnej wersji.
+Podmień cały komplet plików na GitHubie. Następnie zrób Ctrl+F5.
