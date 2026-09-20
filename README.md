@@ -1,15 +1,13 @@
-# Time4Heroes — Build 2.5.5
+# Time4Heroes — Build 2.5.6
 
-## Mobile Startup & Test Walk Hotfix
+## Mobile Quest Navigation & Hero Layout
 
-Naprawiono dwa krytyczne błędy runtime:
-- brak `renderCreate()` — świeża instalacja / telefon bez zapisu nie mógł uruchomić kreatora postaci,
-- brak `geoDistance()` — chodzenie testowe strzałkami wywalało błąd w konsoli.
-
-Dodatkowo przywrócono `refresh()`, używane przez ekwipunek, skille, import zapisu i lochy.
-
-### Testowanie
-1. Otwórz grę na telefonie bez starego zapisu — powinien pojawić się kreator postaci.
-2. Po stworzeniu postaci zobaczysz prolog.
-3. Po „Wyrusz z wioski” możesz chodzić strzałkami bez GPS.
-4. GPS możesz włączyć później.
+### Zmiany
+- mobilny panel Zadań/Wydarzeń można zwinąć także z jego wnętrza,
+- panel informacji `ⓘ` o biomie jest teraz lekkim, zwijanym panelem na mapie zamiast pełnego modala,
+- aktywne zadania mają przycisk **Prowadź do celu**,
+- na mapie pojawia się strzałka kierunkowa, nazwa celu i dystans,
+- prowadzenie działa dla celów `discover`, `dungeon`, `kill` oraz zadań typu `move`,
+- ekran Bohatera został rozdzielony na: **Postać**, **Ekwipunek + plecak**, **Umiejętności**,
+- Postać pokazuje statystyki i parametry bojowe bez mieszania ich z ekwipunkiem,
+- Ekwipunek i plecak są razem w jednej zakładce.
