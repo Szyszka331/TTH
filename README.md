@@ -1,11 +1,14 @@
-# Time4Heroes — Build 2.2
+# Time4Heroes — Build 2.3 — Adventure UI Overhaul
 
-## Combat & Character UI Overhaul
+## Zmiany
 
-- nowy ekran walki w stylu dark-fantasy,
-- większe i czytelniejsze postacie gracza oraz przeciwników,
-- mocniej wyeksponowane zamiary bossów i pasek przełamania,
-- przebudowany pasek umiejętności,
-- mobilna walka zajmuje mniej miejsca,
-- odświeżony ekran bohatera, wyposażenia i umiejętności,
-- zachowany cały gameplay z Build 2.1.
+- nowy dziennik przygody z czterema zakładkami: **Zadania / Wydarzenia / Wyprawy / Bestiariusz**,
+- questy mają dwukolumnowy dziennik z detalem, celami, procentem postępu i nagrodami,
+- kontrakty z karczmy są widoczne w tym samym dzienniku,
+- nowa strona wydarzeń z celem dziennym i dynamicznymi eventami świata,
+- nowy ekran wypraw i lochów z regionami, bossami i liczbą ukończeń,
+- pełny bestiariusz z filtrowaniem rodzin, ukrytymi niepoznanymi stworami i szczegółowym wpisem po kliknięciu,
+- poprawione brakujące funkcje `questHTML`, `renderAdventure` i `renderBestiary`,
+- mobilny układ jest jednokolumnowy i bardziej kompaktowy.
+
+Save z 2.2 i starszych wersji jest migrowany automatycznie.

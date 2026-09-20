@@ -9,22 +9,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 2.2 — Combat & Character Overhaul</title>
+  <title>Time4Heroes — Build 2.3 — Adventure UI Overhaul</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=2200" />
+  <link rel="stylesheet" href="styles.css?v=2300" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 2.2: dark-fantasy combat and character interface overhaul.
+    // Build 2.3: quest journal, events, dungeons and bestiary overhaul.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=2200"></script>
+  <script type="module" src="app.js?v=2300"></script>
 </body>
 </html>
