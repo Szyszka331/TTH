@@ -1,14 +1,12 @@
-# Time4Heroes — Build 1.13.2 — Black Screen Hotfix
+# Time4Heroes — Build 1.14 — UX & Inventory Rework
 
-Naprawa błędu startowego z Build 1.13.1.
-
-## Naprawione
-
-- usunięto podwójną deklarację `regionDiscoveryPercent`;
-- usunięto podwójne deklaracje `regionSecretStats` i `checkRegionRewards`;
-- `app.js` przechodzi walidację składni jako ES Module;
-- podbito wersję cache i query stringi do `v=1132`, aby GitHub Pages nie mieszał starych plików.
-
-## Wdrożenie
-
-Podmień cały komplet plików na GitHubie. Następnie zrób Ctrl+F5.
+- Reset postaci naprawdę wraca do kreatora i usuwa stare save’y migracyjne.
+- Jeden główny przełącznik dźwięku wycisza SFX i ambient.
+- Samouczek jest zamykalną nakładką na mapie; postęp zostaje w Questach.
+- Główna mapa jest czysta; Dziennik Odkrywcy, podróż i warstwy są w Menu.
+- Questy otwiera pływający przycisk po prawej.
+- Dolny pasek: Mapa / Bohater / Miasto / Menu.
+- Odkrywanie mapy: wizualne koła 100 m.
+- Interakcje: 60 m.
+- Plecak: 32 sloty.
+- Mikstury, materiały i runy: stosy maks. 32 szt.
