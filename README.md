@@ -1,13 +1,13 @@
-# Time4Heroes — Build 2.5.6
+# Time4Heroes — Build 2.5.7
 
-## Mobile Quest Navigation & Hero Layout
+## Mobile final mechanics polish
 
-### Zmiany
-- mobilny panel Zadań/Wydarzeń można zwinąć także z jego wnętrza,
-- panel informacji `ⓘ` o biomie jest teraz lekkim, zwijanym panelem na mapie zamiast pełnego modala,
-- aktywne zadania mają przycisk **Prowadź do celu**,
-- na mapie pojawia się strzałka kierunkowa, nazwa celu i dystans,
-- prowadzenie działa dla celów `discover`, `dungeon`, `kill` oraz zadań typu `move`,
-- ekran Bohatera został rozdzielony na: **Postać**, **Ekwipunek + plecak**, **Umiejętności**,
-- Postać pokazuje statystyki i parametry bojowe bez mieszania ich z ekwipunkiem,
-- Ekwipunek i plecak są razem w jednej zakładce.
+- większy bezpieczny margines w karczmie, przy kominku i w innych budynkach, aby pasek systemowy telefonu nie zasłaniał ostatnich akcji,
+- mapa OSM na telefonie jest niższa i mieści się w całości na ekranie,
+- ekran **Bohater → Ekwipunek + plecak** dostał układ paper-doll,
+- przedmioty można przeciągać z plecaka na właściwy slot ekwipunku,
+- drag & drop działa myszą i dotykiem,
+- niepasujący przedmiot nie może zostać umieszczony w złym slocie,
+- poprawione sloty pierścieni i podświetlenie zgodnych miejsc.
+
+Po tej paczce można przejść do docelowych grafik i spójnego art direction.
