@@ -1,12 +1,19 @@
-# Time4Heroes — Build 1.14.1 — UX Hotfix
+# Time4Heroes — Build 1.15 — City Interiors & Interactions
 
-Hotfix dla Build 1.14.
+Najważniejsze zmiany:
 
-## Naprawione
+- każde miejsce w mieście jest teraz wnętrzem RPG, a nie samym przyciskiem;
+- Karczma: Dorian za ladą, anegdoty o potworach, piwo/jedzenie regenerujące staminę, kominek do odpoczynku i tablica ogłoszeń;
+- maksymalnie 4 aktywne zadania/kontrakty; samouczek nie liczy się do limitu;
+- tablica ma przypięte kartki: kolejny quest fabularny oraz kontrakty dnia;
+- Kuźnia: Ragor + kowadło/palenisko + ulepszanie, runy i crafting;
+- Alchemik: Ilyra + stół alchemiczny;
+- Sklep: Selma + lada i regały;
+- Aukcje: Varo + księga aukcji;
+- Gildia: Edrin + stół gildii;
+- stamina 0–100 została dodana do postaci i HUD;
+- ukończenie questa nie wciska już automatycznie następnego — kolejny odbierasz z tablicy;
+- nowy cache Service Workera i wersjonowanie plików.
 
-- błąd składni `function exportSavefunction exportSave()` powodujący czarny ekran;
-- błędne odwołanie do `installApp` zastąpione istniejącą funkcją `installPwa`;
-- podbity numer cache/query do `1141`, żeby GitHub Pages nie mieszał poprzednich plików;
-- `app.js`, `data.js` i `sw.js` przechodzą kontrolę składni Node.
-
-Zachowane są zmiany UX z 1.14: reset postaci, master sound, tutorial na mapie, 60 m interakcji, 100 m odkrywania i plecak slotowy.
+## Test po wdrożeniu
+Po podmianie wszystkich plików na GitHub Pages zrób Ctrl+F5.

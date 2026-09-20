@@ -1,7 +1,7 @@
-const CACHE='time4heroes-v1141-hotfix';
+const CACHE='time4heroes-v115-city';
 const CORE=[
-  './','./index.html','./styles.css?v=1141','./app.js?v=1141','./data.js?v=1141','./manifest.webmanifest',
-  './assets/icon-192.png','./assets/icon-512.png'
+  './','./index.html','./styles.css?v=1150','./app.js?v=1150','./data.js?v=1150','./manifest.webmanifest',
+  './assets/icon-192.png','./assets/icon-512.png','./assets/interior-tavern.png','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
 ];
 
 self.addEventListener('install',event=>{
