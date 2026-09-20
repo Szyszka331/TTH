@@ -1,11 +1,10 @@
-# Time4Heroes — Build 2.3.1 Hotfix
+# Time4Heroes — Build 2.3.2 Hotfix
 
-Naprawiono krytyczny błąd `ReferenceError: renderMenuHub is not defined`, który zatrzymywał renderowanie głównego widoku po uruchomieniu gry.
+Naprawia crash głównej mapy:
 
-Dodatkowo:
-- podbito cache busting do `2310`,
-- podbito Service Worker cache,
-- dodano favicon oparty o `assets/icon-192.png`,
-- zachowano wszystkie funkcje i UI z builda 2.3.
+- `ReferenceError: usedSlots is not defined`
+- `mapBackpackPreviewHTML()` używa teraz istniejącej funkcji `inventoryUsedSlots()`
+- cache Service Workera podbity do `2320`
+- pliki JS/CSS mają nowy query string `?v=2320`
 
-Po wrzuceniu plików na GitHub Pages wykonaj twarde odświeżenie (`Ctrl+F5`).
+Po wrzuceniu całej paczki na GitHub Pages wykonaj Ctrl+F5.
