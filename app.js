@@ -1,7 +1,7 @@
-import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2400';
+import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2500';
 
-const SAVE_KEY='time4heroes_build_24';
-const MIGRATION_KEYS=['time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
+const SAVE_KEY='time4heroes_build_25';
+const MIGRATION_KEYS=['time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
 let state=null;
@@ -582,7 +582,7 @@ function showPrologue(){if(!state||state.tutorial?.introSeen)return;state.tutori
 
 function renderCreate(){
  let selected='knight';
- app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.4 • ADVENTURE UI</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • gotowe na telefon • instalowalne jak aplikacja</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
+ app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.5 • LIVING WORLD</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • gotowe na telefon • instalowalne jak aplikacja</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
  const desc=()=>{const c=CLASSES[selected];document.querySelector('#classDesc').innerHTML=`<div class="preview-avatar">${classVisual(selected,'sprite-preview')}</div><div><b>${c.name}</b><div class="muted">STR ${c.base.str} • AGI ${c.base.agi} • INT ${c.base.int} • VIT ${c.base.vit}</div><div>${c.desc}</div>${['hunter','ranger'].includes(selected)?'<div class="gold">🐺 Startujesz z chowańcem: Młody Wilk.</div>':''}</div>`};desc();
  document.querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{selected=b.dataset.class;document.querySelectorAll('[data-class]').forEach(x=>x.classList.toggle('active',x===b));desc()});
  document.querySelector('#startGame').onclick=()=>newGame(document.querySelector('#heroName').value.trim(),selected);
@@ -735,34 +735,67 @@ function rebuildBiomeLayers(){
 }
 
 
-function rpgDecorIcon(kind,variant=0){
+function rpgDecorIcon(kind,variant=0,scale=1){
  const map={
-  tree:['🌲','🌳','🌲'],rock:['🪨','⛰️'],ruin:['🏚️','🗿'],shrine:['🪦','⛩️'],camp:['⛺','🔥'],mushroom:['🍄','🌿']
+  tree:['🌲','🌳','🌲','🌿'],rock:['🪨','⛰️'],ruin:['🏚️','🗿','🧱'],shrine:['🪦','⛩️','🕯️'],camp:['⛺','🔥'],mushroom:['🍄','🌿'],
+  reeds:['🌾','🌿'],bones:['🦴','💀'],ash:['🔥','🪨'],frost:['❄️','🧊'],flowers:['🌼','🌿'],wisp:['✨','🟢']
  };
  const pool=map[kind]||['🌲'];
  const icon=pool[variant%pool.length];
- return makeLeafletIcon(`<div class="rpg-decor rpg-decor-${kind}"><span>${icon}</span></div>`,'rpg-decor-icon',[42,42]);
+ return makeLeafletIcon(`<div class="rpg-decor rpg-decor-${kind}" style="--decor-scale:${scale}"><span>${icon}</span></div>`,'rpg-decor-icon',[42,42]);
+}
+function decorProfileForBiome(id){
+ const profiles={
+  meadow:[['tree',10,520],['flowers',16,430],['rock',5,460],['camp',2,430],['shrine',1,500]],
+  forest:[['tree',34,520],['mushroom',11,330],['rock',6,470],['ruin',2,500],['shrine',2,480]],
+  ruins:[['tree',12,520],['ruin',10,500],['bones',7,390],['rock',7,470],['shrine',3,450]],
+  marsh:[['reeds',25,510],['mushroom',10,360],['tree',10,500],['ruin',3,470],['wisp',5,380]],
+  highlands:[['rock',22,520],['tree',9,500],['ruin',4,490],['camp',2,420],['shrine',2,470]]
+ };
+ return profiles[id]||profiles.forest;
 }
 function rebuildRpgDecorations(){
  if(!realMap||!state.world.gpsOrigin)return;
  leafletDecorLayers.forEach(x=>{try{realMap.removeLayer(x)}catch{}});leafletDecorLayers=[];
  if(realMap.getZoom()<14)return;
  const p=state.player.position||{x:0,y:0},baseX=p.x||0,baseY=p.y||0;
+ const biome=biomeAt(baseX,baseY),cl=climate();
  const seed=daySeed()+Math.floor(baseX/350)*73+Math.floor(baseY/350)*131;
- const defs=[['tree',28,500],['rock',8,470],['mushroom',7,320],['ruin',3,520],['shrine',2,480],['camp',2,430]];
+ const defs=[...decorProfileForBiome(biome)];
+ if(cl.phase==='Noc')defs.push(['wisp',6,410]);
+ if(cl.weather==='Mgła')defs.push(['wisp',3,360]);
  let n=0;
  for(const [kind,count,radius] of defs){
   for(let i=0;i<count;i++){
    const a=seeded(seed+n*43+i*11)*Math.PI*2;
-   const r=75+seeded(seed+n*79+i*17)*(radius-75);
+   const r=72+seeded(seed+n*79+i*17)*(radius-72);
    const x=baseX+Math.cos(a)*r,y=baseY+Math.sin(a)*r;
+   const localBiome=biomeAt(x,y);
+   if(kind==='tree'&&localBiome==='highlands'&&seeded(seed+i*211)>.45)continue;
+   if(kind==='reeds'&&localBiome!=='marsh'&&seeded(seed+i*227)>.18)continue;
    const ll=worldToLatLng(x,y);if(!ll)continue;
-   const marker=L.marker(ll,{pane:'decorPane',interactive:false,icon:rpgDecorIcon(kind,i),opacity:kind==='tree'?.78:.68}).addTo(realMap);
+   const scale=.82+seeded(seed+n*101+i*29)*.42;
+   const opacity=(kind==='tree'||kind==='reeds')?.80:kind==='wisp'?.66:.70;
+   const marker=L.marker(ll,{pane:'decorPane',interactive:false,icon:rpgDecorIcon(kind,i,scale),opacity}).addTo(realMap);
    leafletDecorLayers.push(marker);
   }
   n+=count+7;
  }
 }
+
+function mapAmbientFxHTML(){
+ const cl=climate(),bio=biomeInfoAtPlayer();
+ const weatherClass=cl.weather==='Deszcz'?'rain':cl.weather==='Burza'?'storm':cl.weather==='Mgła'?'fog':cl.weather==='Wiatr'?'wind':'clear';
+ const phaseClass=cl.phase==='Noc'?'night':cl.phase==='Zmierzch'?'dusk':'day';
+ const amount=weatherClass==='rain'||weatherClass==='storm'?24:phaseClass==='night'?10:6;
+ const particles=Array.from({length:amount},(_,i)=>`<i style="--i:${i};--x:${(i*37)%97}%;--delay:${((i*17)%23)/10}s"></i>`).join('');
+ return `<div class="map-ambient-fx weather-${weatherClass} phase-${phaseClass} biome-${bio.id}" aria-hidden="true">${particles}</div>`;
+}
+function nearbyInteractables(limit=3){return (state.world.entities||[]).filter(e=>(e.type!=='monster'||e.alive)&&(e.type!=='event'||!e.done)).map(e=>({e,d:dist(e,state.player.position)})).filter(x=>x.d<=60).sort((a,b)=>a.d-b.d).slice(0,limit)}
+function nearbyTrayHTML(){const near=nearbyInteractables();return `<div class="nearby-action-tray ${near.length?'has-actions':''}" data-nearby-tray>${near.length?`<span class="nearby-tray-title">W ZASIĘGU</span>${near.map(({e,d})=>{const name=e.type==='monster'?monsterTemplate(e).name:e.name;const icon=e.type==='monster'?'⚔️':e.icon||'📍';return `<button data-nearby-action="${e.id}"><span>${icon}</span><b>${name}</b><small>${Math.round(d)} m</small></button>`}).join('')}`:'<span class="nearby-tray-empty">Podejdź na 60 m do celu</span>'}</div>`}
+function bindNearbyTray(root=document){root.querySelectorAll('[data-nearby-action]').forEach(b=>b.onclick=()=>interactEntity(state.world.entities.find(e=>e.id===b.dataset.nearbyAction)))}
+function refreshNearbyTray(){const el=document.querySelector('[data-nearby-tray]');if(!el)return;const temp=document.createElement('div');temp.innerHTML=nearbyTrayHTML();const next=temp.firstElementChild;el.replaceWith(next);bindNearbyTray(document)}
+function mobileMapSheetToggleHTML(){state.ui.mapSheetOpen ??= false;return `<button class="mobile-map-sheet-toggle" data-map-sheet-toggle>${state.ui.mapSheetOpen?'× Zamknij panel':'☰ Zadania i wydarzenia'}</button>`}
 
 function rebuildGameLayers(){
  if(!realMap||!state.world.gpsOrigin)return;
@@ -791,14 +824,18 @@ function rebuildGameLayers(){
  const monsterLimit=state.settings.mapMode==='focused'?12:28,otherLimit=state.settings.mapMode==='focused'?18:36;
  let monsters=0,others=0;
  const visible=candidates.filter(x=>{if(x.e.type==='monster'){if(monsters>=monsterLimit)return false;monsters++;return true}if(others>=otherLimit)return false;others++;return true});
- for(const {e,ll} of visible){
+ for(const {e,ll,d} of visible.filter(x=>x.d<=180&&(x.e.type==='event'||x.e.type==='dungeon'||x.e.elite))){
+  const color=e.type==='event'?'#d7b85f':e.type==='dungeon'?'#866eb8':'#b8634f';
+  const ring=L.circle(ll,{radius:e.type==='dungeon'?34:24,pane:'overlayPane',color,weight:1.5,dashArray:'3 6',fillColor:color,fillOpacity:.045,interactive:false}).addTo(realMap);leafletZoneLayers.push(ring);
+ }
+ for(const {e,ll,d} of visible){
   let inner='',label='';
   const questTarget=targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template));
-  if(e.type==='monster'){const m=monsterTemplate(e);inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} ${questTarget?'quest-marker':''}">${e.elite?'<span class="mmo-star">★</span>':''}${monsterVisual(m.id,'mmo-sprite')}</div>`;label=m.name}
-  else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}">${e.icon}</div>`;label=e.name}
+  if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${monsterVisual(m.id,'mmo-sprite')}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
+  else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${e.icon}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='secret'){const found=state.world.exploration.secretsFound.includes(e.id);inner=`<div class="mmo-marker secret-marker ${found?'found':''}">${found?e.icon:'❔'}</div>`;label=found?e.name:'Sekret w pobliżu'}
-  else if(e.type==='dungeon'){const known=state.player.dungeons.includes(e.id);inner=`<div class="mmo-marker dungeon-marker ${questTarget?'quest-marker':''}">${known?e.icon:'❓'}</div>`;label=known?e.name:'Nieznany loch'}
-  else {const known=state.player.discovered.includes(e.id);inner=`<div class="mmo-marker poi-marker ${questTarget?'quest-marker':''}">${known?e.icon:'❓'}</div>`;label=known?e.name:'Nieznane miejsce'}
+  else if(e.type==='dungeon'){const known=state.player.dungeons.includes(e.id);inner=`<div class="mmo-marker dungeon-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznany loch'}
+  else {const known=state.player.discovered.includes(e.id);inner=`<div class="mmo-marker poi-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznane miejsce'}
   const marker=L.marker(ll,{pane:'gamePane',icon:makeLeafletIcon(inner,'game-map-icon',[52,52]),title:label}).addTo(realMap);
   marker.on('click',()=>interactEntity(e));leafletEntityLayers.push(marker);
  }
@@ -811,7 +848,7 @@ function updateLiveMapPosition(){
  if(interactionCircle)interactionCircle.setLatLng(ll);
  if(followGps)realMap.panTo(ll,{animate:true,duration:.35});
  const hud=document.querySelector('[data-live-gps]');if(hud)hud.textContent=`GPS ±${Math.round(state.player.position.accuracy||0)} m`;
- const fogCount=document.querySelector('[data-fog-count]');if(fogCount){const r=regionDiscoveryStats();fogCount.textContent=`${r.name}: ${r.percent}%`}
+ const fogCount=document.querySelector('[data-fog-count]');if(fogCount){const r=regionDiscoveryStats();fogCount.textContent=`${r.name}: ${r.percent}%`} refreshNearbyTray();
 }
 function initRealMap(){
  const target=document.querySelector('#realMap');if(!target)return;
@@ -897,7 +934,7 @@ function mapTownPreviewHTML(){
  const defs=[['tavern','Karczma','🍺'],['smith','Kuźnia','⚒️'],['alchemist','Alchemik','🧪'],['shop','Sklep','🛒'],['guild','Gildia','🛡️'],['auction','Aukcje','💰']];
  return `<section class="dashboard-panel city-preview fantasy-card"><div class="panel-title-line"><h3>Miasto — Dębogród</h3><span>Hub</span></div><div class="city-preview-grid">${defs.map(([id,name,icon])=>{const req=CORE_UNLOCKS[id];const locked=req&&state.player.level<req.level;return `<button class="city-mini-btn ${locked?'locked':''}" data-map-building="${id}" ${locked?'disabled':''}><span>${icon}</span><b>${name}</b><small>${locked?req.label:'wejdź'}</small></button>`}).join('')}</div></section>`;
 }
-function renderMap(el){setAmbient('forest');destroyRealMap();ensureLivingWorld();state.ui.mapPanelTab ||= 'quests';const p=state.player,hasGeo=!!(p.position.lat&&p.position.lng),virtual=!!p.position.virtualTravel;for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true;const tutorial=tutorialMapOverlay();const region=biomeInfoAtPlayer();el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card"><div class="dashboard-map-header compact-map-head"><div><div class="dashboard-kicker">Mapa GPS • OpenStreetMap</div><h2>${region.icon} ${region.name}</h2><p>Prawdziwa okolica z warstwą RPG. Drogi i pozycja pochodzą z GPS, a potwory, lochy i dekoracje są nakładane przez Time4Heroes.</p></div>${mapQuickActionsHTML()}</div><div class="real-map-rpg-frame"><div id="realMap" class="real-map real-map-rpg"></div><div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><div class="rpg-map-legend"><span>🌲 dekoracje</span><span>⚔️ potwory</span><span>🕳️ lochy</span><span>📍 miejsca</span></div><div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-shortcut="quests">📜</button></div>${tutorial}${!hasGeo?`<div class="gps-start-card dashboard-gps-card osm-gps-card"><b>📍 Włącz prawdziwy GPS</b><p>Pozycja gracza pojawi się na OpenStreetMap, a świat RPG zostanie rozmieszczony wokół Ciebie.</p><div class="gps-card-actions"><button class="primary" data-map-gps>Włącz GPS</button><button class="secondary" data-map-demo-step="up">Test bez GPS</button></div></div>`:''}<div class="osm-map-footer"><span class="map-status-chip" data-live-gps>${virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span><span class="interaction-badge">⚔️ interakcja 60 m</span></div></div></section><aside class="dashboard-side-card fantasy-card">${mapRightPanelHTML()}</aside><div class="dashboard-bottom-row">${mapBackpackPreviewHTML()}${mapTownPreviewHTML()}</div></div>`;
+function renderMap(el){setAmbient('forest');destroyRealMap();ensureLivingWorld();state.ui.mapPanelTab ||= 'quests';state.ui.mapSheetOpen ??= false;const p=state.player,hasGeo=!!(p.position.lat&&p.position.lng),virtual=!!p.position.virtualTravel;for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true;const tutorial=tutorialMapOverlay();const region=biomeInfoAtPlayer(),cl=climate();const weatherSlug=cl.weather.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replaceAll('ł','l');const phaseSlug=cl.phase.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard living-world-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card"><div class="dashboard-map-header compact-map-head"><div><div class="dashboard-kicker">Mapa GPS • OpenStreetMap • Żywy świat</div><h2>${region.icon} ${region.name}</h2><p>${region.desc} <b>${cl.icon} ${cl.weather}</b> • ${cl.phase}</p></div>${mapQuickActionsHTML()}</div><div class="real-map-rpg-frame weather-frame-${weatherSlug} phase-frame-${phaseSlug}"><div id="realMap" class="real-map real-map-rpg"></div>${mapAmbientFxHTML()}<div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><div class="rpg-map-legend"><span>${region.icon} ${region.name}</span><span>⚔️ potwory</span><span>✨ eventy</span><span>🕳️ lochy</span></div><div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-map-sheet-toggle>📜</button></div>${tutorial}${!hasGeo?`<div class="gps-start-card dashboard-gps-card osm-gps-card"><b>📍 Włącz prawdziwy GPS</b><p>Pozycja gracza pojawi się na OpenStreetMap, a świat RPG zostanie rozmieszczony wokół Ciebie.</p><div class="gps-card-actions"><button class="primary" data-map-gps>Włącz GPS</button><button class="secondary" data-map-demo-step="up">Test bez GPS</button></div></div>`:''}${nearbyTrayHTML()}<div class="osm-map-footer"><span class="map-status-chip" data-live-gps>${virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span><span class="interaction-badge">⚔️ interakcja 60 m</span></div></div>${mobileMapSheetToggleHTML()}</section><aside class="dashboard-side-card fantasy-card map-journal-sheet ${state.ui.mapSheetOpen?'open':''}" data-map-journal-sheet>${mapRightPanelHTML()}</aside><div class="dashboard-bottom-row">${mapBackpackPreviewHTML()}${mapTownPreviewHTML()}</div></div>`;
  el.querySelectorAll('[data-map-side-tab]').forEach(b=>b.onclick=()=>{state.ui.mapPanelTab=b.dataset.mapSideTab;save();renderMap(el)});
  el.querySelectorAll('[data-map-demo-step]').forEach(b=>b.onclick=()=>{const step=b.dataset.mapDemoStep;const delta={up:[0,30],down:[0,-30],left:[-30,0],right:[30,0]}[step];if(delta)moveDemo(delta[0],delta[1])});
  el.querySelectorAll('[data-map-building]').forEach(b=>b.onclick=()=>openBuilding(b.dataset.mapBuilding,'scene'));
@@ -906,9 +943,10 @@ function renderMap(el){setAmbient('forest');destroyRealMap();ensureLivingWorld()
  const centerNow=()=>{if(realMap&&p.lat){followGps=true;realMap.setView([p.lat,p.lng],Math.max(16,realMap.getZoom()),{animate:true})}else toast('Włącz GPS, aby wyśrodkować mapę.')};
  el.querySelector('[data-osm-center]')?.addEventListener('click',centerNow);
  el.querySelectorAll('[data-map-center]').forEach(b=>b.addEventListener('click',centerNow));
+ el.querySelectorAll('[data-map-sheet-toggle]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=!state.ui.mapSheetOpen;save();renderMap(el)});
  el.querySelector('[data-open-quests]')?.addEventListener('click',openQuestView);
  el.querySelectorAll('[data-bag-index]').forEach(b=>b.onclick=()=>openInventoryItem(Number(b.dataset.bagIndex)));
- bindShellControls(el);bindTutorialControls(el);initRealMap();
+ bindNearbyTray(el);bindShellControls(el);bindTutorialControls(el);initRealMap();
 }
 
 function entityHTML(e,radius){const pt=mapPoint(e.x,e.y,radius),d=dist(e,state.player.position);if(pt.left<-10||pt.left>110||pt.top<-10||pt.top>110)return'';if(e.type==='monster'){const m=monsterTemplate(e);return `<button class="entity monster ${e.elite?'elite':''}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${e.elite?'<b class="elite-star">⭐</b>':''}${monsterVisual(m.id,'sprite-entity')}</span><small>${Math.round(d)}m</small></button>`}const discovered=state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id);const icon=e.type==='dungeon'&&!discovered?'❓':e.icon;return `<button class="entity ${e.type}" style="left:${pt.left}%;top:${pt.top}%" title="${discovered?e.name:'Nieznane miejsce'} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${icon}</span><small>${Math.round(d)}m</small></button>`}
@@ -1128,7 +1166,7 @@ async function installPwa(){
 }
 
 
-function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build 2.4</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>🌙 Testy</b><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🧪 Reset postaci do testów</b><div class="muted">Usuwa lokalny save oraz stare save’y migracyjne i wraca prosto do kreatora postaci.</div><button class="danger" data-reset-character>Resetuj postać</button></div></div>`;
+function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build 2.5</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>🌙 Testy</b><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🧪 Reset postaci do testów</b><div class="muted">Usuwa lokalny save oraz stare save’y migracyjne i wraca prosto do kreatora postaci.</div><button class="danger" data-reset-character>Resetuj postać</button></div></div>`;
  el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
 function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='time4heroes-build-2.3-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}

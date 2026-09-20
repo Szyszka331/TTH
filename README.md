@@ -1,16 +1,18 @@
-# Time4Heroes — Build 2.4 — OSM RPG Overlay
+# Time4Heroes — Build 2.5 — Living World & Map Polish
 
-## Główna zmiana
-Prawdziwa mapa GPS wróciła jako **OpenStreetMap + Leaflet**. Statyczna ilustracja z 2.1–2.3 nie jest już mapą gry.
+Bazą nadal jest **prawdziwy OpenStreetMap + GPS**. Build 2.5 rozwija wyłącznie warstwę RPG nad mapą.
 
-### Warstwa RPG na OSM
-- fantasy filtr kolorystyczny nad kafelkami OSM,
-- dekoracyjne drzewa, skały, grzyby, ruiny, kapliczki i obozy,
-- potwory / lochy / POI / eventy jako osobne markery gry,
-- gracz i promień interakcji 60 m działają na prawdziwych współrzędnych GPS,
-- brak mgły wojny,
-- custom zoom i centrowanie,
-- mobilny układ zostawia możliwie dużo miejsca na mapę.
+## Nowości
+- dekoracje mapy zależne od biomu: las, łąki, ruiny, mokradła i wzgórza wyglądają inaczej,
+- noc, mgła, deszcz, wiatr i burza zmieniają wygląd mapy bez zasłaniania dróg OSM,
+- nocne świetliki / błędne ogniki,
+- subtelne kręgi wokół ważnych eventów, elit i lochów,
+- markery w zasięgu 60 m pulsują i pokazują znak interakcji,
+- nowy pasek **W ZASIĘGU** do szybkiego wejścia w walkę / event / lokację,
+- mobilny panel **Zadania i wydarzenia** można otwierać i zamykać, dzięki czemu mapa zajmuje większość ekranu,
+- cały świat nadal działa na prawdziwych współrzędnych GPS.
 
-### Test
-Jeśli GPS jest wyłączony, można używać trybu testowego. Po uruchomieniu GPS świat gry generuje się wokół rzeczywistej pozycji.
+## Technicznie
+- build/cache: 2500,
+- stary save z 2.4 jest automatycznie migrowany,
+- mapa OSM wymaga połączenia internetowego; logika gry i save pozostają lokalne.
