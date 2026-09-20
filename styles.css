@@ -648,3 +648,202 @@ body.building-open .shell{visibility:hidden!important;pointer-events:none!import
 @media(max-width:900px){.modal:has(.city-modal){padding-bottom:0!important;scroll-padding-bottom:150px!important}.city-modal .location-overlay{padding-bottom:calc(130px + env(safe-area-inset-bottom))!important}.tavern-sheet,.clean-room-sheet{padding-bottom:calc(115px + env(safe-area-inset-bottom))!important}.tavern-sheet .building-panel,.clean-room-sheet .building-panel,.city-modal .building-panel{padding-bottom:calc(125px + env(safe-area-inset-bottom))!important}.tavern-menu{margin-bottom:18px!important}}
 /* Keep the full OSM map visible on a phone instead of making it taller than the viewport. */
 @media(max-width:620px){.clean-map-card .real-map-rpg-frame,.real-map-rpg-frame{height:clamp(330px,54dvh,500px)!important;min-height:330px!important;max-height:500px!important}.real-map-rpg{height:100%!important}.map-journal-sheet{max-height:44dvh!important}.nearby-action-tray{bottom:44px!important}.test-move-pad{bottom:68px!important}.gear-bag-layout{grid-template-columns:1fr;gap:10px}.dnd-paperdoll-grid{grid-template-columns:repeat(3,1fr);gap:6px}.dnd-paperdoll-grid .gear-slot{min-height:84px;padding:5px}.dnd-paperdoll-grid .gear-slot>span{width:38px;height:38px}.dnd-paperdoll-grid .gear-slot>b{font-size:9px}.dnd-paperdoll-grid .gear-slot>small{font-size:7px}.drag-hero-silhouette{min-height:175px}.backpack-grid{grid-template-columns:repeat(5,1fr)!important;gap:5px}.gear-page-title .muted{font-size:10px}.touch-drag-ghost{width:52px;height:52px}}
+
+
+/* =======================================================================
+   Time4Heroes 2.5.8 — FULL HEIGHT MOBILE MAP
+   Mapa + zwinięty pasek zadań wykorzystują całe miejsce nad dolną nawigacją.
+   ======================================================================= */
+@media(max-width:900px){
+  html,body,#app{height:100%;min-height:100%;}
+  body{overflow:hidden;}
+  .shell-21{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+    padding-bottom:0!important;
+  }
+  .topbar-fantasy.topbar-compact{
+    flex:0 0 auto!important;
+  }
+  .shell-body{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:8px 8px calc(66px + env(safe-area-inset-bottom))!important;
+    overflow:hidden!important;
+  }
+  .content-zone,
+  .main,
+  .main.map-main-only,
+  .viewport,
+  .clean-map-dashboard,
+  .clean-map-card{
+    height:100%!important;
+    min-height:0!important;
+  }
+  .content-zone,
+  .main,
+  .viewport,
+  .clean-map-dashboard{
+    overflow:hidden!important;
+  }
+  .clean-map-dashboard{
+    display:block!important;
+  }
+  .clean-map-card{
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+  .clean-map-card .real-map-rpg-frame,
+  .real-map-rpg-frame{
+    flex:1 1 auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+  .mobile-map-sheet-toggle{
+    flex:0 0 auto!important;
+    margin:8px 0 0!important;
+    min-height:58px!important;
+  }
+  .core-nav{
+    height:calc(64px + env(safe-area-inset-bottom))!important;
+  }
+}
+@media(max-width:620px){
+  .shell-body{
+    padding:6px 6px calc(64px + env(safe-area-inset-bottom))!important;
+  }
+  .mobile-map-sheet-toggle{
+    min-height:56px!important;
+    border-radius:12px!important;
+    font-size:15px!important;
+  }
+  .clean-map-card .real-map-rpg-frame,
+  .real-map-rpg-frame{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+}
+
+
+/* =======================================================================
+   Time4Heroes 2.5.9 — DUNGEON INTERACTION HOTFIX
+   Loch musi zawsze leżeć nad mapą, samouczkiem i kontrolkami testowymi.
+   ======================================================================= */
+.modal-back{
+  z-index:10000!important;
+  pointer-events:auto!important;
+}
+body.modal-open .shell{
+  pointer-events:none!important;
+}
+body.modal-open .tutorial-map-card,
+body.modal-open .test-move-pad,
+body.modal-open .map-ui-stack,
+body.modal-open .quest-guide-hud,
+body.modal-open .biome-info-sheet,
+body.modal-open .map-location-pill,
+body.modal-open .interaction-strip,
+body.modal-open .mobile-map-sheet-toggle,
+body.modal-open .leaflet-control-container{
+  pointer-events:none!important;
+}
+body.dungeon-open .modal-back{
+  z-index:12000!important;
+  background:rgba(4,3,2,.94)!important;
+  backdrop-filter:blur(5px)!important;
+}
+body.dungeon-open .modal{
+  position:relative!important;
+  z-index:12001!important;
+  pointer-events:auto!important;
+  border-color:#7b5b2f!important;
+  background:linear-gradient(180deg,#17100b,#0b0806)!important;
+}
+body.dungeon-open .dungeon-stage,
+body.dungeon-open .dungeon-stage *{
+  pointer-events:auto!important;
+}
+body.dungeon-open .dungeon-stage{
+  position:relative;
+  z-index:2;
+}
+body.dungeon-open .room-path{
+  position:relative;
+  z-index:3;
+}
+body.dungeon-open .dungeon-action{
+  position:relative;
+  z-index:20!important;
+  min-height:52px;
+  margin-top:12px;
+  touch-action:manipulation;
+}
+body.dungeon-open .dungeon-choice-grid{
+  display:grid!important;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+body.dungeon-open .dungeon-choice-grid .dungeon-action{
+  margin:0;
+}
+
+@media(max-width:900px){
+  body.dungeon-open{
+    overflow:hidden!important;
+  }
+  body.dungeon-open .modal-back{
+    padding:8px!important;
+    align-items:stretch!important;
+    justify-items:stretch!important;
+  }
+  body.dungeon-open .modal{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - 16px)!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding:14px 14px calc(34px + env(safe-area-inset-bottom))!important;
+    border-radius:14px!important;
+  }
+  body.dungeon-open .room-path{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  body.dungeon-open .room-dot{
+    min-height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  body.dungeon-open .dungeon-action{
+    width:100%;
+    min-height:58px;
+    font-size:16px;
+  }
+  body.dungeon-open .dungeon-choice-grid{
+    grid-template-columns:1fr!important;
+  }
+}
+
+
+/* =======================================================================
+   Time4Heroes 2.6 — DUNGEON CRAWLER SYSTEM
+   ======================================================================= */
+.dungeon-rules-banner{margin:0 0 14px;padding:14px 16px;border:1px solid #705532;border-radius:14px;background:linear-gradient(135deg,#22160d,#0f0b08);box-shadow:inset 0 0 28px #0008}.dungeon-rules-banner b{display:block;color:#f0d08b;font-size:17px}.dungeon-rules-banner small{display:block;margin-top:5px;color:#bdb09b;line-height:1.4}
+.dungeon-card-23.guarded{border-color:#865e35}.dungeon-card-23.guarded .dungeon-art{filter:saturate(.7)}.dungeon-guardian-line{display:grid;gap:4px;padding:10px 12px;margin:10px 0;border:1px solid #6b4b31;border-radius:10px;background:#140e0a}.dungeon-guardian-line b{color:#e4c57f}.dungeon-guardian-line small{color:#a99d8c}
+.dungeon-guardian-modal,.dungeon-lobby,.dungeon-result{max-width:880px;margin:auto}.guardian-showdown{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.2fr);gap:20px;align-items:center;padding:18px;border:1px solid #5d442c;border-radius:16px;background:radial-gradient(circle at 20% 50%,#4b2a1b33,transparent 45%),#100c09}.guardian-art{display:grid;place-items:center;min-height:300px}.guardian-unlock-sprite{max-width:260px;max-height:280px;filter:drop-shadow(0 18px 18px #000)}.guardian-showdown h3{font-size:28px;margin:5px 0 10px}.guardian-showdown p{color:#c7b9a2;line-height:1.55}
+.dungeon-lobby-hero{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;padding:16px;border:1px solid #5f472d;border-radius:14px;background:#110d0a}.dungeon-lobby-icon{display:grid;place-items:center;font-size:62px;min-height:100px;border-radius:12px;background:radial-gradient(circle,#2c2117,#0b0806)}.dungeon-lobby-hero p{margin:0;color:#cfc2ab;line-height:1.5}.dungeon-rule-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.dungeon-rule-pills span,.crawler-status span{padding:6px 9px;border:1px solid #57422b;border-radius:999px;background:#0b0907;color:#e7d5b1;font-size:12px}.dungeon-lobby-boss{display:flex;align-items:center;gap:12px;margin:12px 0;padding:10px 14px;border:1px solid #6e3d35;border-radius:12px;background:#24100e}.dungeon-lobby-boss>span{width:58px;height:58px;display:grid;place-items:center}.dungeon-lobby-boss img,.dungeon-lobby-boss svg{max-width:100%;max-height:100%}.dungeon-lobby-boss small{display:block;color:#b97b68;letter-spacing:1.5px}.dungeon-lobby-boss b{font-size:20px}.dungeon-records{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.dungeon-records span{padding:10px;border:1px solid #54412d;border-radius:10px;background:#0d0a08;color:#bcae97;text-align:center}.dungeon-records b{display:block;color:#f0d08b;font-size:18px}.dungeon-lobby-status{padding:12px;border-radius:10px;background:#18120d;border:1px solid #5f492e;margin:12px 0;color:#d8c8ad}
+.dungeon-crawler{max-width:1000px;margin:auto}.crawler-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:10px}.crawler-head h2{margin:3px 0}.crawler-head small{color:#a99e8d}.crawler-timer{min-width:120px;text-align:center;padding:9px 13px;border:1px solid #72572f;border-radius:12px;background:#120d09}.crawler-timer small{display:block;font-size:9px;letter-spacing:1.5px}.crawler-timer b{font-size:26px;color:#efd17f}.crawler-timer b.danger{color:#ff7c65;animation:dungeonPulse .8s ease-in-out infinite alternate}.crawler-status{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.crawler-layout{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(270px,.8fr);gap:16px}.crawler-map-panel,.crawler-room-panel{padding:14px;border:1px solid #5b452e;border-radius:16px;background:#0d0a08}.crawler-map{--dungeon-size:7;display:grid;grid-template-columns:repeat(var(--dungeon-size),minmax(0,1fr));gap:4px;aspect-ratio:1;max-width:580px;margin:auto;padding:8px;border-radius:14px;background:radial-gradient(circle at 50% 55%,#251c13,#090705 72%);border:1px solid #42311f;box-shadow:inset 0 0 36px #000}.dungeon-map-cell{display:grid;place-items:center;min-width:0;aspect-ratio:1;border-radius:7px;font-size:18px;color:#8b806d;user-select:none}.dungeon-map-cell.wall{background:#050403;opacity:.35}.dungeon-map-cell.floor{background:#17120d;border:1px solid #2c2218}.dungeon-map-cell.revealed{border-color:#56432e;color:#cab992}.dungeon-map-cell.visited{background:#21180f}.dungeon-map-cell.current{outline:2px solid #dfbd69;background:#3b2916;color:#fff3cb;box-shadow:0 0 18px #d9af4d55;z-index:2}.dungeon-map-cell.boss-cell.revealed{border-color:#8e3f35}.crawler-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px;color:#978c7a;font-size:11px}.crawler-room-panel{display:flex;flex-direction:column}.crawler-room-copy{min-height:150px;padding:12px;border:1px solid #493824;border-radius:12px;background:#120e0b}.crawler-room-copy small{color:#c49c4b;letter-spacing:1.4px}.crawler-room-copy h3{margin:6px 0 8px;font-size:22px}.crawler-room-copy p{color:#bcae99;line-height:1.5}.crawler-dpad{margin:20px auto 14px;display:flex;flex-direction:column;align-items:center;gap:8px}.crawler-dpad>div{display:flex;gap:8px}.crawler-dpad button{width:68px;height:60px;border-radius:14px;border:1px solid #846235;background:linear-gradient(#2a1d12,#120c08);color:#f3d99b;font-size:25px;box-shadow:inset 0 0 0 1px #332216,0 8px 12px #0008;touch-action:manipulation}.crawler-dpad button:active{transform:translateY(2px);background:#3a2817}.crawler-abandon{margin-top:auto;width:100%;min-height:48px}
+.dungeon-result{text-align:center;padding:16px}.result-icon{font-size:72px}.dungeon-result h2{font-size:32px;margin:6px 0 14px}.result-reward{font-size:22px;color:#f0d27f;margin:15px 0}.dungeon-result p{color:#bfb19b}.dungeon-result.failure .result-icon{filter:grayscale(.2)}
+@keyframes dungeonPulse{from{opacity:1;transform:scale(1)}to{opacity:.65;transform:scale(1.04)}}
+@media(max-width:760px){body.dungeon-open .modal{padding:10px 10px calc(30px + env(safe-area-inset-bottom))!important}.guardian-showdown,.dungeon-lobby-hero,.crawler-layout{grid-template-columns:1fr}.guardian-art{min-height:180px}.guardian-unlock-sprite{max-height:180px}.dungeon-records{grid-template-columns:repeat(2,1fr)}.crawler-head{align-items:center}.crawler-head h2{font-size:20px}.crawler-timer{min-width:100px}.crawler-timer b{font-size:22px}.crawler-status{gap:5px}.crawler-status span{font-size:10px;padding:5px 7px}.crawler-map-panel{padding:8px}.crawler-map{max-width:100%;gap:3px;padding:5px}.dungeon-map-cell{font-size:15px;border-radius:5px}.crawler-room-panel{padding:10px}.crawler-room-copy{min-height:105px}.crawler-room-copy h3{font-size:18px}.crawler-room-copy p{font-size:12px}.crawler-dpad{margin:10px auto}.crawler-dpad button{width:62px;height:50px}.dungeon-rules-banner b{font-size:14px}.dungeon-rules-banner small{font-size:11px}}
