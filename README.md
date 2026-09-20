@@ -1,19 +1,25 @@
-# Time4Heroes — Build 2.0D — Full Interior Rework
+# Time4Heroes — Build 2.1
 
-Dalszy etap Visual Overhaul. Po wzorcowej karczmie przebudowane zostały wszystkie pozostałe wnętrza miasta.
+## Map & Interface Overhaul
 
-## Zmiany
+Ta paczka przebudowuje główny ekran gry na wzór dark-fantasy mockupu.
 
-- Kuźnia, Alchemik, Sklep, Gildia i Dom aukcyjny używają teraz czystych scen bez tekstu i narysowanego UI.
-- Każda lokacja ma osobny wariant desktopowy i mobilny.
-- Interakcje są prawdziwymi hotspotami HTML/CSS nakładanymi na scenę.
-- Kliknięcie NPC otwiera rozmowę jako panel nad wnętrzem.
-- Kliknięcie stanowiska otwiera właściwą usługę bez opuszczania sceny.
-- Na telefonie panele wysuwają się od dołu, a wnętrze pozostaje w tle.
-- Zawsze widoczny przycisk wyjścia do miasta.
-- Brak napisów i przycisków w samych grafikach wnętrz.
-- Zachowano wszystkie systemy Build 2.0C.
+### Nowości
+- usunięta mgła wojny z głównego ekranu mapy,
+- ilustrowana mapa świata `Las Dębowy`,
+- nowy interfejs z lewym paskiem nawigacji na desktopie,
+- osobne zakładki po prawej stronie: **Zadania / Wydarzenia / W pobliżu**,
+- dolne panele **Plecak** i **Miasto — Dębogród**,
+- bardziej kompaktowy układ na telefonach z dolną nawigacją,
+- zachowana interakcja z potworami i miejscami bezpośrednio z mapy.
 
-## GitHub Pages
+### Pliki
+- `index.html`
+- `app.js`
+- `styles.css`
+- `data.js`
+- `assets/world-map-debowy.png`
 
-Podmień cały build i wykonaj Ctrl+F5 po wdrożeniu.
+### Uwaga
+Przyciski `+/-` na mapie są obecnie stylizowanym elementem UI.
+W kolejnej paczce można dodać pełny zoom i bardziej zaawansowaną nawigację po mapie.

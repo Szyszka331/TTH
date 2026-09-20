@@ -9,22 +9,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 2.0D — Full Interior Rework</title>
+  <title>Time4Heroes — Build 2.1 — Map & Interface Overhaul</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=2005" />
+  <link rel="stylesheet" href="styles.css?v=2100" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 2.0D: clean responsive interiors for all city buildings.
+    // Build 2.1: stylized world map and interface overhaul.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=2005"></script>
+  <script type="module" src="app.js?v=2100"></script>
 </body>
 </html>
