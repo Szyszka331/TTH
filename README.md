@@ -1,14 +1,11 @@
-# Time4Heroes — Build 2.3 — Adventure UI Overhaul
+# Time4Heroes — Build 2.3.1 Hotfix
 
-## Zmiany
+Naprawiono krytyczny błąd `ReferenceError: renderMenuHub is not defined`, który zatrzymywał renderowanie głównego widoku po uruchomieniu gry.
 
-- nowy dziennik przygody z czterema zakładkami: **Zadania / Wydarzenia / Wyprawy / Bestiariusz**,
-- questy mają dwukolumnowy dziennik z detalem, celami, procentem postępu i nagrodami,
-- kontrakty z karczmy są widoczne w tym samym dzienniku,
-- nowa strona wydarzeń z celem dziennym i dynamicznymi eventami świata,
-- nowy ekran wypraw i lochów z regionami, bossami i liczbą ukończeń,
-- pełny bestiariusz z filtrowaniem rodzin, ukrytymi niepoznanymi stworami i szczegółowym wpisem po kliknięciu,
-- poprawione brakujące funkcje `questHTML`, `renderAdventure` i `renderBestiary`,
-- mobilny układ jest jednokolumnowy i bardziej kompaktowy.
+Dodatkowo:
+- podbito cache busting do `2310`,
+- podbito Service Worker cache,
+- dodano favicon oparty o `assets/icon-192.png`,
+- zachowano wszystkie funkcje i UI z builda 2.3.
 
-Save z 2.2 i starszych wersji jest migrowany automatycznie.
+Po wrzuceniu plików na GitHub Pages wykonaj twarde odświeżenie (`Ctrl+F5`).
