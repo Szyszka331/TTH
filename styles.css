@@ -579,3 +579,25 @@ h1,h2,h3,h4,.section-title h2{font-family:Georgia,'Times New Roman',serif;color:
  .tavern-sheet .tavern-menu{grid-template-columns:1fr!important}.tavern-sheet .tavern-menu button{font-size:11px!important;padding:9px 7px!important}
  .big-hearth{font-size:58px!important}.hearth-panel p{font-size:12px!important;line-height:1.4!important}.rest-summary{margin:8px 0!important;gap:5px!important}.rest-summary span{font-size:10px!important;padding:5px 7px!important}
 }
+
+
+/* =======================================================================
+   Time4Heroes 2.5.2 — NAVIGATION CRASH + DUPLICATE SIDEBAR HOTFIX
+   ======================================================================= */
+@media(min-width:901px){
+  .shell-body{grid-template-columns:minmax(0,1fr)!important;padding-left:132px!important}
+  .content-zone{grid-column:1!important}
+  .main{grid-template-columns:minmax(0,1fr)!important}
+  .side{display:none!important}
+  .fantasy-rail{display:none!important}
+  .core-nav{display:grid!important}
+  .core-nav:before{display:none!important;content:none!important}
+}
+@media(max-width:900px){
+  .core-nav{grid-template-columns:repeat(5,1fr)!important}
+  .core-nav:before{display:none!important;content:none!important}
+  .shell-body{grid-template-columns:1fr!important;padding:10px 10px 92px!important}
+  .fantasy-rail{display:none!important}
+  .side{display:none!important}
+}
+body.modal-open .core-nav{display:none!important}

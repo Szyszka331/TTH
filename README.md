@@ -1,11 +1,14 @@
-# Time4Heroes — Build 2.5.1 Mobile UX Hotfix
+# Time4Heroes — Build 2.5.2
 
-Najważniejsze poprawki:
-- dolna nawigacja mobilna ma teraz 5 pozycji: Mapa, Bohater, Miasto, Zadania, Menu,
-- Plecak i Umiejętności przeniesione do ekranu Bohater,
-- Bohater ma trzy zakładki: Postać i ekwipunek / Plecak / Umiejętności,
-- usunięty duży napis Time4Heroes z górnego HUD-u,
-- podczas rozmów i interakcji w budynkach dolny pasek mobilny jest ukrywany,
-- panele Doriana i kominka mają większy bezpieczny obszar na dole,
-- z każdego budynku można wrócić bezpośrednio na Mapę,
-- zachowane jest również przejście do Miasta na większych ekranach.
+## Navigation Crash Hotfix
+
+Naprawia błąd `ReferenceError: renderMenuHub is not defined`, który blokował renderowanie ekranu.
+
+Dodatkowo:
+- usunięto podwójną nawigację na desktopie,
+- pasek nawigacji ma tylko: **Mapa / Bohater / Miasto / Zadania / Menu**,
+- **Plecak** i **Umiejętności** są wewnątrz ekranu Bohater,
+- podczas modali/karczmy dolna nawigacja pozostaje ukryta,
+- usunięto mały napis TIME4HEROES z paska nawigacji,
+- wyłączono pusty prawy panel, który pozostał po starszym układzie,
+- cache podniesiony do `2520`.
