@@ -1,15 +1,8 @@
-# Time4Heroes — Build 2.0B — City & Interiors Overhaul
+# Time4Heroes — Build 2.0B.1 — Interior Exit Hotfix
 
-Build bazuje na 2.0A i skupia się na mieście i wnętrzach.
+Poprawka wyjścia z wnętrz miasta.
 
-- nowy ekran miasta z dużymi ilustrowanymi kartami budynków;
-- NPC widoczni już na kartach lokacji;
-- wnętrza są pełnoekranowymi scenami RPG;
-- grafika pomieszczenia jest powierzchnią interakcji;
-- hotspoty są na właściwych elementach sceny;
-- Karczma: Dorian, kominek, tablica ogłoszeń;
-- Kuźnia, Alchemik, Sklep, Aukcje i Gildia: NPC + stanowisko usług;
-- zachowane stamina, odpoczynek, quest board, limit 4 questów, crafting, handel i reset postaci;
-- nowy cache PWA: `time4heroes-v2002-city`.
-
-Po wdrożeniu na GitHub Pages wykonaj raz `Ctrl+F5`.
+- zawsze widoczny przycisk **← Wyjdź do miasta** w karczmie, kuźni, sklepie, alchemiku, gildii i domu aukcyjnym;
+- działa również z ekranów rozmowy, usług, kominka i tablicy questów;
+- `Esc` zamyka zwykły modal na desktopie;
+- podbity cache PWA i wersje assetów do `2003`.
