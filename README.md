@@ -1,19 +1,23 @@
-# Time4Heroes — Build 1.15 — City Interiors & Interactions
+# Time4Heroes — Build 2.0A — Visual Overhaul
 
-Najważniejsze zmiany:
+Pierwszy etap pełnego redesignu wizualnego gry. Mechanika i zapis z 1.15 pozostają zgodne.
 
-- każde miejsce w mieście jest teraz wnętrzem RPG, a nie samym przyciskiem;
-- Karczma: Dorian za ladą, anegdoty o potworach, piwo/jedzenie regenerujące staminę, kominek do odpoczynku i tablica ogłoszeń;
-- maksymalnie 4 aktywne zadania/kontrakty; samouczek nie liczy się do limitu;
-- tablica ma przypięte kartki: kolejny quest fabularny oraz kontrakty dnia;
-- Kuźnia: Ragor + kowadło/palenisko + ulepszanie, runy i crafting;
-- Alchemik: Ilyra + stół alchemiczny;
-- Sklep: Selma + lada i regały;
-- Aukcje: Varo + księga aukcji;
-- Gildia: Edrin + stół gildii;
-- stamina 0–100 została dodana do postaci i HUD;
-- ukończenie questa nie wciska już automatycznie następnego — kolejny odbierasz z tablicy;
-- nowy cache Service Workera i wersjonowanie plików.
+## Najważniejsze zmiany
 
-## Test po wdrożeniu
-Po podmianie wszystkich plików na GitHub Pages zrób Ctrl+F5.
+- nowy dark-fantasy motyw interfejsu;
+- złoto/drewno/skóra/pergamin zamiast płaskich technicznych paneli;
+- desktopowe menu przeniesione na lewą pionową belkę w stylu klasycznego RPG;
+- na telefonie menu pozostaje na dole;
+- przebudowany HUD HP / mana / XP / złoto / stamina;
+- mocniej stylizowana mapa i markery;
+- fantasy-ramka wokół mapy;
+- budynki miasta wykorzystują prawdziwe grafiki wnętrz jako miniatury;
+- mocniejszy wygląd karczmy, kuźni, alchemika, sklepu, gildii i aukcji;
+- pergaminowe dialogi i tablica questów;
+- przebudowany wygląd postaci, ekwipunku i plecaka;
+- spójniejsze questy, modale, przyciski, panele i boczny HUD;
+- nowa wersja cache PWA, aby nie mieszać starego CSS z nowym.
+
+## Wdrożenie
+
+Wgraj cały komplet plików na GitHub Pages. Po wdrożeniu wykonaj raz Ctrl+F5.

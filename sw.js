@@ -1,6 +1,6 @@
-const CACHE='time4heroes-v115-city';
+const CACHE='time4heroes-v2001-visual';
 const CORE=[
-  './','./index.html','./styles.css?v=1150','./app.js?v=1150','./data.js?v=1150','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=2001','./app.js?v=2001','./data.js?v=2001','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/interior-tavern.png','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
 ];
 
