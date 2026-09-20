@@ -1,25 +1,11 @@
-# Time4Heroes — Build 2.1
+# Time4Heroes — Build 2.2
 
-## Map & Interface Overhaul
+## Combat & Character UI Overhaul
 
-Ta paczka przebudowuje główny ekran gry na wzór dark-fantasy mockupu.
-
-### Nowości
-- usunięta mgła wojny z głównego ekranu mapy,
-- ilustrowana mapa świata `Las Dębowy`,
-- nowy interfejs z lewym paskiem nawigacji na desktopie,
-- osobne zakładki po prawej stronie: **Zadania / Wydarzenia / W pobliżu**,
-- dolne panele **Plecak** i **Miasto — Dębogród**,
-- bardziej kompaktowy układ na telefonach z dolną nawigacją,
-- zachowana interakcja z potworami i miejscami bezpośrednio z mapy.
-
-### Pliki
-- `index.html`
-- `app.js`
-- `styles.css`
-- `data.js`
-- `assets/world-map-debowy.png`
-
-### Uwaga
-Przyciski `+/-` na mapie są obecnie stylizowanym elementem UI.
-W kolejnej paczce można dodać pełny zoom i bardziej zaawansowaną nawigację po mapie.
+- nowy ekran walki w stylu dark-fantasy,
+- większe i czytelniejsze postacie gracza oraz przeciwników,
+- mocniej wyeksponowane zamiary bossów i pasek przełamania,
+- przebudowany pasek umiejętności,
+- mobilna walka zajmuje mniej miejsca,
+- odświeżony ekran bohatera, wyposażenia i umiejętności,
+- zachowany cały gameplay z Build 2.1.
