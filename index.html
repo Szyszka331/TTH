@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 2.3.2 — Hotfix</title>
+  <title>Time4Heroes — Build 2.4 — OSM RPG Overlay</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=2320" />
+  <link rel="stylesheet" href="styles.css?v=2400" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 2.3.2: hotfix for missing renderMenuHub and cache refresh.
+    // Build 2.4: hotfix for missing renderMenuHub and cache refresh.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=2320"></script>
+  <script type="module" src="app.js?v=2400"></script>
 </body>
 </html>
