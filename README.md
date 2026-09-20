@@ -1,27 +1,25 @@
-# Time4Heroes — Build 0.8
+# Time4Heroes — Build 1.13 — Graphics Integration
 
-## Mobile Edition
+Ten build podłącza wygenerowane grafiki bezpośrednio do gry.
 
-Time4Heroes to przeglądarkowa gra RPG GPS rozwijana jako instalowalna aplikacja mobilna PWA.
+## NPC z własnymi grafikami
+- Dorian — Karczmarz
+- Selma — Kupcowa
+- Ragor — Kowal i runmistrz
+- Ilyra — Alchemiczka
+- Varo — Licytator
+- Edrin — Mistrz Gildii
 
-### Nowe w 0.8
-- nowa nazwa gry: **Time4Heroes**;
-- pełny responsywny układ pod telefon;
-- większe przyciski i elementy mapy do obsługi dotykiem;
-- przebudowany ekran walki na małych ekranach;
-- mobilna nawigacja dolna;
-- instalacja na Androidzie / iOS z ekranu głównego;
-- manifest PWA i Service Worker;
-- automatyczna migracja zapisów z wersji 0.7 i starszych buildów;
-- zachowane systemy mapy GPS, walki, questów, lochów, ekwipunku, bestiariusza i miasta.
+## Potwory i bossowie podpięci do systemu renderowania
+- Błądząca Zjawa
+- Kultysta Pustki
+- Rogaty Demon
+- Piekielny Ogar
+- Popielna Wywerna
+- Wiedźma Moczaru
+- Strażnik Czarnego Korzenia
+- Matka Mgły
+- Matka Żaru
+- Władca Nawałnicy
 
-### Pliki wymagane na GitHub Pages
-- `index.html`
-- `app.js`
-- `data.js`
-- `styles.css`
-- `manifest.webmanifest`
-- `sw.js`
-- folder `assets/`
-
-Na Androidzie otwórz stronę w Chrome. Na iPhonie użyj Safari → Udostępnij → Do ekranu początkowego.
+Nowe grafiki są używane w bestiariuszu, ekranie walki i panelach NPC. Service worker ma nowy cache, więc GitHub Pages/PWA powinny pobrać świeże assety po aktualizacji.
