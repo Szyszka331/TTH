@@ -1,10 +1,15 @@
-# Time4Heroes — Build 2.5.4 — Test & Onboarding Hotfix
+# Time4Heroes — Build 2.5.5
 
-## Poprawki
-- ekran prologu jest teraz osobnym ekranem — mapa nie renderuje się pod nim,
-- gra nie wymusza GPS przed rozpoczęciem samouczka,
-- na mapie są tymczasowe strzałki TEST do chodzenia bez GPS,
-- strzałki przesuwają postać po prawdziwej mapie OSM o ok. 30 m i działają z questami/interakcjami,
-- po włączeniu prawdziwego GPS tryb testowy jest automatycznie zastępowany pozycją urządzenia,
-- Sklep, Kowal i Alchemik są dostępni od poziomu 1,
-- cache podbity do 2540.
+## Mobile Startup & Test Walk Hotfix
+
+Naprawiono dwa krytyczne błędy runtime:
+- brak `renderCreate()` — świeża instalacja / telefon bez zapisu nie mógł uruchomić kreatora postaci,
+- brak `geoDistance()` — chodzenie testowe strzałkami wywalało błąd w konsoli.
+
+Dodatkowo przywrócono `refresh()`, używane przez ekwipunek, skille, import zapisu i lochy.
+
+### Testowanie
+1. Otwórz grę na telefonie bez starego zapisu — powinien pojawić się kreator postaci.
+2. Po stworzeniu postaci zobaczysz prolog.
+3. Po „Wyrusz z wioski” możesz chodzić strzałkami bez GPS.
+4. GPS możesz włączyć później.
