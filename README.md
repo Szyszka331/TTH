@@ -1,12 +1,12 @@
-# Time4Heroes — Build 1.14 — UX & Inventory Rework
+# Time4Heroes — Build 1.14.1 — UX Hotfix
 
-- Reset postaci naprawdę wraca do kreatora i usuwa stare save’y migracyjne.
-- Jeden główny przełącznik dźwięku wycisza SFX i ambient.
-- Samouczek jest zamykalną nakładką na mapie; postęp zostaje w Questach.
-- Główna mapa jest czysta; Dziennik Odkrywcy, podróż i warstwy są w Menu.
-- Questy otwiera pływający przycisk po prawej.
-- Dolny pasek: Mapa / Bohater / Miasto / Menu.
-- Odkrywanie mapy: wizualne koła 100 m.
-- Interakcje: 60 m.
-- Plecak: 32 sloty.
-- Mikstury, materiały i runy: stosy maks. 32 szt.
+Hotfix dla Build 1.14.
+
+## Naprawione
+
+- błąd składni `function exportSavefunction exportSave()` powodujący czarny ekran;
+- błędne odwołanie do `installApp` zastąpione istniejącą funkcją `installPwa`;
+- podbity numer cache/query do `1141`, żeby GitHub Pages nie mieszał poprzednich plików;
+- `app.js`, `data.js` i `sw.js` przechodzą kontrolę składni Node.
+
+Zachowane są zmiany UX z 1.14: reset postaci, master sound, tutorial na mapie, 60 m interakcji, 100 m odkrywania i plecak slotowy.
