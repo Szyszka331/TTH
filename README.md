@@ -1,18 +1,11 @@
-# Time4Heroes — Build 2.5 — Living World & Map Polish
+# Time4Heroes — Build 2.5.1 Mobile UX Hotfix
 
-Bazą nadal jest **prawdziwy OpenStreetMap + GPS**. Build 2.5 rozwija wyłącznie warstwę RPG nad mapą.
-
-## Nowości
-- dekoracje mapy zależne od biomu: las, łąki, ruiny, mokradła i wzgórza wyglądają inaczej,
-- noc, mgła, deszcz, wiatr i burza zmieniają wygląd mapy bez zasłaniania dróg OSM,
-- nocne świetliki / błędne ogniki,
-- subtelne kręgi wokół ważnych eventów, elit i lochów,
-- markery w zasięgu 60 m pulsują i pokazują znak interakcji,
-- nowy pasek **W ZASIĘGU** do szybkiego wejścia w walkę / event / lokację,
-- mobilny panel **Zadania i wydarzenia** można otwierać i zamykać, dzięki czemu mapa zajmuje większość ekranu,
-- cały świat nadal działa na prawdziwych współrzędnych GPS.
-
-## Technicznie
-- build/cache: 2500,
-- stary save z 2.4 jest automatycznie migrowany,
-- mapa OSM wymaga połączenia internetowego; logika gry i save pozostają lokalne.
+Najważniejsze poprawki:
+- dolna nawigacja mobilna ma teraz 5 pozycji: Mapa, Bohater, Miasto, Zadania, Menu,
+- Plecak i Umiejętności przeniesione do ekranu Bohater,
+- Bohater ma trzy zakładki: Postać i ekwipunek / Plecak / Umiejętności,
+- usunięty duży napis Time4Heroes z górnego HUD-u,
+- podczas rozmów i interakcji w budynkach dolny pasek mobilny jest ukrywany,
+- panele Doriana i kominka mają większy bezpieczny obszar na dole,
+- z każdego budynku można wrócić bezpośrednio na Mapę,
+- zachowane jest również przejście do Miasta na większych ekranach.
