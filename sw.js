@@ -1,7 +1,7 @@
-const CACHE='time4heroes-v2003-city-exit-hotfix';
+const CACHE='time4heroes-v2004-tavern-rework';
 const CORE=[
-  './','./index.html','./styles.css?v=2003','./app.js?v=2003','./data.js?v=2003','./manifest.webmanifest',
-  './assets/icon-192.png','./assets/icon-512.png','./assets/interior-tavern.png','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
+  './','./index.html','./styles.css?v=2004','./app.js?v=2004','./data.js?v=2004','./manifest.webmanifest',
+  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
 ];
 
 self.addEventListener('install',event=>{
