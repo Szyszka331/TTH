@@ -671,7 +671,7 @@ function renderPrologueScreen(){
 
 function renderCreate(){
  let selected='knight';
- app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.6 • DUNGEON FIX</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • możesz testować także strzałkami bez GPS</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
+ app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.6.1 • PIXEL MONSTERS</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • możesz testować także strzałkami bez GPS</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
  const desc=()=>{const c=CLASSES[selected];const target=document.querySelector('#classDesc');if(target)target.innerHTML=`<div class="preview-avatar">${classVisual(selected,'sprite-preview')}</div><div><b>${c.name}</b><div class="muted">STR ${c.base.str} • AGI ${c.base.agi} • INT ${c.base.int} • VIT ${c.base.vit}</div><div>${c.desc}</div>${['hunter','ranger'].includes(selected)?'<div class="gold">🐺 Startujesz z chowańcem: Młody Wilk.</div>':''}</div>`};
  desc();
  document.querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{selected=b.dataset.class;document.querySelectorAll('[data-class]').forEach(x=>x.classList.toggle('active',x===b));desc()});
@@ -683,10 +683,37 @@ function showPrologue(){if(!state||state.tutorial?.introSeen)return;renderProlog
 const GRAPHICS={
  classes:{knight:'assets/knight.png',mage:'assets/mage.png',hunter:'assets/hunter.png',berserker:'assets/berserker.png',ranger:'assets/ranger.png'},
  monsters:{
-  wolf:'assets/wolf.png',goblin:'assets/goblin.png',skeleton:'assets/skeleton.png',spider:'assets/spider.png',elemental:'assets/elemental.png',
-  ghost:'assets/ghost.png',cultist:'assets/cultist.png',demon:'assets/demon.png',hellhound:'assets/hellhound.png',wyvern:'assets/wyvern.png',
-  marshHag:'assets/marshHag.png',blackrootGuardian:'assets/blackrootGuardian.png',mireMother:'assets/mireMother.png',
-  cinderMatriarch:'assets/cinderMatriarch.png',tempestLord:'assets/tempestLord.png',shade:'assets/ghost.png'
+  'wolf':'assets/monsters/wilk.png',
+  'goblin':'assets/goblin.png',
+  'skeleton':'assets/monsters/szkielet.png',
+  'spider':'assets/monsters/pajak.png',
+  'elemental':'assets/monsters/kamienny-golem.png',
+  'ghost':'assets/monsters/zjawa.png',
+  'cultist':'assets/monsters/kultysta.png',
+  'demon':'assets/monsters/rogaty-czart.png',
+  'hellhound':'assets/monsters/piekielny-ogar.png',
+  'wyvern':'assets/wyvern.png',
+  'marshHag':'assets/monsters/wiedzma.png',
+  'blackrootGuardian':'assets/monsters/korzeniec.png',
+  'mireMother':'assets/mireMother.png',
+  'cinderMatriarch':'assets/monsters/sukkub.png',
+  'tempestLord':'assets/tempestLord.png',
+  'shade':'assets/monsters/cien.png',
+  'mireCrawler':'assets/monsters/larwa-bagienna.png',
+  'bogWraith':'assets/monsters/topielec.png',
+  'rotCultist':'assets/monsters/kultysta.png',
+  'mossGolem':'assets/monsters/korzeniec.png',
+  'fireWasp':'assets/monsters/roj-szerszeni.png',
+  'cinderCultist':'assets/monsters/kultysta.png',
+  'emberWraith':'assets/monsters/mara.png',
+  'slagGolem':'assets/monsters/zywiolak-lawy.png',
+  'pyreKnight':'assets/monsters/nawiedzony-rycerz.png',
+  'frostRaptor':'assets/monsters/jaszczur-skalny.png',
+  'stormCultist':'assets/monsters/kultysta.png',
+  'iceWraith':'assets/monsters/zjawa.png',
+  'thunderGolem':'assets/monsters/piorunnik.png',
+  'mountainTroll':'assets/monsters/troll.png',
+  'frozenKnight':'assets/monsters/nawiedzony-rycerz.png',
  },
  npcs:{
   Dorian:'assets/npc-dorian.png',Selma:'assets/npc-selma.png',Ragor:'assets/npc-ragor.png',

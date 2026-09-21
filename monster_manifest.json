@@ -1,0 +1,691 @@
+{
+  "version": 1,
+  "count": 82,
+  "monsters": [
+    {
+      "id": "bazyliszek",
+      "name": "bazyliszek",
+      "family": "Bestie",
+      "sprite": "assets/monsters/bazyliszek.png",
+      "marker": "assets/markers/bazyliszek.png",
+      "source": "stworki 1/Bestie/bazyliszek.jpg"
+    },
+    {
+      "id": "gryf",
+      "name": "gryf",
+      "family": "Bestie",
+      "sprite": "assets/monsters/gryf.png",
+      "marker": "assets/markers/gryf.png",
+      "source": "stworki 1/Bestie/gryf.jpg"
+    },
+    {
+      "id": "harpia",
+      "name": "harpia",
+      "family": "Bestie",
+      "sprite": "assets/monsters/harpia.png",
+      "marker": "assets/markers/harpia.png",
+      "source": "stworki 1/Bestie/harpia.jpg"
+    },
+    {
+      "id": "jaszczur-skalny",
+      "name": "jaszczur skalny",
+      "family": "Bestie",
+      "sprite": "assets/monsters/jaszczur-skalny.png",
+      "marker": "assets/markers/jaszczur-skalny.png",
+      "source": "stworki 1/Bestie/jaszczur skalny.jpg"
+    },
+    {
+      "id": "jednorozec",
+      "name": "jednorożec",
+      "family": "Bestie",
+      "sprite": "assets/monsters/jednorozec.png",
+      "marker": "assets/markers/jednorozec.png",
+      "source": "stworki 1/Bestie/jednorożec.jpg"
+    },
+    {
+      "id": "mlody-kraken",
+      "name": "młody kraken",
+      "family": "Bestie",
+      "sprite": "assets/monsters/mlody-kraken.png",
+      "marker": "assets/markers/mlody-kraken.png",
+      "source": "stworki 1/Bestie/młody kraken.jpg"
+    },
+    {
+      "id": "ork",
+      "name": "ork",
+      "family": "Bestie",
+      "sprite": "assets/monsters/ork.png",
+      "marker": "assets/markers/ork.png",
+      "source": "stworki 1/Bestie/ork.jpg"
+    },
+    {
+      "id": "sum-olbrzymi",
+      "name": "sum olbrzymi",
+      "family": "Bestie",
+      "sprite": "assets/monsters/sum-olbrzymi.png",
+      "marker": "assets/markers/sum-olbrzymi.png",
+      "source": "stworki 1/Bestie/sum olbrzymi.jpg"
+    },
+    {
+      "id": "troll",
+      "name": "troll",
+      "family": "Bestie",
+      "sprite": "assets/monsters/troll.png",
+      "marker": "assets/markers/troll.png",
+      "source": "stworki 1/Bestie/troll.jpg"
+    },
+    {
+      "id": "wilkolak",
+      "name": "wilkołak",
+      "family": "Bestie",
+      "sprite": "assets/monsters/wilkolak.png",
+      "marker": "assets/markers/wilkolak.png",
+      "source": "stworki 1/Bestie/wilkołak.jpg"
+    },
+    {
+      "id": "bies",
+      "name": "bies",
+      "family": "Demony",
+      "sprite": "assets/monsters/bies.png",
+      "marker": "assets/markers/bies.png",
+      "source": "stworki 1/Demony/bies.jpg"
+    },
+    {
+      "id": "chochlik",
+      "name": "chochlik",
+      "family": "Demony",
+      "sprite": "assets/monsters/chochlik.png",
+      "marker": "assets/markers/chochlik.png",
+      "source": "stworki 1/Demony/chochlik.jpg"
+    },
+    {
+      "id": "diabel",
+      "name": "diabeł",
+      "family": "Demony",
+      "sprite": "assets/monsters/diabel.png",
+      "marker": "assets/markers/diabel.png",
+      "source": "stworki 1/Demony/diabeł.jpg"
+    },
+    {
+      "id": "latawiec",
+      "name": "latawiec",
+      "family": "Demony",
+      "sprite": "assets/monsters/latawiec.png",
+      "marker": "assets/markers/latawiec.png",
+      "source": "stworki 1/Demony/latawiec.jpg"
+    },
+    {
+      "id": "piekielny-ogar",
+      "name": "piekielny ogar",
+      "family": "Demony",
+      "sprite": "assets/monsters/piekielny-ogar.png",
+      "marker": "assets/markers/piekielny-ogar.png",
+      "source": "stworki 1/Demony/piekielny ogar.jpg"
+    },
+    {
+      "id": "rogaty-czart",
+      "name": "rogaty czart",
+      "family": "Demony",
+      "sprite": "assets/monsters/rogaty-czart.png",
+      "marker": "assets/markers/rogaty-czart.png",
+      "source": "stworki 1/Demony/rogaty czart.jpg"
+    },
+    {
+      "id": "sukkub",
+      "name": "sukkub",
+      "family": "Demony",
+      "sprite": "assets/monsters/sukkub.png",
+      "marker": "assets/markers/sukkub.png",
+      "source": "stworki 1/Demony/sukkub.jpg"
+    },
+    {
+      "id": "zmora",
+      "name": "zmora",
+      "family": "Demony",
+      "sprite": "assets/monsters/zmora.png",
+      "marker": "assets/markers/zmora.png",
+      "source": "stworki 1/Demony/zmora.jpg"
+    },
+    {
+      "id": "kieszonkowiec",
+      "name": "kieszonkowiec",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/kieszonkowiec.png",
+      "marker": "assets/markers/kieszonkowiec.png",
+      "source": "stworki 1/Ludzie/kieszonkowiec.jpg"
+    },
+    {
+      "id": "kultysta",
+      "name": "kultysta",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/kultysta.png",
+      "marker": "assets/markers/kultysta.png",
+      "source": "stworki 1/Ludzie/kultysta.jpg"
+    },
+    {
+      "id": "klusownik",
+      "name": "kłusownik",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/klusownik.png",
+      "marker": "assets/markers/klusownik.png",
+      "source": "stworki 1/Ludzie/kłusownik.jpg"
+    },
+    {
+      "id": "najemnik",
+      "name": "najemnik",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/najemnik.png",
+      "marker": "assets/markers/najemnik.png",
+      "source": "stworki 1/Ludzie/najemnik.jpg"
+    },
+    {
+      "id": "rozbojnik",
+      "name": "rozbójnik",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/rozbojnik.png",
+      "marker": "assets/markers/rozbojnik.png",
+      "source": "stworki 1/Ludzie/rozbójnik.jpg"
+    },
+    {
+      "id": "szaleniec",
+      "name": "szaleniec",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/szaleniec.png",
+      "marker": "assets/markers/szaleniec.png",
+      "source": "stworki 1/Ludzie/szaleniec.jpg"
+    },
+    {
+      "id": "wiedzma",
+      "name": "wiedźma",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/wiedzma.png",
+      "marker": "assets/markers/wiedzma.png",
+      "source": "stworki 1/Ludzie/wiedźma.jpg"
+    },
+    {
+      "id": "zbir",
+      "name": "zbir",
+      "family": "Ludzie",
+      "sprite": "assets/monsters/zbir.png",
+      "marker": "assets/markers/zbir.png",
+      "source": "stworki 1/Ludzie/zbir.jpg"
+    },
+    {
+      "id": "dziewanna",
+      "name": "dziewanna",
+      "family": "Natura",
+      "sprite": "assets/monsters/dziewanna.png",
+      "marker": "assets/markers/dziewanna.png",
+      "source": "stworki 1/Natura/dziewanna.jpg"
+    },
+    {
+      "id": "grzybiarz",
+      "name": "grzybiarz",
+      "family": "Natura",
+      "sprite": "assets/monsters/grzybiarz.png",
+      "marker": "assets/markers/grzybiarz.png",
+      "source": "stworki 1/Natura/grzybiarz.jpg"
+    },
+    {
+      "id": "korzeniec",
+      "name": "korzeniec",
+      "family": "Natura",
+      "sprite": "assets/monsters/korzeniec.png",
+      "marker": "assets/markers/korzeniec.png",
+      "source": "stworki 1/Natura/korzeniec.jpg"
+    },
+    {
+      "id": "leszy",
+      "name": "leszy",
+      "family": "Natura",
+      "sprite": "assets/monsters/leszy.png",
+      "marker": "assets/markers/leszy.png",
+      "source": "stworki 1/Natura/leszy.jpg"
+    },
+    {
+      "id": "mangradora",
+      "name": "mangradora",
+      "family": "Natura",
+      "sprite": "assets/monsters/mangradora.png",
+      "marker": "assets/markers/mangradora.png",
+      "source": "stworki 1/Natura/mangradora.jpg"
+    },
+    {
+      "id": "placzaca-wierzba",
+      "name": "płacząca wierzba",
+      "family": "Natura",
+      "sprite": "assets/monsters/placzaca-wierzba.png",
+      "marker": "assets/markers/placzaca-wierzba.png",
+      "source": "stworki 1/Natura/płacząca wierzba.jpg"
+    },
+    {
+      "id": "strach-na-wroble",
+      "name": "strach na wróble",
+      "family": "Natura",
+      "sprite": "assets/monsters/strach-na-wroble.png",
+      "marker": "assets/markers/strach-na-wroble.png",
+      "source": "stworki 1/Natura/strach na wróble.jpg"
+    },
+    {
+      "id": "trzcinnik",
+      "name": "trzcinnik",
+      "family": "Natura",
+      "sprite": "assets/monsters/trzcinnik.png",
+      "marker": "assets/markers/trzcinnik.png",
+      "source": "stworki 1/Natura/trzcinnik.jpg"
+    },
+    {
+      "id": "zniwiarz-pol",
+      "name": "żniwiarz pól",
+      "family": "Natura",
+      "sprite": "assets/monsters/zniwiarz-pol.png",
+      "marker": "assets/markers/zniwiarz-pol.png",
+      "source": "stworki 1/Natura/żniwiarz pól.jpg"
+    },
+    {
+      "id": "ghul",
+      "name": "ghul",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/ghul.png",
+      "marker": "assets/markers/ghul.png",
+      "source": "stworki 1/Nieumarli/ghul.png"
+    },
+    {
+      "id": "kosciej",
+      "name": "kościej",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/kosciej.png",
+      "marker": "assets/markers/kosciej.png",
+      "source": "stworki 1/Nieumarli/kościej.png"
+    },
+    {
+      "id": "mumia",
+      "name": "mumia",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/mumia.png",
+      "marker": "assets/markers/mumia.png",
+      "source": "stworki 1/Nieumarli/mumia.png"
+    },
+    {
+      "id": "nawiedzony-rycerz",
+      "name": "nawiedzony rycerz",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/nawiedzony-rycerz.png",
+      "marker": "assets/markers/nawiedzony-rycerz.png",
+      "source": "stworki 1/Nieumarli/nawiedzony rycerz.png"
+    },
+    {
+      "id": "szkielet",
+      "name": "szkielet",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/szkielet.png",
+      "marker": "assets/markers/szkielet.png",
+      "source": "stworki 1/Nieumarli/szkielet.png"
+    },
+    {
+      "id": "topielec",
+      "name": "topielec",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/topielec.png",
+      "marker": "assets/markers/topielec.png",
+      "source": "stworki 1/Nieumarli/topielec.png"
+    },
+    {
+      "id": "trupojad",
+      "name": "trupojad",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/trupojad.png",
+      "marker": "assets/markers/trupojad.png",
+      "source": "stworki 1/Nieumarli/trupojad.png"
+    },
+    {
+      "id": "wisielec",
+      "name": "wisielec",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/wisielec.png",
+      "marker": "assets/markers/wisielec.png",
+      "source": "stworki 1/Nieumarli/wisielec.png"
+    },
+    {
+      "id": "zombie",
+      "name": "zombie",
+      "family": "Nieumarli",
+      "sprite": "assets/monsters/zombie.png",
+      "marker": "assets/markers/zombie.png",
+      "source": "stworki 1/Nieumarli/zombie.png"
+    },
+    {
+      "id": "komarzyca",
+      "name": "komarzyca",
+      "family": "Owady",
+      "sprite": "assets/monsters/komarzyca.png",
+      "marker": "assets/markers/komarzyca.png",
+      "source": "stworki 2/Owady/komarzyca.png"
+    },
+    {
+      "id": "krocionog",
+      "name": "krocionóg",
+      "family": "Owady",
+      "sprite": "assets/monsters/krocionog.png",
+      "marker": "assets/markers/krocionog.png",
+      "source": "stworki 2/Owady/krocionóg.png"
+    },
+    {
+      "id": "larwa-bagienna",
+      "name": "larwa bagienna",
+      "family": "Owady",
+      "sprite": "assets/monsters/larwa-bagienna.png",
+      "marker": "assets/markers/larwa-bagienna.png",
+      "source": "stworki 2/Owady/larwa bagienna.jpg"
+    },
+    {
+      "id": "pajak",
+      "name": "pająk",
+      "family": "Owady",
+      "sprite": "assets/monsters/pajak.png",
+      "marker": "assets/markers/pajak.png",
+      "source": "stworki 2/Owady/pająk.jpg"
+    },
+    {
+      "id": "ropucha",
+      "name": "ropucha",
+      "family": "Owady",
+      "sprite": "assets/monsters/ropucha.png",
+      "marker": "assets/markers/ropucha.png",
+      "source": "stworki 2/Owady/ropucha.jpg"
+    },
+    {
+      "id": "roj-szerszeni",
+      "name": "rój szerszeni",
+      "family": "Owady",
+      "sprite": "assets/monsters/roj-szerszeni.png",
+      "marker": "assets/markers/roj-szerszeni.png",
+      "source": "stworki 2/Owady/rój szerszeni.jpg"
+    },
+    {
+      "id": "skorpion",
+      "name": "skorpion",
+      "family": "Owady",
+      "sprite": "assets/monsters/skorpion.png",
+      "marker": "assets/markers/skorpion.png",
+      "source": "stworki 2/Owady/skorpion.jpg"
+    },
+    {
+      "id": "cma-upiorna",
+      "name": "ćma upiorna",
+      "family": "Owady",
+      "sprite": "assets/monsters/cma-upiorna.png",
+      "marker": "assets/markers/cma-upiorna.png",
+      "source": "stworki 2/Owady/ćma upiorna.jpg"
+    },
+    {
+      "id": "bledny-ognik",
+      "name": "błędny ognik",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/bledny-ognik.png",
+      "marker": "assets/markers/bledny-ognik.png",
+      "source": "stworki 2/Zjawy/błędny ognik.jpg"
+    },
+    {
+      "id": "cien",
+      "name": "cień",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/cien.png",
+      "marker": "assets/markers/cien.png",
+      "source": "stworki 2/Zjawy/cień.jpg"
+    },
+    {
+      "id": "mara",
+      "name": "mara",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/mara.png",
+      "marker": "assets/markers/mara.png",
+      "source": "stworki 2/Zjawy/mara.jpg"
+    },
+    {
+      "id": "poltergeist",
+      "name": "poltergeist",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/poltergeist.png",
+      "marker": "assets/markers/poltergeist.png",
+      "source": "stworki 2/Zjawy/poltergeist.jpg"
+    },
+    {
+      "id": "poludnica",
+      "name": "południca",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/poludnica.png",
+      "marker": "assets/markers/poludnica.png",
+      "source": "stworki 2/Zjawy/południca.jpg"
+    },
+    {
+      "id": "placzaca-panna",
+      "name": "płacząca panna",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/placzaca-panna.png",
+      "marker": "assets/markers/placzaca-panna.png",
+      "source": "stworki 2/Zjawy/płacząca panna.jpg"
+    },
+    {
+      "id": "rusalka",
+      "name": "rusałka",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/rusalka.png",
+      "marker": "assets/markers/rusalka.png",
+      "source": "stworki 2/Zjawy/rusałka.jpg"
+    },
+    {
+      "id": "widmowy-jezdziec",
+      "name": "widmowy jeździec",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/widmowy-jezdziec.png",
+      "marker": "assets/markers/widmowy-jezdziec.png",
+      "source": "stworki 2/Zjawy/widmowy jeździec.jpg"
+    },
+    {
+      "id": "zjawa",
+      "name": "zjawa",
+      "family": "Zjawy",
+      "sprite": "assets/monsters/zjawa.png",
+      "marker": "assets/markers/zjawa.png",
+      "source": "stworki 2/Zjawy/zjawa.jpg"
+    },
+    {
+      "id": "czapla",
+      "name": "czapla",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/czapla.png",
+      "marker": "assets/markers/czapla.png",
+      "source": "stworki 2/Zwierzęta/czapla.png"
+    },
+    {
+      "id": "dzik",
+      "name": "dzik",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/dzik.png",
+      "marker": "assets/markers/dzik.png",
+      "source": "stworki 2/Zwierzęta/dzik.png"
+    },
+    {
+      "id": "kozica",
+      "name": "kozica",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/kozica.png",
+      "marker": "assets/markers/kozica.png",
+      "source": "stworki 2/Zwierzęta/kozica.png"
+    },
+    {
+      "id": "kruk",
+      "name": "kruk",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/kruk.png",
+      "marker": "assets/markers/kruk.png",
+      "source": "stworki 2/Zwierzęta/kruk.png"
+    },
+    {
+      "id": "lis",
+      "name": "lis",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/lis.png",
+      "marker": "assets/markers/lis.png",
+      "source": "stworki 2/Zwierzęta/lis.png"
+    },
+    {
+      "id": "niedzwiedz",
+      "name": "niedźwiedź",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/niedzwiedz.png",
+      "marker": "assets/markers/niedzwiedz.png",
+      "source": "stworki 2/Zwierzęta/niedźwiedź.png"
+    },
+    {
+      "id": "rys",
+      "name": "ryś",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/rys.png",
+      "marker": "assets/markers/rys.png",
+      "source": "stworki 2/Zwierzęta/ryś.png"
+    },
+    {
+      "id": "sokol",
+      "name": "sokół",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/sokol.png",
+      "marker": "assets/markers/sokol.png",
+      "source": "stworki 2/Zwierzęta/sokół.png"
+    },
+    {
+      "id": "wilk",
+      "name": "wilk",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/wilk.png",
+      "marker": "assets/markers/wilk.png",
+      "source": "stworki 2/Zwierzęta/wilk.png"
+    },
+    {
+      "id": "wydra",
+      "name": "wydra",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/wydra.png",
+      "marker": "assets/markers/wydra.png",
+      "source": "stworki 2/Zwierzęta/wydra.png"
+    },
+    {
+      "id": "zdziczaly-pies",
+      "name": "zdziczały pies",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/zdziczaly-pies.png",
+      "marker": "assets/markers/zdziczaly-pies.png",
+      "source": "stworki 2/Zwierzęta/zdziczały pies.png"
+    },
+    {
+      "id": "zbik",
+      "name": "żbik",
+      "family": "Zwierzęta",
+      "sprite": "assets/monsters/zbik.png",
+      "marker": "assets/markers/zbik.png",
+      "source": "stworki 2/Zwierzęta/żbik.png"
+    },
+    {
+      "id": "kamienny-golem",
+      "name": "kamienny golem",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/kamienny-golem.png",
+      "marker": "assets/markers/kamienny-golem.png",
+      "source": "stworki 2/Żywioły/kamienny golem.jpg"
+    },
+    {
+      "id": "lodowy-golem",
+      "name": "lodowy golem",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/lodowy-golem.png",
+      "marker": "assets/markers/lodowy-golem.png",
+      "source": "stworki 2/Żywioły/lodowy golem.jpg"
+    },
+    {
+      "id": "piorunnik",
+      "name": "piorunnik",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/piorunnik.png",
+      "marker": "assets/markers/piorunnik.png",
+      "source": "stworki 2/Żywioły/piorunnik.jpg"
+    },
+    {
+      "id": "plomyk",
+      "name": "płomyk",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/plomyk.png",
+      "marker": "assets/markers/plomyk.png",
+      "source": "stworki 2/Żywioły/płomyk.jpg"
+    },
+    {
+      "id": "wir",
+      "name": "wir",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/wir.png",
+      "marker": "assets/markers/wir.png",
+      "source": "stworki 2/Żywioły/wir.jpg"
+    },
+    {
+      "id": "wodnik",
+      "name": "wodnik",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/wodnik.png",
+      "marker": "assets/markers/wodnik.png",
+      "source": "stworki 2/Żywioły/wodnik.jpg"
+    },
+    {
+      "id": "zywiolak-cienia",
+      "name": "żywiołak cienia",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/zywiolak-cienia.png",
+      "marker": "assets/markers/zywiolak-cienia.png",
+      "source": "stworki 2/Żywioły/żywiołak cienia.jpg"
+    },
+    {
+      "id": "zywiolak-lawy",
+      "name": "żywiołak lawy",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/zywiolak-lawy.png",
+      "marker": "assets/markers/zywiolak-lawy.png",
+      "source": "stworki 2/Żywioły/żywiołak lawy.jpg"
+    },
+    {
+      "id": "zywiolak-swiatla",
+      "name": "żywiołak światła",
+      "family": "Żywioły",
+      "sprite": "assets/monsters/zywiolak-swiatla.png",
+      "marker": "assets/markers/zywiolak-swiatla.png",
+      "source": "stworki 2/Żywioły/żywiołak światła.jpg"
+    }
+  ],
+  "currentGameMapping": {
+    "wolf": "wilk",
+    "spider": "pajak",
+    "skeleton": "szkielet",
+    "ghost": "zjawa",
+    "elemental": "kamienny-golem",
+    "cultist": "kultysta",
+    "demon": "rogaty-czart",
+    "hellhound": "piekielny-ogar",
+    "shade": "cien",
+    "mireCrawler": "larwa-bagienna",
+    "bogWraith": "topielec",
+    "rotCultist": "kultysta",
+    "mossGolem": "korzeniec",
+    "marshHag": "wiedzma",
+    "blackrootGuardian": "korzeniec",
+    "fireWasp": "roj-szerszeni",
+    "cinderCultist": "kultysta",
+    "emberWraith": "mara",
+    "slagGolem": "zywiolak-lawy",
+    "pyreKnight": "nawiedzony-rycerz",
+    "cinderMatriarch": "sukkub",
+    "frostRaptor": "jaszczur-skalny",
+    "stormCultist": "kultysta",
+    "iceWraith": "zjawa",
+    "thunderGolem": "piorunnik",
+    "mountainTroll": "troll",
+    "frozenKnight": "nawiedzony-rycerz"
+  }
+}
