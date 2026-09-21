@@ -928,3 +928,12 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
     padding:10px 8px calc(24px + env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* Build 2.9 — loot + crafting */
+.bestiary-loot{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(0,0,0,.18)}
+.bestiary-loot h3{margin:0 0 4px}.bestiary-loot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.bestiary-loot-row{display:flex;gap:9px;align-items:center;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06)}
+.bestiary-loot-row .loot-icon{font-size:1.35rem;min-width:28px;text-align:center}.bestiary-loot-row b,.bestiary-loot-row small{display:block}.bestiary-loot-row small{opacity:.68;margin-top:2px}
+.loot-empty{padding:10px;opacity:.7}
+@media(max-width:700px){.bestiary-loot-grid{grid-template-columns:1fr}.bestiary-loot-row{padding:8px}}

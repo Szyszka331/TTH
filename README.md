@@ -1,29 +1,14 @@
-# Time4Heroes — Build 2.7.1
-
-## Mobile Scroll Hotfix
-
-Naprawiono przewijanie na telefonie w zakładkach Bohater, Miasto, Zadania i Menu. Pełnoekranowa blokada przewijania pozostaje wyłącznie na mapie. Dolna nawigacja pozostaje przyklejona, a treść ma bezpieczny margines nad paskiem systemowym.
-
-# Time4Heroes — Build 2.7 — Quest World System
+# Time4Heroes — Build 2.9 — Loot & Crafting
 
 ## Najważniejsze zmiany
-- Questowe cele na mapie pojawiają się dopiero po przyjęciu zadania.
-- Etapy questów są sekwencyjne: następny trop nie istnieje na mapie, dopóki poprzedni nie zostanie rozwiązany.
-- „Zaginiona owca” jest pierwszym pełnym śledztwem terenowym: owca → tropy → dwa ranne wilki → decyzja.
-- Zwykłe fabularne POI (ruiny, obóz, ślady myśliwego itd.) są ukryte do momentu aktywacji odpowiedniego etapu questa.
-- Kontrakty poboczne gwarantują cele w świecie po przyjęciu.
-- Dodany kontrakt zbierania Jaskółczego ziela.
-- Kontrakty zabijania generują odpowiednią liczbę wymaganych przeciwników wokół gracza.
-- Cele poboczne znikają po ukończeniu/odebraniu kontraktu.
-- Zachowano pixel-artowe potwory i Dungeon Crawler 2.6.
+- Każdy obecny potwór ma własną tabelę materiałów i szans dropu.
+- Bestiariusz pokazuje możliwe łupy po pierwszym pokonaniu stworzenia.
+- Elity i bossowie mają bonus do ilości/szans materiałów.
+- Dodano ponad 35 nowych materiałów: mięso, kły, skóry, jad, ektoplazmę, łuski, rdzenie itd.
+- Rozbudowano kuźnię o receptury z łupów: strzały, miecze, rękawice, buty, amulet, pierścień i tarczę.
+- Odtrutka korzysta teraz z gruczołu jadowego; alchemia ma dodatkowe receptury oparte na dropie.
+- Po walce komunikat pokazuje najważniejszy zdobyty łup.
+- Zachowano system klasowego EQ, questów mapowych, lochów i mobile scroll hotfix.
 
-## Test „Zaginiona owca”
-1. Ukończ `q1`.
-2. Przyjmij `Zaginioną owcę` na tablicy w karczmie.
-3. Na mapie pojawi się tylko owca.
-4. Po jej zbadaniu pojawią się wilcze tropy.
-5. Po zbadaniu tropów pojawią się dwa ranne wilki.
-6. Przy wilkach wybierz sposób rozwiązania sytuacji.
-
-## Test kontraktów
-Po przyjęciu zlecenia z tablicy gra tworzy wymagane moby lub rośliny w osiągalnym promieniu wokół aktualnej pozycji.
+## Zgodność zapisu
+Build migruje zapis z klucza `time4heroes_build_270` używanego przez 2.7/2.8.
