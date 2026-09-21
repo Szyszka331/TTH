@@ -264,44 +264,59 @@ export const ITEMS = {
 
 export const SKILLS = {
  knight:[
-  {id:'shield',branch:'Bastion',name:'Uderzenie tarczą',icon:'🛡️',req:1,cost:1,mana:8,kind:'damage',mult:1.25,desc:'125% obrażeń i osłabienie ataku przeciwnika.',debuff:0.15},
-  {id:'fortress',branch:'Bastion',name:'Żelazna Forteca',icon:'🏰',req:3,cost:1,mana:12,kind:'guard',turns:2,requires:'shield',desc:'Przez 2 tury otrzymujesz o 45% mniej obrażeń.'},
-  {id:'taunt',branch:'Bastion',name:'Prowokacja',icon:'📣',req:6,cost:2,mana:14,kind:'debuff',debuff:0.30,requires:'fortress',desc:'Mocno obniża atak przeciwnika na 3 tury.'},
-  {id:'counter',branch:'Odwet',name:'Kontratak',icon:'↩️',req:4,cost:1,mana:10,kind:'damage',mult:1.5,requires:'shield',desc:'150% obrażeń. Bezpieczny, ciężki kontratak.'},
-  {id:'breaker',branch:'Odwet',name:'Łamacz Gardy',icon:'🔨',req:8,cost:2,mana:18,kind:'damage',mult:2.0,requires:'counter',desc:'200% obrażeń. Cios przeznaczony na elity i bossów.'},
-  {id:'lastStand',branch:'Odwet',name:'Ostatni Bastion',icon:'⚜️',req:12,cost:2,mana:22,kind:'guard',turns:3,requires:'breaker',desc:'Potężna obrona przez 3 tury.'}
+  {id:'shield',branch:'Bastion',name:'Uderzenie tarczą',icon:'🛡️',req:1,cost:1,mana:8,kind:'damage',mult:1.25,cooldown:1,status:'stun',statusChance:.18,desc:'125% obrażeń, osłabienie ataku i szansa na ogłuszenie.',debuff:0.15},
+  {id:'fortress',branch:'Bastion',name:'Żelazna Forteca',icon:'🏰',req:3,cost:1,mana:12,kind:'guard',turns:2,cooldown:3,requires:'shield',desc:'Przez 2 tury otrzymujesz znacznie mniej obrażeń.'},
+  {id:'lastStand',branch:'Bastion',name:'Ostatni Bastion',icon:'⚜️',req:12,cost:2,mana:22,kind:'buff',buff:'block',value:24,turns:3,cooldown:5,requires:'fortress',desc:'Przez 3 tury ogromnie zwiększa blok i wzmacnia postawę obronną.'},
+  {id:'counter',branch:'Odwet',name:'Kontratak',icon:'↩️',req:4,cost:1,mana:10,kind:'damage',mult:1.5,cooldown:1,desc:'150% obrażeń. Stabilny kontratak.'},
+  {id:'breaker',branch:'Odwet',name:'Łamacz Gardy',icon:'🔨',req:8,cost:2,mana:18,kind:'damage',mult:2.0,cooldown:3,requires:'counter',desc:'200% obrażeń i bardzo wysokie przełamanie.'},
+  {id:'riposte',branch:'Odwet',name:'Riposta Strażnika',icon:'⚔️',req:14,cost:2,mana:20,kind:'damage',mult:2.35,cooldown:4,requires:'breaker',status:'bleed',statusTurns:3,statusChance:.55,desc:'235% obrażeń i duża szansa na krwawienie.'},
+  {id:'taunt',branch:'Dowodzenie',name:'Prowokacja',icon:'📣',req:6,cost:2,mana:14,kind:'debuff',debuff:0.30,cooldown:3,desc:'Mocno obniża atak przeciwnika na 3 tury.'},
+  {id:'rally',branch:'Dowodzenie',name:'Zew Straży',icon:'🚩',req:9,cost:2,mana:16,kind:'buff',buff:'power',value:22,turns:3,cooldown:4,requires:'taunt',desc:'Przez 3 tury zwiększa zadawane obrażenia.'},
+  {id:'banner',branch:'Dowodzenie',name:'Sztandar Niezłomnych',icon:'🏳️',req:16,cost:3,mana:24,kind:'buff',buff:'block',value:18,turns:4,cooldown:6,requires:'rally',desc:'Długi defensywny buff: blok i odporność w kluczowym momencie.'}
  ],
  mage:[
-  {id:'fire',branch:'Ogień',name:'Ognisty pocisk',icon:'🔥',req:1,cost:1,mana:12,kind:'damage',mult:1.55,desc:'155% obrażeń magicznych.'},
-  {id:'frost',branch:'Lód',name:'Lodowa pieczęć',icon:'❄️',req:3,cost:1,mana:16,kind:'damage',mult:1.20,desc:'120% obrażeń i osłabienie przeciwnika.',debuff:0.20},
-  {id:'elemental',branch:'Arkanum',name:'Eksplozja Żywiołów',icon:'💥',req:6,cost:2,mana:28,kind:'damage',mult:2.35,requires:'fire',desc:'Potężny atak za dużą ilość many.'},
-  {id:'spark',branch:'Arkanum',name:'Łańcuch Iskier',icon:'⚡',req:4,cost:1,mana:15,kind:'multi',hits:2,mult:.9,requires:'fire',desc:'Dwa magiczne trafienia po 90%.'},
-  {id:'iceArmor',branch:'Lód',name:'Pancerz Lodu',icon:'🧊',req:7,cost:2,mana:20,kind:'guard',turns:2,requires:'frost',desc:'Zmniejsza obrażenia przez 2 tury.'},
-  {id:'meteor',branch:'Ogień',name:'Meteor',icon:'☄️',req:12,cost:2,mana:36,kind:'damage',mult:3.0,requires:'elemental',desc:'300% obrażeń. Drogi, kończący czar.'}
+  {id:'fire',branch:'Ogień',name:'Ognisty pocisk',icon:'🔥',req:1,cost:1,mana:12,kind:'damage',mult:1.55,cooldown:0,status:'burn',statusTurns:2,statusChance:.45,desc:'155% obrażeń magicznych i szansa na podpalenie.'},
+  {id:'elemental',branch:'Ogień',name:'Eksplozja Żywiołów',icon:'💥',req:6,cost:2,mana:28,kind:'damage',mult:2.35,cooldown:3,requires:'fire',status:'burn',statusTurns:3,statusChance:.65,desc:'Potężny atak i silne podpalenie.'},
+  {id:'meteor',branch:'Ogień',name:'Meteor',icon:'☄️',req:12,cost:2,mana:36,kind:'damage',mult:3.0,cooldown:5,requires:'elemental',status:'burn',statusTurns:4,statusChance:1,desc:'300% obrażeń. Zawsze podpala trafiony cel.'},
+  {id:'frost',branch:'Lód',name:'Lodowa pieczęć',icon:'❄️',req:3,cost:1,mana:16,kind:'damage',mult:1.20,cooldown:1,status:'freeze',statusTurns:2,statusChance:.6,desc:'120% obrażeń, osłabienie i szansa na zamrożenie.',debuff:0.20},
+  {id:'iceArmor',branch:'Lód',name:'Pancerz Lodu',icon:'🧊',req:7,cost:2,mana:20,kind:'buff',buff:'block',value:18,turns:2,cooldown:4,requires:'frost',desc:'Zwiększa redukcję obrażeń i blok przez 2 tury.'},
+  {id:'frostNova',branch:'Lód',name:'Nova Mrozu',icon:'🌨️',req:14,cost:2,mana:30,kind:'damage',mult:1.85,cooldown:4,requires:'iceArmor',status:'freeze',statusTurns:3,statusChance:1,desc:'185% obrażeń i gwarantowane zamrożenie.'},
+  {id:'spark',branch:'Arkanum',name:'Łańcuch Iskier',icon:'⚡',req:4,cost:1,mana:15,kind:'multi',hits:2,mult:.9,cooldown:1,desc:'Dwa magiczne trafienia po 90%.'},
+  {id:'arcaneSurge',branch:'Arkanum',name:'Przypływ Arkanum',icon:'🔷',req:9,cost:2,mana:18,kind:'buff',buff:'crit',value:22,turns:3,cooldown:4,requires:'spark',desc:'Przez 3 tury mocno zwiększa szansę na krytyczne czary.'},
+  {id:'arcaneRift',branch:'Arkanum',name:'Szczelina Arkanum',icon:'🌀',req:16,cost:3,mana:40,kind:'damage',mult:2.65,cooldown:5,requires:'arcaneSurge',status:'stun',statusChance:.5,desc:'265% obrażeń i szansa na ogłuszenie przeciwnika.'}
  ],
  hunter:[
-  {id:'double',branch:'Strzelectwo',name:'Podwójny strzał',icon:'🏹',req:1,cost:1,mana:10,kind:'multi',hits:2,mult:0.82,desc:'Dwa trafienia po 82% obrażeń.'},
-  {id:'mark',branch:'Strzelectwo',name:'Znak łowcy',icon:'🎯',req:3,cost:1,mana:12,kind:'mark',turns:3,requires:'double',desc:'Przez 3 tury +25% szansy na krytyk.'},
-  {id:'petStrike',branch:'Bestia',name:'Skoordynowany Strzał',icon:'🐺',req:6,cost:2,mana:18,kind:'pet',mult:1.45,desc:'145% obrażeń, a aktywny pupil zawsze atakuje.'},
-  {id:'eagleEye',branch:'Strzelectwo',name:'Sokole Oko',icon:'🦅',req:7,cost:2,mana:18,kind:'damage',mult:1.7,critBonus:30,requires:'mark',desc:'170% obrażeń i wysoka szansa na krytyk.'},
-  {id:'pack',branch:'Bestia',name:'Zew Stada',icon:'🐾',req:9,cost:2,mana:20,kind:'pet',mult:1.6,requires:'petStrike',desc:'Silny wspólny atak z chowańcem.'},
-  {id:'volley',branch:'Przetrwanie',name:'Salwa',icon:'🌧️',req:12,cost:2,mana:26,kind:'multi',hits:3,mult:.76,requires:'eagleEye',desc:'Trzy szybkie trafienia po 76%.'}
+  {id:'double',branch:'Strzelectwo',name:'Podwójny strzał',icon:'🏹',req:1,cost:1,mana:10,kind:'multi',hits:2,mult:0.82,cooldown:0,desc:'Dwa trafienia po 82% obrażeń.'},
+  {id:'mark',branch:'Strzelectwo',name:'Znak łowcy',icon:'🎯',req:3,cost:1,mana:12,kind:'mark',turns:3,cooldown:2,requires:'double',desc:'Przez 3 tury +25% szansy na krytyk.'},
+  {id:'eagleEye',branch:'Strzelectwo',name:'Sokole Oko',icon:'🦅',req:7,cost:2,mana:18,kind:'damage',mult:1.7,critBonus:30,cooldown:2,requires:'mark',desc:'170% obrażeń i wysoka szansa na krytyk.'},
+  {id:'petStrike',branch:'Bestia',name:'Skoordynowany Strzał',icon:'🐺',req:6,cost:2,mana:18,kind:'pet',mult:1.45,cooldown:2,desc:'145% obrażeń, a aktywny pupil zawsze atakuje.'},
+  {id:'pack',branch:'Bestia',name:'Zew Stada',icon:'🐾',req:9,cost:2,mana:20,kind:'pet',mult:1.6,cooldown:3,requires:'petStrike',desc:'Silny wspólny atak z chowańcem.'},
+  {id:'beastFury',branch:'Bestia',name:'Furia Towarzysza',icon:'🐺',req:15,cost:3,mana:24,kind:'pet',mult:2.0,cooldown:5,requires:'pack',status:'bleed',statusTurns:3,statusChance:.7,desc:'Potężny wspólny atak i krwawienie.'},
+  {id:'volley',branch:'Przetrwanie',name:'Salwa',icon:'🌧️',req:12,cost:2,mana:26,kind:'multi',hits:3,mult:.76,cooldown:3,desc:'Trzy szybkie trafienia po 76%.'},
+  {id:'camouflage',branch:'Przetrwanie',name:'Kamuflaż',icon:'🌲',req:8,cost:2,mana:14,kind:'buff',buff:'dodge',value:24,turns:3,cooldown:4,desc:'Przez 3 tury wyraźnie zwiększa unik.'},
+  {id:'piercingShot',branch:'Przetrwanie',name:'Przeszywający Strzał',icon:'➶',req:16,cost:3,mana:28,kind:'damage',mult:2.45,cooldown:4,requires:'camouflage',status:'bleed',statusTurns:4,statusChance:.75,desc:'245% obrażeń, wysokie przełamanie i krwawienie.'}
  ],
  berserker:[
-  {id:'rage',branch:'Furia',name:'Furia',icon:'😡',req:1,cost:1,mana:6,kind:'rage',desc:'Cios 120–190% zależnie od utraconego HP.'},
-  {id:'cleave',branch:'Rzeź',name:'Rozłupanie',icon:'🪓',req:3,cost:1,mana:10,kind:'damage',mult:1.75,desc:'Silny cios za 175% obrażeń.'},
-  {id:'blood',branch:'Rzeź',name:'Krwawy Taniec',icon:'🩸',req:6,cost:2,mana:16,kind:'multi',hits:3,mult:0.72,requires:'cleave',desc:'Trzy szybkie ciosy po 72% obrażeń.'},
-  {id:'roar',branch:'Furia',name:'Ryk Wojenny',icon:'📢',req:5,cost:1,mana:8,kind:'debuff',debuff:.22,requires:'rage',desc:'Osłabia atak przeciwnika.'},
-  {id:'execution',branch:'Rzeź',name:'Egzekucja',icon:'⚔️',req:9,cost:2,mana:15,kind:'damage',mult:2.25,requires:'blood',desc:'225% obrażeń.'},
-  {id:'berserk',branch:'Furia',name:'Szał Berserkera',icon:'🔥',req:12,cost:2,mana:18,kind:'rage',requires:'roar',desc:'Potężny cios skalujący się z utraconym HP.'}
+  {id:'rage',branch:'Furia',name:'Furia',icon:'😡',req:1,cost:1,mana:6,kind:'rage',cooldown:0,desc:'Cios rośnie wraz z utraconym HP.'},
+  {id:'roar',branch:'Furia',name:'Ryk Wojenny',icon:'📢',req:5,cost:1,mana:8,kind:'debuff',debuff:.22,cooldown:2,requires:'rage',desc:'Osłabia atak przeciwnika.'},
+  {id:'berserk',branch:'Furia',name:'Szał Berserkera',icon:'🔥',req:12,cost:2,mana:18,kind:'rage',cooldown:4,requires:'roar',status:'bleed',statusTurns:3,statusChance:.6,desc:'Potężny cios skalujący się z utraconym HP i krwawienie.'},
+  {id:'cleave',branch:'Rzeź',name:'Rozłupanie',icon:'🪓',req:3,cost:1,mana:10,kind:'damage',mult:1.75,cooldown:1,status:'bleed',statusTurns:2,statusChance:.35,desc:'Silny cios i szansa na krwawienie.'},
+  {id:'blood',branch:'Rzeź',name:'Krwawy Taniec',icon:'🩸',req:6,cost:2,mana:16,kind:'multi',hits:3,mult:0.72,cooldown:2,requires:'cleave',status:'bleed',statusTurns:3,statusChance:.65,desc:'Trzy szybkie ciosy i krwawienie.'},
+  {id:'execution',branch:'Rzeź',name:'Egzekucja',icon:'⚔️',req:9,cost:2,mana:15,kind:'damage',mult:2.25,cooldown:3,requires:'blood',desc:'225% obrażeń. Szczególnie mocna przy niskim HP.'},
+  {id:'dualCut',branch:'Dwa Ostrza',name:'Podwójne Cięcie',icon:'⚔️',req:4,cost:1,mana:10,kind:'multi',hits:2,mult:.92,cooldown:1,desc:'Dwa szybkie ciosy. Najlepsze przy dwóch broniach.'},
+  {id:'whirlwind',branch:'Dwa Ostrza',name:'Wir Ostrzy',icon:'🌪️',req:9,cost:2,mana:18,kind:'multi',hits:3,mult:.82,cooldown:3,requires:'dualCut',desc:'Trzy agresywne cięcia.'},
+  {id:'bloodRush',branch:'Dwa Ostrza',name:'Krwawy Pęd',icon:'💢',req:16,cost:3,mana:22,kind:'buff',buff:'power',value:30,turns:3,cooldown:5,requires:'whirlwind',desc:'Przez 3 tury znacząco zwiększa obrażenia.'}
  ],
  ranger:[
-  {id:'poison',branch:'Trucizny',name:'Zatruty grot',icon:'☠️',req:1,cost:1,mana:10,kind:'poison',mult:1.05,turns:3,desc:'105% obrażeń i trucizna przez 3 tury.'},
-  {id:'trap',branch:'Pułapki',name:'Leśna pułapka',icon:'🪤',req:3,cost:1,mana:12,kind:'debuff',debuff:0.25,desc:'Obniża atak przeciwnika na 3 tury.'},
-  {id:'destiny',branch:'Trucizny',name:'Strzała Przeznaczenia',icon:'🌠',req:6,cost:2,mana:20,kind:'damage',mult:2.0,critBonus:20,requires:'poison',desc:'200% obrażeń i +20% szansy na krytyk.'},
-  {id:'vine',branch:'Pułapki',name:'Pnącza',icon:'🌱',req:6,cost:1,mana:14,kind:'debuff',debuff:.32,requires:'trap',desc:'Mocne osłabienie przeciwnika.'},
-  {id:'spirit',branch:'Duch Natury',name:'Duch Lasu',icon:'🦊',req:8,cost:2,mana:18,kind:'pet',mult:1.5,desc:'Wspólny atak z aktywnym chowańcem.'},
-  {id:'venomRain',branch:'Trucizny',name:'Deszcz Jadu',icon:'🌧️',req:12,cost:2,mana:26,kind:'poison',mult:1.65,turns:4,requires:'destiny',desc:'Silny strzał i dłuższa trucizna.'}
+  {id:'poison',branch:'Trucizny',name:'Zatruty grot',icon:'☠️',req:1,cost:1,mana:10,kind:'poison',mult:1.05,turns:3,cooldown:0,desc:'105% obrażeń i trucizna przez 3 tury.'},
+  {id:'destiny',branch:'Trucizny',name:'Strzała Przeznaczenia',icon:'🌠',req:6,cost:2,mana:20,kind:'damage',mult:2.0,critBonus:20,cooldown:2,requires:'poison',desc:'200% obrażeń i +20% szansy na krytyk.'},
+  {id:'venomRain',branch:'Trucizny',name:'Deszcz Jadu',icon:'🌧️',req:12,cost:2,mana:26,kind:'poison',mult:1.65,turns:4,cooldown:4,requires:'destiny',desc:'Silny strzał i dłuższa trucizna.'},
+  {id:'trap',branch:'Pułapki',name:'Leśna pułapka',icon:'🪤',req:3,cost:1,mana:12,kind:'debuff',debuff:0.25,cooldown:2,desc:'Obniża atak przeciwnika na 3 tury.'},
+  {id:'vine',branch:'Pułapki',name:'Pnącza',icon:'🌱',req:6,cost:1,mana:14,kind:'debuff',debuff:.32,cooldown:3,requires:'trap',desc:'Mocne osłabienie przeciwnika.'},
+  {id:'snareShot',branch:'Pułapki',name:'Strzał Unieruchamiający',icon:'🪢',req:14,cost:2,mana:22,kind:'damage',mult:1.55,cooldown:4,requires:'vine',status:'stun',statusChance:.65,desc:'155% obrażeń i duża szansa na ogłuszenie.'},
+  {id:'spirit',branch:'Duch Natury',name:'Duch Lasu',icon:'🦊',req:8,cost:2,mana:18,kind:'pet',mult:1.5,cooldown:2,desc:'Wspólny atak z aktywnym chowańcem.'},
+  {id:'windStep',branch:'Duch Natury',name:'Krok Wiatru',icon:'🍃',req:10,cost:2,mana:16,kind:'buff',buff:'dodge',value:28,turns:3,cooldown:4,requires:'spirit',desc:'Przez 3 tury mocno zwiększa unik.'},
+  {id:'wildFocus',branch:'Duch Natury',name:'Instynkt Drapieżcy',icon:'👁️',req:16,cost:3,mana:24,kind:'buff',buff:'crit',value:25,turns:3,cooldown:5,requires:'windStep',desc:'Przez 3 tury zwiększa szansę na krytyk.'}
  ]
 };
 

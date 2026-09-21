@@ -1,14 +1,12 @@
-# Time4Heroes — Build 2.9 — Loot & Crafting
+# Time4Heroes — Build 3.0.1 — Battle Results & Loot Selection
 
-## Najważniejsze zmiany
-- Każdy obecny potwór ma własną tabelę materiałów i szans dropu.
-- Bestiariusz pokazuje możliwe łupy po pierwszym pokonaniu stworzenia.
-- Elity i bossowie mają bonus do ilości/szans materiałów.
-- Dodano ponad 35 nowych materiałów: mięso, kły, skóry, jad, ektoplazmę, łuski, rdzenie itd.
-- Rozbudowano kuźnię o receptury z łupów: strzały, miecze, rękawice, buty, amulet, pierścień i tarczę.
-- Odtrutka korzysta teraz z gruczołu jadowego; alchemia ma dodatkowe receptury oparte na dropie.
-- Po walce komunikat pokazuje najważniejszy zdobyty łup.
-- Zachowano system klasowego EQ, questów mapowych, lochów i mobile scroll hotfix.
+Hotfix rozwijający Build 3.0.
 
-## Zgodność zapisu
-Build migruje zapis z klucza `time4heroes_build_270` używanego przez 2.7/2.8.
+- po każdej wygranej walce pojawia się ekran WYGRANA,
+- XP i złoto są przyznawane automatycznie,
+- przedmioty z dropu nie trafiają automatycznie do plecaka,
+- gracz zaznacza checkboxami tylko łupy, które chce zabrać,
+- dostępne są akcje „Zaznacz wszystko”, „Odznacz”, „Zabierz wybrane” i „Zostaw wszystko”,
+- porażka pokazuje prosty ekran „ZGINĄŁEŚ”,
+- wynik jest zablokowany przed przypadkowym zamknięciem kliknięciem w tło lub Escape,
+- zachowane systemy Build 3.0: Combat & Skills 2.0, loot, crafting, questy GPS, ekwipunek klasowy i lochy.
