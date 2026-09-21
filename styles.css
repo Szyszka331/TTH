@@ -860,3 +860,71 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .resource-marker{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#315f2d,#14230f 70%);border:2px solid #8fbd64;box-shadow:0 7px 16px #0009;position:relative}.resource-marker>span:first-child{font-size:28px}.quest-evidence-modal{text-align:center;max-width:560px;margin:auto}.quest-evidence-icon{font-size:64px;filter:drop-shadow(0 7px 10px #0008);margin-bottom:8px}.quest-evidence-modal h2{margin:5px 0 12px;color:#e9c978}.quest-evidence-modal p{font-size:17px;line-height:1.6;color:#ddd0b6}.evidence-next{margin:16px 0;padding:12px;border:1px solid #7c6034;border-radius:12px;background:#1b130d;color:#e8d5ac;font-weight:700}
 @keyframes questWorldPulse{50%{box-shadow:0 0 0 10px #f1c75b12,0 8px 18px #000b;transform:translateY(-2px)}}
 @media(max-width:700px){.quest-world-marker{width:52px;height:52px}.quest-world-icon{font-size:27px}.quest-evidence-modal p{font-size:16px}.evidence-next{font-size:14px}}
+
+
+/* =======================================================================
+   Time4Heroes 2.7.1 — MOBILE SCROLL HOTFIX
+   Full-height lock is used only on the map. Hero/Town/Quests/Menu scroll.
+   ======================================================================= */
+@media(max-width:900px){
+  body.scroll-view-active{
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.scroll-view-active #app,
+  body.scroll-view-active .shell-21{
+    height:auto!important;
+    min-height:100dvh!important;
+    overflow:visible!important;
+  }
+  body.scroll-view-active .shell-body{
+    height:auto!important;
+    min-height:calc(100dvh - 110px)!important;
+    overflow:visible!important;
+    padding-bottom:calc(88px + env(safe-area-inset-bottom))!important;
+  }
+  body.scroll-view-active .content-zone,
+  body.scroll-view-active .main,
+  body.scroll-view-active .viewport{
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  body.scroll-view-active .viewport{
+    padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+  }
+  body.scroll-view-active .hero-hub-tabs{
+    position:sticky;
+    top:0;
+    z-index:12;
+    background:#0b0806ee;
+    padding:6px 0;
+    backdrop-filter:blur(6px);
+  }
+  body.map-view-active{
+    overflow:hidden!important;
+    height:100dvh!important;
+  }
+  body.map-view-active .shell-21{
+    height:100dvh!important;
+    overflow:hidden!important;
+  }
+  body.map-view-active .shell-body,
+  body.map-view-active .content-zone,
+  body.map-view-active .main,
+  body.map-view-active .viewport{
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+}
+@media(max-width:620px){
+  body.scroll-view-active .shell-body{
+    padding:6px 6px calc(86px + env(safe-area-inset-bottom))!important;
+  }
+  body.scroll-view-active .viewport{
+    padding:10px 8px calc(24px + env(safe-area-inset-bottom))!important;
+  }
+}

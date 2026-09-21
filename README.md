@@ -1,3 +1,9 @@
+# Time4Heroes — Build 2.7.1
+
+## Mobile Scroll Hotfix
+
+Naprawiono przewijanie na telefonie w zakładkach Bohater, Miasto, Zadania i Menu. Pełnoekranowa blokada przewijania pozostaje wyłącznie na mapie. Dolna nawigacja pozostaje przyklejona, a treść ma bezpieczny margines nad paskiem systemowym.
+
 # Time4Heroes — Build 2.7 — Quest World System
 
 ## Najważniejsze zmiany

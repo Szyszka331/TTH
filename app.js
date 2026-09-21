@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2700';
+import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2710';
 
 const SAVE_KEY='time4heroes_build_270';
 const MIGRATION_KEYS=['time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
@@ -859,7 +859,7 @@ function bindShellControls(root=document){
 }
 
 function renderShell(){destroyRealMap();app.innerHTML=`<div class="shell shell-21">${connectionBanner()}${topbar()}<div class="shell-body"><div class="content-zone"><div class="main"><main class="viewport" id="viewport"></main><aside class="side" id="side"></aside></div></div></div><button class="quest-float" data-quest-float title="Questy">📜<span>${activeTaskCount()||''}</span></button>${bottomNav()}</div>`;bindShellControls(document);document.querySelector('[data-quest-float]')?.addEventListener('click',openQuestView);selectNav(currentTab,false)}
-function selectNav(id,rebuild=true){if(id!=='map')destroyRealMap();currentTab=id;if(rebuild)document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));const el=document.querySelector('#viewport'),side=document.querySelector('#side'),main=document.querySelector('.main');if(!el||!side)return;main?.classList.add('map-main-only');side.style.display='none';({map:renderMap,hero:renderHeroHub,adventureHub:renderAdventureHub,town:renderTown,menu:renderMenuHub}[id]||renderMap)(el);bindTutorialControls(document);bindShellControls(document)}
+function selectNav(id,rebuild=true){if(id!=='map')destroyRealMap();currentTab=id;document.body.classList.toggle('map-view-active',id==='map');document.body.classList.toggle('scroll-view-active',id!=='map');if(rebuild)document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));const el=document.querySelector('#viewport'),side=document.querySelector('#side'),main=document.querySelector('.main');if(!el||!side)return;main?.classList.toggle('map-main-only',id==='map');side.style.display='none';({map:renderMap,hero:renderHeroHub,adventureHub:renderAdventureHub,town:renderTown,menu:renderMenuHub}[id]||renderMap)(el);bindTutorialControls(document);bindShellControls(document)}
 function refresh(){render()}
 function renderHeroHub(el){
  ensureCoreState();
