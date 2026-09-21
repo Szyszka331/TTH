@@ -1,7 +1,7 @@
-import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2600';
+import {CLASSES,MONSTERS,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=2700';
 
-const SAVE_KEY='time4heroes_build_251';
-const MIGRATION_KEYS=['time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
+const SAVE_KEY='time4heroes_build_270';
+const MIGRATION_KEYS=['time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
 let state=null;
@@ -64,9 +64,10 @@ const TUTORIAL_STEPS=[
 ];
 
 const STORY_SCENES={
- q2:{requiresSteps:1,npc:'Mara',role:'Pasterka',classId:'ranger',intro:'Na ogrodzeniu wiszą kępki szarej sierści, ale ziemia jest zbyt mocno zdeptana jak na zwykły atak wilków.',choices:[
-  {id:'spare',label:'Nie osądzaj wilków bez dowodu',text:'Najpierw sprawdzisz, kto naprawdę przepędził stado.',trait:'mercy',item:'herb',result:'Mara niechętnie przyznaje, że nikt nie widział samego ataku.'},
-  {id:'hunt',label:'Traktuj wilczy trop jako zagrożenie',text:'Zabezpieczysz okolicę, nawet jeśli trop okaże się fałszywy.',trait:'resolve',gold:20,result:'Mieszkańcy czują się bezpieczniej, ale część śladów zostaje zadeptana.'}
+ q2:{requiresSteps:3,npc:'Ranne wilki',role:'Dwa zwierzęta przy skraju lasu',classId:'hunter',intro:'Dwa wilki leżą przy ścieżce. Oba są ranne, ale nie od owczych rogów ani pasterskiego kija. W jednej z ran tkwi odłamek prymitywnego grotu, a obok widać ślady butów.',choices:[
+  {id:'inspect',label:'Zbadaj rany i ślady',text:'Nie zakładasz winy wilków. Sprawdzasz grot, krew i kierunek, z którego przyszły.',trait:'insight',item:'scrap',result:'Rany są świeże i zadane bronią. Ślady butów prowadzą dalej niż trop wilków — ktoś przepędził zwierzęta i zabrał owce.'},
+  {id:'spare',label:'Oszczędź wilki',text:'Zostawiasz zwierzęta w spokoju i zaznaczasz miejsce, by ostrzec pasterzy.',trait:'mercy',item:'herb',result:'Wilki nie próbują atakować. Jedno z nich kulejąc odchodzi w przeciwną stronę niż prowadzą ślady owiec.'},
+  {id:'finish',label:'Dobij ranne wilki',text:'Uznajesz, że ranne drapieżniki nadal są zagrożeniem dla okolicy.',trait:'resolve',gold:20,result:'Zabezpieczasz teren, ale dopiero po walce zauważasz obcy grot i ludzkie ślady przy wilczych tropach.'}
  ]},
  q3:{requiresSteps:1,npc:'Ranny wilk',role:'Ślad w wilczej jamie',classId:'hunter',intro:'W jamie nie ma resztek owiec. Są za to strzępy płótna, ślady butów i grot goblińskiej strzały.',choices:[
   {id:'tracks',label:'Zbadaj ślady butów',text:'Skupiasz się na kierunku marszu i liczbie napastników.',trait:'insight',xp:55,result:'Ślady prowadzą ku ruinom i wyglądają na zorganizowany transport.'},
@@ -250,7 +251,11 @@ function tutorialJournalHTML(){const t=tutorialInfo();if(!t)return `<div class="
 function tutorialNavigate(){const t=tutorialInfo();if(!t)return;if(t.go==='town'){selectNav('town');return}if(t.go==='inventory'){state.ui.heroView='gear';save();selectNav('hero');return}if(t.go==='skills'){state.ui.heroView='skills';save();selectNav('hero');return}selectNav('map')}
 function bindTutorialControls(root=document){root.querySelector('[data-tutorial-go]')?.addEventListener('click',tutorialNavigate);root.querySelector('[data-tutorial-hide]')?.addEventListener('click',()=>{state.tutorial.mapDismissedStage=state.tutorial.stage;save();root.querySelector('.tutorial-map-card')?.remove()})}
 function buildingUnlock(id){if(id==='tavern')return {ok:true};const u=CORE_UNLOCKS[id];if(!u)return {ok:true};return {ok:state.player.level>=u.level,reason:u.label}}
-function activeQuestTargets(){const set=new Set();for(const qid of state.quests.active){const q=QUESTS.find(x=>x.id===qid);if(!q)continue;const prog=state.quests.progress[qid]||[];q.steps.forEach((s,i)=>{if((prog[i]||0)<(s.count||1)&&s.target)set.add(s.target)})}return set}
+function currentQuestStepIndex(qid){const q=QUESTS.find(x=>x.id===qid);if(!q)return -1;const prog=state.quests.progress[qid]||[];return q.steps.findIndex((s,i)=>(prog[i]||0)<(s.count||1))}
+function currentQuestStep(qid){const q=QUESTS.find(x=>x.id===qid),i=currentQuestStepIndex(qid);return q&&i>=0?{q,step:q.steps[i],index:i}:null}
+function activeQuestTargets(){const set=new Set();for(const qid of state.quests.active){const cur=currentQuestStep(qid);if(cur?.step?.target)set.add(cur.step.target)}return set}
+function questPoiVisible(e){if(!e||e.type!=='poi')return true;const refs=[];for(const q of QUESTS)q.steps.forEach((s,i)=>{if(s.type==='discover'&&s.target===e.id)refs.push({q,i})});if(!refs.length)return true;if(state.player.discovered.includes(e.id))return true;return refs.some(({q,i})=>state.quests.active.includes(q.id)&&currentQuestStepIndex(q.id)===i)}
+function questWorldEntityVisible(e){if(!e)return false;if(e.questOnly){if(!state.quests.active.includes(e.questId))return false;const cur=currentQuestStep(e.questId);return !!cur&&cur.index===e.questStage&&!e.done}if(e.bountyId){const b=(state.adventure?.bounties||[]).find(x=>x.id===e.bountyId);return !!b&&b.accepted&&!b.claimed&&!e.done&&(e.type!=='monster'||e.alive)}return questPoiVisible(e)}
 function focusedEntityVisible(e){if(state.settings.mapMode!=='focused')return true;const d=dist(e,state.player.position),targets=activeQuestTargets(),specificMonster=e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template);if(e.type==='monster')return d<=165||(e.elite&&d<=300)||(specificMonster&&d<=320);if(e.type==='event')return d<=260;if(e.type==='dungeon')return targets.has(e.id)||d<=260||(state.player.dungeons.includes(e.id)&&d<=360);if(e.type==='poi')return targets.has(e.id)||d<=210||(state.player.discovered.includes(e.id)&&d<=260);return true}
 document.addEventListener('click',e=>{if(e.target.closest('button'))playSfx('click')},{capture:true});
 
@@ -318,17 +323,20 @@ function climate(){
 }
 
 const BOUNTY_POOL=[
- {id:'wolf',name:'Wilczy trop',icon:'🐺',target:'wolf',need:3,xp:220,gold:45,rep:4},
- {id:'goblin',name:'Goblińskie zasadzki',icon:'👺',target:'goblin',need:4,xp:280,gold:55,rep:5},
- {id:'undead',name:'Kości nie spoczną',icon:'💀',target:'skeleton',need:3,xp:360,gold:70,rep:6},
- {id:'insects',name:'Plaga tkaczy',icon:'🕷️',target:'spider',need:4,xp:310,gold:60,rep:5},
- {id:'ogres',name:'Łowca olbrzymów',icon:'👹',target:'ogre',need:2,xp:520,gold:100,rep:8}
+ {id:'herbs',name:'Zielarskie zamówienie',icon:'🌿',type:'gather',target:'herb',need:5,minLevel:1,xp:180,gold:38,rep:3},
+ {id:'rats',name:'Plaga szczurów',icon:'🐀',type:'kill',target:'rat',need:5,minLevel:1,xp:190,gold:40,rep:3},
+ {id:'beetles',name:'Twarde pancerze',icon:'🪲',type:'kill',target:'beetle',need:4,minLevel:1,xp:210,gold:42,rep:3},
+ {id:'wolf',name:'Wilczy trop',icon:'🐺',type:'kill',target:'wolf',need:3,minLevel:4,xp:220,gold:45,rep:4},
+ {id:'goblin',name:'Goblińskie zasadzki',icon:'👺',type:'kill',target:'goblin',need:4,minLevel:3,xp:280,gold:55,rep:5},
+ {id:'insects',name:'Plaga tkaczy',icon:'🕷️',type:'kill',target:'spider',need:5,minLevel:8,xp:340,gold:65,rep:5},
+ {id:'undead',name:'Kości nie spoczną',icon:'💀',type:'kill',target:'skeleton',need:3,minLevel:10,xp:360,gold:70,rep:6},
+ {id:'ogres',name:'Łowca olbrzymów',icon:'👹',type:'kill',target:'ogre',need:2,minLevel:25,xp:520,gold:100,rep:8}
 ];
-function makeDailyBounties(day){const pool=[...BOUNTY_POOL],out=[];for(let i=0;i<3;i++){const idx=Math.floor(seeded(day+711+i*83)*pool.length),b=pool.splice(idx,1)[0];out.push({...b,progress:0,claimed:false,accepted:false})}return out}
-function ensureAdventureState(s=state){if(!s)return; s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};if(s.adventure.day!==daySeed()){s.adventure.day=daySeed();s.adventure.bounties=makeDailyBounties(daySeed())}if(!s.adventure.bounties?.length)s.adventure.bounties=makeDailyBounties(daySeed());for(const b of s.adventure.bounties||[])b.accepted ??= false;s.adventure.achievements ||= {};s.adventure.reputation ||= 0;s.adventure.worldBossDay ||= 0}
-function progressBounties(type,target,amount=1){if(type!=='kill')return;ensureAdventureState();for(const b of state.adventure.bounties){if(b.accepted&&!b.claimed&&b.target===target)b.progress=Math.min(b.need,(b.progress||0)+amount)}updateAchievements()}
+function makeDailyBounties(day,level=state?.player?.level||1){let pool=BOUNTY_POOL.filter(b=>(b.minLevel||1)<=level+1);if(pool.length<3)pool=[...BOUNTY_POOL].slice(0,3);const out=[];for(let i=0;i<Math.min(3,pool.length);i++){const idx=Math.floor(seeded(day+711+i*83)*pool.length),b=pool.splice(idx,1)[0];out.push({...b,progress:0,claimed:false,accepted:false})}return out}
+function ensureAdventureState(s=state){if(!s)return; s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};if(s.adventure.day!==daySeed()){s.adventure.day=daySeed();s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1)}if(!s.adventure.bounties?.length)s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1);for(const b of s.adventure.bounties||[])b.accepted ??= false;s.adventure.achievements ||= {};s.adventure.reputation ||= 0;s.adventure.worldBossDay ||= 0}
+function progressBounties(type,target,amount=1){ensureAdventureState();for(const b of state.adventure.bounties){if(!b.accepted||b.claimed||b.target!==target)continue;if((b.type==='gather'&&type==='item')||((b.type||'kill')==='kill'&&type==='kill'))b.progress=Math.min(b.need,(b.progress||0)+amount)}updateAchievements()}
 function updateAchievements(){if(!state?.adventure)return;const a=state.adventure.achievements,p=state.player;a.firstBlood ||= p.kills>=1;a.hunter ||= p.kills>=25;a.explorer ||= p.discovered.length>=6;a.delver ||= Object.values(p.dungeonClears||{}).reduce((x,y)=>x+y,0)>=3;a.veteran ||= p.level>=10;a.north ||= state.quests.done.includes('q15')}
-function claimBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||!b.accepted||b.claimed||b.progress<b.need)return; b.claimed=true;state.player.gold+=b.gold;state.adventure.reputation+=b.rep;gainXp(b.xp);save();renderShell();toast(`Kontrakt wykonany: +${b.xp} XP • +${b.gold} 🪙 • +${b.rep} reputacji`)}
+function claimBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||!b.accepted||b.claimed||b.progress<b.need)return; b.claimed=true;state.world.entities=state.world.entities.filter(e=>e.bountyId!==b.id);state.player.gold+=b.gold;state.adventure.reputation+=b.rep;gainXp(b.xp);save();renderShell();toast(`Kontrakt wykonany: +${b.xp} XP • +${b.gold} 🪙 • +${b.rep} reputacji`)}
 function worldBossDef(){const list=[MONSTERS.find(m=>m.id==='graveColossus'),MONSTERS.find(m=>m.id==='stormDrake')].filter(Boolean);return list[daySeed()%list.length]||MONSTERS.find(m=>m.id==='ogre')}
 function startWorldBoss(){ensureAdventureState();if(state.adventure.worldBossDay===daySeed())return toast('Dzisiejszy boss świata został już pokonany.');if(state.player.level<8)return toast('Boss świata wymaga co najmniej 8 poziomu.');const m=worldBossDef(),e={id:`worldboss_${daySeed()}`,type:'monster',template:m.id,x:0,y:0,alive:true,elite:true,synthetic:true};startCombat(e,{level:Math.max(m.min,state.player.level+3),worldBoss:true})}
 
@@ -558,7 +566,7 @@ function sectorLatLngRing(key){const size=explorationSectorSize(),{sx,sy}=sector
 function normalizeState(s){
  if(!s)return null;
  const previousVersion=s.version||0;
- s.version=115;
+ s.version=127;
  s.player ||= {};
  s.player.stats ||= {str:5,agi:5,int:5,vit:5};
  s.player.inventory ||= [];
@@ -593,7 +601,7 @@ function normalizeState(s){
  s.settings ||= {};
  s.settings.demo ??= true;s.settings.forceNight ??= false;
  s.settings.mapFilters ||= {monster:true,poi:true,dungeon:true,event:true,biome:false,trail:true};
- s.settings.mapFilters.monster ??= true;s.settings.mapFilters.poi ??= true;s.settings.mapFilters.dungeon ??= true;s.settings.mapFilters.event ??= true;s.settings.mapFilters.biome ??= false;s.settings.mapFilters.trail ??= true;ensureCoreState(s);
+ s.settings.mapFilters.monster ??= true;s.settings.mapFilters.poi ??= true;s.settings.mapFilters.dungeon ??= true;s.settings.mapFilters.event ??= true;s.settings.mapFilters.biome ??= false;s.settings.mapFilters.trail ??= true;ensureCoreState(s);if(s.quests.active.includes('q2')&&!s.quests.done.includes('q2')&&(s.quests.progress.q2||[]).length<4){s.quests.progress.q2=[0,0,0,0];if(s.story?.choices)delete s.story.choices.q2;}
  s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};
  if(previousVersion<19&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0}
  ensureAdventureState(s);
@@ -615,7 +623,7 @@ function newGame(name,cls){
  const armor={id:'leather',uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const boots={id:'trailBoots',uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const pets=['hunter','ranger'].includes(cls)?[{id:'youngWolf',level:1,xp:0}]:[];
- state={version:124,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,completedEvents:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:false,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
+ state={version:127,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,completedEvents:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:false,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
  ensureLivingWorld();ensureExplorationState();save();render();
 }
 function resetCharacter(){if(!confirm('Zresetować postać i wrócić do kreatora? Usunie to lokalny postęp tej gry.'))return;try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();for(const key of Object.keys(localStorage)){if(key===SAVE_KEY||key.startsWith('time4heroes_build_')||key.startsWith('georpg_build_'))localStorage.removeItem(key)}state=null;combat=null;dungeonRun=null;currentTab='map';destroyRealMap();render();}
@@ -633,10 +641,65 @@ function generateWorld(){
   ents.push({id:`m${seed}_${i}`,type:'monster',template:template.id,x,y,alive:true,respawn:0,elite:seeded(seed+i*111)>.91});
  }
  const poi=[
-  {id:'pasture',name:'Opuszczone Pastwisko',icon:'🐑',x:95,y:55},{id:'wolfDen',name:'Wilcza Jama',icon:'🐾',x:165,y:80},{id:'oldRuins',name:'Stare Ruiny',icon:'🏚️',x:180,y:-112},{id:'watchPoint',name:'Punkt Obserwacyjny',icon:'👁️',x:145,y:-75},{id:'goblinCamp',name:'Gobliński Obóz',icon:'⛺',x:230,y:-95},{id:'hunterTrail',name:'Ślady Myśliwego',icon:'👣',x:-150,y:130},{id:'woundedHunter',name:'Ranny Myśliwy',icon:'🧔',x:-205,y:165},{id:'hermit',name:'Chata Pustelnika',icon:'🛖',x:-255,y:-75},{id:'nightGuest',name:'Nocny Punkt Obserwacji',icon:'🌙',x:245,y:-135},{id:'northCamp',name:'Obóz Północny',icon:'🏕️',x:430,y:210},{id:'brokenBridge',name:'Zerwany Most',icon:'🌉',x:485,y:80},{id:'coldShrine',name:'Mroźne Sanktuarium',icon:'❄️',x:520,y:-100},
+  {id:'wolfDen',name:'Wilcza Jama',icon:'🐾',x:165,y:80},{id:'oldRuins',name:'Stare Ruiny',icon:'🏚️',x:180,y:-112},{id:'watchPoint',name:'Punkt Obserwacyjny',icon:'👁️',x:145,y:-75},{id:'goblinCamp',name:'Gobliński Obóz',icon:'⛺',x:230,y:-95},{id:'hunterTrail',name:'Ślady Myśliwego',icon:'👣',x:-150,y:130},{id:'woundedHunter',name:'Ranny Myśliwy',icon:'🧔',x:-205,y:165},{id:'hermit',name:'Chata Pustelnika',icon:'🛖',x:-255,y:-75},{id:'nightGuest',name:'Nocny Punkt Obserwacji',icon:'🌙',x:245,y:-135},{id:'northCamp',name:'Obóz Północny',icon:'🏕️',x:430,y:210},{id:'brokenBridge',name:'Zerwany Most',icon:'🌉',x:485,y:80},{id:'coldShrine',name:'Mroźne Sanktuarium',icon:'❄️',x:520,y:-100},
   ...REGION3_POIS
  ];
  return [...ents,...DUNGEONS.map(d=>({...d,type:'dungeon'})),...poi.map(p=>({...p,type:'poi'}))];
+}
+
+
+function questEntityById(id){return (state.world?.entities||[]).find(e=>e.id===id)}
+function removeQuestEntities(qid){if(!state?.world?.entities)return;state.world.entities=state.world.entities.filter(e=>e.questId!==qid)}
+function questSpawnPoint(baseX,baseY,distance=80,angle=0){return {x:baseX+Math.cos(angle)*distance,y:baseY+Math.sin(angle)*distance}}
+function spawnQuestEntity(def){
+ state.world.entities ||= [];const old=state.world.entities.find(e=>e.id===def.id);if(old)return old;const e={type:'quest',icon:'❗',questOnly:true,done:false,...def};state.world.entities.push(e);return e;
+}
+function syncQ2World(){
+ if(!state.quests.active.includes('q2')){removeQuestEntities('q2');return}
+ const cur=currentQuestStep('q2');if(!cur)return;
+ const existing=state.world.entities.filter(e=>e.questId==='q2');
+ for(const e of existing)e.done=e.questStage!==cur.index;
+ if(cur.index===0&&!questEntityById('q2_sheep')){
+  const p=state.player.position||{x:0,y:0},pt=questSpawnPoint(p.x||0,p.y||0,95,.45);
+  spawnQuestEntity({id:'q2_sheep',questId:'q2',questStage:0,name:'Zaginiona owca',icon:'🐑',visual:'sheep',x:pt.x,y:pt.y,desc:'Owca leży przy skraju ścieżki. Nie wygląda, jakby rozszarpały ją wilki.'});
+ }
+ if(cur.index===1&&!questEntityById('q2_tracks')){
+  const a=questEntityById('q2_sheep')||{x:state.player.position.x||0,y:state.player.position.y||0},pt=questSpawnPoint(a.x,a.y,58,-.25);
+  spawnQuestEntity({id:'q2_tracks',questId:'q2',questStage:1,name:'Wilcze tropy',icon:'🐾',visual:'tracks',x:pt.x,y:pt.y,desc:'Wilcze łapy mieszają się z głębszymi śladami butów. Trop prowadzi w stronę lasu.'});
+ }
+ if(cur.index===2&&!questEntityById('q2_wolves')){
+  const a=questEntityById('q2_tracks')||{x:state.player.position.x||0,y:state.player.position.y||0},pt=questSpawnPoint(a.x,a.y,82,.8);
+  spawnQuestEntity({id:'q2_wolves',questId:'q2',questStage:2,name:'Dwa ranne wilki',icon:'🐺',visual:'woundedWolves',x:pt.x,y:pt.y,desc:'Dwa ranne wilki leżą w trawie. Ich rany wyglądają podejrzanie.'});
+ }
+}
+function bountyWorldId(b,i){return `bounty_${b.id}_${state.adventure.day}_${i}`}
+function bountySpawnPoint(i,total){const p=state.player.position||{x:0,y:0},a=(i/Math.max(1,total))*Math.PI*2+.55,r=75+(i%3)*38;return questSpawnPoint(p.x||0,p.y||0,r,a)}
+function spawnBountyTargets(b){
+ if(!b||!b.accepted||b.claimed)return;state.world.entities ||= [];
+ const present=state.world.entities.filter(e=>e.bountyId===b.id&&!e.done&&(e.type!=='monster'||e.alive)).length;
+ const remaining=Math.max(0,b.need-(b.progress||0));if(present>=remaining)return;
+ const need=Math.max(0,remaining-present);
+ for(let i=0;i<need;i++){
+  const idx=present+i,pt=bountySpawnPoint(idx,Math.max(1,remaining));
+  if(b.type==='gather')state.world.entities.push({id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false});
+  else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:b.target,bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
+ }
+}
+function syncQuestWorld(){
+ if(!state?.world)return;state.world.entities=(state.world.entities||[]).filter(e=>e.id!=='pasture');syncQ2World();ensureAdventureState();for(const b of state.adventure.bounties||[])if(b.accepted&&!b.claimed)spawnBountyTargets(b);
+}
+function questEvidenceModal(title,icon,text,next){openModal(`<div class="quest-evidence-modal"><div class="quest-evidence-icon">${icon}</div><span class="eyebrow">ŚLAD QUESTOWY</span><h2>${title}</h2><p>${text}</p>${next?`<div class="evidence-next">🧭 ${next}</div>`:''}<button class="primary" data-close>Kontynuuj śledztwo</button></div>`);document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeModal)}
+function interactQuestEntity(e){
+ const cur=currentQuestStep(e.questId);if(!cur||cur.index!==e.questStage)return toast('Ten trop nie jest jeszcze aktywny.');
+ checkQuestProgress('questInteract',e.id);e.done=true;playSfx('discover');haptic([15,20,15]);syncQuestWorld();save();
+ if(e.id==='q2_sheep'){questEvidenceModal('Zaginiona owca','🐑','Owca nie została rozszarpana. Na ziemi widać wilczą sierść, ale także ślady ciężkich butów. Kilkadziesiąt metrów dalej trop staje się wyraźniejszy.','Na mapie pojawiły się wilcze tropy.');return}
+ if(e.id==='q2_tracks'){questEvidenceModal('Tropy nie pasują','🐾','Wilcze ślady są chaotyczne, jakby zwierzęta uciekały. Obok biegną dwa ludzkie tropy. W trawie widać świeżą krew.','Na mapie pojawiły się dwa ranne wilki.');return}
+ if(e.id==='q2_wolves'){openStoryScene('q2');return}
+ toast(`Zbadano: ${e.name}`);if(currentTab==='map')selectNav('map');
+}
+function interactResourceEntity(e){
+ if(e.done)return;const b=(state.adventure?.bounties||[]).find(x=>x.id===e.bountyId);if(!b?.accepted||b.claimed)return toast('To znalezisko nie jest już potrzebne.');
+ e.done=true;addItem(e.item,1);playSfx('discover');haptic(12);syncQuestWorld();save();toast(`Zebrano: ${itemDef(e.item).name} • ${Math.min(b.need,b.progress||0)}/${b.need}`);if(currentTab==='map')selectNav('map');
 }
 
 function monsterTemplate(e){return MONSTERS.find(m=>m.id===e.template)||MONSTERS[0]}
@@ -653,13 +716,23 @@ function gainXp(amount){
  if(levels){toast(`Awans! Poziom ${p.level}. +${levels*3} pkt statystyk i +${levels} pkt umiejętności.`);playSfx('level');haptic([25,35,25])}save();
 }
 function gainPetXp(amount){const p=petInstance();if(!p)return;p.xp+=Math.max(1,Math.floor(amount*.2));while(p.xp>=p.level*90){p.xp-=p.level*90;p.level++;toast(`${petDef(p.id).name} awansuje na poziom ${p.level}!`)}}
-function rewardQuest(q){gainXp(q.xp);state.player.gold+=q.gold;if(!state.quests.done.includes(q.id))state.quests.done.push(q.id);state.quests.active=state.quests.active.filter(id=>id!==q.id);if(q.id==='q13'&&!countItem('blackMedallion'))addItem('blackMedallion');if(q.id==='q25'){addItem('mistHood');addItem('wraithEssence',2)}if(q.id==='q30'){addItem('mistMail');addItem('bogAmber',2)}if(q.id==='q35'){addItem('mistBlade');addItem('mireCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='mireLynx')){state.player.pets.push({id:'mireLynx',level:1,xp:0});toast('Nowy chowaniec: Ryś Mgieł!')}if(state.story?.flags?.endingDestroy)state.adventure.reputation+=2;if(state.story?.flags?.endingSeal)state.adventure.reputation+=4}if(q.id==='q38'){addItem('ashHelm');addItem('charredIron',2)}if(q.id==='q45'){addItem('ashBlade');addItem('cinderCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='cinderHound')){state.player.pets.push({id:'cinderHound',level:1,xp:0});toast('Nowy chowaniec: Ogar Popiołu!')}}if(q.id==='q48'){addItem('stormHelm');addItem('frostCrystal',2)}if(q.id==='q55'){addItem('stormSpear');addItem('tempestCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='stormHawk')){state.player.pets.push({id:'stormHawk',level:1,xp:0});toast('Nowy chowaniec: Jastrząb Burzy!')}}toast(`Quest ukończony: ${q.name} • +${q.xp} XP • +${q.gold} 🪙`);save()}
+function rewardQuest(q){removeQuestEntities(q.id);gainXp(q.xp);state.player.gold+=q.gold;if(!state.quests.done.includes(q.id))state.quests.done.push(q.id);state.quests.active=state.quests.active.filter(id=>id!==q.id);if(q.id==='q13'&&!countItem('blackMedallion'))addItem('blackMedallion');if(q.id==='q25'){addItem('mistHood');addItem('wraithEssence',2)}if(q.id==='q30'){addItem('mistMail');addItem('bogAmber',2)}if(q.id==='q35'){addItem('mistBlade');addItem('mireCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='mireLynx')){state.player.pets.push({id:'mireLynx',level:1,xp:0});toast('Nowy chowaniec: Ryś Mgieł!')}if(state.story?.flags?.endingDestroy)state.adventure.reputation+=2;if(state.story?.flags?.endingSeal)state.adventure.reputation+=4}if(q.id==='q38'){addItem('ashHelm');addItem('charredIron',2)}if(q.id==='q45'){addItem('ashBlade');addItem('cinderCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='cinderHound')){state.player.pets.push({id:'cinderHound',level:1,xp:0});toast('Nowy chowaniec: Ogar Popiołu!')}}if(q.id==='q48'){addItem('stormHelm');addItem('frostCrystal',2)}if(q.id==='q55'){addItem('stormSpear');addItem('tempestCharm');if(['hunter','ranger'].includes(state.player.class)&&!state.player.pets.some(p=>p.id==='stormHawk')){state.player.pets.push({id:'stormHawk',level:1,xp:0});toast('Nowy chowaniec: Jastrząb Burzy!')}}toast(`Quest ukończony: ${q.name} • +${q.xp} XP • +${q.gold} 🪙`);save()}
 function checkQuestProgress(type,target,amount=1){
  progressBounties(type,target,amount);
- for(const qid of [...state.quests.active]){const q=QUESTS.find(x=>x.id===qid);if(!q)continue;const prog=state.quests.progress[qid] ||= q.steps.map(()=>0);q.steps.forEach((s,i)=>{if(s.type!==type)return;if(type==='kill'&&(s.target==='any'||s.target===target))prog[i]=Math.min(s.count||1,prog[i]+amount);else if(type==='move')prog[i]=Math.max(prog[i],amount);else if(type==='story'&&s.target===target)prog[i]=1;else if(s.target===target)prog[i]=1});if(q.steps.every((s,i)=>prog[i]>=(s.count||1)))rewardQuest(q)}save();
+ for(const qid of [...state.quests.active]){
+  const q=QUESTS.find(x=>x.id===qid);if(!q)continue;
+  const prog=state.quests.progress[qid] ||= q.steps.map(()=>0),i=currentQuestStepIndex(qid);if(i<0)continue;
+  const s=q.steps[i];if(s.type!==type)continue;
+  if(type==='kill'&&(s.target==='any'||s.target===target))prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
+  else if(type==='move')prog[i]=Math.max(prog[i]||0,amount);
+  else if(type==='story'&&s.target===target)prog[i]=1;
+  else if(s.target===target)prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
+  if(q.steps.every((step,idx)=>(prog[idx]||0)>=(step.count||1)))rewardQuest(q);
+ }
+ syncQuestWorld();save();
 }
 
-function render(){if(!state){renderCreate();return}ensureCoreState();if(!state.tutorial?.introSeen){renderPrologueScreen();return}renderShell()}
+function render(){if(!state){renderCreate();return}ensureCoreState();syncQuestWorld();if(!state.tutorial?.introSeen){renderPrologueScreen();return}renderShell()}
 function renderPrologueScreen(){
  destroyRealMap();
  const p=state.player,c=CLASSES[p.class];
@@ -671,7 +744,7 @@ function renderPrologueScreen(){
 
 function renderCreate(){
  let selected='knight';
- app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.6.1 • PIXEL MONSTERS</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • możesz testować także strzałkami bez GPS</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
+ app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 2.7 • QUEST WORLD</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • możesz testować także strzałkami bez GPS</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button></div></div>`;
  const desc=()=>{const c=CLASSES[selected];const target=document.querySelector('#classDesc');if(target)target.innerHTML=`<div class="preview-avatar">${classVisual(selected,'sprite-preview')}</div><div><b>${c.name}</b><div class="muted">STR ${c.base.str} • AGI ${c.base.agi} • INT ${c.base.int} • VIT ${c.base.vit}</div><div>${c.desc}</div>${['hunter','ranger'].includes(selected)?'<div class="gold">🐺 Startujesz z chowańcem: Młody Wilk.</div>':''}</div>`};
  desc();
  document.querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{selected=b.dataset.class;document.querySelectorAll('[data-class]').forEach(x=>x.classList.toggle('active',x===b));desc()});
@@ -759,8 +832,8 @@ function nextStoryQuestAvailable(){
  }
  return null;
 }
-function acceptStoryQuest(qid){const q=QUESTS.find(x=>x.id===qid);if(!q||state.quests.done.includes(qid)||state.quests.active.includes(qid))return;if(!canAcceptTask())return toast('Możesz mieć maksymalnie 4 aktywne questy. Samouczek nie liczy się do limitu.');state.quests.active.push(qid);state.quests.progress[qid] ||= q.steps.map(()=>0);save();toast(`Przyjęto: ${q.name}`);openBuilding('tavern','board')}
-function acceptBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||b.claimed||b.accepted)return;if(!canAcceptTask())return toast('Możesz mieć maksymalnie 4 aktywne questy. Samouczek nie liczy się do limitu.');b.accepted=true;b.progress=0;save();toast(`Przyjęto zlecenie: ${b.name}`);openBuilding('tavern','board')}
+function acceptStoryQuest(qid){const q=QUESTS.find(x=>x.id===qid);if(!q||state.quests.done.includes(qid)||state.quests.active.includes(qid))return;if(!canAcceptTask())return toast('Możesz mieć maksymalnie 4 aktywne questy. Samouczek nie liczy się do limitu.');state.quests.active.push(qid);state.quests.progress[qid] ||= q.steps.map(()=>0);syncQuestWorld();save();toast(`Przyjęto: ${q.name} • cel pojawił się na mapie`);openBuilding('tavern','board')}
+function acceptBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||b.claimed||b.accepted)return;if(!canAcceptTask())return toast('Możesz mieć maksymalnie 4 aktywne questy. Samouczek nie liczy się do limitu.');b.accepted=true;b.progress=0;spawnBountyTargets(b);save();toast(`Przyjęto zlecenie: ${b.name} • cele pojawiły się na mapie`);openBuilding('tavern','board')}
 function tavernAnecdote(){const known=Object.keys(state.player.bestiary||{}).filter(id=>state.player.bestiary[id]>0);const id=known.length?pick(known):pick(['wolf','goblin','skeleton','spider','ghost']);const m=MONSTERS.find(x=>x.id===id)||MONSTERS[0];const lines={wolf:'„Wilk nigdy nie patrzy tylko na ciebie. Zawsze patrzy też, którędy będziesz uciekał.”',goblin:'„Goblin z nożem to problem. Goblin, którego nie widzisz, to większy problem.”',skeleton:'„Kości nie mają płuc. Nie próbuj ich zmęczyć — rozbij je.”',spider:'„Pająk przegrał ze mną raz. Drugi siedział na suficie. Dlatego patrzę też w górę.”',ghost:'„Na zjawy stal działa gorzej niż odwaga. A jeszcze lepiej działa arkanum.”'};return `${m.icon} ${m.name}: ${lines[id]||'„Każdy potwór ma nawyk. Przeżyjesz, jeśli zauważysz go przed pierwszym ciosem.”'}`}
 function buyTavernStamina(amount,cost,label){const p=state.player;p.maxStamina ??=100;p.stamina ??=p.maxStamina;if(p.stamina>=p.maxStamina)return toast('Masz pełną staminę.');if(p.gold<cost)return toast(`Potrzebujesz ${cost} 🪙.`);p.gold-=cost;p.stamina=Math.min(p.maxStamina,p.stamina+amount);save();openBuilding('tavern','keeper');toast(`${label}: +${amount} staminy • -${cost} 🪙`)}
 function restByFire(){const cost=Math.min(70,15+state.player.level*3);if(state.player.gold<cost)return toast(`Odpoczynek przy kominku kosztuje ${cost} 🪙.`);state.player.gold-=cost;state.player.hp=state.player.maxHp;state.player.mana=state.player.maxMana;state.player.maxStamina ??=100;state.player.stamina=Math.min(state.player.maxStamina,(state.player.stamina??state.player.maxStamina)+25);save();openBuilding('tavern','fireplace');toast(`Odpocząłeś przy kominku • pełne HP i mana • +25 staminy • -${cost} 🪙`)}
@@ -930,7 +1003,7 @@ function mapAmbientFxHTML(){
  const particles=Array.from({length:amount},(_,i)=>`<i style="--i:${i};--x:${(i*37)%97}%;--delay:${((i*17)%23)/10}s"></i>`).join('');
  return `<div class="map-ambient-fx weather-${weatherClass} phase-${phaseClass} biome-${bio.id}" aria-hidden="true">${particles}</div>`;
 }
-function nearbyInteractables(limit=3){return (state.world.entities||[]).filter(e=>(e.type!=='monster'||e.alive)&&(e.type!=='event'||!e.done)).map(e=>({e,d:dist(e,state.player.position)})).filter(x=>x.d<=60).sort((a,b)=>a.d-b.d).slice(0,limit)}
+function nearbyInteractables(limit=3){return (state.world.entities||[]).filter(questWorldEntityVisible).filter(e=>(e.type!=='monster'||e.alive)&&(e.type!=='event'||!e.done)).map(e=>({e,d:dist(e,state.player.position)})).filter(x=>x.d<=60).sort((a,b)=>a.d-b.d).slice(0,limit)}
 function nearbyTrayHTML(){const near=nearbyInteractables();return `<div class="nearby-action-tray ${near.length?'has-actions':''}" data-nearby-tray>${near.length?`<span class="nearby-tray-title">W ZASIĘGU</span>${near.map(({e,d})=>{const name=e.type==='monster'?monsterTemplate(e).name:e.name;const icon=e.type==='monster'?'⚔️':e.icon||'📍';return `<button data-nearby-action="${e.id}"><span>${icon}</span><b>${name}</b><small>${Math.round(d)} m</small></button>`}).join('')}`:'<span class="nearby-tray-empty">Podejdź na 60 m do celu</span>'}</div>`}
 function bindNearbyTray(root=document){root.querySelectorAll('[data-nearby-action]').forEach(b=>b.onclick=()=>interactEntity(state.world.entities.find(e=>e.id===b.dataset.nearbyAction)))}
 function refreshNearbyTray(){const el=document.querySelector('[data-nearby-tray]');if(!el)return;const temp=document.createElement('div');temp.innerHTML=nearbyTrayHTML();const next=temp.firstElementChild;el.replaceWith(next);bindNearbyTray(document)}
@@ -951,6 +1024,7 @@ function rebuildGameLayers(){
  rebuildRpgDecorations();
  const bounds=realMap.getBounds().pad(.18);
  const candidates=state.world.entities
+  .filter(questWorldEntityVisible)
   .filter(e=>e.type!=='monster'||e.alive)
   .filter(e=>e.type!=='event'||!e.done)
   .filter(e=>e.type==='monster'?filters.monster:e.type==='dungeon'?filters.dungeon:e.type==='event'?filters.event:filters.poi)
@@ -958,7 +1032,7 @@ function rebuildGameLayers(){
   .filter(focusedEntityVisible)
   .map(e=>({e,ll:worldToLatLng(e.x,e.y),d:dist(e,state.player.position)}))
   .filter(x=>x.ll&&bounds.contains(x.ll))
-  .map(x=>{const e=x.e;let priority=6;if(e.type==='secret')priority=0;else if(targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template)))priority=1;else if(e.type==='event')priority=2;else if(e.type==='dungeon')priority=3;else if(e.type==='monster'&&e.elite)priority=4;else if(e.type==='poi')priority=5;return {...x,priority}})
+  .map(x=>{const e=x.e;let priority=6;if(e.type==='secret')priority=0;else if(e.type==='quest'||e.type==='resource')priority=1;else if(targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template)))priority=1;else if(e.type==='event')priority=2;else if(e.type==='dungeon')priority=3;else if(e.type==='monster'&&e.elite)priority=4;else if(e.type==='poi')priority=5;return {...x,priority}})
   .sort((a,b)=>a.priority-b.priority||a.d-b.d);
  const monsterLimit=state.settings.mapMode==='focused'?12:28,otherLimit=state.settings.mapMode==='focused'?18:36;
  let monsters=0,others=0;
@@ -973,6 +1047,8 @@ function rebuildGameLayers(){
   if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${monsterVisual(m.id,'mmo-sprite')}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
   else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${e.icon}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='secret'){const found=state.world.exploration.secretsFound.includes(e.id);inner=`<div class="mmo-marker secret-marker ${found?'found':''}">${found?e.icon:'❔'}</div>`;label=found?e.name:'Sekret w pobliżu'}
+  else if(e.type==='quest'){const visual=e.visual==='woundedWolves'?`<span class="quest-wolves">${monsterVisual('wolf','quest-wolf-a')}${monsterVisual('wolf','quest-wolf-b')}</span>`:`<span class="quest-world-icon">${e.icon||'❗'}</span>`;inner=`<div class="mmo-marker quest-world-marker interaction-ready">${visual}<span class="quest-pin">!</span></div>`;label=e.name}
+  else if(e.type==='resource'){inner=`<div class="mmo-marker resource-marker ${d<=60?'interaction-ready':''}"><span>🌿</span>${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='dungeon'){const known=state.player.dungeons.includes(e.id);inner=`<div class="mmo-marker dungeon-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznany loch'}
   else {const known=state.player.discovered.includes(e.id);inner=`<div class="mmo-marker poi-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznane miejsce'}
   const marker=L.marker(ll,{pane:'gamePane',icon:makeLeafletIcon(inner,'game-map-icon',[52,52]),title:label}).addTo(realMap);
@@ -1059,7 +1135,7 @@ function questGuideTarget(q=activeGuideQuest()){
  if(stepIndex<0)return null;
  const step=q.steps[stepIndex];
  let entity=null;
- if(step.type==='discover'||step.type==='dungeon')entity=state.world.entities.find(e=>e.id===step.target)||null;
+ if(step.type==='discover'||step.type==='dungeon'||step.type==='questInteract')entity=state.world.entities.find(e=>e.id===step.target&&questWorldEntityVisible(e))||null;
  else if(step.type==='kill'){
   const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&(step.target==='any'||e.template===step.target));
   entity=pool.sort((a,b)=>dist(a,state.player.position)-dist(b,state.player.position))[0]||null;
@@ -1174,6 +1250,8 @@ function interactEntity(e){
  if(state.player.position.virtualTravel&&e.type!=='dungeon')return toast('Tryb podróży domowej nie pozwala na interakcje GPS. Włącz GPS, aby wrócić do świata.');
  if(d>R)return toast(`Podejdź na ${R} m. Teraz: ${Math.round(d)} m.`);
  if(e.type==='secret'){discoverSecret(e);return}
+ if(e.type==='quest'){interactQuestEntity(e);return}
+ if(e.type==='resource'){interactResourceEntity(e);return}
  if(e.type==='event'){resolveWorldEvent(e);return}
  if(e.type==='monster'){startCombat(e);return}
  if(e.type==='poi'){if(e.id==='nightGuest'&&climate().phase!=='Noc')return toast('To miejsce ma znaczenie nocą. Włącz symulację nocy w Menu albo wróć później.');const fresh=!state.player.discovered.includes(e.id);if(fresh){state.player.discovered.push(e.id);playSfx('discover');haptic(20)}checkQuestProgress('discover',e.id);save();toast(fresh?`Odkryto: ${e.name}`:e.name);selectNav('map');return}
@@ -1293,15 +1371,19 @@ function questDetailHTML(q){
  const active=state.quests.active.includes(q.id),done=state.quests.done.includes(q.id),pct=questProgressPercent(q),scene=storyScene(q.id),chosen=storyChoiceFor(q.id);
  return `<article class="quest-detail-card"><div class="quest-detail-head"><div><span>${q.chapter||'Przygoda'}</span><h3>${q.name}</h3><small>Poziom ${q.level}</small></div><div class="quest-seal">${done?'✓':'📜'}</div></div><p class="quest-description">${q.desc||''}</p><div class="quest-detail-progress"><b>Postęp</b><span>${pct}%</span><div><i style="width:${pct}%"></i></div></div><div class="quest-step-list">${(q.steps||[]).map((s,i)=>{const st=questStepState(q,s,i);return `<div class="quest-step ${st.done?'done':''}"><span>${st.done?'✓':'○'}</span><div><b>${s.label||s.desc||'Cel zadania'}</b><small>${st.done?'Wykonano':`${Math.floor(st.cur)}/${st.target}`}</small></div></div>`}).join('')}</div><div class="quest-reward-box"><span>🎁 Nagroda</span><b>${q.xp||0} XP • ${q.gold||0} 🪙</b></div>${scene&&active?`<button class="primary quest-story-action" data-story-scene="${q.id}" ${storyCanChoose(q.id)||chosen?'':'disabled'}>${chosen?'📖 Zobacz swój wybór':'💬 Rozegraj scenę fabularną'}</button>`:''}${done?'<div class="quest-complete-stamp">UKOŃCZONO</div>':''}</article>`;
 }
+function bountyTargetName(b){return b.type==='gather'?itemDef(b.target).name:(MONSTERS.find(m=>m.id===b.target)?.name||b.target)}
+function bountyVerb(b){return b.type==='gather'?'Zbierz':'Pokonaj'}
+function bountyObjective(b){return `${bountyVerb(b)} ${b.need}× ${bountyTargetName(b)}`}
 function renderQuests(el){
  updateStoryConditions();ensureStoryState();ensureAdventureState();
  const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean),done=state.quests.done.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean).slice().reverse(),contracts=(state.adventure.bounties||[]).filter(b=>b.accepted&&!b.claimed);
  const selectable=[...active,...done];state.ui.questFocus ||= selectable[0]?.id||null;if(state.ui.questFocus&&!selectable.some(q=>q.id===state.ui.questFocus))state.ui.questFocus=selectable[0]?.id||null;
  const focus=QUESTS.find(q=>q.id===state.ui.questFocus);
- el.innerHTML=`<div class="quest-journal-23"><section class="quest-journal-side"><div class="journal-summary"><div><b>${active.length}</b><span>Fabularne</span></div><div><b>${contracts.length}</b><span>Kontrakty</span></div><div><b>${done.length}</b><span>Ukończone</span></div></div>${tutorialJournalHTML()}<div class="quest-section-label">AKTYWNE</div><div class="quest-list">${active.map(questHTML).join('')||'<div class="journal-empty">Brak aktywnych zadań fabularnych.</div>'}</div>${contracts.length?`<div class="quest-section-label">KONTRAKTY</div><div class="bounty-list-23">${contracts.map(b=>`<div class="bounty-card-23"><div><b>${b.icon} ${b.name}</b><small>${MONSTERS.find(m=>m.id===b.target)?.name||b.target} • ${b.progress||0}/${b.need}</small></div><div class="quest-mini-bar"><i style="width:${Math.min(100,(b.progress||0)/b.need*100)}%"></i></div><div class="bounty-reward">${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</div>${(b.progress||0)>=b.need?`<button class="secondary" data-claim-bounty="${b.id}">Odbierz</button>`:''}</div>`).join('')}</div>`:''}${done.length?`<details class="completed-quests"><summary>Ukończone (${done.length})</summary><div class="quest-list">${done.slice(0,12).map(questHTML).join('')}</div></details>`:''}</section><section class="quest-journal-main">${questDetailHTML(focus)}${storyProfileHTML()}</section></div><div class="quest-limit-note">Samouczek nie zajmuje miejsca. Maksymalnie 4 aktywne zadania i kontrakty.</div>`;
+ el.innerHTML=`<div class="quest-journal-23"><section class="quest-journal-side"><div class="journal-summary"><div><b>${active.length}</b><span>Fabularne</span></div><div><b>${contracts.length}</b><span>Kontrakty</span></div><div><b>${done.length}</b><span>Ukończone</span></div></div>${tutorialJournalHTML()}<div class="quest-section-label">AKTYWNE</div><div class="quest-list">${active.map(questHTML).join('')||'<div class="journal-empty">Brak aktywnych zadań fabularnych.</div>'}</div>${contracts.length?`<div class="quest-section-label">KONTRAKTY</div><div class="bounty-list-23">${contracts.map(b=>`<div class="bounty-card-23"><div><b>${b.icon} ${b.name}</b><small>${bountyTargetName(b)} • ${b.progress||0}/${b.need}</small></div><div class="quest-mini-bar"><i style="width:${Math.min(100,(b.progress||0)/b.need*100)}%"></i></div><div class="bounty-reward">${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</div>${(b.progress||0)>=b.need?`<button class="secondary" data-claim-bounty="${b.id}">Odbierz</button>`:`<button class="ghost" data-show-bounty="${b.id}">Pokaż cel na mapie</button>`}</div>`).join('')}</div>`:''}${done.length?`<details class="completed-quests"><summary>Ukończone (${done.length})</summary><div class="quest-list">${done.slice(0,12).map(questHTML).join('')}</div></details>`:''}</section><section class="quest-journal-main">${questDetailHTML(focus)}${storyProfileHTML()}</section></div><div class="quest-limit-note">Samouczek nie zajmuje miejsca. Maksymalnie 4 aktywne zadania i kontrakty.</div>`;
  el.querySelectorAll('[data-focus-quest]').forEach(b=>b.onclick=()=>{state.ui.questFocus=b.dataset.focusQuest;save();renderQuests(el)});
  el.querySelectorAll('[data-story-scene]').forEach(b=>b.onclick=()=>openStoryScene(b.dataset.storyScene));
- el.querySelectorAll('[data-claim-bounty]').forEach(b=>b.onclick=()=>claimBounty(b.dataset.claimBounty));bindTutorialControls(el)
+ el.querySelectorAll('[data-claim-bounty]').forEach(b=>b.onclick=()=>claimBounty(b.dataset.claimBounty));
+ el.querySelectorAll('[data-show-bounty]').forEach(btn=>btn.onclick=()=>{const b=state.adventure.bounties.find(x=>x.id===btn.dataset.showBounty);if(!b)return;spawnBountyTargets(b);save();selectNav('map');toast(`${bountyObjective(b)} • cele są zaznaczone na mapie`) });bindTutorialControls(el)
 }
 function renderEvents(el){
  ensureLivingWorld();const stats=explorationStats(),events=(state.world.entities||[]).filter(e=>e.type==='event'),completed=state.world.living.completedEvents||[];
@@ -1374,7 +1456,7 @@ function buildingSceneHTML(id,view='scene'){
    ${hotspots}${sheet}
  </div>`;
 }
-function tavernBoardHTML(){ensureAdventureState();const story=nextStoryQuestAvailable(),bounties=state.adventure.bounties||[],active=activeTaskCount();return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Kartki przypięte do desek</h2></div><b>${active}/4 aktywne</b></div><div class="quest-board">${story?`<article class="quest-paper story-paper"><i></i><span>GŁÓWNY SZLAK • lvl ${story.level}</span><h3>${story.name}</h3><p>${story.desc}</p><strong>${story.xp} XP • ${story.gold} 🪙</strong><button class="secondary" data-accept-story="${story.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button></article>`:`<article class="quest-paper"><i></i><h3>Brak nowej kartki fabularnej</h3><p>Dokończ obecne zadanie albo zdobądź wymagany poziom.</p></article>`}${bounties.map(b=>`<article class="quest-paper contract-paper ${b.accepted?'accepted-paper':''}"><i></i><span>KONTRAKT DNIA</span><h3>${b.icon} ${b.name}</h3><p>Pokonaj ${b.need}× ${MONSTERS.find(m=>m.id===b.target)?.name||b.target}.</p><strong>${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</strong>${b.claimed?'<button disabled>Wykonano</button>':b.accepted?`<button disabled>Przyjęte • ${b.progress||0}/${b.need}</button>`:`<button class="secondary" data-accept-bounty="${b.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button>`}</article>`).join('')}</div><div class="quest-board-foot">Samouczek jest osobny i nie zajmuje żadnego z 4 miejsc.</div></div>`}
+function tavernBoardHTML(){ensureAdventureState();const story=nextStoryQuestAvailable(),bounties=state.adventure.bounties||[],active=activeTaskCount();return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Kartki przypięte do desek</h2></div><b>${active}/4 aktywne</b></div><div class="quest-board">${story?`<article class="quest-paper story-paper"><i></i><span>GŁÓWNY SZLAK • lvl ${story.level}</span><h3>${story.name}</h3><p>${story.desc}</p><strong>${story.xp} XP • ${story.gold} 🪙</strong><button class="secondary" data-accept-story="${story.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button></article>`:`<article class="quest-paper"><i></i><h3>Brak nowej kartki fabularnej</h3><p>Dokończ obecne zadanie albo zdobądź wymagany poziom.</p></article>`}${bounties.map(b=>`<article class="quest-paper contract-paper ${b.accepted?'accepted-paper':''}"><i></i><span>KONTRAKT DNIA</span><h3>${b.icon} ${b.name}</h3><p>${bountyObjective(b)}. Cel zostanie wygenerowany na mapie po przyjęciu.</p><strong>${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</strong>${b.claimed?'<button disabled>Wykonano</button>':b.accepted?`<button disabled>Przyjęte • ${b.progress||0}/${b.need}</button>`:`<button class="secondary" data-accept-bounty="${b.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':'Limit 4/4'}</button>`}</article>`).join('')}</div><div class="quest-board-foot">Samouczek jest osobny i nie zajmuje żadnego z 4 miejsc.</div></div>`}
 function tavernKeeperHTML(){const p=state.player,st=p.stamina??100,max=p.maxStamina??100;return `<div class="building-panel"><button class="ghost panel-back" data-building-home>← Wróć do sali</button>${npcCard('Dorian','Karczmarz • były wojownik','knight','Dorian walczył kiedyś na północy. Zna nawyki potworów, a dziś pilnuje, żeby podróżni wracali na szlak w jednym kawałku.')}<div class="dialogue-bubble">${tavernAnecdote()}</div><div class="stamina-card"><b>⚡ Stamina ${st}/${max}</b><div class="mini-progress"><span style="width:${st/max*100}%"></span></div><small>Napitek i jedzenie przywracają siły przed dalszą drogą.</small></div><div class="tavern-menu"><button class="secondary" data-anecdote>🗣️ Kolejna anegdota</button><button class="secondary" data-stamina="10" data-cost="10" data-label="Piwo">🍺 Piwo • +10 staminy • 10 🪙</button><button class="secondary" data-stamina="25" data-cost="25" data-label="Solidny posiłek">🍲 Posiłek • +25 • 25 🪙</button><button class="secondary" data-stamina="50" data-cost="50" data-label="Karczemna uczta">🍗 Uczta • +50 • 50 🪙</button></div></div>`}
 function tavernFireplaceHTML(){const cost=Math.min(70,15+state.player.level*3);return `<div class="building-panel hearth-panel"><button class="ghost panel-back" data-building-home>← Wróć do sali</button><div class="big-hearth">🔥</div><h2>Kominek</h2><p>Siadasz przy ogniu. Ciepło rozluźnia mięśnie, a przez kilka minut świat może poczekać.</p><div class="rest-summary"><span>❤️ Pełne HP</span><span>🔷 Pełna mana</span><span>⚡ +25 staminy</span></div><button class="primary" data-fire-rest>Odpocznij • ${cost} 🪙</button></div>`}
 function buildingServiceHTML(id){if(id==='shop')return `<button class="ghost panel-back" data-building-home>← Wróć do sklepu</button>${shopHTML()}`;if(id==='smith')return `<button class="ghost panel-back" data-building-home>← Wróć do kuźni</button>${smithHTML()}`;if(id==='alchemist')return `<button class="ghost panel-back" data-building-home>← Wróć do pracowni</button>${alchemistHTML()}`;if(id==='auction')return `<button class="ghost panel-back" data-building-home>← Wróć do domu aukcyjnego</button>${auctionHTML()}`;if(id==='guild')return `<button class="ghost panel-back" data-building-home>← Wróć do sali gildii</button>${guildHTML()}`;return ''}

@@ -74,7 +74,7 @@ export const ITEMS = {
  manaPotion:{id:'manaPotion',name:'Mikstura many',icon:'🔷',type:'consumable',rarity:'common',value:14,mana:50},
  antidote:{id:'antidote',name:'Odtrutka',icon:'🍶',type:'consumable',rarity:'common',value:10},
  wolfPelt:{id:'wolfPelt',name:'Wilcza skóra',icon:'🧶',type:'material',rarity:'common',value:8},
- herb:{id:'herb',name:'Gorzki liść',icon:'🌿',type:'material',rarity:'common',value:4},
+ herb:{id:'herb',name:'Jaskółcze ziele',icon:'🌿',type:'material',rarity:'common',value:4},
  moonHerb:{id:'moonHerb',name:'Księżycowe ziele',icon:'☘️',type:'material',rarity:'rare',value:10},
  bone:{id:'bone',name:'Kość nieumarłego',icon:'🦴',type:'material',rarity:'common',value:6},
  scrap:{id:'scrap',name:'Żelazny złom',icon:'🔩',type:'material',rarity:'common',value:6},
@@ -197,7 +197,7 @@ export const DUNGEONS = [
 
 export const QUESTS = [
  {id:'q1',chapter:'Cienie nad Doliną',name:'Pierwszy krok',level:1,desc:'Karczmarz prosi, abyś sprawdził drogę za wioską.',steps:[{type:'move',target:60,label:'Oddal się 60 m od wioski'},{type:'kill',target:'any',count:2,label:'Pokonaj 2 stworzenia'}],xp:150,gold:25},
- {id:'q2',chapter:'Cienie nad Doliną',name:'Zaginiona owca',level:2,desc:'Z pastwiska zniknęła owca. Ślady wyglądają na wilcze, ale coś się nie zgadza.',steps:[{type:'discover',target:'pasture',label:'Zbadaj pastwisko i ślady'},{type:'story',target:'q2',label:'Zdecyduj, jak potraktować trop wilków'}],xp:260,gold:35},
+ {id:'q2',chapter:'Cienie nad Doliną',name:'Zaginiona owca',level:2,desc:'Z pastwiska zniknęła owca. Każdy odnaleziony trop odsłania dopiero następny etap śledztwa.',steps:[{type:'questInteract',target:'q2_sheep',label:'Odnajdź zaginioną owcę'},{type:'questInteract',target:'q2_tracks',label:'Zbadaj wilcze tropy'},{type:'questInteract',target:'q2_wolves',label:'Odnajdź dwa ranne wilki'},{type:'story',target:'q2',label:'Zdecyduj, co zrobić z rannymi wilkami'}],xp:320,gold:45},
  {id:'q3',chapter:'Cienie nad Doliną',name:'Wilcza jama',level:3,desc:'Ranne wilki nie wyglądają na winnych. Przy jamie znajdujesz ślady butów i skrawki worków.',steps:[{type:'discover',target:'wolfDen',label:'Odnajdź wilczą jamę'},{type:'story',target:'q3',label:'Połącz znalezione ślady'}],xp:420,gold:55},
  {id:'q4',chapter:'Cienie nad Doliną',name:'Mapa',level:4,desc:'Fragment mapy wskazuje stare ruiny.',steps:[{type:'discover',target:'oldRuins',label:'Odkryj Stare Ruiny'}],xp:500,gold:70},
  {id:'q5',chapter:'Cienie nad Doliną',name:'Nie jesteśmy sami',level:4,desc:'Obserwuj ruiny i ustal, dokąd gobliny prowadzą łupy.',steps:[{type:'discover',target:'watchPoint',label:'Dotrzyj do punktu obserwacyjnego'}],xp:560,gold:75},

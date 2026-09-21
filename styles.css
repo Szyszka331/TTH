@@ -851,3 +851,12 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 /* 2.6.1 — user pixel-art monster sprites */
 .pixel-sprite{image-rendering:pixelated;image-rendering:crisp-edges;}
 .sprite-entity,.sprite-battle,.sprite-bestiary,.sprite-inline{object-fit:contain;}
+
+
+/* =======================================================================
+   Time4Heroes 2.7 — QUEST WORLD SYSTEM
+   ======================================================================= */
+.quest-world-marker{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#4b3a19 0,#1b1209 66%,#070504 100%);border:2px solid #f1c75b;box-shadow:0 0 0 5px #f1c75b22,0 8px 18px #000b;position:relative;animation:questWorldPulse 1.8s ease-in-out infinite}.quest-world-icon{font-size:30px;filter:drop-shadow(0 2px 2px #000)}.quest-pin{position:absolute;right:-5px;top:-7px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#c18d2c;color:#160d06;border:2px solid #f5d67b;font-weight:900}.quest-wolves{position:relative;width:50px;height:46px;display:block}.quest-wolves img{position:absolute;width:38px;height:38px;object-fit:contain;image-rendering:pixelated}.quest-wolf-a{left:-1px;bottom:1px;transform:rotate(-7deg)}.quest-wolf-b{right:-1px;top:0;transform:rotate(7deg)}
+.resource-marker{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#315f2d,#14230f 70%);border:2px solid #8fbd64;box-shadow:0 7px 16px #0009;position:relative}.resource-marker>span:first-child{font-size:28px}.quest-evidence-modal{text-align:center;max-width:560px;margin:auto}.quest-evidence-icon{font-size:64px;filter:drop-shadow(0 7px 10px #0008);margin-bottom:8px}.quest-evidence-modal h2{margin:5px 0 12px;color:#e9c978}.quest-evidence-modal p{font-size:17px;line-height:1.6;color:#ddd0b6}.evidence-next{margin:16px 0;padding:12px;border:1px solid #7c6034;border-radius:12px;background:#1b130d;color:#e8d5ac;font-weight:700}
+@keyframes questWorldPulse{50%{box-shadow:0 0 0 10px #f1c75b12,0 8px 18px #000b;transform:translateY(-2px)}}
+@media(max-width:700px){.quest-world-marker{width:52px;height:52px}.quest-world-icon{font-size:27px}.quest-evidence-modal p{font-size:16px}.evidence-next{font-size:14px}}
