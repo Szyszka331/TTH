@@ -192,6 +192,19 @@ export const ITEMS = {
  stormCrown:{id:'stormCrown',name:'Korona Burz',icon:'👑',type:'gear',slot:'helmet',rarity:'legendary',reqLevel:48,value:680,armor:10,crit:8,power:7},
  cryptHeart:{id:'cryptHeart',name:'Serce Kurhanu',icon:'🫀',type:'trinket',slot:'amulet',rarity:'legendary',reqLevel:30,value:620,armor:5,crit:6,power:7},
 
+ // UNIKATOWE ŁUPY BOSSÓW LOCHÓW 3.1
+ ravenClaw:{id:'ravenClaw',name:'Kruczy Pazur',icon:'🪶',type:'trinket',slot:'ring',rarity:'rare',reqLevel:1,value:90,power:1,crit:2},
+ cryptWardenSignet:{id:'cryptWardenSignet',name:'Sygnet Strażnika Krypty',icon:'💍',type:'trinket',slot:'ring',rarity:'epic',reqLevel:7,value:190,armor:4,power:2,crit:2},
+ towerEye:{id:'towerEye',name:'Oko Zapomnianej Wieży',icon:'👁️',type:'trinket',slot:'amulet',rarity:'epic',reqLevel:18,value:285,power:5,crit:4},
+ wyvernScaleCharm:{id:'wyvernScaleCharm',name:'Talizman Łuski Wywerny',icon:'🐉',type:'trinket',slot:'amulet',rarity:'heroic',reqLevel:45,value:650,armor:6,power:6,crit:6},
+ drownedBell:{id:'drownedBell',name:'Dzwon Zatopionej Kaplicy',icon:'🔔',type:'trinket',slot:'amulet',rarity:'heroic',reqLevel:23,value:390,armor:4,power:5,crit:3},
+ witchKnot:{id:'witchKnot',name:'Węzeł Wiedźmiego Kopca',icon:'🪢',type:'trinket',slot:'ring',rarity:'heroic',reqLevel:27,value:430,power:5,crit:6},
+ blackrootHeart:{id:'blackrootHeart',name:'Serce Czarnego Korzenia',icon:'🖤',type:'trinket',slot:'amulet',rarity:'legendary',reqLevel:30,value:590,armor:6,power:7,crit:5},
+ slagCoreCharm:{id:'slagCoreCharm',name:'Rdzeń Żużlowego Golema',icon:'🔥',type:'trinket',slot:'amulet',rarity:'heroic',reqLevel:33,value:470,armor:5,power:7,crit:3},
+ cinderMatriarchSeal:{id:'cinderMatriarchSeal',name:'Pieczęć Matki Żaru',icon:'🔆',type:'trinket',slot:'ring',rarity:'legendary',reqLevel:40,value:680,power:9,crit:6},
+ frostboundSignet:{id:'frostboundSignet',name:'Lodowy Sygnet Strażnika',icon:'❄️',type:'trinket',slot:'ring',rarity:'heroic',reqLevel:43,value:590,armor:7,power:6,crit:5},
+ tempestEye:{id:'tempestEye',name:'Oko Nawałnicy',icon:'🌩️',type:'trinket',slot:'amulet',rarity:'legendary',reqLevel:50,value:840,armor:6,power:11,crit:8},
+
  // MIKSTURY / MATERIAŁY
  potion:{id:'potion',name:'Mikstura życia',icon:'🧪',type:'consumable',rarity:'common',value:12,heal:55},
  strongPotion:{id:'strongPotion',name:'Większa mikstura życia',icon:'❤️‍🔥',type:'consumable',rarity:'rare',value:34,heal:130},
