@@ -978,3 +978,11 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .real-map-rpg .leaflet-biome-pane{mix-blend-mode:multiply}
 @media(max-width:900px){.biome-map-key{left:8px;right:62px;bottom:auto;top:52px;max-width:none;gap:4px}.biome-map-key span{padding:4px 6px;font-size:8px}.biome-map-key i{width:10px;height:10px}}
 @media(max-width:620px){.biome-map-key{top:50px;right:52px}.biome-map-key span{padding:3px 5px;font-size:7px}.biome-map-key span:not(.current){opacity:.78}}
+
+
+/* Build 3.0.6 — sceny fabularne bez ręcznego klikania + czytelna wymiana ciosów */
+.story-consequence-hint{display:block;margin-top:7px;padding:6px 8px;border-radius:8px;border:1px solid #8b5a32;background:#2a170ecc;color:#efc481;font-size:10px;font-style:normal;line-height:1.35}
+.quest-auto-scene-note{margin-top:12px;padding:10px 12px;border:1px solid #5c4931;border-radius:10px;background:#15100bdd;color:#d9c49f;font-size:12px}
+.float-damage{animation-duration:1s!important}
+.battle-screen .battle-skill:disabled{pointer-events:none}
+.battle-screen:has(.turn-indicator){--turn-glow:#d0ad62}

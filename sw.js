@@ -1,6 +1,6 @@
-const CACHE='time4heroes-3050';
+const CACHE='time4heroes-3060';
 const CORE=[
-  './','./index.html','./styles.css?v=3050','./app.js?v=3050','./data.js?v=3050','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3060','./app.js?v=3060','./data.js?v=3060','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/smith-scene-desktop.jpg','./assets/smith-scene-mobile.jpg','./assets/alchemist-scene-desktop.jpg','./assets/alchemist-scene-mobile.jpg','./assets/shop-scene-desktop.jpg','./assets/shop-scene-mobile.jpg','./assets/guild-scene-desktop.jpg','./assets/guild-scene-mobile.jpg','./assets/auction-scene-desktop.jpg','./assets/auction-scene-mobile.jpg','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
 ];
 

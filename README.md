@@ -32,3 +32,11 @@ Cache: 3030.
 - sąsiednie komórki tego samego biomu tworzą jednolitą kolorową powierzchnię
 - linia graniczna pojawia się tylko przy realnej zmianie biomu gry
 - dodano legendę kolorów i wyróżnienie aktualnego biomu
+
+
+## Build 3.0.6 — Quest Consequences & Turn Combat
+- Sceny fabularne uruchamiają się automatycznie po właściwym działaniu na mapie.
+- Dziennik nie wymaga już klikania „Rozegraj scenę”; służy do podglądu postępu i wcześniejszych wyborów.
+- Ryzykowne decyzje mogą natychmiast uruchomić walkę (m.in. podejście do obozu goblinów).
+- Walka ma wyraźny rytm: akcja gracza → ~1 s prezentacji obrażeń → odpowiedź wroga → ~1 s prezentacji obrażeń → kolejna tura.
+- Przy porażce podczas fabularnej zasadzki wybór można ponowić bez blokowania questa.
