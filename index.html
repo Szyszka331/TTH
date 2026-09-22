@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.1.0 — Living World</title>
+  <title>Time4Heroes — Build 3.1.1 — Shop Visual Overhaul</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=3100" />
+  <link rel="stylesheet" href="styles.css?v=3110" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 3.1.0: żywy świat, wybory w wydarzeniach i aktywne efekty biomów.
+    // Build 3.1.1: przebudowane wizualnie sklepy, crafting i sala gildii.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=3100"></script>
+  <script type="module" src="app.js?v=3110"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 {
   "name": "Time4Heroes",
   "short_name": "Time4Heroes",
-  "description": "Time4Heroes — mobilne GPS RPG. Build 3.1.0: żywy świat, aktywne biomy i wydarzenia z konsekwencjami.",
+  "description": "Time4Heroes — mobilne GPS RPG. Build 3.1.1: przebudowane wizualnie sklepy, crafting i sala gildii.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
