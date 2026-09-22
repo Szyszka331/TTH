@@ -968,3 +968,13 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .float-damage{font-size:30px!important;font-weight:1000!important;text-shadow:0 3px 0 #000,0 0 14px #000!important}
 @media(max-width:900px){.gear-combat-grid{grid-template-columns:repeat(2,1fr)}.gear-combat-head{grid-template-columns:1fr}.damage-range-main{min-width:0}.combat-feedback-column{order:2}.combat-exchange{grid-template-columns:1fr 1fr}.exchange-card b{font-size:26px}.combat-log{order:initial!important}}
 @media(max-width:520px){.gear-combat-grid{grid-template-columns:repeat(2,1fr);gap:6px}.gear-combat-panel{padding:10px}.damage-range-main b{font-size:24px}.exchange-card{padding:7px 4px}.exchange-card b{font-size:22px}.exchange-card small{font-size:7px}.exchange-card span{font-size:7px}}
+
+
+/* Build 3.0.5 — czytelna warstwa biomów na prawdziwej mapie OSM */
+.biome-map-key{position:absolute;z-index:721;left:14px;bottom:54px;display:flex;gap:6px;flex-wrap:wrap;max-width:min(620px,70%);pointer-events:none}
+.biome-map-key span{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid #5f4b31;border-radius:999px;background:#0c0907dc;color:#d9c9aa;font-size:10px;font-weight:700;box-shadow:0 4px 12px #0007;backdrop-filter:blur(5px)}
+.biome-map-key span.current{border-color:#d4b66f;color:#ffe7aa;background:#171008ee}
+.biome-map-key i{width:12px;height:12px;border-radius:4px;background:var(--biome);box-shadow:inset 0 0 0 1px #ffffff55,0 0 0 1px #0008}
+.real-map-rpg .leaflet-biome-pane{mix-blend-mode:multiply}
+@media(max-width:900px){.biome-map-key{left:8px;right:62px;bottom:auto;top:52px;max-width:none;gap:4px}.biome-map-key span{padding:4px 6px;font-size:8px}.biome-map-key i{width:10px;height:10px}}
+@media(max-width:620px){.biome-map-key{top:50px;right:52px}.biome-map-key span{padding:3px 5px;font-size:7px}.biome-map-key span:not(.current){opacity:.78}}

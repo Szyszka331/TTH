@@ -20,3 +20,15 @@ Cache: 3030.
 - Panel parametrów bojowych w Bohater → Ekwipunek.
 - Zakres obrażeń aktualnej broni, atak, pancerz, trafienie, krytyk, unik, blok, HP i mana.
 - W walce stały panel ostatniej wymiany: obrażenia zadane i otrzymane oraz UNIK/BLOK/KRYTYK.
+
+
+## Build 3.0.5 — Biome Color Overlay
+- biomy są domyślnie widoczne na mapie OSM
+- Łąki: jasna zieleń
+- Las: ciemna zieleń
+- Mokradła: morska zieleń
+- Ruiny: szarość
+- Wzgórza: brąz
+- sąsiednie komórki tego samego biomu tworzą jednolitą kolorową powierzchnię
+- linia graniczna pojawia się tylko przy realnej zmianie biomu gry
+- dodano legendę kolorów i wyróżnienie aktualnego biomu
