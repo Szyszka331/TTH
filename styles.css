@@ -103,7 +103,7 @@ html{-webkit-text-size-adjust:100%;touch-action:manipulation}body{overscroll-beh
 
 
 /* Time4Heroes 1.0 — Living World */
-.living-world-strip{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;margin:10px 0}.living-world-strip>div{background:linear-gradient(145deg,#11181c,#0b1013);border:1px solid #35414a;border-radius:10px;padding:10px}.living-world-strip b{display:block;color:#e8d095}.living-world-strip small{display:block;color:#8d9aa4;margin-top:4px;line-height:1.35}.event-marker{font-size:25px;background:radial-gradient(circle,#493f1d,#17150e 68%);border-color:#c5a745;animation:eventPulse 1.8s ease-in-out infinite}.event-marker:after{content:'';position:absolute;inset:-6px;border:1px solid #d3bb63;border-radius:50%;opacity:.35}@keyframes eventPulse{50%{transform:translateY(-3px) scale(1.05)}}.leaflet-pane.leaflet-biome-pane{mix-blend-mode:soft-light}.zone-rune{min-width:100px}.mmo-map-bottom small{max-width:260px}.map-legend{flex-wrap:wrap}.real-map-shell:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 70px rgba(0,0,0,.52)}
+.living-world-strip{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;margin:10px 0}.living-world-strip>div{background:linear-gradient(145deg,#11181c,#0b1013);border:1px solid #35414a;border-radius:10px;padding:10px}.living-world-strip b{display:block;color:#e8d095}.living-world-strip small{display:block;color:#8d9aa4;margin-top:4px;line-height:1.35}.event-marker{font-size:25px;background:radial-gradient(circle,#493f1d,#17150e 68%);border-color:#c5a745;animation:eventPulse 1.8s ease-in-out infinite}.event-marker:after{content:'';position:absolute;inset:-6px;border:1px solid #d3bb63;border-radius:50%;opacity:.35}@keyframes eventPulse{50%{transform:translateY(-3px) scale(1.05)}}.leaflet-pane.leaflet-biome-pane{mix-blend-mode:multiply;opacity:1}.zone-rune{min-width:100px}.mmo-map-bottom small{max-width:260px}.map-legend{flex-wrap:wrap}.real-map-shell:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 70px rgba(0,0,0,.52)}
 @media(max-width:760px){.living-world-strip{grid-template-columns:1fr}.living-world-strip>div{padding:8px}.event-marker{font-size:22px}}
 
 
@@ -975,7 +975,7 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .biome-map-key span{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid #5f4b31;border-radius:999px;background:#0c0907dc;color:#d9c9aa;font-size:10px;font-weight:700;box-shadow:0 4px 12px #0007;backdrop-filter:blur(5px)}
 .biome-map-key span.current{border-color:#d4b66f;color:#ffe7aa;background:#171008ee}
 .biome-map-key i{width:12px;height:12px;border-radius:4px;background:var(--biome);box-shadow:inset 0 0 0 1px #ffffff55,0 0 0 1px #0008}
-.real-map-rpg .leaflet-biome-pane{mix-blend-mode:multiply}
+.real-map-rpg .leaflet-biome-pane{mix-blend-mode:normal;opacity:1}
 @media(max-width:900px){.biome-map-key{left:8px;right:62px;bottom:auto;top:52px;max-width:none;gap:4px}.biome-map-key span{padding:4px 6px;font-size:8px}.biome-map-key i{width:10px;height:10px}}
 @media(max-width:620px){.biome-map-key{top:50px;right:52px}.biome-map-key span{padding:3px 5px;font-size:7px}.biome-map-key span:not(.current){opacity:.78}}
 
@@ -986,3 +986,16 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .float-damage{animation-duration:1s!important}
 .battle-screen .battle-skill:disabled{pointer-events:none}
 .battle-screen:has(.turn-indicator){--turn-glow:#d0ad62}
+
+/* Build 3.0.7 — wyraźne granice biomów */
+.real-map-rpg .leaflet-biome-border-pane,.real-map-rpg .leaflet-biome-label-pane{pointer-events:none}
+.biome-zone-label-wrap{background:transparent!important;border:0!important}
+.biome-zone-label{display:flex;align-items:center;justify-content:center;gap:6px;width:108px;height:30px;border-radius:999px;border:2px solid #f0d99a;background:#100d09e8;color:#fff0bd;box-shadow:0 2px 0 #000,0 5px 14px #000a,inset 0 0 0 2px color-mix(in srgb,var(--biome-label) 55%,transparent);font:900 10px/1 Georgia,serif;letter-spacing:.8px;text-shadow:0 2px 2px #000}
+.biome-zone-label span{font-size:15px}.biome-zone-label b{white-space:nowrap}
+@media(max-width:620px){.biome-zone-label{width:92px;height:27px;font-size:8px}.biome-zone-label span{font-size:13px}}
+
+/* Build 3.0.7 — visible biome boundaries */
+.biome-zone-label-wrap{background:transparent!important;border:0!important;pointer-events:none!important}
+.biome-zone-label{display:flex;align-items:center;justify-content:center;gap:5px;min-width:88px;padding:4px 9px;border:1px solid rgba(242,224,169,.92);border-radius:999px;background:rgba(20,14,9,.82);color:#f8e8ba;font:700 11px/1.05 Georgia,serif;letter-spacing:.03em;text-shadow:0 1px 2px #000;box-shadow:0 1px 6px rgba(0,0,0,.52);white-space:nowrap}
+.biome-zone-label span{font-size:13px}
+@media(max-width:700px){.biome-zone-label{min-width:72px;padding:3px 7px;font-size:9px}.biome-zone-label span{font-size:11px}}
