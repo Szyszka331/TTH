@@ -272,7 +272,8 @@ export const ITEMS = {
  emberCore:{id:'emberCore',name:'Rdzeń żaru',icon:'🔥',type:'material',rarity:'rare',value:38,maxStack:99},
  frostCrystal:{id:'frostCrystal',name:'Kryształ mrozu',icon:'❄️',type:'material',rarity:'rare',value:34,maxStack:99},
  stormFeather:{id:'stormFeather',name:'Pióro burzy',icon:'🪶',type:'material',rarity:'rare',value:36,maxStack:99},
- skySteel:{id:'skySteel',name:'Stal niebios',icon:'⚡',type:'material',rarity:'epic',value:50,maxStack:99}
+ skySteel:{id:'skySteel',name:'Stal niebios',icon:'⚡',type:'material',rarity:'epic',value:50,maxStack:99},
+ mapFragment:{id:'mapFragment',name:'Zaginiony skrawek mapy',icon:'🧩',type:'material',rarity:'rare',value:0,maxStack:99}
 };
 
 export const SKILLS = {
