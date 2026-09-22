@@ -1,8 +1,14 @@
-# Time4Heroes — Build 3.1.1 Clean
+# Time4Heroes — Build 3.0.2 — Continuous Story (CLEAN)
 
-Naprawa gałęzi 3.1.
+Baza: przesłany przez użytkownika działający Build 3.0.1.
 
-- nowe fizyczne nazwy: app-3111.js, data-3111.js, styles-3111.css
-- usunięto błędne odwołania do v=3020
-- przy pierwszym uruchomieniu build usuwa stare service workery i cache, po czym przeładowuje stronę
-- zachowuje funkcje 3.1 (loch visuals + unique boss loot)
+## Zmiany
+- główny quest fabularny automatycznie przechodzi do następnego etapu po ukończeniu poprzedniego,
+- kolejny cel pojawia się od razu na mapie,
+- nie trzeba wracać do karczmy po każdą kolejną kartkę fabularną,
+- przejścia między rozdziałami są również automatyczne, jeśli gracz spełnia poziom,
+- jeśli następny etap wymaga wyższego poziomu, dziennik czeka na osiągnięcie wymagań i uruchomi go automatycznie,
+- karczma pozostaje miejscem kontraktów, odpoczynku i usług, a nie obowiązkowym przystankiem po każdym kroku fabuły,
+- zachowano cały system wyników walki i ręcznego wyboru łupów z 3.0.1.
+
+Cache: 3021.

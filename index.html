@@ -9,40 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.1.1 Clean</title>
+  <title>Time4Heroes — Build 3.0.2 — Continuous Story</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles-3111.css" />
+  <link rel="stylesheet" href="styles.css?v=3021" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-  (async function(){
-    const key='t4h-clean-3111';
-    if (!sessionStorage.getItem(key)) {
-      sessionStorage.setItem(key,'1');
-      try {
-        if ('serviceWorker' in navigator) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r => r.unregister()));
-        }
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.map(k => caches.delete(k)));
-        }
-      } catch(e) { console.warn('Cache cleanup:', e); }
-      location.reload();
-      return;
+    // Build 3.0.2: ciągły główny wątek fabularny bez powrotu do karczmy po każdy etap.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
-    const s=document.createElement('script');
-    s.type='module';
-    s.src='./app-3111.js';
-    document.body.appendChild(s);
-  })();
   </script>
+  <script type="module" src="app.js?v=3021"></script>
 </body>
 </html>
