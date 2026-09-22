@@ -1042,14 +1042,8 @@ function rebuildBiomeLayers(){
   leafletBiomeLayers.push(L.rectangle([a,b],{pane:'biomePane',stroke:false,fillColor:bio.color,fillOpacity:bio.fill??.32,interactive:false}).addTo(realMap));
   if(idAt(gx+1,gy)!==id)boundary(worldToLatLng(x2,y1),worldToLatLng(x2,y2));
   if(idAt(gx,gy+1)!==id)boundary(worldToLatLng(x1,y2),worldToLatLng(x2,y2));
-  // Dyskretna nazwa biomu w co czwartym polu, żeby granice były czytelne bez zaśmiecania mapy.
-  if((((gx*7+gy*11)%4)+4)%4===0){
-   const center=worldToLatLng(x1+size/2,y1+size/2);
-   if(center){
-    const label=L.marker(center,{pane:'biomeLabelPane',interactive:false,icon:L.divIcon({className:'biome-zone-label-wrap',html:`<div class="biome-zone-label"><span>${bio.icon}</span><b>${bio.name}</b></div>`,iconSize:[104,30],iconAnchor:[52,15]})}).addTo(realMap);
-    leafletBiomeLayers.push(label);
-   }
-  }
+  // Nazwy biomów nie są rysowane bezpośrednio na mapie.
+  // Kolory i granice pozostają widoczne, a aktualny biom jest pokazany w górnym panelu mapy.
  }
 }
 
