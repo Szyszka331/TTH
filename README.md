@@ -1,10 +1,7 @@
-# Time4Heroes — Build 3.2.2 Clean Rebuild
+# Time4Heroes — Build 3.2.3 Force Fresh JS Fix
 
-Naprawiona paczka po błędzie `Unexpected end of input` w `app.js`.
+Hotfix czarnego ekranu / `Unexpected end of input`.
 
-- pełny `app.js` (1884 linie)
-- cache/service worker: 3220
-- zachowane funkcje Build 3.2
-- paczka sprawdzona `node --check` i `unzip -t`
+Ta wersja używa fizycznie nowych nazw plików `app-3230.js` i `data-3230.js`, aby ominąć stary/ucięty `app.js` zapisany w cache lub wdrożony na GitHub Pages.
 
-Wgraj całą zawartość ZIP-a do katalogu głównego repozytorium, nadpisując stare pliki.
+Wgraj CAŁĄ zawartość ZIP-a do katalogu głównego repozytorium.
