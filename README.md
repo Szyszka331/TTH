@@ -1,14 +1,16 @@
-# Time4Heroes — Build 3.0.2 — Continuous Story (CLEAN)
+# Time4Heroes — Build 3.0.3 — Inventory & Icon Hotfix (CLEAN)
 
-Baza: przesłany przez użytkownika działający Build 3.0.1.
+Baza: działający Build 3.0.2 Continuous Story, zbudowany z przesłanego przez użytkownika 3.0.1.
 
 ## Zmiany
-- główny quest fabularny automatycznie przechodzi do następnego etapu po ukończeniu poprzedniego,
-- kolejny cel pojawia się od razu na mapie,
-- nie trzeba wracać do karczmy po każdą kolejną kartkę fabularną,
-- przejścia między rozdziałami są również automatyczne, jeśli gracz spełnia poziom,
-- jeśli następny etap wymaga wyższego poziomu, dziennik czeka na osiągnięcie wymagań i uruchomi go automatycznie,
-- karczma pozostaje miejscem kontraktów, odpoczynku i usług, a nie obowiązkowym przystankiem po każdym kroku fabuły,
-- zachowano cały system wyników walki i ręcznego wyboru łupów z 3.0.1.
+- założone przedmioty są widoczne tylko w slotach EQ i nie są powielane w plecaku,
+- wyposażenie nie zajmuje pojemności plecaka,
+- licznik plecaka pokazuje wyłącznie przedmioty faktycznie noszone w plecaku,
+- mini-podgląd plecaka na mapie także pomija założone wyposażenie,
+- zachowano prawidłowe indeksy przedmiotów dla kliknięć i drag & drop,
+- po kliknięciu założonego przedmiotu dostępny jest przycisk „Zdejmij”,
+- wygenerowano brakujące ikony SVG dla wszystkich przedmiotów bez własnej grafiki,
+- dodano awaryjny fallback emoji, gdy dowolna ikona nie wczyta się w przeglądarce,
+- zachowano ciągły główny wątek z 3.0.2 oraz ekran wyboru lootu z 3.0.1.
 
-Cache: 3021.
+Cache: 3030.

@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.0.2 — Continuous Story</title>
+  <title>Time4Heroes — Build 3.0.3 — Inventory & Icon Hotfix</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=3021" />
+  <link rel="stylesheet" href="styles.css?v=3030" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 3.0.2: ciągły główny wątek fabularny bez powrotu do karczmy po każdy etap.
+    // Build 3.0.3: wyposażone przedmioty nie zajmują plecaka; pełny fallback ikon przedmiotów.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=3021"></script>
+  <script type="module" src="app.js?v=3030"></script>
 </body>
 </html>
