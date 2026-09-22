@@ -1,7 +1,12 @@
-# Time4Heroes — Build 3.2.3 Force Fresh JS Fix
+# Time4Heroes — Build 3.0.1 — Battle Results & Loot Selection
 
-Hotfix czarnego ekranu / `Unexpected end of input`.
+Hotfix rozwijający Build 3.0.
 
-Ta wersja używa fizycznie nowych nazw plików `app-3230.js` i `data-3230.js`, aby ominąć stary/ucięty `app.js` zapisany w cache lub wdrożony na GitHub Pages.
-
-Wgraj CAŁĄ zawartość ZIP-a do katalogu głównego repozytorium.
+- po każdej wygranej walce pojawia się ekran WYGRANA,
+- XP i złoto są przyznawane automatycznie,
+- przedmioty z dropu nie trafiają automatycznie do plecaka,
+- gracz zaznacza checkboxami tylko łupy, które chce zabrać,
+- dostępne są akcje „Zaznacz wszystko”, „Odznacz”, „Zabierz wybrane” i „Zostaw wszystko”,
+- porażka pokazuje prosty ekran „ZGINĄŁEŚ”,
+- wynik jest zablokowany przed przypadkowym zamknięciem kliknięciem w tło lub Escape,
+- zachowane systemy Build 3.0: Combat & Skills 2.0, loot, crafting, questy GPS, ekwipunek klasowy i lochy.

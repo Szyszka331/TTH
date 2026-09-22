@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.2.3 — Force Fresh JS Fix</title>
+  <title>Time4Heroes — Build 3.0.1 — Battle Results & Loot Selection</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles-3230.css" />
+  <link rel="stylesheet" href="styles.css?v=3010" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 3.2.2: clean rebuild po błędzie uciętego app.js; cache 3220.
+    // Build 3.0.1: wynik walki, ręczny wybór łupów i prosty ekran śmierci.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app-3230.js"></script>
+  <script type="module" src="app.js?v=3010"></script>
 </body>
 </html>
