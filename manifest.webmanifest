@@ -1,7 +1,7 @@
 {
   "name": "Time4Heroes",
   "short_name": "Time4Heroes",
-  "description": "Time4Heroes — mobilne GPS RPG. Build 1.11: New Player Experience — dopracowane pierwsze 30–60 minut gry.",
+  "description": "Time4Heroes — mobilne GPS RPG. Build 3.1.0: żywy świat, aktywne biomy i wydarzenia z konsekwencjami.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
