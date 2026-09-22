@@ -1,7 +1,7 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3200';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3020';
 
-const SAVE_KEY='time4heroes_build_320';
-const MIGRATION_KEYS=['time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
+const SAVE_KEY='time4heroes_build_290';
+const MIGRATION_KEYS=['time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
 let state=null;
@@ -308,13 +308,12 @@ function lootToastText(drops=[]){if(!drops.length)return '';const merged={};for(
 function rollCombatLoot(m,e,c){ensureEconomyState();let gearDrop=null;const drops=rollMonsterMaterials(m,e,c);
  if(Math.random()<.018)drops.push({id:'crystal',qty:1});
  const elite=!!e.elite,boss=!!c.isBoss||!!c.worldBoss;
- const mapChance=boss?.30:elite?.14:.035;if(Math.random()<mapChance)drops.push({id:'mapFragment',qty:1});
  if(!elite&&!boss&&Math.random()<.018)gearDrop=randomGearFrom('uncommon');
  if(elite&&!boss){state.economy.elitePity++;if(Math.random()<.18||state.economy.elitePity>=4){gearDrop=randomGearFrom(Math.random()<.22?'epic':'rare');state.economy.elitePity=0}if(Math.random()<.16)drops.push({id:'runeShard',qty:1})}
  if(boss){state.economy.bossPity++;const epicGuaranteed=state.economy.bossPity>=3;if(Math.random()<.58||epicGuaranteed){gearDrop=randomGearFrom(Math.random()<.18?'heroic':'epic');state.economy.bossPity=0}else gearDrop=randomGearFrom('rare');if(Math.random()<.55)drops.push({id:'runeShard',qty:rnd(1,2)});if(Math.random()<.08)drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1})}
  if(gearDrop)drops.push({id:gearDrop,qty:1,gear:true});return {gearDrop,drops:mergeLootDrops(drops)};
 }
-function addItem(id,qty=1){let left=Math.max(0,qty|0),added=0;if(isStackable(id)){const lim=stackLimit(id);for(const st of state.player.inventory.filter(x=>x.id===id&&isStackable(x.id)&&((x.qty||1)<lim))){if(left<=0)break;const room=lim-(st.qty||1),take=Math.min(room,left);st.qty=(st.qty||1)+take;left-=take;added+=take}while(left>0&&inventoryHasRoom()){const take=Math.min(lim,left);state.player.inventory.push({id,qty:take});left-=take;added+=take}}else{while(left>0&&inventoryHasRoom()){state.player.inventory.push(createGearInstance(id));left--;added++}}if(left>0)toast(`🎒 Plecak pełny — nie zmieściło się ${left}× ${itemDef(id).name}.`);if(added)checkQuestProgress('item',id);save();if(added&&id==='mapFragment')setTimeout(()=>tryAssembleTreasureMap(),0);return added}
+function addItem(id,qty=1){let left=Math.max(0,qty|0),added=0;if(isStackable(id)){const lim=stackLimit(id);for(const st of state.player.inventory.filter(x=>x.id===id&&isStackable(x.id)&&((x.qty||1)<lim))){if(left<=0)break;const room=lim-(st.qty||1),take=Math.min(room,left);st.qty=(st.qty||1)+take;left-=take;added+=take}while(left>0&&inventoryHasRoom()){const take=Math.min(lim,left);state.player.inventory.push({id,qty:take});left-=take;added+=take}}else{while(left>0&&inventoryHasRoom()){state.player.inventory.push(createGearInstance(id));left--;added++}}if(left>0)toast(`🎒 Plecak pełny — nie zmieściło się ${left}× ${itemDef(id).name}.`);if(added)checkQuestProgress('item',id);save();return added}
 function removeItem(id,qty=1){let left=qty;for(let i=state.player.inventory.length-1;i>=0&&left>0;i--){const x=state.player.inventory[i];if(x.id!==id)continue;const q=x.qty||1;if(q>left){x.qty=q-left;left=0}else{left-=q;state.player.inventory.splice(i,1)}}save();return left===0}
 function starterWeapon(cls){return cls==='mage'?'willowStaff':cls==='hunter'||cls==='ranger'?'primitiveBow':'shortBlade'}
 function starterArmor(){return'tornRags'}
@@ -541,57 +540,6 @@ function regionDiscoveryPercent(regionId=currentRegionId()){return regionDiscove
 function regionSecretStats(regionId=currentRegionId()){
  ensureExplorationState();const all=EXPLORATION_SECRETS.filter(s=>s.region===regionId),found=state.world.exploration.secretsFound;return {done:all.filter(s=>found.includes(s.id)).length,total:all.length,all};
 }
-function ensureTreasureMapState(s=state){
- if(!s)return; s.world ||= {}; s.world.treasureMaps ||= {assembled:0,revealed:[],completed:[]};
- s.world.treasureMaps.assembled ||= 0; s.world.treasureMaps.revealed ||= []; s.world.treasureMaps.completed ||= [];
-}
-function treasureMapFragmentCount(){return countItem('mapFragment')}
-function hiddenSiteTitle(kind){return kind==='treasure'?'Ukryty skarb':kind==='camp'?'Obozowisko z mapy':'Ukryte wejście do lochu'}
-function hiddenSiteIcon(kind){return kind==='treasure'?'🧰':kind==='camp'?'🏕️':'🗝️'}
-function nearbyDungeonForMap(){
- const candidates=DUNGEONS.filter(d=>d.id!=='trainingCellar'&&!state.player.discovered.includes(d.id)&&!state.player.dungeons.includes(d.id)&&d.min<=state.player.level+10);
- return candidates.length?pick(candidates):DUNGEONS.find(d=>d.id==='oldCrypt')||DUNGEONS[1];
-}
-function spawnHiddenMapSite(){
- ensureTreasureMapState();
- const base=state.player.position||{x:0,y:0},roll=Math.random(),kind=roll<.46?'treasure':roll<.78?'camp':'dungeon';
- const angle=Math.random()*Math.PI*2,radius=rnd(180,420),id=`mapSite_${Date.now().toString(36)}_${uid()}`;
- const site={id,type:'hiddenSite',kind,name:hiddenSiteTitle(kind),icon:hiddenSiteIcon(kind),x:(base.x||0)+Math.cos(angle)*radius,y:(base.y||0)+Math.sin(angle)*radius,level:state.player.level,completed:false,revealedAt:Date.now()};
- if(kind==='camp')site.monsters=[];
- if(kind==='dungeon'){const d=nearbyDungeonForMap();site.linkedDungeon=d?.id||'oldCrypt';site.name=`Ukryte wejście: ${d?.name||'Stara Krypta'}`}
- state.world.entities.push(site);state.world.treasureMaps.revealed.push(site.id);state.world.treasureMaps.assembled++;
- save();playSfx('discover');haptic([20,35,20]);
- openModal(`<div class="battle-result victory"><div class="battle-result-mark">🗺️</div><span class="eyebrow">ZŁOŻONO MAPĘ</span><h2>${site.name}</h2><p>Cztery skrawki połączyły się w czytelny fragment starej mapy. Na mapie świata pojawiło się nowe ukryte miejsce.</p><div class="panel-item"><b>${site.icon} ${kind==='treasure'?'Możliwy skarb':kind==='camp'?'Możliwe obozowisko potworów':'Możliwe wejście do lochu'}</b><div class="muted">Cel znajduje się około ${Math.round(radius)} m od Twojej obecnej pozycji.</div></div><button class="primary" data-map-site-go>Pokaż na mapie</button></div>`);
- document.querySelector('[data-map-site-go]')?.addEventListener('click',()=>{closeModal();selectNav('map');setTimeout(()=>{const ll=worldToLatLng(site.x,site.y);if(realMap&&ll){followGps=false;realMap.setView(ll,17,{animate:true})}},120)});
-}
-function tryAssembleTreasureMap(){
- ensureTreasureMapState();let made=false;
- while(treasureMapFragmentCount()>=4){removeItem('mapFragment',4);spawnHiddenMapSite();made=true;break}
- return made;
-}
-function hiddenCampMonsterPool(level){return MONSTERS.filter(m=>m.min<=level+4&&m.max>=Math.max(1,level-4)&&!['graveColossus','stormDrake','mireMother','cinderMatriarch','tempestLord'].includes(m.id))}
-function completeHiddenSite(site,msg,reward=true){
- ensureTreasureMapState();site.completed=true;if(!state.world.treasureMaps.completed.includes(site.id))state.world.treasureMaps.completed.push(site.id);state.world.exploration.cartographyXp+=90;
- if(reward){const gold=55+state.player.level*7;state.player.gold+=gold;gainXp(120+state.player.level*18);toast(`${msg} • +${gold} 🪙`)}else toast(msg);
- save();rebuildGameLayers();
-}
-function interactHiddenMapSite(site){
- if(site.completed)return toast(`${site.name} — to miejsce zostało już oczyszczone.`);
- if(site.kind==='treasure'){
-  const gold=90+state.player.level*11;state.player.gold+=gold;const rewards=[{id:'crystal',qty:rnd(1,2)},{id:'runeShard',qty:1}];if(Math.random()<.55){const g=randomGearFrom(state.player.level>=20?'rare':'uncommon');if(g)rewards.push({id:g,qty:1})}for(const r of rewards)addItem(r.id,r.qty);completeHiddenSite(site,`🧰 Otwierasz ukryty skarb: +${gold} 🪙`,false);gainXp(180+state.player.level*20);playSfx('loot');save();return;
- }
- if(site.kind==='camp'){
-  const alive=(state.world.entities||[]).filter(e=>e.hiddenSiteId===site.id&&e.type==='monster'&&e.alive!==false);
-  if(alive.length)return toast(`Obozowisko nadal jest bronione. Pozostało przeciwników: ${alive.length}.`);
-  if(site.spawned){completeHiddenSite(site,'🏕️ Obozowisko zostało oczyszczone.');return}
-  const pool=hiddenCampMonsterPool(site.level||state.player.level);const count=rnd(3,5);for(let i=0;i<count;i++){const m=pick(pool)||MONSTERS[0],a=Math.PI*2*i/count,r=rnd(35,75);state.world.entities.push({id:`${site.id}_mob_${i}_${uid()}`,type:'monster',template:m.id,x:site.x+Math.cos(a)*r,y:site.y+Math.sin(a)*r,alive:true,elite:i===count-1,hiddenSiteId:site.id,level:clamp(site.level+rnd(-1,2),m.min,m.max)})}site.spawned=true;save();rebuildGameLayers();toast(`🏕️ Zasadzka! Wokół obozu pojawiło się ${count} przeciwników.`);return;
- }
- if(site.kind==='dungeon'){
-  const d=DUNGEONS.find(x=>x.id===site.linkedDungeon);if(!d)return completeHiddenSite(site,'Wejście okazało się zawalone.',false);
-  const worldDungeon=(state.world.entities||[]).find(e=>e.id===d.id&&e.type==='dungeon');if(worldDungeon){worldDungeon.x=site.x;worldDungeon.y=site.y}
-  const a=dungeonAccess(d.id);a.discovered=true;if(!state.player.discovered.includes(d.id))state.player.discovered.push(d.id);site.completed=true;if(!state.world.treasureMaps.completed.includes(site.id))state.world.treasureMaps.completed.push(site.id);save();playSfx('discover');toast(`🗝️ Mapa ujawniła wejście do: ${d.name}. Strażnik nadal blokuje dostęp.`);openDungeonGuardianPrompt(d);return;
- }
-}
 function cartographyStats(){ensureExplorationState();const xp=state.world.exploration.cartographyXp||0,level=1+Math.floor(xp/250),into=xp%250;const rank=level>=8?'Mistrz Map':level>=5?'Kartograf':level>=3?'Zwiadowca':'Wędrowiec';return {xp,level,into,next:250,rank,sectors:Object.keys(state.world.exploration.sectors).length}}
 function checkRegionRewards(){
  ensureExplorationState();const ex=state.world.exploration,reg=regionDiscoveryStats();ex.regionRewards[reg.id] ||= {};
@@ -611,8 +559,8 @@ function availableTravelNodes(){
  return out.filter((v,i,a)=>a.findIndex(x=>x.id===v.id)===i);
 }
 function openExplorerJournal(){
- ensureExplorationState();ensureTreasureMapState();const cart=cartographyStats(),regions=Object.keys(EXPLORATION_REGIONS).map(id=>regionDiscoveryStats(id)),found=state.world.exploration.secretsFound;
- openModal(`<div class="modal-head"><div><h2>🧭 Dziennik Odkrywcy</h2><div class="muted">Kartografia • poziom ${cart.level} — ${cart.rank}</div></div><button class="close" data-close>×</button></div><div class="cartography-card"><div><b>${cart.sectors}</b><span>odkrytych sektorów</span></div><div><b>${cart.xp}</b><span>XP kartografii</span></div><div><b>${found.length}/${EXPLORATION_SECRETS.length}</b><span>sekretów</span></div><div><b>${treasureMapFragmentCount()}/4</b><span>skrawki mapy</span></div><div><b>${state.world.treasureMaps.completed.length}</b><span>miejsca z map</span></div></div><div class="cartography-progress"><span style="width:${cart.into/cart.next*100}%"></span></div><small class="muted">Do kolejnego poziomu kartografii: ${cart.next-cart.into} XP</small><h3>Regiony</h3><div class="explorer-region-grid">${regions.map(r=>{const ss=regionSecretStats(r.id);return `<div class="explorer-region-card ${r.id===currentRegionId()?'current':''}"><div><b>${r.icon} ${r.name}</b><small>Poziomy ${r.level}</small></div><strong>${r.percent}%</strong><div class="mini-progress"><span style="width:${r.percent}%"></span></div><small>${r.done}/${r.total} sektorów • sekrety ${ss.done}/${ss.total}</small></div>`}).join('')}</div><h3>Sekrety</h3><div class="secret-journal">${EXPLORATION_SECRETS.map(s=>`<div class="secret-entry ${found.includes(s.id)?'found':''}"><span>${found.includes(s.id)?s.icon:'❔'}</span><div><b>${found.includes(s.id)?s.name:'Nieodkryty sekret'}</b><small>${EXPLORATION_REGIONS[s.region].name}${found.includes(s.id)?` • ${s.desc}`:' • eksploruj region'}</small></div><em>${found.includes(s.id)?'✓':'?'}</em></div>`).join('')}</div>`);
+ ensureExplorationState();const cart=cartographyStats(),regions=Object.keys(EXPLORATION_REGIONS).map(id=>regionDiscoveryStats(id)),found=state.world.exploration.secretsFound;
+ openModal(`<div class="modal-head"><div><h2>🧭 Dziennik Odkrywcy</h2><div class="muted">Kartografia • poziom ${cart.level} — ${cart.rank}</div></div><button class="close" data-close>×</button></div><div class="cartography-card"><div><b>${cart.sectors}</b><span>odkrytych sektorów</span></div><div><b>${cart.xp}</b><span>XP kartografii</span></div><div><b>${found.length}/${EXPLORATION_SECRETS.length}</b><span>sekretów</span></div></div><div class="cartography-progress"><span style="width:${cart.into/cart.next*100}%"></span></div><small class="muted">Do kolejnego poziomu kartografii: ${cart.next-cart.into} XP</small><h3>Regiony</h3><div class="explorer-region-grid">${regions.map(r=>{const ss=regionSecretStats(r.id);return `<div class="explorer-region-card ${r.id===currentRegionId()?'current':''}"><div><b>${r.icon} ${r.name}</b><small>Poziomy ${r.level}</small></div><strong>${r.percent}%</strong><div class="mini-progress"><span style="width:${r.percent}%"></span></div><small>${r.done}/${r.total} sektorów • sekrety ${ss.done}/${ss.total}</small></div>`}).join('')}</div><h3>Sekrety</h3><div class="secret-journal">${EXPLORATION_SECRETS.map(s=>`<div class="secret-entry ${found.includes(s.id)?'found':''}"><span>${found.includes(s.id)?s.icon:'❔'}</span><div><b>${found.includes(s.id)?s.name:'Nieodkryty sekret'}</b><small>${EXPLORATION_REGIONS[s.region].name}${found.includes(s.id)?` • ${s.desc}`:' • eksploruj region'}</small></div><em>${found.includes(s.id)?'✓':'?'}</em></div>`).join('')}</div>`);
 }
 function openFastTravel(){
  if(!state.world.gpsOrigin)return toast('Najpierw uruchom GPS i zakotwicz świat.');const nodes=availableTravelNodes();
@@ -630,7 +578,7 @@ function equippedInstanceForState(s,slot){const e=s?.player?.equipped?.[slot];if
 function normalizeState(s){
  if(!s)return null;
  const previousVersion=s.version||0;
- s.version=132;
+ s.version=131;
  s.player ||= {};
  s.player.stats ||= {str:5,agi:5,int:5,vit:5};
  s.player.inventory ||= [];
@@ -673,7 +621,6 @@ function normalizeState(s){
  s.ui ||= {}; s.ui.smithView ||= 'shop';
  ensureLivingWorld(s);
  ensureExplorationState(s);
- ensureTreasureMapState(s);
  if(['hunter','ranger'].includes(s.player.class)&&s.player.pets.length===0){s.player.pets.push({id:'youngWolf',level:1,xp:0});s.player.petActive='youngWolf'}
  if(previousVersion<128&&['hunter','ranger'].includes(s.player.class)&&!s.player.inventory.some(x=>x.id==='primitiveArrow'))s.player.inventory.push({id:'primitiveArrow',qty:150});
  if(previousVersion<128&&s.player.level<7){for(const [slot,id] of [['weapon',starterWeapon(s.player.class)],['armor',starterArmor()],['boots',starterBoots()]]){const current=equippedInstanceForState(s,slot),d=itemDef(current?.id);if(d?.reqLevel&&s.player.level<d.reqLevel){const fresh={id,uid:uid(),upgrade:0,rune:null,enchant:null,enchantRolls:0,affix:null};s.player.inventory.push(fresh);s.player.equipped[slot]=fresh}}}
@@ -691,7 +638,7 @@ function newGame(name,cls){
  const armor={id:starterArmor(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const boots={id:starterBoots(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const pets=['hunter','ranger'].includes(cls)?[{id:'youngWolf',level:1,xp:0}]:[];
- state={version:132,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,completedEvents:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:false,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings',smithView:'shop'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
+ state={version:131,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,completedEvents:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:false,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings',smithView:'shop'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
  ensureLivingWorld();ensureExplorationState();save();render();
 }
 function resetCharacter(){if(!confirm('Zresetować postać i wrócić do kreatora? Usunie to lokalny postęp tej gry.'))return;try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();for(const key of Object.keys(localStorage)){if(key===SAVE_KEY||key.startsWith('time4heroes_build_')||key.startsWith('georpg_build_'))localStorage.removeItem(key)}state=null;combat=null;dungeonRun=null;currentTab='map';destroyRealMap();render();}
@@ -1108,7 +1055,7 @@ function rebuildGameLayers(){
   .filter(focusedEntityVisible)
   .map(e=>({e,ll:worldToLatLng(e.x,e.y),d:dist(e,state.player.position)}))
   .filter(x=>x.ll&&bounds.contains(x.ll))
-  .map(x=>{const e=x.e;let priority=6;if(e.type==='hiddenSite')priority=0;else if(e.type==='secret')priority=0;else if(e.type==='quest'||e.type==='resource')priority=1;else if(targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template)))priority=1;else if(e.type==='event')priority=2;else if(e.type==='dungeon')priority=3;else if(e.type==='monster'&&e.elite)priority=4;else if(e.type==='poi')priority=5;return {...x,priority}})
+  .map(x=>{const e=x.e;let priority=6;if(e.type==='secret')priority=0;else if(e.type==='quest'||e.type==='resource')priority=1;else if(targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template)))priority=1;else if(e.type==='event')priority=2;else if(e.type==='dungeon')priority=3;else if(e.type==='monster'&&e.elite)priority=4;else if(e.type==='poi')priority=5;return {...x,priority}})
   .sort((a,b)=>a.priority-b.priority||a.d-b.d);
  const monsterLimit=state.settings.mapMode==='focused'?12:28,otherLimit=state.settings.mapMode==='focused'?18:36;
  let monsters=0,others=0;
@@ -1122,7 +1069,6 @@ function rebuildGameLayers(){
   const questTarget=targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template));
   if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${monsterVisual(m.id,'mmo-sprite')}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
   else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${e.icon}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
-  else if(e.type==='hiddenSite'){inner=`<div class="mmo-marker hidden-site-marker ${e.kind||'treasure'} ${d<=60?'interaction-ready':''}"><span>${e.icon||'🗺️'}</span>${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='secret'){const found=state.world.exploration.secretsFound.includes(e.id);inner=`<div class="mmo-marker secret-marker ${found?'found':''}">${found?e.icon:'❔'}</div>`;label=found?e.name:'Sekret w pobliżu'}
   else if(e.type==='quest'){const visual=e.visual==='woundedWolves'?`<span class="quest-wolves">${monsterVisual('wolf','quest-wolf-a')}${monsterVisual('wolf','quest-wolf-b')}</span>`:`<span class="quest-world-icon">${e.icon||'❗'}</span>`;inner=`<div class="mmo-marker quest-world-marker interaction-ready">${visual}<span class="quest-pin">!</span></div>`;label=e.name}
   else if(e.type==='resource'){inner=`<div class="mmo-marker resource-marker ${d<=60?'interaction-ready':''}"><span>🌿</span>${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
@@ -1327,7 +1273,6 @@ function interactEntity(e){
  if(state.player.position.virtualTravel&&e.type!=='dungeon')return toast('Tryb podróży domowej nie pozwala na interakcje GPS. Włącz GPS, aby wrócić do świata.');
  if(d>R)return toast(`Podejdź na ${R} m. Teraz: ${Math.round(d)} m.`);
  if(e.type==='secret'){discoverSecret(e);return}
- if(e.type==='hiddenSite'){interactHiddenMapSite(e);return}
  if(e.type==='quest'){interactQuestEntity(e);return}
  if(e.type==='resource'){interactResourceEntity(e);return}
  if(e.type==='event'){resolveWorldEvent(e);return}
@@ -1788,7 +1733,7 @@ function showBattleVictory(result){renderShell();const lootHtml=result.drops.len
 function showBattleDefeat(onReturn){renderShell();openModal(`<div class="battle-result defeat"><div class="battle-result-mark">💀</div><span class="eyebrow">WYNIK WALKI</span><h2>ZGINĄŁEŚ</h2><button class="primary" data-death-return>Wróć</button></div>`,true);document.querySelector('[data-death-return]')?.addEventListener('click',()=>{closeModal();onReturn?.();renderShell()})}
 function winCombat(){
  const c=combat,m=c.monster,e=c.entity,xp=Math.floor(m.xp*(.65+.055*c.level)*(e.elite?1.75:1)),baseGold=rnd(...m.gold)*(e.elite?2:1);let gold=baseGold,worldBossRep=0;
- state.player.gold+=baseGold;state.player.kills++;playSfx('kill');haptic(18);tutorialEvent('kill');state.player.bestiary[m.id]=(state.player.bestiary[m.id]||0)+1;if(!e.synthetic){e.alive=false;e.respawn=Date.now()+5*60*1000}if(e.hiddenSiteId){const site=(state.world.entities||[]).find(x=>x.id===e.hiddenSiteId);if(site&&site.spawned){const left=(state.world.entities||[]).filter(x=>x.hiddenSiteId===site.id&&x.type==='monster'&&x.alive!==false&&x.id!==e.id).length;if(left===0)completeHiddenSite(site,'🏕️ Obozowisko zostało oczyszczone.')}}checkQuestProgress('kill',m.id);const loot=rollCombatLoot(m,e,c);if(c.dungeon?.boss){const uniqueDrop=rollDungeonUniqueLoot(c.dungeon.dungeonId);if(uniqueDrop)loot.drops=mergeLootDrops([...loot.drops,uniqueDrop])}gainXp(xp);gainPetXp(xp);if(e.elite||c.isBoss)playSfx('loot');if(c.worldBoss){state.adventure.worldBossDay=daySeed();state.adventure.reputation+=25;worldBossRep=25;state.player.gold+=180;gold+=180;loot.drops.push({id:'titanShard',qty:1},{id:'runeShard',qty:2});if(Math.random()<.55)loot.drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1});if(Math.random()<.18)loot.drops.push({id:pick(['stormCrown','cryptHeart']),qty:1});loot.drops=mergeLootDrops(loot.drops)}updateAchievements();const pauseStarted=c.dungeon&&dungeonRun?Date.now():0;if(pauseStarted)clearDungeonTimer();const result={xp,gold,worldBossRep,drops:loot.drops,dungeonInfo:c.dungeon,pauseStarted};combat=null;save();showBattleVictory(result);
+ state.player.gold+=baseGold;state.player.kills++;playSfx('kill');haptic(18);tutorialEvent('kill');state.player.bestiary[m.id]=(state.player.bestiary[m.id]||0)+1;if(!e.synthetic){e.alive=false;e.respawn=Date.now()+5*60*1000}checkQuestProgress('kill',m.id);const loot=rollCombatLoot(m,e,c);if(c.dungeon?.boss){const uniqueDrop=rollDungeonUniqueLoot(c.dungeon.dungeonId);if(uniqueDrop)loot.drops=mergeLootDrops([...loot.drops,uniqueDrop])}gainXp(xp);gainPetXp(xp);if(e.elite||c.isBoss)playSfx('loot');if(c.worldBoss){state.adventure.worldBossDay=daySeed();state.adventure.reputation+=25;worldBossRep=25;state.player.gold+=180;gold+=180;loot.drops.push({id:'titanShard',qty:1},{id:'runeShard',qty:2});if(Math.random()<.55)loot.drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1});if(Math.random()<.18)loot.drops.push({id:pick(['stormCrown','cryptHeart']),qty:1});loot.drops=mergeLootDrops(loot.drops)}updateAchievements();const pauseStarted=c.dungeon&&dungeonRun?Date.now():0;if(pauseStarted)clearDungeonTimer();const result={xp,gold,worldBossRep,drops:loot.drops,dungeonInfo:c.dungeon,pauseStarted};combat=null;save();showBattleVictory(result);
 }
 function loseCombat(){const info=combat?.dungeon,loss=Math.min(250,Math.max(10,Math.floor(state.player.gold*.04)));state.player.hp=Math.max(1,Math.floor(state.player.maxHp*.35));state.player.mana=Math.floor(state.player.maxMana*.35);state.player.gold=Math.max(0,state.player.gold-loss);let after=null;if(dungeonRun){clearDungeonTimer();const d=DUNGEONS.find(x=>x.id===dungeonRun.id),a=dungeonAccess(dungeonRun.id),explore=dungeonExplorationPercent();a.cooldownUntil=Date.now()+DUNGEON_FAIL_COOLDOWN;a.lastResult={type:'death',explore,at:Date.now()};dungeonRun=null}combat=null;save();showBattleDefeat(after)}
 function openDungeonGuardianPrompt(d){
@@ -1848,7 +1793,7 @@ function resolveDungeonRoom(c){
  if(!dungeonRun||!c)return;if(c.resolved){openDungeonCrawler();return}const d=DUNGEONS.find(x=>x.id===dungeonRun.id);
  if(c.type==='monster'||c.type==='elite'){const id=pick(dungeonEnemyPool(d)),m=MONSTERS.find(x=>x.id===id)||MONSTERS[0],e={id:`dr_${Date.now()}`,type:'monster',template:m.id,x:0,y:0,alive:true,elite:c.type==='elite',synthetic:true};closeModal();startCombat(e,{level:clamp(Math.max(d.min,state.player.level)+(c.type==='elite'?1:0),m.min,m.max),dungeon:{type:'room',dungeonId:d.id,x:dungeonRun.x,y:dungeonRun.y}});return}
  if(c.type==='boss'){const m=MONSTERS.find(x=>x.id===d.boss)||MONSTERS[0],e={id:`db_${Date.now()}`,type:'monster',template:m.id,x:0,y:0,alive:true,elite:true,synthetic:true};closeModal();startCombat(e,{level:clamp(Math.max(d.min,state.player.level)+2,m.min,m.max),dungeon:{type:'boss',boss:true,dungeonId:d.id,x:dungeonRun.x,y:dungeonRun.y}});return}
- if(c.type==='chest'){c.resolved=true;dungeonRun.chests++;const roll=Math.random();if(roll<.22){const dmg=Math.max(4,Math.floor(state.player.maxHp*.08));state.player.hp=Math.max(1,state.player.hp-dmg);toast(`Pułapka w skrzyni! -${dmg} HP.`)}else{addItem(pick(['herb','potion','scrap','crystal','moonHerb']));if(Math.random()<.18)addItem('runeShard');if(Math.random()<.16)addItem('mapFragment');toast('📦 Zabierasz łup ze skrzyni.')}}
+ if(c.type==='chest'){c.resolved=true;dungeonRun.chests++;const roll=Math.random();if(roll<.22){const dmg=Math.max(4,Math.floor(state.player.maxHp*.08));state.player.hp=Math.max(1,state.player.hp-dmg);toast(`Pułapka w skrzyni! -${dmg} HP.`)}else{addItem(pick(['herb','potion','scrap','crystal','moonHerb']));if(Math.random()<.18)addItem('runeShard');toast('📦 Zabierasz łup ze skrzyni.')}}
  else if(c.type==='trap'){c.resolved=true;const dmg=Math.max(5,Math.floor(state.player.maxHp*(.08+Math.random()*.08)));state.player.hp=Math.max(1,state.player.hp-dmg);toast(`🕸️ Pułapka! -${dmg} HP.`)}
  else if(c.type==='shrine'){c.resolved=true;const heal=Math.floor(state.player.maxHp*.28),mana=Math.floor(state.player.maxMana*.25);state.player.hp=Math.min(state.player.maxHp,state.player.hp+heal);state.player.mana=Math.min(state.player.maxMana,state.player.mana+mana);toast(`✨ Kapliczka: +${heal} HP • +${mana} many.`)}
  else if(c.type==='key'){c.resolved=true;dungeonRun.keys++;toast('🗝️ Zdobywasz stary klucz.')} 

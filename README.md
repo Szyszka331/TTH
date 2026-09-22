@@ -1,10 +1,13 @@
-# Time4Heroes — Build 3.2.2 Clean Rebuild
+# Time4Heroes Build 3.1 — Dungeon Visuals & Unique Boss Loot
 
-Naprawiona paczka po błędzie `Unexpected end of input` w `app.js`.
+Najważniejsze zmiany:
+- każdy loch ma własny motyw wizualny mapy i komnat,
+- wyraźniejsze typy pól: skrzynie, pułapki, kapliczki, klucze, sekrety i boss room,
+- bossowie lochów mają podniesione HP/ATK zależnie od poziomu lochu,
+- każdy loch ma własny unikatowy przedmiot bossa,
+- pierwszy clear gwarantuje unikat bossa, kolejne mają 24% szansy,
+- unikat pojawia się na ekranie wyboru lootu i jest domyślnie zaznaczony,
+- lobby pokazuje unikat, trudność bossa i mnożniki HP/ATK,
+- zachowane systemy 3.0.2: sklep/enchant Ragora, loot selection, combat 2.0, quest world, crafting i klasowe EQ.
 
-- pełny `app.js` (1884 linie)
-- cache/service worker: 3220
-- zachowane funkcje Build 3.2
-- paczka sprawdzona `node --check` i `unzip -t`
-
-Wgraj całą zawartość ZIP-a do katalogu głównego repozytorium, nadpisując stare pliki.
+Cache: 3100

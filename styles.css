@@ -992,10 +992,3 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .battle-screen.dungeon-theme-tempestSpire{--arena-floor:#101126;--arena-glow:#8d89de3d;--arena-edge:#54518c}
 .battle-screen.dungeon-boss-battle .battle-arena{box-shadow:inset 0 -42px 90px #000a,inset 0 20px 70px #0008,0 0 28px var(--arena-glow)}
 .battle-screen.dungeon-boss-battle .versus{color:#f0c674;text-shadow:0 0 16px #e6a63b66}
-
-
-/* Build 3.2 — Map Fragments & Hidden Places */
-.hidden-site-marker{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:rgba(28,22,18,.94);border:2px solid #d9b458;box-shadow:0 0 0 4px rgba(217,180,88,.14),0 5px 14px rgba(0,0,0,.45)}
-.hidden-site-marker.treasure{border-color:#e0b95d}.hidden-site-marker.camp{border-color:#b96e46}.hidden-site-marker.dungeon{border-color:#8a78c8}
-.hidden-site-marker.interaction-ready{animation:hiddenSitePulse 1.25s ease-in-out infinite}@keyframes hiddenSitePulse{50%{transform:scale(1.08);box-shadow:0 0 0 8px rgba(217,180,88,.08),0 5px 16px rgba(0,0,0,.5)}}
-.cartography-card{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
