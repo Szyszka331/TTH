@@ -14,3 +14,9 @@ Baza: działający Build 3.0.2 Continuous Story, zbudowany z przesłanego przez 
 - zachowano ciągły główny wątek z 3.0.2 oraz ekran wyboru lootu z 3.0.1.
 
 Cache: 3030.
+
+
+## Build 3.0.4 — Combat Stats & Damage Feedback
+- Panel parametrów bojowych w Bohater → Ekwipunek.
+- Zakres obrażeń aktualnej broni, atak, pancerz, trafienie, krytyk, unik, blok, HP i mana.
+- W walce stały panel ostatniej wymiany: obrażenia zadane i otrzymane oraz UNIK/BLOK/KRYTYK.

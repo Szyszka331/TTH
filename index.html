@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.0.3 — Inventory & Icon Hotfix</title>
+  <title>Time4Heroes — Build 3.0.4 — Combat Stats & Damage Feedback</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=3030" />
+  <link rel="stylesheet" href="styles.css?v=3040" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 3.0.3: wyposażone przedmioty nie zajmują plecaka; pełny fallback ikon przedmiotów.
+    // Build 3.0.4: parametry bojowe w ekwipunku oraz czytelne obrażenia zadane i otrzymane podczas walki.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=3030"></script>
+  <script type="module" src="app.js?v=3040"></script>
 </body>
 </html>
