@@ -1,10 +1,10 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3110';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3200';
 
-const SAVE_KEY='time4heroes_build_311';
-const MIGRATION_KEYS=['time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
+const SAVE_KEY='time4heroes_build_320';
+const MIGRATION_KEYS=['time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.1.1';
+const BUILD_VERSION='3.2.0';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -182,7 +182,14 @@ function refreshAmbient(){if(state?.settings?.masterSound&&state?.settings?.ambi
 function toggleMasterSound(){ensureCoreState();const on=!!state.settings.masterSound;state.settings.masterSound=!on;state.settings.audio=!on;state.settings.ambient=!on;if(on){stopAmbient();try{audioCtx?.suspend?.()}catch{}}else{try{audioCtx?.resume?.()}catch{}refreshAmbient()}save();}
 document.addEventListener('pointerdown',()=>{if(!audioUnlocked){audioUnlocked=true;refreshAmbient()}},{capture:true});
 function haptic(pattern=18){if(state?.settings?.haptics&&navigator.vibrate)navigator.vibrate(pattern)}
-function itemIconVisual(id,cls='item-svg'){const d=itemDef(id),fallback=d?.icon||'❓';return `<span class="item-icon-shell"><img src="assets/icons/items/${id}.svg" class="${cls}" alt="${d?.name||id}" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="${cls} item-icon-fallback" style="display:none">${fallback}</span></span>`}
+const ITEM_ART_ATLAS={
+ shortBlade:[0,0],rustySword:[0,0],shortSword:[1,0],blueBlade:[1,0],ravenBlade:[1,0],mistBlade:[1,0],ashBlade:[1,0],ironAxe:[2,0],axe:[2,0],warHammer:[3,0],
+ woodenShield:[0,1],ironShield:[1,1],primitiveBow:[2,1],hunterBow:[2,1],yewBow:[2,1],forestBow:[2,1],wildBow:[2,1],mistBow:[2,1],ashBow:[2,1],stormBow:[2,1],willowStaff:[3,1],noviceStaff:[3,1],apprenticeStaff:[3,1],emberWand:[3,1],arcaneStaff:[3,1],mistStaff:[3,1],ashStaff:[3,1],stormStaff:[3,1],
+ chainVest:[0,2],ravenMail:[0,2],mistMail:[0,2],ashMail:[0,2],stormMail:[0,2],ironArmor:[1,2],rangerLeather:[2,2],wildMail:[2,2],mistLeathers:[2,2],ashLeathers:[2,2],stormLeathers:[2,2],apprenticeRobe:[3,2],runicRobe:[3,2],arcaneRobe:[3,2],mistRobe:[3,2],ashRobe:[3,2],stormRobe:[3,2],
+ potion:[0,3],strongPotion:[0,3],manaPotion:[1,3],oldTalisman:[2,3],wolfCharm:[2,3],mireCharm:[2,3],cinderCharm:[2,3],shadowRing:[3,3],emberRing:[3,3],boneRing:[3,3]
+};
+function atlasStyle(path,pos,cols,rows){const x=cols===1?0:pos[0]/(cols-1)*100,y=rows===1?0:pos[1]/(rows-1)*100;return `--atlas-image:url('${path}');--atlas-size:${cols*100}% ${rows*100}%;--atlas-x:${x}%;--atlas-y:${y}%`}
+function itemIconVisual(id,cls='item-svg'){const d=itemDef(id),fallback=d?.icon||'❓',pos=ITEM_ART_ATLAS[id];if(pos)return `<span class="item-icon-shell"><span class="atlas-sprite item-atlas-sprite ${cls}" role="img" aria-label="${d?.name||id}" style="${atlasStyle('assets/atlases/item-atlas-320.png',pos,4,4)}"></span></span>`;return `<span class="item-icon-shell"><img src="assets/icons/items/${id}.svg" class="${cls}" alt="${d?.name||id}" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="${cls} item-icon-fallback" style="display:none">${fallback}</span></span>`}
 function skillIconVisual(id,cls='skill-svg'){return `<img src="assets/icons/skills/${id}.svg" class="${cls}" alt="">`}
 function ensureCoreState(s=state){if(!s)return;ensureStoryState(s);s.ui ||= {heroView:'char',adventureView:'quests',menuView:'settings'};s.tutorial ||= {stage:0,complete:false,rewardGiven:false,flags:{},introSeen:true};s.tutorial.flags ||= {};s.tutorial.introSeen ??= true;s.tutorial.mapDismissedStage ??= -1;s.settings ||= {};s.settings.audio ??= true;s.settings.ambient ??= true;s.settings.masterSound ??= (s.settings.audio||s.settings.ambient);s.settings.sfxVolume ??= .68;s.settings.ambientVolume ??= .18;s.settings.haptics ??= true;s.settings.mapMode ||= 'focused';s.settings.mapFilters ||= {};s.settings.mapFilters.trail ??= true;s.player.inventoryCapacity ??= 32;s.world.regionRewards ||= {};s.world.fogRadius=100;ensureDungeonAccessState(s);}
 
@@ -489,20 +496,20 @@ function biomeAt(x=0,y=0){
 }
 function biomeInfoAtPlayer(){const id=biomeAt(state?.player?.position?.x||0,state?.player?.position?.y||0);return {id,...BIOMES[id]}}
 function biomeMonsterPool(id){
- const map={meadow:['rat','slime','wolf','goblin','beetle'],forest:['wolf','spider','goblin','beetle'],ruins:['skeleton','shade','ghost','cultist'],marsh:['slime','spider','ghost','elemental'],highlands:['ogre','wolf','elemental','wyvern']};
+ const map={meadow:['rat','slime','wolf','goblin','beetle','thornBoar','caveBat'],forest:['wolf','spider','goblin','beetle','thornBoar','graveMoth'],ruins:['skeleton','shade','ghost','cultist','boneArcher','graveMoth'],marsh:['slime','spider','ghost','elemental','mistStag','plagueToad'],highlands:['ogre','wolf','elemental','wyvern','mistStag','caveBat']};
  return (map[id]||map.meadow).filter(id=>MONSTERS.some(m=>m.id===id));
 }
 function generateLivingMonsters(day){
  const out=[];
- for(let i=0;i<92;i++){
+ for(let i=0;i<118;i++){
   const a=seeded(day+i*71)*Math.PI*2,r=70+seeded(day+i*113)*1820,x=Math.cos(a)*r,y=Math.sin(a)*r;
   const zone=zoneAt(x,y),biome=biomeAt(x,y);
   let pool=biomeMonsterPool(biome);
-  if(x>=1440)pool=['frostRaptor','stormCultist','iceWraith','thunderGolem','mountainTroll','skySerpent','frozenKnight'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(x>=1040)pool=['ashScavenger','fireWasp','cinderCultist','emberWraith','slagGolem','ashDrake','pyreKnight'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(x>=620)pool=['mireCrawler','bogWraith','fenStalker','rotCultist','mossGolem','marshHag','blackrootGuardian'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(zone==='red')pool=['demon','hellhound','elemental'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(zone==='black')pool=['wyvern','demon','ogre'].filter(id=>MONSTERS.some(m=>m.id===id));
+  if(x>=1440)pool=['frostRaptor','stormCultist','iceWraith','thunderGolem','mountainTroll','skySerpent','frozenKnight','stormGriffin','lichWarden'].filter(id=>MONSTERS.some(m=>m.id===id));
+  else if(x>=1040)pool=['ashScavenger','fireWasp','cinderCultist','emberWraith','slagGolem','ashDrake','pyreKnight','magmaScorpion','voidHound','obsidianSentinel'].filter(id=>MONSTERS.some(m=>m.id===id));
+  else if(x>=620)pool=['mireCrawler','bogWraith','fenStalker','rotCultist','mossGolem','marshHag','blackrootGuardian','mistStag','plagueToad'].filter(id=>MONSTERS.some(m=>m.id===id));
+  else if(zone==='red')pool=['demon','hellhound','elemental','magmaScorpion','voidHound','obsidianSentinel'].filter(id=>MONSTERS.some(m=>m.id===id));
+  else if(zone==='black')pool=['wyvern','demon','ogre','stormGriffin','lichWarden','abyssHydra'].filter(id=>MONSTERS.some(m=>m.id===id));
   const id=pool[Math.floor(seeded(day+i*157)*pool.length)]||'wolf';
   out.push({id:`live_${day}_${i}`,type:'monster',template:id,x,y,alive:true,respawn:0,elite:seeded(day+i*199)>.92,biome});
  }
@@ -683,7 +690,7 @@ function openFastTravel(){
 }
 function fastTravelTo(id){
  const n=availableTravelNodes().find(x=>x.id===id);if(!n)return toast('Ten węzeł nie jest dostępny.');const ll=worldToLatLng(n.x,n.y);if(!ll)return toast('Brak zakotwiczonego świata GPS.');
- if(gpsWatch!==null){closeModal();followGps=false;if(realMap)realMap.setView(ll,17,{animate:true});toast(`Mapa: ${n.name}`);return}
+ if(gpsWatch!==null){closeModal();followGps=false;if(realMap)realMap.setView(ll,18,{animate:true});toast(`Mapa: ${n.name}`);return}
  const cost=travelCost(n);if(state.player.gold<cost)return toast(`Podróż kosztuje ${cost} 🪙.`);state.player.gold-=cost;
  state.player.position={x:n.x,y:n.y,lat:ll[0],lng:ll[1],gps:false,accuracy:0,heading:null,virtualTravel:true};state.world.exploration.travelVisited.push(id);save();closeModal();selectNav('map');toast(`Szybka podróż: ${n.name} • -${cost} 🪙. Tryb GPS-interakcji jest zablokowany.`)
 }
@@ -693,7 +700,7 @@ function equippedInstanceForState(s,slot){const e=s?.player?.equipped?.[slot];if
 function normalizeState(s){
  if(!s)return null;
  const previousVersion=s.version||0;
- s.version=311;
+ s.version=320;
  s.player ||= {};
  s.player.stats ||= {str:5,agi:5,int:5,vit:5};
  s.player.inventory ||= [];
@@ -732,6 +739,7 @@ function normalizeState(s){
  s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};
  if(previousVersion<19&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0}
  if(previousVersion<310&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.contextKey=''}
+ if(previousVersion<320&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.contextKey=''}
  ensureAdventureState(s);
  ensureEconomyState(s);
  ensureLivingWorld(s);
@@ -753,11 +761,11 @@ function newGame(name,cls){
  const armor={id:starterArmor(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const boots={id:starterBoots(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const pets=['hunter','ranger'].includes(cls)?[{id:'youngWolf',level:1,xp:0}]:[];
- state={version:311,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,contextKey:'',completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
+ state={version:320,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,contextKey:'',completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
  ensureCoreState();ensureLivingWorld();ensureExplorationState();save();render();
 }
 function resetCharacter(){if(!confirm('Zresetować postać i wrócić do kreatora? Usunie to lokalny postęp tej gry.'))return;try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();for(const key of Object.keys(localStorage)){if(key===SAVE_KEY||key.startsWith('time4heroes_build_')||key.startsWith('georpg_build_'))localStorage.removeItem(key)}state=null;combat=null;dungeonRun=null;currentTab='map';destroyRealMap();render();}
-function centerMapOnPlayer(){selectNav('map');setTimeout(()=>{if(realMap&&state?.player?.position?.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],17,{animate:true})}},120)}
+function centerMapOnPlayer(){selectNav('map');setTimeout(()=>{if(realMap&&state?.player?.position?.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],18,{animate:true})}},120)}
 function openQuestView(){state.ui.adventureView='quests';save();selectNav('adventureHub')}
 
 function rareZones(){const s=daySeed();return {yellow:{x:(seeded(s+1)-.5)*420,y:(seeded(s+2)-.5)*420,r:200},red:{x:(seeded(s+3)-.5)*560,y:(seeded(s+4)-.5)*560,r:100},black:{x:(seeded(s+5)-.5)*650,y:(seeded(s+6)-.5)*650,r:50}}}
@@ -963,9 +971,11 @@ const GRAPHICS={
  },
  pets:{youngWolf:'assets/wolf.png',cinderHound:'assets/hellhound.png'}
 };
+const CORE_MONSTER_ATLAS={slime:[0,0],rat:[1,0],beetle:[2,0],wolf:[3,0],goblin:[0,1],skeleton:[1,1],spider:[2,1],elemental:[3,1],ghost:[0,2],cultist:[1,2],demon:[2,2],hellhound:[3,2]};
+const NEW_MONSTER_ATLAS={thornBoar:[0,0],caveBat:[1,0],graveMoth:[2,0],boneArcher:[3,0],mistStag:[0,1],plagueToad:[1,1],magmaScorpion:[2,1],voidHound:[3,1],obsidianSentinel:[0,2],stormGriffin:[1,2],lichWarden:[2,2],abyssHydra:[3,2]};
 function sprite(path,alt,cls){return `<img src="${path}" alt="${alt}" class="pixel-sprite ${cls||''}">`}
 function classVisual(id,cls='sprite-inline'){const c=CLASSES[id];const path=GRAPHICS.classes[id];return path?sprite(path,c?.name||id,cls):(c?.icon||'❓')}
-function monsterVisual(id,cls='sprite-inline'){const m=MONSTERS.find(x=>x.id===id);const path=GRAPHICS.monsters[id];return path?sprite(path,m?.name||id,cls):(m?.icon||'❓')}
+function monsterVisual(id,cls='sprite-inline'){const m=MONSTERS.find(x=>x.id===id),core=CORE_MONSTER_ATLAS[id],fresh=NEW_MONSTER_ATLAS[id];if(core||fresh){const path=core?'assets/atlases/monster-atlas-core-320.png':'assets/atlases/monster-atlas-new-320.png',pos=core||fresh;return `<span class="pixel-sprite atlas-sprite monster-atlas-sprite ${cls}" role="img" aria-label="${m?.name||id}" style="${atlasStyle(path,pos,4,3)}"></span>`}const path=GRAPHICS.monsters[id];return path?sprite(path,m?.name||id,cls):(m?.icon||'❓')}
 function npcVisual(name,classId,cls='sprite-npc'){const path=GRAPHICS.npcs[name];return path?sprite(path,name,cls):classVisual(classId,cls)}
 function petVisual(id,cls='sprite-inline'){const p=PETS[id];const path=GRAPHICS.pets[id]||GRAPHICS.monsters[id];return path?sprite(path,p?.name||id,cls):(p?.icon||'❓')}
 
@@ -1279,7 +1289,7 @@ function initRealMap(){
  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors',updateWhenIdle:true,keepBuffer:2,className:'rpg-osm-tiles'}).addTo(realMap);
  const p=state.player.position,origin=state.world.gpsOrigin;
  const center=p.lat?[p.lat,p.lng]:origin?[origin.lat,origin.lng]:[52.1,19.4];
- realMap.setView(center,p.lat?17:origin?16:6);
+ realMap.setView(center,p.lat?18:origin?17:7);
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
  if(p.lat){
   const html=`<div class="leaflet-player-marker rpg-player-marker">${classVisual(p.class,'mmo-player-sprite')}<span></span></div>`;
@@ -1406,7 +1416,7 @@ function renderMap(el){
  el.querySelectorAll('[data-map-demo-step]').forEach(b=>b.onclick=()=>{const step=b.dataset.mapDemoStep,delta={up:[0,30],down:[0,-30],left:[-30,0],right:[30,0]}[step];if(delta)moveDemo(delta[0],delta[1])});
  el.querySelectorAll('[data-map-gps]').forEach(b=>b.addEventListener('click',toggleGps));
  el.querySelectorAll('[data-osm-zoom]').forEach(b=>b.onclick=()=>{if(!realMap)return;b.dataset.osmZoom==='in'?realMap.zoomIn():realMap.zoomOut()});
- const centerNow=()=>{if(realMap&&state.player.position.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],Math.max(17,realMap.getZoom()),{animate:true})}else toast('Włącz GPS, aby wyśrodkować mapę.')};
+ const centerNow=()=>{if(realMap&&state.player.position.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],Math.max(18,realMap.getZoom()),{animate:true})}else toast('Włącz GPS, aby wyśrodkować mapę.')};
  el.querySelector('[data-osm-center]')?.addEventListener('click',centerNow);
  el.querySelectorAll('[data-map-sheet-toggle]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=!state.ui.mapSheetOpen;save();renderMap(el)});
  el.querySelectorAll('[data-map-sheet-collapse]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=false;save();renderMap(el)});
@@ -1736,7 +1746,7 @@ async function installPwa(){
 function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build 3.0.7</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>🌙 Testy</b><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🧪 Reset postaci do testów</b><div class="muted">Usuwa lokalny save oraz stare save’y migracyjne i wraca prosto do kreatora postaci.</div><button class="danger" data-reset-character>Resetuj postać</button></div></div>`;
  el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
-function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='time4heroes-build-3.1.1-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='time4heroes-build-3.2.0-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function importSave(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=normalizeState(JSON.parse(r.result));save();refresh();toast('Zapis zaimportowany.')}catch{toast('Nieprawidłowy plik zapisu.')}};r.readAsText(f)}
 
 

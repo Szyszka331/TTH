@@ -1,7 +1,7 @@
-const CACHE='time4heroes-3110';
+const CACHE='time4heroes-3200';
 const CORE=[
-  './','./index.html','./styles.css?v=3110','./app.js?v=3110','./data.js?v=3110','./manifest.webmanifest',
-  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/smith-scene-desktop.jpg','./assets/smith-scene-mobile.jpg','./assets/alchemist-scene-desktop.jpg','./assets/alchemist-scene-mobile.jpg','./assets/shop-scene-desktop.jpg','./assets/shop-scene-mobile.jpg','./assets/guild-scene-desktop.jpg','./assets/guild-scene-mobile.jpg','./assets/auction-scene-desktop.jpg','./assets/auction-scene-mobile.jpg','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png'
+  './','./index.html','./styles.css?v=3200','./app.js?v=3200','./data.js?v=3200','./manifest.webmanifest',
+  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/smith-scene-desktop.jpg','./assets/smith-scene-mobile.jpg','./assets/alchemist-scene-desktop.jpg','./assets/alchemist-scene-mobile.jpg','./assets/shop-scene-desktop.jpg','./assets/shop-scene-mobile.jpg','./assets/guild-scene-desktop.jpg','./assets/guild-scene-mobile.jpg','./assets/auction-scene-desktop.jpg','./assets/auction-scene-mobile.jpg','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png','./assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png'
 ];
 
 self.addEventListener('install',event=>{

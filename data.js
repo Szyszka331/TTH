@@ -47,7 +47,21 @@ export const MONSTERS = [
  {id:'mountainTroll',name:'Troll Skalny',icon:'👹',family:'Bestie',min:45,max:51,zone:'red',hp:500,atk:61,xp:980,gold:[70,115],weak:'trucizna'},
  {id:'skySerpent',name:'Wąż Niebios',icon:'🐍',family:'Bestie',min:46,max:52,zone:'red',hp:430,atk:64,xp:1040,gold:[74,122],weak:'przebicie'},
  {id:'frozenKnight',name:'Zamarznięty Strażnik',icon:'⚔️',family:'Nieumarli',min:47,max:53,zone:'red',hp:470,atk:65,xp:1080,gold:[78,128],weak:'ogień'},
- {id:'tempestLord',name:'Władca Nawałnicy',icon:'🌩️',family:'Żywiołaki',min:50,max:55,zone:'black',hp:880,atk:74,xp:2200,gold:[210,310],weak:'obuch'}
+ {id:'tempestLord',name:'Władca Nawałnicy',icon:'🌩️',family:'Żywiołaki',min:50,max:55,zone:'black',hp:880,atk:74,xp:2200,gold:[210,310],weak:'obuch'},
+
+ // Build 3.2 — nowe gatunki spotykane w biomach i strefach zagrożenia
+ {id:'thornBoar',name:'Kolczasty Odyniec',icon:'🐗',family:'Natura',min:5,max:16,zone:'green',hp:76,atk:13,xp:82,gold:[7,16],weak:'ogień'},
+ {id:'caveBat',name:'Jaskiniowy Krwiopijca',icon:'🦇',family:'Bestie',min:3,max:14,zone:'green',hp:54,atk:12,xp:68,gold:[5,13],weak:'światło'},
+ {id:'graveMoth',name:'Ćma Grobowa',icon:'🦋',family:'Owady',min:8,max:20,zone:'green',hp:88,atk:16,xp:108,gold:[8,20],weak:'ogień'},
+ {id:'boneArcher',name:'Kościany Łucznik',icon:'🏹',family:'Nieumarli',min:12,max:25,zone:'green',hp:112,atk:20,xp:148,gold:[12,26],weak:'obuch'},
+ {id:'mistStag',name:'Jeleń Mgły',icon:'🦌',family:'Zjawy',min:20,max:34,zone:'yellow',hp:154,atk:25,xp:265,gold:[20,42],weak:'światło'},
+ {id:'plagueToad',name:'Ropuch Zarazy',icon:'🐸',family:'Natura',min:22,max:36,zone:'yellow',hp:196,atk:27,xp:310,gold:[24,48],weak:'lód'},
+ {id:'magmaScorpion',name:'Magma Skorpion',icon:'🦂',family:'Owady',min:34,max:48,zone:'red',hp:285,atk:43,xp:590,gold:[42,78],weak:'lód'},
+ {id:'voidHound',name:'Ogar Pustki',icon:'🐕',family:'Demony',min:38,max:54,zone:'red',hp:315,atk:49,xp:690,gold:[50,88],weak:'światło'},
+ {id:'obsidianSentinel',name:'Obsydianowy Strażnik',icon:'🗿',family:'Żywiołaki',min:42,max:58,zone:'red',hp:470,atk:54,xp:840,gold:[62,106],weak:'obuch'},
+ {id:'stormGriffin',name:'Gryf Nawałnicy',icon:'🦅',family:'Bestie',min:48,max:68,zone:'black',hp:560,atk:67,xp:1180,gold:[92,148],weak:'przebicie'},
+ {id:'lichWarden',name:'Licz Strażnik',icon:'💀',family:'Nieumarli',min:52,max:74,zone:'black',hp:610,atk:72,xp:1360,gold:[105,170],weak:'światło'},
+ {id:'abyssHydra',name:'Hydra Otchłani',icon:'🐉',family:'Demony',min:60,max:82,zone:'black',hp:760,atk:82,xp:1750,gold:[140,220],weak:'lód'}
 ];
 
 
@@ -93,7 +107,19 @@ export const MONSTER_LOOT = {
  mountainTroll:[{id:'trollHide',chance:.72,min:1,max:2},{id:'trollTooth',chance:.44,min:1,max:1},{id:'rawMeat',chance:.54,min:1,max:2}],
  skySerpent:[{id:'skyScale',chance:.76,min:1,max:3},{id:'stormFeather',chance:.42,min:1,max:2},{id:'stormCore',chance:.16,min:1,max:1}],
  frozenKnight:[{id:'frostCrystal',chance:.54,min:1,max:2},{id:'brokenBlade',chance:.42,min:1,max:1},{id:'skySteel',chance:.16,min:1,max:1}],
- tempestLord:[{id:'stormCore',chance:1,min:2,max:3},{id:'skySteel',chance:1,min:2,max:3},{id:'stormFeather',chance:1,min:2,max:4},{id:'frostCrystal',chance:.80,min:1,max:2}]
+ tempestLord:[{id:'stormCore',chance:1,min:2,max:3},{id:'skySteel',chance:1,min:2,max:3},{id:'stormFeather',chance:1,min:2,max:4},{id:'frostCrystal',chance:.80,min:1,max:2}],
+ thornBoar:[{id:'rawMeat',chance:.82,min:1,max:2},{id:'wolfPelt',chance:.26,min:1,max:1},{id:'herb',chance:.18,min:1,max:1}],
+ caveBat:[{id:'roughCloth',chance:.34,min:1,max:1},{id:'ectoplasm',chance:.12,min:1,max:1},{id:'oldCoin',chance:.20,min:1,max:2}],
+ graveMoth:[{id:'graveDust',chance:.58,min:1,max:2},{id:'spiderSilk',chance:.44,min:1,max:1},{id:'moonHerb',chance:.10,min:1,max:1}],
+ boneArcher:[{id:'bone',chance:.86,min:1,max:3},{id:'brokenBlade',chance:.32,min:1,max:1},{id:'oldCoin',chance:.30,min:1,max:2}],
+ mistStag:[{id:'ectoplasm',chance:.52,min:1,max:2},{id:'moonHerb',chance:.34,min:1,max:1},{id:'crystal',chance:.12,min:1,max:1}],
+ plagueToad:[{id:'venomGland',chance:.66,min:1,max:2},{id:'mireMoss',chance:.48,min:1,max:2},{id:'slimeGel',chance:.30,min:1,max:1}],
+ magmaScorpion:[{id:'ashGlass',chance:.62,min:1,max:2},{id:'fireWing',chance:.30,min:1,max:1},{id:'emberCore',chance:.12,min:1,max:1}],
+ voidHound:[{id:'charredHide',chance:.64,min:1,max:2},{id:'demonBlood',chance:.46,min:1,max:1},{id:'shadowEssence',chance:.20,min:1,max:1}],
+ obsidianSentinel:[{id:'stoneCore',chance:.76,min:1,max:3},{id:'charredIron',chance:.54,min:1,max:2},{id:'runeShard',chance:.14,min:1,max:1}],
+ stormGriffin:[{id:'stormFeather',chance:.82,min:1,max:3},{id:'skySteel',chance:.26,min:1,max:1},{id:'frostClaw',chance:.22,min:1,max:1}],
+ lichWarden:[{id:'graveDust',chance:.74,min:1,max:3},{id:'shadowEssence',chance:.52,min:1,max:2},{id:'runeShard',chance:.24,min:1,max:1}],
+ abyssHydra:[{id:'demonBlood',chance:.86,min:1,max:3},{id:'emberCore',chance:.44,min:1,max:2},{id:'wyvernScale',chance:.58,min:1,max:3},{id:'runeShard',chance:.30,min:1,max:1}]
 };
 
 export const ITEMS = {
