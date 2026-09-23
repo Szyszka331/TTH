@@ -1,10 +1,10 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3200';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3800';
 
-const SAVE_KEY='time4heroes_build_320';
-const MIGRATION_KEYS=['time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
+const SAVE_KEY='time4heroes_build_380';
+const MIGRATION_KEYS=['time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.2.0';
+const BUILD_VERSION='3.8.0';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -28,6 +28,8 @@ let leafletBiomeLayers=[];
 let leafletDecorLayers=[];
 let lastGpsTick=0;
 let gpsPausedByBackground=false;
+let playerWalkStopTimer=null;
+const playerMotion={heading:0,speed:0,moving:false,movingUntil:0,lastAt:0};
 let isOnline=navigator.onLine;
 function connectionBanner(){return isOnline?'':'<div class=\"offline-banner\" data-offline-banner>📴 Tryb offline — zapis i większość gry działa, ale OpenStreetMap może być niedostępny.</div>'}
 function refreshConnectionBanner(){const old=document.querySelector('[data-offline-banner]');if(!isOnline&&!old)document.querySelector('.shell')?.insertAdjacentHTML('afterbegin',connectionBanner());if(isOnline&&old)old.remove()}
@@ -44,6 +46,18 @@ const uid=()=>Math.random().toString(36).slice(2,10);
 const daySeed=()=>Number(new Date().toISOString().slice(0,10).replaceAll('-',''));
 const seeded=(seed)=>{const x=Math.sin(seed)*10000;return x-Math.floor(x)};
 const fmt=n=>Math.round(n).toLocaleString('pl-PL');
+const MONSTER_VARIANTS={
+ normal:{id:'normal',label:'Zwykły',icon:'●',hp:1,atk:1,xp:1,gold:1,loot:1,scale:1,desc:'Podstawowa odmiana gatunku.'},
+ young:{id:'young',label:'Młody',icon:'🌱',hp:.78,atk:.86,xp:.78,gold:.76,loot:.84,scale:.88,desc:'Mniejszy i słabszy osobnik, ale nadal może upuścić typowe materiały.'},
+ hardened:{id:'hardened',label:'Zahartowany',icon:'⚔️',hp:1.34,atk:1.16,xp:1.38,gold:1.30,loot:1.20,scale:1.04,drop:'hardenedMark',desc:'Doświadczony osobnik z większą wytrzymałością i lepszym łupem.'},
+ corrupted:{id:'corrupted',label:'Skażony',icon:'🟣',hp:1.62,atk:1.34,xp:1.72,gold:1.58,loot:1.46,scale:1.09,drop:'corruptedEssence',desc:'Rzadka wersja przesiąknięta obcą energią. Jest groźniejsza i zostawia skażoną esencję.'},
+ ancient:{id:'ancient',label:'Pradawny',icon:'👑',hp:2.12,atk:1.56,xp:2.45,gold:2.15,loot:1.82,scale:1.16,drop:'ancientRelic',desc:'Najrzadsza odmiana gatunku — niemal mini-boss z najlepszymi nagrodami.'}
+};
+const MONSTER_VARIANT_ORDER=['normal','young','hardened','corrupted','ancient'];
+function stableTextSeed(value=''){let h=2166136261;for(const ch of String(value)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return Math.abs(h||1)}
+function monsterVariantFromRoll(roll,level=1){let id=roll<.54?'normal':roll<.76?'young':roll<.92?'hardened':roll<.985?'corrupted':'ancient';if(level<3&&id==='corrupted')id='hardened';if(level<8&&id==='ancient')id='corrupted';return id}
+function monsterVariantDef(id='normal'){return MONSTER_VARIANTS[id]||MONSTER_VARIANTS.normal}
+function entityMonsterVariant(e,level=state?.player?.level||1){if(!e)return 'normal';if(MONSTER_VARIANTS[e.variant])return e.variant;const seed=stableTextSeed(`${e.id||e.template||'monster'}:${e.template||''}`)+daySeed()*31;e.variant=monsterVariantFromRoll(seeded(seed),level);return e.variant}
 function geoDistance(a,b){
  const lat1=Number(a?.lat),lng1=Number(a?.lng),lat2=Number(b?.lat),lng2=Number(b?.lng);
  if(![lat1,lng1,lat2,lng2].every(Number.isFinite))return Infinity;
@@ -282,7 +296,16 @@ function currentQuestStep(qid){const q=QUESTS.find(x=>x.id===qid),i=currentQuest
 function activeQuestTargets(){const set=new Set();for(const qid of state.quests.active){const cur=currentQuestStep(qid);if(cur?.step?.target)set.add(cur.step.target)}return set}
 function questPoiVisible(e){if(!e||e.type!=='poi')return true;const refs=[];for(const q of QUESTS)q.steps.forEach((s,i)=>{if(s.type==='discover'&&s.target===e.id)refs.push({q,i})});if(!refs.length)return true;if(state.player.discovered.includes(e.id))return true;return refs.some(({q,i})=>state.quests.active.includes(q.id)&&currentQuestStepIndex(q.id)===i)}
 function questWorldEntityVisible(e){if(!e)return false;if(e.questOnly){if(!state.quests.active.includes(e.questId))return false;const cur=currentQuestStep(e.questId);return !!cur&&cur.index===e.questStage&&!e.done}if(e.bountyId){const b=(state.adventure?.bounties||[]).find(x=>x.id===e.bountyId);return !!b&&b.accepted&&!b.claimed&&!e.done&&(e.type!=='monster'||e.alive)}return questPoiVisible(e)}
-function focusedEntityVisible(e){if(state.settings.mapMode!=='focused')return true;const d=dist(e,state.player.position),targets=activeQuestTargets(),specificMonster=e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template);if(e.type==='monster')return d<=165||(e.elite&&d<=300)||(specificMonster&&d<=320);if(e.type==='event')return d<=260;if(e.type==='dungeon')return targets.has(e.id)||d<=260||(state.player.dungeons.includes(e.id)&&d<=360);if(e.type==='poi')return targets.has(e.id)||d<=210||(state.player.discovered.includes(e.id)&&d<=260);return true}
+function focusedEntityVisible(e){
+ if(state.settings.mapMode!=='focused')return true;
+ const d=dist(e,state.player.position),targets=activeQuestTargets(),specificMonster=e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template);
+ if(e.type==='monster')return d<=165||(e.elite&&d<=300)||(specificMonster&&d<=320);
+ if(e.type==='event')return d<=260;
+ if(e.type==='habitat')return d<=520;
+ if(e.type==='dungeon')return targets.has(e.id)||d<=260||(state.player.dungeons.includes(e.id)&&d<=360);
+ if(e.type==='poi')return targets.has(e.id)||d<=210||(state.player.discovered.includes(e.id)&&d<=260);
+ return true;
+}
 document.addEventListener('click',e=>{if(e.target.closest('button'))playSfx('click')},{capture:true});
 
 
@@ -322,15 +345,33 @@ function itemClassAllowed(d,cls=state?.player?.class){return !d?.classes||!cls||
 function itemClassNames(d){return d?.classes?.map(id=>CLASSES[id]?.name||id).join(', ')||'Wszystkie klasy'}
 function randomGearFrom(tier){const pool=(GEAR_POOLS[tier]||[]).filter(id=>{const d=itemDef(id);return (!d.reqLevel||state.player.level>=d.reqLevel)&&itemClassAllowed(d)});if(!pool.length)return null;return pick(pool)}
 function lootChanceLabel(chance){const pct=Math.round(chance*100);return `${pct}%`}
-function monsterLootTable(id){return MONSTER_LOOT[id]||[]}
+function monsterLootTable(id){
+ if(MONSTER_LOOT[id])return MONSTER_LOOT[id];
+ const family=MONSTERS.find(m=>m.id===id)?.family;
+ const familyLoot={
+  Natura:[{id:'herb',chance:.38,min:1,max:2},{id:'rawMeat',chance:.34,min:1,max:2}],
+  Owady:[{id:'venomGland',chance:.48,min:1,max:1},{id:'spiderSilk',chance:.42,min:1,max:2}],
+  Nieumarli:[{id:'bone',chance:.64,min:1,max:2},{id:'graveDust',chance:.38,min:1,max:1}],
+  Zjawy:[{id:'ectoplasm',chance:.54,min:1,max:2},{id:'graveDust',chance:.44,min:1,max:1}],
+  Demony:[{id:'demonBlood',chance:.42,min:1,max:1},{id:'sulfur',chance:.58,min:1,max:2}],
+  'Żywiołaki':[{id:'stoneCore',chance:.56,min:1,max:2},{id:'crystal',chance:.12,min:1,max:1}],
+  Ludzie:[{id:'roughCloth',chance:.52,min:1,max:2},{id:'scrap',chance:.34,min:1,max:2},{id:'oldCoin',chance:.22,min:1,max:2}],
+  Bestie:[{id:'rawMeat',chance:.62,min:1,max:2},{id:'wolfPelt',chance:.32,min:1,max:1},{id:'wolfFang',chance:.24,min:1,max:1}]
+ };
+ return familyLoot[family]||[];
+}
 function monsterLootHTML(m){const rows=monsterLootTable(m.id);if(!rows.length)return '<div class="loot-empty">Brak zarejestrowanych łupów.</div>';return `<div class="bestiary-loot-grid">${rows.map(r=>{const d=itemDef(r.id);return `<div class="bestiary-loot-row"><span class="loot-icon">${d.icon}</span><div><b class="rarity-${d.rarity}">${d.name}</b><small>${lootChanceLabel(r.chance)} • ${r.min||1}${(r.max||r.min||1)!==(r.min||1)?`–${r.max}`:''} szt.</small></div></div>`}).join('')}</div>`}
-function rollMonsterMaterials(m,e,c){const drops=[];const elite=!!e?.elite,boss=!!c?.isBoss||!!c?.worldBoss;for(const row of monsterLootTable(m.id)){const chance=Math.min(1,row.chance*(elite?1.12:1)*(boss?1.18:1));if(Math.random()>chance)continue;let qty=rnd(row.min||1,row.max||row.min||1);if(elite&&Math.random()<.30)qty++;if(boss&&Math.random()<.45)qty++;drops.push({id:row.id,qty})}return drops}
+function rollMonsterMaterials(m,e,c){const drops=[];const elite=!!e?.elite,boss=!!c?.isBoss||!!c?.worldBoss,variantLoot=m?.variantLoot||1;for(const row of monsterLootTable(m.id)){const chance=Math.min(1,row.chance*(elite?1.12:1)*(boss?1.18:1)*variantLoot);if(Math.random()>chance)continue;let qty=rnd(row.min||1,row.max||row.min||1);if(elite&&Math.random()<.30)qty++;if(boss&&Math.random()<.45)qty++;if(['corrupted','ancient'].includes(m?.variantId)&&Math.random()<.24)qty++;drops.push({id:row.id,qty})}return drops}
 function mergeLootDrops(drops=[]){const merged=[];const stackIndex=new Map();for(const drop of drops.filter(Boolean)){const qty=Math.max(1,drop.qty||1);if(isStackable(drop.id)){if(stackIndex.has(drop.id)){merged[stackIndex.get(drop.id)].qty+=qty}else{stackIndex.set(drop.id,merged.length);merged.push({id:drop.id,qty,gear:false})}}else{for(let i=0;i<qty;i++)merged.push({id:drop.id,qty:1,gear:true})}}return merged}
 function lootToastText(drops=[]){if(!drops.length)return '';const merged={};for(const d of drops)merged[d.id]=(merged[d.id]||0)+(d.qty||1);const bits=Object.entries(merged).slice(0,4).map(([id,q])=>`${itemDef(id).icon} ${q}× ${itemDef(id).name}`);const extra=Object.keys(merged).length>4?` +${Object.keys(merged).length-4} więcej`:'';return bits.join(' • ')+extra}
 function rollCombatLoot(m,e,c){ensureEconomyState();let gearDrop=null;const drops=rollMonsterMaterials(m,e,c);
+ if(m.variantId==='hardened'&&Math.random()<.34)drops.push({id:'hardenedMark',qty:1});
+ if(m.variantId==='corrupted'&&Math.random()<.62)drops.push({id:'corruptedEssence',qty:1});
+ if(m.variantId==='ancient'){drops.push({id:'ancientRelic',qty:Math.random()<.18?2:1});if(Math.random()<.35)drops.push({id:'runeShard',qty:1})}
  if(Math.random()<.018)drops.push({id:'crystal',qty:1});
  const elite=!!e.elite,boss=!!c.isBoss||!!c.worldBoss;
- if(!elite&&!boss&&Math.random()<.018)gearDrop=randomGearFrom('uncommon');
+ const variantGearChance={normal:.018,young:.010,hardened:.035,corrupted:.075,ancient:.16}[m.variantId]??.018;
+ if(!elite&&!boss&&Math.random()<variantGearChance)gearDrop=randomGearFrom(m.variantId==='ancient'?'rare':m.variantId==='corrupted'&&Math.random()<.22?'rare':'uncommon');
  if(elite&&!boss){state.economy.elitePity++;if(Math.random()<.18||state.economy.elitePity>=4){gearDrop=randomGearFrom(Math.random()<.22?'epic':'rare');state.economy.elitePity=0}if(Math.random()<.16)drops.push({id:'runeShard',qty:1})}
  if(boss){state.economy.bossPity++;const epicGuaranteed=state.economy.bossPity>=3;if(Math.random()<.58||epicGuaranteed){gearDrop=randomGearFrom(Math.random()<.18?'heroic':'epic');state.economy.bossPity=0}else gearDrop=randomGearFrom('rare');if(Math.random()<.55)drops.push({id:'runeShard',qty:rnd(1,2)});if(Math.random()<.08)drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1})}
  if(gearDrop)drops.push({id:gearDrop,qty:1,gear:true});return {gearDrop,drops:mergeLootDrops(drops)};
@@ -354,7 +395,7 @@ function climate(source=state){
  const w=options[Math.floor(seeded(daySeed()+bucket*47)*options.length)];
  return {icon:w[0],weather:w[1],phase,hour,bucket};
 }
-function worldContextKey(source=state){const c=climate(source);return `${daySeed()}_${c.bucket}_${c.weather}_${c.phase}`}
+function worldContextKey(source=state){const c=climate(source),p=source?.player?.position||{x:0,y:0};return `${daySeed()}_${c.bucket}_${c.weather}_${c.phase}_${localChunkId(p.x||0,p.y||0)}`}
 
 const BOUNTY_POOL=[
  {id:'herbs',name:'Zielarskie zamówienie',icon:'🌿',type:'gather',target:'herb',need:5,minLevel:1,xp:180,gold:38,rep:3},
@@ -368,7 +409,8 @@ const BOUNTY_POOL=[
 ];
 function makeDailyBounties(day,level=state?.player?.level||1){let pool=BOUNTY_POOL.filter(b=>(b.minLevel||1)<=level+1);if(pool.length<3)pool=[...BOUNTY_POOL].slice(0,3);const out=[];for(let i=0;i<Math.min(3,pool.length);i++){const idx=Math.floor(seeded(day+711+i*83)*pool.length),b=pool.splice(idx,1)[0];out.push({...b,progress:0,claimed:false,accepted:false})}return out}
 function ensureAdventureState(s=state){if(!s)return; s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};if(s.adventure.day!==daySeed()){s.adventure.day=daySeed();s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1)}if(!s.adventure.bounties?.length)s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1);for(const b of s.adventure.bounties||[])b.accepted ??= false;s.adventure.achievements ||= {};s.adventure.reputation ||= 0;s.adventure.worldBossDay ||= 0}
-function progressBounties(type,target,amount=1){ensureAdventureState();for(const b of state.adventure.bounties){if(!b.accepted||b.claimed||b.target!==target)continue;if((b.type==='gather'&&type==='item')||((b.type||'kill')==='kill'&&type==='kill'))b.progress=Math.min(b.need,(b.progress||0)+amount)}updateAchievements()}
+function monsterTargetMatches(target,monsterId){return target==='any'||target===monsterId||(target==='goblin'&&String(monsterId).startsWith('goblin'))}
+function progressBounties(type,target,amount=1){ensureAdventureState();for(const b of state.adventure.bounties){if(!b.accepted||b.claimed)continue;const matches=b.type==='gather'?b.target===target:monsterTargetMatches(b.target,target);if(!matches)continue;if((b.type==='gather'&&type==='item')||((b.type||'kill')==='kill'&&type==='kill'))b.progress=Math.min(b.need,(b.progress||0)+amount)}updateAchievements()}
 function updateAchievements(){if(!state?.adventure)return;const a=state.adventure.achievements,p=state.player;a.firstBlood ||= p.kills>=1;a.hunter ||= p.kills>=25;a.explorer ||= p.discovered.length>=6;a.delver ||= Object.values(p.dungeonClears||{}).reduce((x,y)=>x+y,0)>=3;a.veteran ||= p.level>=10;a.north ||= state.quests.done.includes('q15')}
 function claimBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||!b.accepted||b.claimed||b.progress<b.need)return; b.claimed=true;state.world.entities=state.world.entities.filter(e=>e.bountyId!==b.id);state.player.gold+=b.gold;state.adventure.reputation+=b.rep;gainXp(b.xp);save();renderShell();toast(`Kontrakt wykonany: +${b.xp} XP • +${b.gold} 🪙 • +${b.rep} reputacji`)}
 function worldBossDef(){const list=[MONSTERS.find(m=>m.id==='graveColossus'),MONSTERS.find(m=>m.id==='stormDrake')].filter(Boolean);return list[daySeed()%list.length]||MONSTERS.find(m=>m.id==='ogre')}
@@ -390,6 +432,53 @@ const BIOME_EFFECTS={
  marsh:{title:'Toksyczne opary',summary:'+30% siły trucizn • dodatkowy materiał z eventów',poison:1.30,eventMaterial:1},
  highlands:{title:'Próba wysokości',summary:'+8% obrażeń • przeciwnicy zadają +6%',damage:1.08,enemyDamage:1.06}
 };
+
+// Build 3.4 — precyzyjne miejsca występowania wewnątrz szerokich biomów.
+const HABITATS={
+ meadow:{name:'Łąka',icon:'🌾',color:'#9ecb55',desc:'Otwarte trawy, kwiaty i niskie zarośla. Polują tu zwierzęta i drobne stwory natury.'},
+ forest:{name:'Gęsty las',icon:'🌲',color:'#2f7838',desc:'Zacienione ostępy, wykroty i leśne ścieżki zamieszkane przez bestie oraz owady.'},
+ fields:{name:'Pola i miedze',icon:'🌻',color:'#c5a94c',desc:'Pola uprawne, miedze i stare strachy. Pojawiają się tu szkodniki, zbiry i zjawy pól.'},
+ wetland:{name:'Bagno',icon:'🐸',color:'#3f8876',desc:'Grząski teren pełen trzciny, jadu, topielców i stworzeń ukrytych pod wodą.'},
+ waterside:{name:'Brzeg wody',icon:'🌊',color:'#3f84a5',desc:'Rzeki, stawy i rozlewiska. Można spotkać wodne bestie, rusałki i żywiołaki.'},
+ cemetery:{name:'Cmentarz',icon:'🪦',color:'#77747c',desc:'Mogiły i stare nekropolie przyciągają nieumarłych, ghule oraz nocne zjawy.'},
+ chapel:{name:'Kaplica',icon:'⛪',color:'#9b8a70',desc:'Opuszczone kaplice i przydrożne sanktuaria, gdzie ścierają się duchy, kult i demony.'},
+ ruins:{name:'Ruiny',icon:'🏚️',color:'#82776c',desc:'Pozostałości osad i warowni. Kryją bandytów, kultystów, duchy i kamienne konstrukty.'},
+ cave:{name:'Jaskinie i kamieniołomy',icon:'🕳️',color:'#665b54',desc:'Ciemne groty oraz wyrobiska zamieszkane przez bestie, owady, golemy i demony.'},
+ highlands:{name:'Wzgórza',icon:'⛰️',color:'#9a7746',desc:'Odsłonięte grzbiety i skalne zbocza, na których żyją silne drapieżniki i żywiołaki.'},
+ settlement:{name:'Obrzeża osady',icon:'🏘️',color:'#a87548',desc:'Zabudowania, opuszczone zagrody i podwórza nawiedzane przez rabusiów oraz dzikie zwierzęta.'},
+ crossroads:{name:'Drogi i rozstaje',icon:'🛤️',color:'#aa925f',desc:'Trakty, mosty i rozstaje. Ulubione miejsca zasadzek ludzi, goblinów i niespokojnych duchów.'}
+};
+const HABITATS_BY_BIOME={
+ meadow:['meadow','fields','settlement','crossroads','chapel'],
+ forest:['forest','cave','cemetery','chapel','crossroads'],
+ ruins:['ruins','cemetery','chapel','cave','settlement'],
+ marsh:['wetland','waterside','ruins','cemetery','chapel'],
+ highlands:['highlands','cave','ruins','chapel','crossroads']
+};
+const FAMILY_HABITATS={
+ Natura:['meadow','forest','fields','wetland','waterside'],
+ Owady:['forest','fields','wetland','cave'],
+ Nieumarli:['cemetery','chapel','ruins','cave'],
+ Zjawy:['cemetery','chapel','ruins','wetland','waterside','crossroads'],
+ Demony:['chapel','ruins','cave','highlands'],
+ 'Żywiołaki':['cave','ruins','waterside','highlands'],
+ Ludzie:['settlement','crossroads','fields','ruins'],
+ Bestie:['forest','cave','highlands','wetland','waterside','meadow']
+};
+const BIOME_TO_HABITATS={meadow:['meadow','fields'],forest:['forest'],ruins:['ruins','cemetery','chapel'],marsh:['wetland','waterside'],highlands:['highlands','cave']};
+function monsterHabitats(m){
+ const set=new Set([...(FAMILY_HABITATS[m?.family]||[]),...(BIOME_TO_HABITATS[m?.biome]||[])]),priority=[],id=String(m?.id||'').toLowerCase(),name=String(m?.name||'').toLowerCase();
+ const has=(...words)=>words.some(w=>id.includes(w)||name.includes(w));
+ const prefer=(...ids)=>{for(const h of ids){priority.push(h);set.add(h)}};
+ if(has('szkielet','kośc','zombie','mumia','ghul','trup','wisielec','licz','lich','żniwiarz'))prefer('cemetery','chapel');
+ if(has('rusał','wodnik','kraken','sum','wydra','topiel','wir','bog','mire','marsh','fen','ropuch'))prefer('waterside','wetland');
+ if(has('polud','połud','dziewanna','strach','żniwiarz','sokół'))prefer('fields','meadow');
+ if(has('rozbój','zbir','najem','kieszon','kłus','klus','goblin'))prefer('crossroads','settlement');
+ if(has('demon','diabe','bies','kultyst','zmora'))prefer('chapel','ruins');
+ if(has('golem','elemental','żywioł','zywiol'))prefer('cave','ruins');
+ return [...new Set([...priority,...set])];
+}
+function monsterHabitatNames(m,limit=4){return monsterHabitats(m).slice(0,limit).map(id=>`${HABITATS[id]?.icon||'📍'} ${HABITATS[id]?.name||id}`)}
 function biomeEffect(id=biomeInfoAtPlayer().id){return BIOME_EFFECTS[id]||BIOME_EFFECTS.meadow}
 function combatEnvironment(monster){
  const biomeId=biomeInfoAtPlayer().id,effect=biomeEffect(biomeId),cl=climate();
@@ -495,32 +584,59 @@ function biomeAt(x=0,y=0){
  return best?.id||'meadow';
 }
 function biomeInfoAtPlayer(){const id=biomeAt(state?.player?.position?.x||0,state?.player?.position?.y||0);return {id,...BIOMES[id]}}
-function biomeMonsterPool(id){
- const map={meadow:['rat','slime','wolf','goblin','beetle','thornBoar','caveBat'],forest:['wolf','spider','goblin','beetle','thornBoar','graveMoth'],ruins:['skeleton','shade','ghost','cultist','boneArcher','graveMoth'],marsh:['slime','spider','ghost','elemental','mistStag','plagueToad'],highlands:['ogre','wolf','elemental','wyvern','mistStag','caveBat']};
- return (map[id]||map.meadow).filter(id=>MONSTERS.some(m=>m.id===id));
+const LOCAL_CHUNK_SIZE=700;
+const LOCAL_CHUNK_RADIUS=1;
+const LOCAL_MOBS_PER_CHUNK=14;
+function localChunkCoords(x=0,y=0){return {cx:Math.floor(x/LOCAL_CHUNK_SIZE),cy:Math.floor(y/LOCAL_CHUNK_SIZE)}}
+function localChunkId(x=0,y=0){const {cx,cy}=localChunkCoords(x,y);return `${cx}:${cy}`}
+function habitatForChunk(cx,cy){
+ const x=(cx+.5)*LOCAL_CHUNK_SIZE,y=(cy+.5)*LOCAL_CHUNK_SIZE,biome=biomeAt(x,y),options=HABITATS_BY_BIOME[biome]||HABITATS_BY_BIOME.meadow;
+ const seed=cx*92821+cy*68917+22109,index=Math.floor(seeded(seed)*options.length)%options.length,id=options[index];
+ return {id,...HABITATS[id],biome,cx,cy,x,y};
 }
-function generateLivingMonsters(day){
+function habitatAt(x=0,y=0){const {cx,cy}=localChunkCoords(x,y);return habitatForChunk(cx,cy)}
+function habitatInfoAtPlayer(){const p=state?.player?.position||{x:0,y:0};return habitatAt(p.x||0,p.y||0)}
+function biomeMonsterPool(id){
+ const habitats=BIOME_TO_HABITATS[id]||BIOME_TO_HABITATS.meadow;
+ return MONSTERS.filter(m=>monsterHabitats(m).some(h=>habitats.includes(h))).map(m=>m.id);
+}
+function habitatMonsterPool(id,level=state?.player?.level||1){
+ const maxLevel=Math.max(12,level+12),minLevel=Math.max(1,level-12);
+ let pool=MONSTERS.filter(m=>monsterHabitats(m).includes(id)&&m.min<=maxLevel&&m.max>=minLevel);
+ if(pool.length<5)pool=MONSTERS.filter(m=>monsterHabitats(m).includes(id)&&m.min<=level+22);
+ if(!pool.length)pool=MONSTERS.filter(m=>m.min<=maxLevel);
+ return pool.map(m=>m.id);
+}
+function generateLocalHabitatMarkers(origin={x:0,y:0}){
+ const {cx,cy}=localChunkCoords(origin.x||0,origin.y||0),out=[];
+ for(let gx=cx-LOCAL_CHUNK_RADIUS;gx<=cx+LOCAL_CHUNK_RADIUS;gx++)for(let gy=cy-LOCAL_CHUNK_RADIUS;gy<=cy+LOCAL_CHUNK_RADIUS;gy++){
+  const h=habitatForChunk(gx,gy),seed=gx*31153+gy*77167+8803;
+  out.push({id:`habitat_${gx}_${gy}`,type:'habitat',name:h.name,icon:h.icon,desc:h.desc,habitat:h.id,biome:h.biome,x:h.x+(seeded(seed+11)-.5)*120,y:h.y+(seeded(seed+29)-.5)*120,radius:270,dynamicLocal:true});
+ }
+ return out;
+}
+function generateLivingMonsters(day,origin=state?.player?.position||{x:0,y:0},source=state){
  const out=[];
- for(let i=0;i<118;i++){
-  const a=seeded(day+i*71)*Math.PI*2,r=70+seeded(day+i*113)*1820,x=Math.cos(a)*r,y=Math.sin(a)*r;
-  const zone=zoneAt(x,y),biome=biomeAt(x,y);
-  let pool=biomeMonsterPool(biome);
-  if(x>=1440)pool=['frostRaptor','stormCultist','iceWraith','thunderGolem','mountainTroll','skySerpent','frozenKnight','stormGriffin','lichWarden'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(x>=1040)pool=['ashScavenger','fireWasp','cinderCultist','emberWraith','slagGolem','ashDrake','pyreKnight','magmaScorpion','voidHound','obsidianSentinel'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(x>=620)pool=['mireCrawler','bogWraith','fenStalker','rotCultist','mossGolem','marshHag','blackrootGuardian','mistStag','plagueToad'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(zone==='red')pool=['demon','hellhound','elemental','magmaScorpion','voidHound','obsidianSentinel'].filter(id=>MONSTERS.some(m=>m.id===id));
-  else if(zone==='black')pool=['wyvern','demon','ogre','stormGriffin','lichWarden','abyssHydra'].filter(id=>MONSTERS.some(m=>m.id===id));
-  const id=pool[Math.floor(seeded(day+i*157)*pool.length)]||'wolf';
-  out.push({id:`live_${day}_${i}`,type:'monster',template:id,x,y,alive:true,respawn:0,elite:seeded(day+i*199)>.92,biome});
+ const {cx,cy}=localChunkCoords(origin.x||0,origin.y||0),respawns=source?.world?.living?.monsterRespawns||{},level=source?.player?.level||1,now=Date.now();
+ for(let gx=cx-LOCAL_CHUNK_RADIUS;gx<=cx+LOCAL_CHUNK_RADIUS;gx++)for(let gy=cy-LOCAL_CHUNK_RADIUS;gy<=cy+LOCAL_CHUNK_RADIUS;gy++){
+  const habitat=habitatForChunk(gx,gy),pool=habitatMonsterPool(habitat.id,level),goblinPool=pool.filter(id=>String(id).startsWith('goblin')),baseSeed=day*1009+gx*92821+gy*68917;
+  for(let i=0;i<LOCAL_MOBS_PER_CHUNK;i++){
+   const seed=baseSeed+i*193,x=gx*LOCAL_CHUNK_SIZE+55+seeded(seed+17)*(LOCAL_CHUNK_SIZE-110),y=gy*LOCAL_CHUNK_SIZE+55+seeded(seed+53)*(LOCAL_CHUNK_SIZE-110);
+   const goblinPatrol=['crossroads','settlement'].includes(habitat.id)&&i<Math.min(3,goblinPool.length),template=goblinPatrol?goblinPool[(i+Math.floor(seeded(baseSeed+71)*goblinPool.length))%goblinPool.length]:pool[Math.floor(seeded(seed+101)*pool.length)]||'wolf',id=`local_${day}_${gx}_${gy}_${i}`;let respawn=respawns[id]||0;
+   const entity={id,type:'monster',template,variant:monsterVariantFromRoll(seeded(seed+173),level),x,y,alive:respawn<=now,elite:seeded(seed+149)>.92,biome:habitat.biome,habitat:habitat.id,dynamicLocal:true,chunk:`${gx}:${gy}`};
+   Object.defineProperty(entity,'respawn',{enumerable:true,configurable:true,get(){return respawn},set(value){respawn=value;if(source?.world?.living){source.world.living.monsterRespawns ||= {};if(value>Date.now())source.world.living.monsterRespawns[id]=value;else delete source.world.living.monsterRespawns[id]}}});
+   out.push(entity);
+  }
  }
  return out;
 }
 function makeLivingEvents(day,origin={x:0,y:0}){
  const out=[];
+ const chunk=localChunkId(origin.x||0,origin.y||0).replace(':','_');
  for(let i=0;i<6;i++){
   const a=seeded(day+500+i*43)*Math.PI*2,r=150+seeded(day+700+i*59)*640,x=(origin.x||0)+Math.cos(a)*r,y=(origin.y||0)+Math.sin(a)*r,biome=biomeAt(x,y);
   const pool=WORLD_EVENTS.filter(e=>!e.biomes||e.biomes.includes(biome)),base=pool[Math.floor(seeded(day+910+i*97)*pool.length)]||WORLD_EVENTS[i%WORLD_EVENTS.length];
-  out.push({...base,id:`event_${day}_${i}`,type:'event',x,y,biome,done:false,expiresAt:new Date().setHours(23,59,59,999)});
+  out.push({...base,id:`event_${day}_${chunk}_${i}`,type:'event',x,y,biome,habitat:habitatAt(x,y).id,done:false,dynamicLocal:true,expiresAt:new Date().setHours(23,59,59,999)});
  }
  return out;
 }
@@ -533,14 +649,25 @@ function makeContextEvent(s,contextKey){
 }
 function ensureLivingWorld(s=state){
  if(!s?.world)return;
- s.world.living ||= {spawnDay:0,eventDay:0,contextKey:'',completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}};
+ s.world.living ||= {spawnDay:0,spawnKey:'',eventDay:0,contextKey:'',monsterRespawns:{},completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}};
  const L=s.world.living,day=daySeed();
- L.completedEvents ||= [];L.notifiedEvents ||= [];L.eventHistory ||= [];L.contextKey ||= '';
+ L.completedEvents ||= [];L.notifiedEvents ||= [];L.eventHistory ||= [];L.contextKey ||= '';L.spawnKey ||= '';L.monsterRespawns ||= {};
+ for(const e of s.world.entities||[])if(e.dynamicLocal&&!e.alive&&(e.respawn||0)>Date.now())L.monsterRespawns[e.id]=e.respawn;
  if(!L.dailyExplore||L.dailyExplore.day!==day)L.dailyExplore={day,cells:{},claimed:false};
- if(L.spawnDay!==day||L.eventDay!==day){
-  const staticEntities=(s.world.entities||generateWorld()).filter(e=>!['monster','event'].includes(e.type)||(e.type==='event'&&e.persistent));
-  s.world.entities=[...generateLivingMonsters(day),...makeLivingEvents(day,s.player?.position),...staticEntities];
-  L.spawnDay=day;L.eventDay=day;L.completedEvents=L.completedEvents.filter(id=>String(id).startsWith('story_'));L.notifiedEvents=[];
+ const p=s.player?.position||{x:0,y:0},spawnKey=`${day}:${localChunkId(p.x||0,p.y||0)}`;
+ for(const [id,time] of Object.entries(L.monsterRespawns))if(time<=Date.now())delete L.monsterRespawns[id];
+ if(L.spawnDay!==day||L.eventDay!==day||L.spawnKey!==spawnKey){
+  const newDay=L.spawnDay!==day;
+  const staticEntities=(s.world.entities||generateWorld()).filter(e=>{
+   if(e.dynamicLocal||e.type==='habitat')return false;
+   if(e.type==='event'&&!e.persistent)return false;
+   if(e.type==='monster'&&!e.questOnly&&!e.bountyId&&!e.synthetic)return false;
+   return true;
+  });
+  if(newDay){L.completedEvents=L.completedEvents.filter(id=>String(id).startsWith('story_'));L.monsterRespawns={}}
+  const events=makeLivingEvents(day,p);for(const e of events)e.done=L.completedEvents.includes(e.id);
+  s.world.entities=[...generateLivingMonsters(day,p,s),...generateLocalHabitatMarkers(p),...events,...staticEntities];
+  L.spawnDay=day;L.eventDay=day;L.spawnKey=spawnKey;L.notifiedEvents=[];L.contextKey='';
  }
  const contextKey=worldContextKey(s);
  if(L.contextKey!==contextKey){
@@ -700,7 +827,7 @@ function equippedInstanceForState(s,slot){const e=s?.player?.equipped?.[slot];if
 function normalizeState(s){
  if(!s)return null;
  const previousVersion=s.version||0;
- s.version=320;
+ s.version=380;
  s.player ||= {};
  s.player.stats ||= {str:5,agi:5,int:5,vit:5};
  s.player.inventory ||= [];
@@ -716,6 +843,8 @@ function normalizeState(s){
  s.player.pets ||= [];
  s.player.petActive ??= null;
  s.player.bestiary ||= {};
+ s.player.bestiaryVariants ||= {};
+ for(const [monsterId,kills] of Object.entries(s.player.bestiary))if(kills>0&&!s.player.bestiaryVariants[monsterId])s.player.bestiaryVariants[monsterId]={normal:kills};
  s.player.discovered ||= [];
  s.player.dungeons ||= [];
  s.player.dungeonClears ||= {};
@@ -740,6 +869,8 @@ function normalizeState(s){
  if(previousVersion<19&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0}
  if(previousVersion<310&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.contextKey=''}
  if(previousVersion<320&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.contextKey=''}
+ if(previousVersion<330&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.contextKey=''}
+ if(previousVersion<340&&s.world?.living){s.world.living.spawnDay=0;s.world.living.eventDay=0;s.world.living.spawnKey='';s.world.living.contextKey='';s.world.living.monsterRespawns={}}
  ensureAdventureState(s);
  ensureEconomyState(s);
  ensureLivingWorld(s);
@@ -761,8 +892,8 @@ function newGame(name,cls){
  const armor={id:starterArmor(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const boots={id:starterBoots(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const pets=['hunter','ranger'].includes(cls)?[{id:'youngWolf',level:1,xp:0}]:[];
- state={version:320,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,eventDay:0,contextKey:'',completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
- ensureCoreState();ensureLivingWorld();ensureExplorationState();save();render();
+ state={version:380,created:Date.now(),player:{name:name||'Wędrowiec',class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},bestiaryVariants:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,spawnKey:'',eventDay:0,contextKey:'',monsterRespawns:{},completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:true,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
+ state.version=380;ensureCoreState();ensureLivingWorld();ensureExplorationState();save();render();
 }
 function resetCharacter(){if(!confirm('Zresetować postać i wrócić do kreatora? Usunie to lokalny postęp tej gry.'))return;try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();for(const key of Object.keys(localStorage)){if(key===SAVE_KEY||key.startsWith('time4heroes_build_')||key.startsWith('georpg_build_'))localStorage.removeItem(key)}state=null;combat=null;dungeonRun=null;currentTab='map';destroyRealMap();render();}
 function centerMapOnPlayer(){selectNav('map');setTimeout(()=>{if(realMap&&state?.player?.position?.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],18,{animate:true})}},120)}
@@ -812,6 +943,7 @@ function syncQ2World(){
 }
 function bountyWorldId(b,i){return `bounty_${b.id}_${state.adventure.day}_${i}`}
 function bountySpawnPoint(i,total){const p=state.player.position||{x:0,y:0},a=(i/Math.max(1,total))*Math.PI*2+.55,r=75+(i%3)*38;return questSpawnPoint(p.x||0,p.y||0,r,a)}
+function bountyMonsterTemplate(b,index){if(b?.target!=='goblin')return b?.target;const level=state.player.level||1,pool=['goblin','goblinWarrior','goblinMage','goblinChampion'].filter(id=>(MONSTERS.find(m=>m.id===id)?.min||1)<=level+3);return pool[Math.floor(seeded(state.adventure.day+index*67)*pool.length)]||'goblin'}
 function spawnBountyTargets(b){
  if(!b||!b.accepted||b.claimed)return;state.world.entities ||= [];
  const present=state.world.entities.filter(e=>e.bountyId===b.id&&!e.done&&(e.type!=='monster'||e.alive)).length;
@@ -820,7 +952,7 @@ function spawnBountyTargets(b){
  for(let i=0;i<need;i++){
   const idx=present+i,pt=bountySpawnPoint(idx,Math.max(1,remaining));
   if(b.type==='gather')state.world.entities.push({id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false});
-  else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:b.target,bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
+  else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
  }
 }
 function syncQuestWorld(){
@@ -840,7 +972,7 @@ function interactResourceEntity(e){
  e.done=true;addItem(e.item,1);playSfx('discover');haptic(12);syncQuestWorld();save();toast(`Zebrano: ${itemDef(e.item).name} • ${Math.min(b.need,b.progress||0)}/${b.need}`);if(currentTab==='map')selectNav('map');
 }
 
-function monsterTemplate(e){return MONSTERS.find(m=>m.id===e.template)||MONSTERS[0]}
+function monsterTemplate(e){const base=MONSTERS.find(m=>m.id===e.template)||MONSTERS[0],variantId=entityMonsterVariant(e),v=monsterVariantDef(variantId);return {...base,baseName:base.name,name:variantId==='normal'?base.name:`${base.name} — ${v.label}`,variantId,variantLabel:v.label,variantIcon:v.icon,variantLoot:v.loot,variantScale:v.scale,hp:Math.max(1,Math.round(base.hp*v.hp)),atk:Math.max(1,Math.round(base.atk*v.atk)),xp:Math.max(1,Math.round(base.xp*v.xp)),gold:[Math.max(1,Math.round(base.gold[0]*v.gold)),Math.max(2,Math.round(base.gold[1]*v.gold))]}}
 function monsterLevel(m){const p=state?.player?.level||1;return clamp(p+rnd(-2,2),m.min,m.max)}
 function primaryCombatStat(){const p=state.player;return p.class==='mage'?p.stats.int:['hunter','ranger'].includes(p.class)?p.stats.agi:p.stats.str}
 function supportGearPower(){return Object.keys(state.player.equipped||{}).filter(slot=>{const d=itemDef(equippedInstance(slot)?.id);return slot!=='weapon'&&!(slot==='offhand'&&d?.type==='weapon')}).reduce((sum,slot)=>sum+equipmentStat(slot,'power'),0)+setBonusStat('power')}
@@ -900,7 +1032,7 @@ function checkQuestProgress(type,target,amount=1){
   const q=QUESTS.find(x=>x.id===qid);if(!q)continue;
   const prog=state.quests.progress[qid] ||= q.steps.map(()=>0),i=currentQuestStepIndex(qid);if(i<0)continue;
   const s=q.steps[i];if(s.type!==type)continue;
-  if(type==='kill'&&(s.target==='any'||s.target===target))prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
+  if(type==='kill'&&monsterTargetMatches(s.target,target))prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
   else if(type==='move')prog[i]=Math.max(prog[i]||0,amount);
   else if(type==='story'&&s.target===target)prog[i]=1;
   else if(s.target===target)prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
@@ -966,16 +1098,24 @@ const GRAPHICS={
   'frozenKnight':'assets/monsters/nawiedzony-rycerz.png',
  },
  npcs:{
-  Dorian:'assets/npc-dorian.png',Selma:'assets/npc-selma.png',Ragor:'assets/npc-ragor.png',
-  Ilyra:'assets/npc-ilyra.png',Varo:'assets/npc-varo.png',Edrin:'assets/npc-edrin.png'
+  Dorian:'assets/npc-dorian.png',Selma:'assets/npcs/npc-selma-cutout-380.webp',Ragor:'assets/npcs/npc-ragor-cutout-380.webp',
+  Ilyra:'assets/npcs/npc-ilyra-cutout-380.webp',Varo:'assets/npcs/npc-varo-cutout-380.webp',Edrin:'assets/npcs/npc-edrin-cutout-380.webp'
  },
  pets:{youngWolf:'assets/wolf.png',cinderHound:'assets/hellhound.png'}
 };
-const CORE_MONSTER_ATLAS={slime:[0,0],rat:[1,0],beetle:[2,0],wolf:[3,0],goblin:[0,1],skeleton:[1,1],spider:[2,1],elemental:[3,1],ghost:[0,2],cultist:[1,2],demon:[2,2],hellhound:[3,2]};
+const CORE_MONSTER_ATLAS={slime:[0,0],rat:[1,0],beetle:[2,0],wolf:[3,0],goblin:[0,1],goblinWarrior:[0,1],goblinMage:[0,1],goblinChampion:[0,1],skeleton:[1,1],spider:[2,1],elemental:[3,1],ghost:[0,2],cultist:[1,2],demon:[2,2],hellhound:[3,2]};
+const GOBLIN_VISUALS={goblin:{cls:'goblin-scout',badge:'🗡️'},goblinWarrior:{cls:'goblin-warrior',badge:'🛡️'},goblinMage:{cls:'goblin-mage',badge:'✦'},goblinChampion:{cls:'goblin-champion',badge:'♛'}};
 const NEW_MONSTER_ATLAS={thornBoar:[0,0],caveBat:[1,0],graveMoth:[2,0],boneArcher:[3,0],mistStag:[0,1],plagueToad:[1,1],magmaScorpion:[2,1],voidHound:[3,1],obsidianSentinel:[0,2],stormGriffin:[1,2],lichWarden:[2,2],abyssHydra:[3,2]};
+const ARCHIVE_MONSTER_ATLAS_IDS=[
+ ['bazyliszek','bies','blednyOgnik','chochlik','cmaUpiorna','czapla','diabel','dziewanna','dzik','ghul','gryf','grzybiarz','harpia','jednorozec','kieszonkowiec','klusownik'],
+ ['komarzyca','kosciej','kozica','krocionog','kruk','latawiec','leszy','lis','lodowyGolem','mangradora','mlodyKraken','mumia','najemnik','niedzwiedz','ork','placzacaPanna'],
+ ['placzacaWierzba','plomyk','poltergeist','poludnica','ropucha','rozbojnik','rusalka','rys','skorpion','sokol','strachNaWroble','sumOlbrzymi','szaleniec','trupojad','trzcinnik','widmowyJezdziec'],
+ ['wilkolak','wir','wisielec','wodnik','wydra','zbik','zbir','zdziczalyPies','zmora','zniwiarzPol','zombie','zywiolakCienia','zywiolakSwiatla']
+];
+const ARCHIVE_MONSTER_ATLAS=Object.fromEntries(ARCHIVE_MONSTER_ATLAS_IDS.flatMap((ids,sheet)=>ids.map((id,index)=>[id,{sheet:sheet+1,pos:[index%4,Math.floor(index/4)]}])));
 function sprite(path,alt,cls){return `<img src="${path}" alt="${alt}" class="pixel-sprite ${cls||''}">`}
 function classVisual(id,cls='sprite-inline'){const c=CLASSES[id];const path=GRAPHICS.classes[id];return path?sprite(path,c?.name||id,cls):(c?.icon||'❓')}
-function monsterVisual(id,cls='sprite-inline'){const m=MONSTERS.find(x=>x.id===id),core=CORE_MONSTER_ATLAS[id],fresh=NEW_MONSTER_ATLAS[id];if(core||fresh){const path=core?'assets/atlases/monster-atlas-core-320.png':'assets/atlases/monster-atlas-new-320.png',pos=core||fresh;return `<span class="pixel-sprite atlas-sprite monster-atlas-sprite ${cls}" role="img" aria-label="${m?.name||id}" style="${atlasStyle(path,pos,4,3)}"></span>`}const path=GRAPHICS.monsters[id];return path?sprite(path,m?.name||id,cls):(m?.icon||'❓')}
+function monsterVisual(id,cls='sprite-inline',variant=null){variant ||= combat?.monster?.id===id?combat.monster.variantId:'normal';const m=MONSTERS.find(x=>x.id===id),core=CORE_MONSTER_ATLAS[id],fresh=NEW_MONSTER_ATLAS[id],archive=ARCHIVE_MONSTER_ATLAS[id],goblin=GOBLIN_VISUALS[id],v=monsterVariantDef(variant),variantCls=`monster-version variant-${v.id}`;if(core||fresh||archive){const path=core?'assets/atlases/monster-atlas-core-320.png':fresh?'assets/atlases/monster-atlas-new-320.png':`assets/atlases/archive-monsters-${archive.sheet}-330.png`,pos=core||fresh||archive.pos,rows=archive?4:3,spriteHtml=`<span class="pixel-sprite atlas-sprite monster-atlas-sprite ${goblin?.cls||''} ${goblin?'goblin-atlas-fill':cls} ${variantCls}" role="img" aria-label="${m?.name||id} — ${v.label}" style="${atlasStyle(path,pos,4,rows)};--monster-version-scale:${v.scale}"></span>`;return goblin?`<span class="goblin-role-wrap ${goblin.cls} ${cls} variant-wrap-${v.id}" data-role="${goblin.badge}">${spriteHtml}</span>`:spriteHtml}const path=GRAPHICS.monsters[id];return path?sprite(path,`${m?.name||id} — ${v.label}`,`${cls} ${variantCls}`):(m?.icon||'❓')}
 function npcVisual(name,classId,cls='sprite-npc'){const path=GRAPHICS.npcs[name];return path?sprite(path,name,cls):classVisual(classId,cls)}
 function petVisual(id,cls='sprite-inline'){const p=PETS[id];const path=GRAPHICS.pets[id]||GRAPHICS.monsters[id];return path?sprite(path,p?.name||id,cls):(p?.icon||'❓')}
 
@@ -986,6 +1126,25 @@ function battleTheme(m){
   if(['Żywiołaki'].includes(m.family)) return 'ember';
   if(['Bestie'].includes(m.family)) return 'storm';
   return 'forest';
+}
+const BATTLE_BACKDROPS={
+ meadow:'assets/backgrounds/battle-meadow-380.webp',
+ forest:'assets/backgrounds/battle-forest-380.webp',
+ ruins:'assets/backgrounds/battle-ruins-380.webp',
+ marsh:'assets/backgrounds/battle-marsh-380.webp',
+ highlands:'assets/backgrounds/battle-highlands-380.webp'
+};
+function battleBackdrop(c){
+ const biome=c?.dungeon?'ruins':c?.environment?.biomeId||'forest';
+ return BATTLE_BACKDROPS[biome]||BATTLE_BACKDROPS.forest;
+}
+function battleAtmosphereClass(c){
+ const cl=c?.environment?.climate||climate(),classes=[];
+ if(cl.phase==='Noc')classes.push('phase-night');
+ if(cl.weather==='Deszcz')classes.push('weather-rain');
+ else if(cl.weather==='Burza')classes.push('weather-storm');
+ else if(cl.weather==='Mgła')classes.push('weather-fog');
+ return classes.join(' ');
 }
 function npcCard(name, role, classId, text){
   return `<div class="npc-card"><div class="npc-portrait">${npcVisual(name,classId,'sprite-npc')}</div><div><b>${name}</b><div class="muted">${role}</div><p>${text}</p></div></div>`;
@@ -1112,6 +1271,7 @@ function circleRing(lat,lng,radius=90,segments=24){
 }
 function destroyRealMap(){
  if(realMap){try{realMap.remove()}catch{}realMap=null}
+ clearTimeout(playerWalkStopTimer);playerWalkStopTimer=null;playerMotion.moving=false;
  fogLayer=null;trailLayer=null;playerMapMarker=null;accuracyCircle=null;interactionCircle=null;questGuideLayer=null;leafletEntityLayers=[];leafletZoneLayers=[];leafletBiomeLayers=[];leafletDecorLayers=[];
 }
 function makeLeafletIcon(html,cls='game-map-icon',size=[48,48]){
@@ -1232,7 +1392,7 @@ function rebuildGameLayers(){
   .filter(questWorldEntityVisible)
   .filter(e=>e.type!=='monster'||e.alive)
   .filter(e=>e.type!=='event'||!e.done)
-  .filter(e=>e.type==='monster'?filters.monster:e.type==='dungeon'?filters.dungeon:e.type==='event'?filters.event:filters.poi)
+  .filter(e=>e.type==='monster'?filters.monster:e.type==='dungeon'?filters.dungeon:e.type==='event'?filters.event:e.type==='habitat'?filters.biome:filters.poi)
   .filter(secretMapVisible)
   .filter(focusedEntityVisible)
   .map(e=>({e,ll:worldToLatLng(e.x,e.y),d:dist(e,state.player.position)}))
@@ -1242,6 +1402,10 @@ function rebuildGameLayers(){
  const monsterLimit=state.settings.mapMode==='focused'?12:28,otherLimit=state.settings.mapMode==='focused'?18:36;
  let monsters=0,others=0;
  const visible=candidates.filter(x=>{if(x.e.type==='monster'){if(monsters>=monsterLimit)return false;monsters++;return true}if(others>=otherLimit)return false;others++;return true});
+ for(const {e,ll} of visible.filter(x=>x.e.type==='habitat')){
+  const h=HABITATS[e.habitat]||HABITATS.meadow;
+  const area=L.circle(ll,{radius:e.radius||270,pane:'biomePane',color:h.color,weight:1.5,dashArray:'5 8',fillColor:h.color,fillOpacity:.075,interactive:false}).addTo(realMap);leafletZoneLayers.push(area);
+ }
  for(const {e,ll,d} of visible.filter(x=>x.d<=180&&(x.e.type==='event'||x.e.type==='dungeon'||x.e.elite))){
   const color=e.type==='event'?'#d7b85f':e.type==='dungeon'?'#866eb8':'#b8634f';
   const ring=L.circle(ll,{radius:e.type==='dungeon'?34:24,pane:'overlayPane',color,weight:1.5,dashArray:'3 6',fillColor:color,fillOpacity:.045,interactive:false}).addTo(realMap);leafletZoneLayers.push(ring);
@@ -1249,30 +1413,58 @@ function rebuildGameLayers(){
  for(const {e,ll,d} of visible){
   let inner='',label='';
   const questTarget=targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template));
-  if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${monsterVisual(m.id,'mmo-sprite')}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
+  if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} variant-marker-${m.variantId} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${m.variantId!=='normal'?`<span class="variant-map-badge">${m.variantIcon}</span>`:''}${monsterVisual(m.id,'mmo-sprite',m.variantId)}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
   else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${e.icon}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='secret'){const found=state.world.exploration.secretsFound.includes(e.id);inner=`<div class="mmo-marker secret-marker ${found?'found':''}">${found?e.icon:'❔'}</div>`;label=found?e.name:'Sekret w pobliżu'}
   else if(e.type==='quest'){const visual=e.visual==='woundedWolves'?`<span class="quest-wolves">${monsterVisual('wolf','quest-wolf-a')}${monsterVisual('wolf','quest-wolf-b')}</span>`:`<span class="quest-world-icon">${e.icon||'❗'}</span>`;inner=`<div class="mmo-marker quest-world-marker interaction-ready">${visual}<span class="quest-pin">!</span></div>`;label=e.name}
   else if(e.type==='resource'){inner=`<div class="mmo-marker resource-marker ${d<=60?'interaction-ready':''}"><span>🌿</span>${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='dungeon'){const known=state.player.dungeons.includes(e.id);inner=`<div class="mmo-marker dungeon-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznany loch'}
+  else if(e.type==='habitat'){inner=`<div class="mmo-marker habitat-marker"><span>${e.icon}</span></div>`;label=`${e.name} • miejsce występowania`}
   else {const known=state.player.discovered.includes(e.id);inner=`<div class="mmo-marker poi-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznane miejsce'}
   const marker=L.marker(ll,{pane:'gamePane',icon:makeLeafletIcon(inner,'game-map-icon',[52,52]),title:label}).addTo(realMap);
-  marker.on('click',()=>interactEntity(e));leafletEntityLayers.push(marker);
+ marker.on('click',()=>interactEntity(e));leafletEntityLayers.push(marker);
  }
+}
+function movementBearing(from,to){
+ if(to?.heading!==null&&to?.heading!==undefined&&Number.isFinite(Number(to.heading))&&Number(to.heading)>=0)return Number(to.heading)%360;
+ const lat1=Number(from?.lat),lng1=Number(from?.lng),lat2=Number(to?.lat),lng2=Number(to?.lng);
+ if(![lat1,lng1,lat2,lng2].every(Number.isFinite))return playerMotion.heading||0;
+ const dy=(lat2-lat1)*111320,dx=(lng2-lng1)*111320*Math.cos(lat1*Math.PI/180);
+ if(Math.hypot(dx,dy)<.4)return playerMotion.heading||0;
+ return (Math.atan2(dx,dy)*180/Math.PI+360)%360;
+}
+function playerFacing(heading=0){const h=(heading+360)%360;if(h>=45&&h<135)return'right';if(h>=225&&h<315)return'left';if(h>=135&&h<225)return'down';return'up'}
+function playerMarkerHTML(){
+ const facing=playerFacing(playerMotion.heading),cycle=playerMotion.speed>2.8?300:520;
+ return `<div class="leaflet-player-marker rpg-player-marker ${playerMotion.moving?'walking':''} ${playerMotion.speed>2.8?'moving-fast':''}" data-player-walker data-facing="${facing}" style="--walk-heading:${playerMotion.heading||0}deg;--walk-cycle:${cycle}ms"><div class="player-heading-arrow"></div><i class="player-walk-shadow"></i><b class="player-step-dust"></b><div class="player-facing"><div class="player-walk-avatar">${classVisual(state.player.class,'mmo-player-sprite')}</div></div><span class="player-pin-tip"></span></div>`;
+}
+function syncPlayerMarkerMotion(){
+ const markerEl=playerMapMarker?.getElement?.(),walker=markerEl?.querySelector?.('[data-player-walker]');if(!walker)return;
+ const moving=playerMotion.moving&&Date.now()<playerMotion.movingUntil,facing=playerFacing(playerMotion.heading),fast=playerMotion.speed>2.8;
+ walker.classList.toggle('walking',moving);walker.classList.toggle('moving-fast',moving&&fast);walker.dataset.facing=facing;
+ walker.style.setProperty('--walk-heading',`${playerMotion.heading||0}deg`);walker.style.setProperty('--walk-cycle',`${fast?300:Math.round(clamp(620-playerMotion.speed*55,380,570))}ms`);
+ markerEl.style.setProperty('--marker-move-ms',`${Math.round(clamp((playerMotion.lastStepSeconds||.8)*1000,420,1400))}ms`);
+}
+function registerPlayerMovement(from,to){
+ const now=Date.now(),distance=geoDistance(from,to),elapsed=playerMotion.lastAt?Math.max(.25,(now-playerMotion.lastAt)/1000):1,threshold=to?.testWalk ? .5 : Math.max(1.8,Math.min(7,(Number(to?.accuracy)||10)*.18));
+ const moved=Number.isFinite(distance)&&distance>=threshold;
+ if(moved){playerMotion.heading=movementBearing(from,to);playerMotion.speed=to?.testWalk?1.55:clamp(distance/elapsed,.2,18);playerMotion.movingUntil=now+(to?.testWalk?720:Math.round(clamp(900+elapsed*520,1100,2600)));playerMotion.lastStepSeconds=elapsed}
+ playerMotion.moving=moved||now<playerMotion.movingUntil;playerMotion.lastAt=now;
+ clearTimeout(playerWalkStopTimer);if(playerMotion.moving)playerWalkStopTimer=setTimeout(()=>{playerMotion.moving=false;playerMotion.speed=0;syncPlayerMarkerMotion()},Math.max(80,playerMotion.movingUntil-Date.now()));
 }
 function updateLiveMapPosition(){
  if(!realMap||!state.player.position.lat)return;
  const p=state.player.position,ll=[p.lat,p.lng];
  if(!playerMapMarker){
-  const html=`<div class="leaflet-player-marker rpg-player-marker">${classVisual(state.player.class,'mmo-player-sprite')}<span></span></div>`;
+  const html=playerMarkerHTML();
   playerMapMarker=L.marker(ll,{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[62,62]),zIndexOffset:1000}).addTo(realMap);
- }else playerMapMarker.setLatLng(ll);
+ }else{const previous=playerMapMarker.getLatLng?.();registerPlayerMovement(previous?{lat:previous.lat,lng:previous.lng}:p,p);playerMapMarker.setLatLng(ll);requestAnimationFrame(syncPlayerMarkerMotion)}
  if(!accuracyCircle)accuracyCircle=L.circle(ll,{pane:'overlayPane',radius:Math.max(8,p.accuracy||15),color:'#66b6db',weight:1,fillColor:'#5ca9d0',fillOpacity:.05,interactive:false}).addTo(realMap);
  else{accuracyCircle.setLatLng(ll);accuracyCircle.setRadius(Math.max(8,p.accuracy||15))}
  if(!interactionCircle)interactionCircle=L.circle(ll,{pane:'overlayPane',radius:60,color:'#e2bd66',weight:2,dashArray:'6 8',fillColor:'#d9b458',fillOpacity:.025,interactive:false}).addTo(realMap);
  else interactionCircle.setLatLng(ll);
  if(followGps)realMap.panTo(ll,{animate:true,duration:.25});
- const hud=document.querySelector('[data-live-gps]');if(hud)hud.textContent=p.testWalk?'🧪 TEST • strzałki':`GPS ±${Math.round(p.accuracy||0)} m`;
+ const hud=document.querySelector('[data-live-gps]');if(hud){const motion=playerMotion.moving?(playerMotion.speed>2.8?'🏃':'🚶'):'📍';hud.textContent=p.testWalk?`${motion} TEST • strzałki`:`${motion} GPS ±${Math.round(p.accuracy||0)} m`}
  refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer();
 }
 function initRealMap(){
@@ -1292,7 +1484,7 @@ function initRealMap(){
  realMap.setView(center,p.lat?18:origin?17:7);
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
  if(p.lat){
-  const html=`<div class="leaflet-player-marker rpg-player-marker">${classVisual(p.class,'mmo-player-sprite')}<span></span></div>`;
+  const html=playerMarkerHTML();
   playerMapMarker=L.marker([p.lat,p.lng],{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[62,62]),zIndexOffset:1000}).addTo(realMap);
   accuracyCircle=L.circle([p.lat,p.lng],{pane:'overlayPane',radius:Math.max(8,p.accuracy||15),color:'#66b6db',weight:1,fillColor:'#5ca9d0',fillOpacity:.05,interactive:false}).addTo(realMap);
   interactionCircle=L.circle([p.lat,p.lng],{pane:'overlayPane',radius:60,color:'#e2bd66',weight:2,dashArray:'6 8',fillColor:'#d9b458',fillOpacity:.025,interactive:false}).addTo(realMap);
@@ -1321,7 +1513,7 @@ function dashboardMapEntityHTML(e){
  const d=Math.round(dist(e,state.player.position));
  if(e.type==='monster'){
   const m=monsterTemplate(e);
-  return `<button class="dash-entity monster ${e.elite?'elite':''}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${d} m" data-dash-entity="${e.id}"><span class="badge">${e.elite?'☠️':'⚔️'}</span><span class="sprite">${monsterVisual(m.id,'sprite-entity')}</span><small>${m.name}<em>${d} m</em></small></button>`;
+  return `<button class="dash-entity monster ${e.elite?'elite':''} variant-marker-${m.variantId}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${d} m" data-dash-entity="${e.id}"><span class="badge">${e.elite?'☠️':m.variantId==='normal'?'⚔️':m.variantIcon}</span><span class="sprite">${monsterVisual(m.id,'sprite-entity',m.variantId)}</span><small>${m.name}<em>${d} m</em></small></button>`;
  }
  const discovered=state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id);
  return `<button class="dash-entity ${e.type}" style="left:${pt.left}%;top:${pt.top}%" title="${discovered?e.name:'Nieznane miejsce'} • ${d} m" data-dash-entity="${e.id}"><span class="badge">${e.icon||'📍'}</span><small>${discovered?e.name:'Nieznane'}<em>${d} m</em></small></button>`;
@@ -1344,7 +1536,7 @@ function questGuideTarget(q=activeGuideQuest()){
  let entity=null;
  if(step.type==='discover'||step.type==='dungeon'||step.type==='questInteract')entity=state.world.entities.find(e=>e.id===step.target&&questWorldEntityVisible(e))||null;
  else if(step.type==='kill'){
-  const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&(step.target==='any'||e.template===step.target));
+ const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&monsterTargetMatches(step.target,e.template));
   entity=pool.sort((a,b)=>dist(a,state.player.position)-dist(b,state.player.position))[0]||null;
  }
  if(entity){return {q,step,stepIndex,x:entity.x,y:entity.y,name:entity.type==='monster'?monsterTemplate(entity).name:(entity.name||step.label),distance:Math.round(dist(entity,state.player.position)),entityId:entity.id}}
@@ -1375,8 +1567,8 @@ function rebuildQuestGuideLayer(){
 
 function biomeInfoSheetHTML(){
  if(!state.ui.biomeInfoOpen)return '';
- const bio=biomeInfoAtPlayer(),pool=biomeMonsterPool(bio.id).map(id=>MONSTERS.find(m=>m.id===id)).filter(Boolean);
- return `<section class="biome-info-sheet"><div class="mobile-sheet-head"><div><b>${bio.icon} ${bio.name}</b><small>Informacje o okolicy</small></div><button data-biome-info-close>▾ Zwiń</button></div><p>${bio.desc}</p>${biomeEffectHTML(bio.id)}<div class="biome-sheet-monsters">${pool.slice(0,8).map(m=>`<span>${m.icon} <b>${m.name}</b> <small>lvl ${m.min}–${m.max}</small></span>`).join('')}</div></section>`;
+ const bio=biomeInfoAtPlayer(),habitat=habitatInfoAtPlayer(),pool=habitatMonsterPool(habitat.id).map(id=>MONSTERS.find(m=>m.id===id)).filter(Boolean);
+ return `<section class="biome-info-sheet"><div class="mobile-sheet-head"><div><b>${habitat.icon} ${habitat.name}</b><small>${bio.icon} Biom: ${bio.name}</small></div><button data-biome-info-close>▾ Zwiń</button></div><p>${habitat.desc}</p>${biomeEffectHTML(bio.id)}<div class="biome-sheet-monsters">${pool.slice(0,10).map(m=>`<span>${monsterVisual(m.id,'biome-list-sprite')} <b>${m.name}</b> <small>lvl ${m.min}–${m.max}</small></span>`).join('')}</div><div class="muted biome-note">Populacja odświeża się automatycznie po wejściu do nowej okolicy GPS.</div></section>`;
 }
 function mapSideTab(){state.ui.mapPanelTab ||= 'quests';return state.ui.mapPanelTab}
 function mapSideTabsHTML(){const cur=mapSideTab();const tabs=[['quests','Zadania'],['events','Wydarzenia'],['nearby','W pobliżu']];return `<div class="mobile-sheet-head map-sheet-head"><b>${cur==='quests'?'📜 Zadania':cur==='events'?'✨ Wydarzenia':'📍 W pobliżu'}</b><button data-map-sheet-collapse>▾ Zwiń</button></div><div class="map-panel-tabs">${tabs.map(([id,label])=>`<button class="${cur===id?'active':''}" data-map-side-tab="${id}">${label}</button>`).join('')}</div>`}
@@ -1409,9 +1601,9 @@ function renderMap(el){
  setAmbient('forest');destroyRealMap();ensureLivingWorld();state.ui.mapPanelTab ||= 'quests';state.ui.mapSheetOpen ??= false;state.ui.biomeInfoOpen ??= false;
  const p=state.player,hasGeo=!!(p.position.lat&&p.position.lng),virtual=!!p.position.virtualTravel;
  for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true;
- const tutorial=tutorialMapOverlay(),region=biomeInfoAtPlayer(),cl=climate();
+ const tutorial=tutorialMapOverlay(),region=biomeInfoAtPlayer(),habitat=habitatInfoAtPlayer(),cl=climate();
  const weatherSlug=cl.weather.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replaceAll('ł','l'),phaseSlug=cl.phase.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
- el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard living-world-dashboard clean-map-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card clean-map-card"><div class="real-map-rpg-frame weather-frame-${weatherSlug} phase-frame-${phaseSlug}"><div id="realMap" class="real-map real-map-rpg"></div>${mapAmbientFxHTML()}<div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><div class="map-location-pill"><span>${region.icon} ${region.name}</span><button data-biome-info title="Informacje o okolicy">ⓘ</button></div>${questGuideHTML()}${biomeInfoSheetHTML()}${biomeLegendHTML()}<div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-map-gps title="${gpsWatch!==null?'Wyłącz GPS':'Włącz GPS'}">📍</button><button class="map-ui-btn" data-map-sheet-toggle>📜</button></div>${tutorial}${testMovePadHTML()}${nearbyTrayHTML()}<div class="osm-map-footer"><span class="map-status-chip" data-live-gps>${p.position.testWalk?'🧪 TEST • strzałki':virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span><span class="interaction-badge">⚔️ 60 m</span></div></div>${mobileMapSheetToggleHTML()}</section><aside class="dashboard-side-card fantasy-card map-journal-sheet ${state.ui.mapSheetOpen?'open':''}" data-map-journal-sheet>${mapRightPanelHTML()}</aside></div>`;
+ el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard living-world-dashboard clean-map-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card clean-map-card"><div class="real-map-rpg-frame weather-frame-${weatherSlug} phase-frame-${phaseSlug}"><div id="realMap" class="real-map real-map-rpg"></div>${mapAmbientFxHTML()}<div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><div class="map-location-pill"><span>${habitat.icon} ${habitat.name} • ${region.icon} ${region.name}</span><button data-biome-info title="Informacje o okolicy">ⓘ</button></div>${questGuideHTML()}${biomeInfoSheetHTML()}${biomeLegendHTML()}<div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-map-gps title="${gpsWatch!==null?'Wyłącz GPS':'Włącz GPS'}">📍</button><button class="map-ui-btn" data-map-sheet-toggle>📜</button></div>${tutorial}${testMovePadHTML()}${nearbyTrayHTML()}<div class="osm-map-footer"><span class="map-status-chip" data-live-gps>${p.position.testWalk?'🧪 TEST • strzałki':virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span><span class="interaction-badge">⚔️ 60 m</span></div></div>${mobileMapSheetToggleHTML()}</section><aside class="dashboard-side-card fantasy-card map-journal-sheet ${state.ui.mapSheetOpen?'open':''}" data-map-journal-sheet>${mapRightPanelHTML()}</aside></div>`;
  el.querySelectorAll('[data-map-side-tab]').forEach(b=>b.onclick=()=>{state.ui.mapPanelTab=b.dataset.mapSideTab;save();renderMap(el)});
  el.querySelectorAll('[data-map-demo-step]').forEach(b=>b.onclick=()=>{const step=b.dataset.mapDemoStep,delta={up:[0,30],down:[0,-30],left:[-30,0],right:[30,0]}[step];if(delta)moveDemo(delta[0],delta[1])});
  el.querySelectorAll('[data-map-gps]').forEach(b=>b.addEventListener('click',toggleGps));
@@ -1429,7 +1621,7 @@ function renderMap(el){
  bindNearbyTray(el);bindShellControls(el);bindTutorialControls(el);initRealMap();
 }
 
-function entityHTML(e,radius){const pt=mapPoint(e.x,e.y,radius),d=dist(e,state.player.position);if(pt.left<-10||pt.left>110||pt.top<-10||pt.top>110)return'';if(e.type==='monster'){const m=monsterTemplate(e);return `<button class="entity monster ${e.elite?'elite':''}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${e.elite?'<b class="elite-star">⭐</b>':''}${monsterVisual(m.id,'sprite-entity')}</span><small>${Math.round(d)}m</small></button>`}const discovered=state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id);const icon=e.type==='dungeon'&&!discovered?'❓':e.icon;return `<button class="entity ${e.type}" style="left:${pt.left}%;top:${pt.top}%" title="${discovered?e.name:'Nieznane miejsce'} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${icon}</span><small>${Math.round(d)}m</small></button>`}
+function entityHTML(e,radius){const pt=mapPoint(e.x,e.y,radius),d=dist(e,state.player.position);if(pt.left<-10||pt.left>110||pt.top<-10||pt.top>110)return'';if(e.type==='monster'){const m=monsterTemplate(e);return `<button class="entity monster ${e.elite?'elite':''} variant-marker-${m.variantId}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${e.elite?'<b class="elite-star">⭐</b>':m.variantId!=='normal'?`<b class="variant-entity-star">${m.variantIcon}</b>`:''}${monsterVisual(m.id,'sprite-entity',m.variantId)}</span><small>${Math.round(d)}m</small></button>`}const discovered=state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id);const icon=e.type==='dungeon'&&!discovered?'❓':e.icon;return `<button class="entity ${e.type}" style="left:${pt.left}%;top:${pt.top}%" title="${discovered?e.name:'Nieznane miejsce'} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${icon}</span><small>${Math.round(d)}m</small></button>`}
 function moveDemo(dx,dy){
  if(gpsWatch!==null){try{navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;gpsPausedByBackground=false}
  state.world ||= {};state.world.explored ||= [];
@@ -1446,13 +1638,14 @@ function moveDemo(dx,dy){
  if(pos.lat&&pos.lng)addExploredPoint(pos.lat,pos.lng,0);
  const added=markExplorationArea(pos.x,pos.y);if(added)registerExplorationProgress(pos.x,pos.y);
  const away=Math.hypot(pos.x,pos.y);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();save();
- if(currentTab==='map'&&realMap){updateLiveMapPosition();rebuildGameLayers();refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer();const hud=document.querySelector('[data-live-gps]');if(hud)hud.textContent='🧪 TEST • strzałki'}
+ if(currentTab==='map'&&realMap){updateLiveMapPosition();rebuildGameLayers();refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer()}
  else if(currentTab==='map')selectNav('map');
 }
 
 function interactEntity(e){
  if(!e)return;
  const d=dist(e,state.player.position),R=60;
+ if(e.type==='habitat'){state.ui.biomeInfoOpen=true;save();if(currentTab==='map')selectNav('map');return}
  // Once a guardian has been defeated the dungeon can be entered remotely; the physical marker is no longer required.
  if(e.type==='dungeon'&&state.player.dungeons.includes(e.id)&&dungeonAccess(e.id).guardianDefeated){openDungeonLobby(DUNGEONS.find(x=>x.id===e.id)||e);return}
  if(state.player.position.virtualTravel&&e.type!=='dungeon')return toast('Tryb podróży domowej nie pozwala na interakcje GPS. Włącz GPS, aby wrócić do świata.');
@@ -1473,7 +1666,7 @@ function interactEntity(e){
 
 
 function toggleGps(){
- if(gpsWatch!==null){navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;toast('GPS wyłączony.');if(currentTab==='map')selectNav('map');return}
+ if(gpsWatch!==null){navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;if(state?.player?.position)state.player.position.gps=false;save();toast('GPS wyłączony.');if(currentTab==='map')selectNav('map');return}
  if(!navigator.geolocation)return toast('Ta przeglądarka nie udostępnia GPS.');
  followGps=true;toast('Uruchamiam dokładny GPS…');
  const handlePosition=pos=>{
@@ -1492,14 +1685,14 @@ function toggleGps(){
    else{updateLiveMapPosition();rebuildGameLayers()}
   }
  };
- const handleError=err=>{const msg=err.code===1?'Brak zgody na lokalizację. Włącz dostęp do lokalizacji dla tej strony.':err.code===2?'Nie udało się ustalić pozycji GPS.':err.code===3?'GPS nie odpowiedział na czas. Spróbuj ponownie.':err.message;toast(`GPS: ${msg}`);if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;if(currentTab==='map')selectNav('map')};
+ const handleError=err=>{const msg=err.code===1?'Brak zgody na lokalizację. Włącz dostęp do lokalizacji dla tej strony.':err.code===2?'Nie udało się ustalić pozycji GPS.':err.code===3?'GPS nie odpowiedział na czas. Spróbuj ponownie.':err.message;toast(`GPS: ${msg}`);if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;if(state?.player?.position)state.player.position.gps=false;save();if(currentTab==='map')selectNav('map')};
  navigator.geolocation.getCurrentPosition(handlePosition,handleError,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
  gpsWatch=navigator.geolocation.watchPosition(handlePosition,handleError,{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
 }
 
 
 function renderCharacter(el){
- const p=state.player,c=CLASSES[p.class],slots=[['helmet','Hełm','⛑️'],['amulet','Amulet','📿'],['weapon','Broń','⚔️'],['armor','Pancerz','🛡️'],['offhand','Druga ręka','🛡️'],['gloves','Rękawice','🧤'],['ring1','Pierścień I','💍'],['ring2','Pierścień II','💍'],['boots','Buty','🥾']];
+ const p=state.player,c=CLASSES[p.class],slots=[['helmet','Hełm','⛑️'],['amulet','Amulet','📿'],['weapon','Broń główna','⚔️'],['armor','Pancerz','🛡️'],['offhand',p.class==='berserker'?'Druga broń':'Druga ręka',p.class==='berserker'?'🪓':'🛡️'],['gloves','Rękawice','🧤'],['ring1','Pierścień I','💍'],['ring2','Pierścień II','💍'],['boots','Buty','🥾']];
  const branches=[...new Set((SKILLS[p.class]||[]).map(s=>s.branch||'Umiejętności'))];
  el.innerHTML=`<div class="section-title"><div><h2>${p.name}</h2><div class="muted">${c.name} • ${c.desc}</div></div><span class="pill">lvl ${p.level}</span></div><div class="character-layout"><div class="paperdoll"><div class="paperdoll-title">WYPOSAŻENIE</div><div class="paperdoll-grid">${slots.map(([slot,label,ico])=>equipmentSlotHTML(slot,label,ico)).join('')}<div class="hero-silhouette"><div class="hero-pixel">${classVisual(p.class,'sprite-hero')}</div><b>${p.name}</b><span>${c.name}</span></div></div></div><div class="character-stats"><h3>Statystyki</h3><div class="stat-grid">${Object.entries(p.stats).map(([k,v])=>`<div class="stat-card"><b>${k.toUpperCase()}</b><div class="stat-number">${v}</div>${p.statPoints?`<button class="secondary mini" data-stat="${k}">+1</button>`:''}</div>`).join('')}</div><div class="derived-grid"><div><b>${attackPower()}</b><span>Atak</span></div><div><b>${armorPower()}</b><span>Pancerz</span></div><div><b>${critChance().toFixed(0)}%</b><span>Krytyk</span></div><div><b>${p.skillPoints}</b><span>Pkt skilli</span></div></div></div></div><div class="skill-tree-head"><div><h3>🌳 Drzewko umiejętności</h3><div class="muted">Wybierz kierunek rozwoju. Umiejętności wymagają poprzednich w swojej ścieżce.</div></div><span class="pill gold">${p.skillPoints} pkt</span></div><div class="skill-branches">${branches.map(branch=>`<section class="skill-branch"><h4>${branch}</h4>${(SKILLS[p.class]||[]).filter(s=>(s.branch||'Umiejętności')===branch).map(s=>skillCard(s)).join('<div class="skill-link">↓</div>')}</section>`).join('')}</div><h3 style="margin-top:22px">🐾 Chowańce</h3>${petSection()}`;
  el.querySelectorAll('[data-stat]').forEach(b=>b.onclick=()=>{if(p.statPoints<=0)return;p.stats[b.dataset.stat]++;p.statPoints--;if(b.dataset.stat==='vit'){p.maxHp+=5;p.hp+=5}if(b.dataset.stat==='int'){p.maxMana+=4;p.mana+=4}save();refresh()});
@@ -1515,10 +1708,11 @@ function skillCard(s){const p=state.player,learned=p.skills.includes(s.id),reqSk
 function learnSkill(id){const p=state.player,s=(SKILLS[p.class]||[]).find(x=>x.id===id);if(!s||p.skills.includes(id))return;if(p.level<s.req)return toast(`Wymagany poziom ${s.req}.`);if(s.requires&&!p.skills.includes(s.requires))return toast(`Najpierw odblokuj: ${skillDef(s.requires)?.name||s.requires}.`);if(p.skillPoints<s.cost)return toast('Za mało punktów umiejętności.');p.skillPoints-=s.cost;p.skills.push(id);tutorialEvent('skill');save();refresh();toast(`Odblokowano: ${s.name}`)}
 function petSection(){const p=state.player;if(!['hunter','ranger'].includes(p.class))return `<div class="panel-item"><b>🔒 Chowańce bojowe</b><div class="muted">Bojowe chowańce są specjalizacją Łowcy i Tropiciela.</div></div>`;if(!p.pets.length)return `<div class="panel-item">Nie masz jeszcze chowańca.</div>`;return `<div class="pet-grid">${p.pets.map(x=>{const d=petDef(x.id),need=x.level*90;return `<div class="pet-card-v03 ${p.petActive===x.id?'active':''}"><div class="pet-portrait">${d.icon}</div><div><b>${d.name} • lvl ${x.level}</b><div class="tiny">Aktywna: ${d.skill} • Pasywna: ${d.passive}</div><div class="muted">${d.desc}</div><div class="barwrap"><div class="bar petbar" style="width:${100*x.xp/need}%"></div><div class="barlabel">XP ${x.xp}/${need}</div></div></div><button class="secondary" data-pet="${x.id}" ${p.petActive===x.id?'disabled':''}>${p.petActive===x.id?'Aktywny':'Wybierz'}</button></div>`}).join('')}</div>`}
 function inventoryItemEquippedSlot(i){if(!i?.uid)return null;return Object.entries(state.player.equipped||{}).find(([,x])=>x?.uid===i.uid)?.[0]||null}
+function isOneHandedWeapon(d){return d?.type==='weapon'&&['sword','axe','hammer'].includes(d.weaponKind)}
 function itemCanGoToSlot(i,slot){
  if(!i)return false;const d=itemDef(i.id);if(!d?.slot||!itemClassAllowed(d))return false;
  if(d.slot==='ring')return slot==='ring1'||slot==='ring2';
- if(slot==='offhand'&&state.player.class==='berserker'&&d.type==='weapon'&&['sword','axe','hammer'].includes(d.weaponKind))return true;
+ if(slot==='offhand'&&state.player.class==='berserker'&&isOneHandedWeapon(d))return true;
  if(slot==='offhand'&&state.player.class!=='knight')return false;
  return d.slot===slot;
 }
@@ -1532,7 +1726,7 @@ function equipIndexToSlot(idx,slot){
 }
 function renderInventory(el){
  tutorialEvent('inventory');
- const p=state.player,slots=[['helmet','Hełm','⛑️'],['amulet','Amulet','📿'],['weapon','Broń','⚔️'],['armor','Pancerz','🛡️'],['offhand','Druga ręka','🛡️'],['gloves','Rękawice','🧤'],['ring1','Pierścień I','💍'],['ring2','Pierścień II','💍'],['boots','Buty','🥾']],used=inventoryUsedSlots(),cap=inventoryCapacity(),bag=backpackEntries();
+ const p=state.player,slots=[['helmet','Hełm','⛑️'],['amulet','Amulet','📿'],['weapon','Broń główna','⚔️'],['armor','Pancerz','🛡️'],['offhand',p.class==='berserker'?'Druga broń':'Druga ręka',p.class==='berserker'?'🪓':'🛡️'],['gloves','Rękawice','🧤'],['ring1','Pierścień I','💍'],['ring2','Pierścień II','💍'],['boots','Buty','🥾']],used=inventoryUsedSlots(),cap=inventoryCapacity(),bag=backpackEntries();
  const cells=Array.from({length:cap},(_,idx)=>{const entry=bag[idx];if(!entry)return `<button class="backpack-slot empty" disabled><span>·</span></button>`;const i=entry.item,realIndex=entry.index,d=itemDef(i.id),qty=i.qty||1,gear=!!d.slot;return `<button class="backpack-slot dnd-bag-item rarity-border-${d.rarity}" data-bag-index="${realIndex}" ${gear?'draggable="true"':''} data-dnd-gear="${gear?'1':'0'}" title="${itemName(i)}${gear?' • przeciągnij na slot':''}"><span class="backpack-icon">${itemIconVisual(d.id,'backpack-item-svg')}</span>${qty>1?`<b class="stack-badge">${qty}</b>`:''}${(i.upgrade||0)>0?`<em>+${i.upgrade}</em>`:''}</button>`}).join('');
  el.innerHTML=`<div class="section-title gear-page-title"><div><h2>🎒 Ekwipunek + plecak</h2><div class="muted">Sprzęt ma wymagany poziom i klasy. Berserker może trzymać drugą broń zamiast tarczy; Łowca i Tropiciel zużywają strzały.</div></div><span class="pill ${used>=cap?'danger-pill':''}">${used}/${cap}</span></div><div class="gear-bag-layout"><section class="paperdoll drag-paperdoll"><div class="paperdoll-title">WYPOSAŻENIE</div><div class="paperdoll-grid dnd-paperdoll-grid">${slots.map(([slot,label,ico])=>equipmentSlotHTML(slot,label,ico)).join('')}<div class="hero-silhouette drag-hero-silhouette"><div class="hero-pixel">${classVisual(p.class,'sprite-hero')}</div><b>${p.name}</b><span>${CLASSES[p.class].name}</span></div></div><div class="drag-help">Przeciągnij przedmiot na podświetlony slot</div></section><section class="backpack-frame drag-backpack"><div class="backpack-topline"><b>Plecak</b><span>${cap-used} wolnych</span></div><div class="backpack-grid">${cells}</div></section></div>${combatStatsPanelHTML()}${setStatusHTML()}`;
  bindInventoryDragDrop(el);
@@ -1557,10 +1751,11 @@ function bindInventoryDragDrop(root){
   slot.addEventListener('drop',e=>{e.preventDefault();const idx=dragIdx??Number(e.dataTransfer.getData('text/plain'));if(Number.isFinite(idx)&&equipIndexToSlot(idx,slot.dataset.equipDrop)){clear();renderInventory(root)}else clear()});
  });
 }
-function openInventoryItem(idx){const i=state.player.inventory[idx];if(!i)return;const d=itemDef(i.id);openModal(`<div class="modal-head"><div><h2>${itemIconVisual(d.id,'shop-item-svg')} ${itemName(i)}</h2><div class="muted">${inventoryItemEquippedSlot(i)?'Wyposażenie':`Plecak • ${inventoryUsedSlots()}/${inventoryCapacity()}`}${isStackable(i.id)?` • stos ${(i.qty||1)}/${stackLimit(i.id)}`:''}</div></div><button class="close" data-close>×</button></div>${inventoryCard(i,idx)}`);const root=document.querySelector('.modal-back');root?.querySelector('[data-equip]')?.addEventListener('click',()=>{closeModal();equipIndex(idx)});root?.querySelector('[data-unequip]')?.addEventListener('click',()=>{closeModal();unequipItem(i.uid)});root?.querySelector('[data-use]')?.addEventListener('click',()=>{closeModal();useItem(i.id)});root?.querySelector('[data-sell]')?.addEventListener('click',()=>{closeModal();sellIndex(idx)});root?.querySelector('[data-salvage]')?.addEventListener('click',()=>{closeModal();salvageIndex(idx)})}
+function openInventoryItem(idx){const i=state.player.inventory[idx];if(!i)return;const d=itemDef(i.id);openModal(`<div class="modal-head"><div><h2>${itemIconVisual(d.id,'shop-item-svg')} ${itemName(i)}</h2><div class="muted">${inventoryItemEquippedSlot(i)?'Wyposażenie':`Plecak • ${inventoryUsedSlots()}/${inventoryCapacity()}`}${isStackable(i.id)?` • stos ${(i.qty||1)}/${stackLimit(i.id)}`:''}</div></div><button class="close" data-close>×</button></div>${inventoryCard(i,idx)}`);const root=document.querySelector('.modal-back');root?.querySelector('[data-equip]')?.addEventListener('click',()=>{closeModal();equipIndex(idx)});root?.querySelectorAll('[data-equip-slot]').forEach(b=>b.addEventListener('click',()=>{closeModal();if(equipIndexToSlot(idx,b.dataset.equipSlot))refresh()}));root?.querySelector('[data-unequip]')?.addEventListener('click',()=>{closeModal();unequipItem(i.uid)});root?.querySelector('[data-use]')?.addEventListener('click',()=>{closeModal();useItem(i.id)});root?.querySelector('[data-sell]')?.addEventListener('click',()=>{closeModal();sellIndex(idx)});root?.querySelector('[data-salvage]')?.addEventListener('click',()=>{closeModal();salvageIndex(idx)})}
 function setStatusHTML(){const counts=activeSetCounts();const rows=Object.entries(SET_BONUSES).map(([id,b])=>{const n=counts[id]||0;return `<div class="set-card ${n>=2?'active':''}"><b>⚜️ ${b.name}</b><span>${n}/3 części</span><small>2 części: ${Object.entries(b.two).map(([k,v])=>`${k==='power'?'ATK':k==='armor'?'Pancerz':'Kryt'} +${v}`).join(' • ')}<br>3 części: ${Object.entries(b.three).map(([k,v])=>`${k==='power'?'ATK':k==='armor'?'Pancerz':'Kryt'} +${v}${k==='crit'?'%':''}`).join(' • ')}</small></div>`}).join('');return `<div class="set-strip">${rows}</div>`}
-function slotLabel(slot){return ({weapon:'Broń',helmet:'Hełm',armor:'Pancerz',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring1:'Pierścień I',ring2:'Pierścień II',offhand:'Druga ręka',ring:'Pierścień'})[slot]||slot}
-function inventoryCard(i,idx){const d=itemDef(i.id),eqSlot=Object.entries(state.player.equipped).find(([,x])=>x?.uid&&x.uid===i.uid)?.[0],eq=!!eqSlot,qty=i.qty||1,up=i.upgrade||0,details=[d.damage?`Obrażenia ${d.damage[0]}–${d.damage[1]}`:'',d.power&&!d.damage?`ATK +${d.power+up*2}`:'',d.armor?`Pancerz +${d.armor+up*2}`:'',d.crit?`Kryt +${d.crit+up}%`:'',d.ammo?`Amunicja: ${itemDef(d.ammo).name}`:''].filter(Boolean).join(' • '),mods=[i.affix?.name?`✨ Afiks: ${i.affix.name}`:'',i.enchant?.name?`🔮 Enchant: ${i.enchant.name}`:'',i.rune?`${itemDef(i.rune).icon} ${itemDef(i.rune).name}`:'',d.set?`⚜️ ${SET_BONUSES[d.set]?.name||d.set}`:''].filter(Boolean);return `<div class="item-card rarity-card-${d.rarity}"><div class="item-top"><div class="item-icon">${itemIconVisual(d.id,'inventory-item-svg')}</div><div><b class="rarity-${d.rarity}">${itemName(i)}${qty>1?` ×${qty}`:''}</b><div class="tiny">${rarityName(d.rarity)}${d.reqLevel?` • wymagany lvl ${d.reqLevel}`:''} • ${d.slot?slotLabel(d.slot):d.type}${details?` • ${details}`:''}${d.classes?`<br>Klasa: ${itemClassNames(d)}`:''}</div>${mods.length?`<div class="item-mods">${mods.map(x=>`<span>${x}</span>`).join('')}</div>`:''}</div></div>${eq?`<div class="equipped-tag">ZAŁOŻONE: ${slotLabel(eqSlot)}</div>`:''}<div class="tabs" style="margin-top:8px">${d.slot?(eq?`<button class="secondary" data-unequip="${i.uid}">Zdejmij</button>`:`<button class="secondary" data-equip="${idx}">Załóż</button>`):''}${d.type==='consumable'?`<button class="secondary" data-use="${d.id}">Użyj</button>`:''}${d.value>0&&!eq?`<button class="ghost" data-sell="${idx}">Sprzedaj ${itemSellValue(i)} 🪙</button>`:''}${d.slot&&!eq?`<button class="ghost" data-salvage="${idx}">♻️ Rozbierz</button>`:''}</div></div>`}
+function slotLabel(slot){return ({weapon:'Broń główna',helmet:'Hełm',armor:'Pancerz',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring1:'Pierścień I',ring2:'Pierścień II',offhand:state?.player?.class==='berserker'?'Druga broń':'Druga ręka',ring:'Pierścień'})[slot]||slot}
+function inventoryEquipButtons(d,idx){if(state.player.class==='berserker'&&isOneHandedWeapon(d))return `<button class="secondary" data-equip-slot="weapon">⚔️ Ręka główna</button><button class="secondary dual-wield-action" data-equip-slot="offhand">🪓 Druga ręka <small>45% obrażeń</small></button>`;return `<button class="secondary" data-equip="${idx}">Załóż</button>`}
+function inventoryCard(i,idx){const d=itemDef(i.id),eqSlot=Object.entries(state.player.equipped).find(([,x])=>x?.uid&&x.uid===i.uid)?.[0],eq=!!eqSlot,qty=i.qty||1,up=i.upgrade||0,details=[d.damage?`Obrażenia ${d.damage[0]}–${d.damage[1]}`:'',d.power&&!d.damage?`ATK +${d.power+up*2}`:'',d.armor?`Pancerz +${d.armor+up*2}`:'',d.crit?`Kryt +${d.crit+up}%`:'',d.ammo?`Amunicja: ${itemDef(d.ammo).name}`:''].filter(Boolean).join(' • '),mods=[i.affix?.name?`✨ Afiks: ${i.affix.name}`:'',i.enchant?.name?`🔮 Enchant: ${i.enchant.name}`:'',i.rune?`${itemDef(i.rune).icon} ${itemDef(i.rune).name}`:'',d.set?`⚜️ ${SET_BONUSES[d.set]?.name||d.set}`:''].filter(Boolean);return `<div class="item-card rarity-card-${d.rarity}"><div class="item-top"><div class="item-icon">${itemIconVisual(d.id,'inventory-item-svg')}</div><div><b class="rarity-${d.rarity}">${itemName(i)}${qty>1?` ×${qty}`:''}</b><div class="tiny">${rarityName(d.rarity)}${d.reqLevel?` • wymagany lvl ${d.reqLevel}`:''} • ${d.slot?slotLabel(d.slot):d.type}${details?` • ${details}`:''}${d.classes?`<br>Klasa: ${itemClassNames(d)}`:''}</div>${mods.length?`<div class="item-mods">${mods.map(x=>`<span>${x}</span>`).join('')}</div>`:''}</div></div>${eq?`<div class="equipped-tag">ZAŁOŻONE: ${slotLabel(eqSlot)}</div>`:''}<div class="tabs" style="margin-top:8px">${d.slot?(eq?`<button class="secondary" data-unequip="${i.uid}">Zdejmij</button>`:inventoryEquipButtons(d,idx)):''}${d.type==='consumable'?`<button class="secondary" data-use="${d.id}">Użyj</button>`:''}${d.value>0&&!eq?`<button class="ghost" data-sell="${idx}">Sprzedaj ${itemSellValue(i)} 🪙</button>`:''}${d.slot&&!eq?`<button class="ghost" data-salvage="${idx}">♻️ Rozbierz</button>`:''}</div></div>`}
 function rarityName(r){return ({common:'Zwykły',uncommon:'Niezwykły',rare:'Rzadki',epic:'Epicki',heroic:'Heroiczny',legendary:'Legendarny'})[r]||r}
 function unequipItem(uidv){const slot=Object.entries(state.player.equipped||{}).find(([,x])=>x?.uid===uidv)?.[0];if(!slot)return false;const i=equippedInstance(slot);state.player.equipped[slot]=null;playSfx('equip');save();refresh();toast(`Zdjęto: ${i?itemName(i):slotLabel(slot)}`);return true}
 function equipIndex(idx){const i=state.player.inventory[idx];if(!i)return;const d=itemDef(i.id);if(d.reqLevel&&state.player.level<d.reqLevel)return toast(`Wymagany poziom ${d.reqLevel}.`);if(!itemClassAllowed(d))return toast(`${d.name}: tylko ${itemClassNames(d)}.`);let slot=d.slot;if(!slot)return;if(slot==='ring')slot=!state.player.equipped.ring1?'ring1':!state.player.equipped.ring2?'ring2':'ring1';if(equipIndexToSlot(idx,slot))refresh()}
@@ -1610,23 +1805,32 @@ function renderAdventure(el){
  el.querySelectorAll('[data-enter-dungeon]').forEach(b=>b.onclick=()=>openDungeonLobby(DUNGEONS.find(d=>d.id===b.dataset.enterDungeon)))
 }
 function bestiaryFamilies(){return ['Wszystkie',...new Set(MONSTERS.map(m=>m.family))]}
-function openBestiaryMonster(id){const m=MONSTERS.find(x=>x.id===id);if(!m)return;const kills=state.player.bestiary?.[id]||0;if(!kills)return;openModal(`<div class="bestiary-modal"><div class="modal-head"><div><span class="eyebrow">BESTIARIUSZ</span><h2>${m.name}</h2><div class="muted">${m.family} • poziom ${m.min}–${m.max}</div></div><button class="close" data-close>×</button></div><div class="bestiary-detail"><div class="bestiary-hero-art">${monsterVisual(m.id,'bestiary-modal-sprite')}</div><div><div class="bestiary-stat-grid"><span><b>${kills}</b> pokonanych</span><span><b>${m.weak||'—'}</b> słabość</span><span><b>${m.zone}</b> strefa</span><span><b>${m.xp}</b> bazowe XP</span></div><p>${monsterLore(m)}</p><div class="bestiary-loot"><h3>🎒 Możliwe łupy</h3><p class="muted">Szanse bazowe. Elity i bossowie mogą zwiększać ilość lub szansę materiałów.</p>${monsterLootHTML(m)}</div><div class="lore-tip">Dorian: ${tavernAnecdote()}</div></div></div></div>`)}
+function monsterVariantKills(id){const saved=state.player.bestiaryVariants?.[id];if(saved)return saved;const legacy=state.player.bestiary?.[id]||0;return legacy?{normal:legacy}:{}}
+function knownMonsterVariantCount(id){const kills=monsterVariantKills(id);return MONSTER_VARIANT_ORDER.filter(v=>(kills[v]||0)>0).length}
+function monsterVariantProgressHTML(m){const kills=monsterVariantKills(m.id);return `<section class="monster-variant-journal"><div class="variant-journal-head"><div><span class="eyebrow">ODMIANY GATUNKU</span><h3>Odkryto ${knownMonsterVariantCount(m.id)}/${MONSTER_VARIANT_ORDER.length}</h3></div><small>Każda wersja ma inne statystyki i mnożnik łupów.</small></div><div class="monster-variant-grid">${MONSTER_VARIANT_ORDER.map(id=>{const v=monsterVariantDef(id),count=kills[id]||0,known=count>0;return `<article class="monster-variant-card variant-card-${id} ${known?'known':'locked'}"><div class="variant-mini-art">${known?monsterVisual(m.id,'variant-bestiary-sprite',id):'<b>?</b>'}</div><span>${v.icon} ${v.label}</span><b>${known?`${count}× pokonany`:'Nieodkryty'}</b><small>${known?`HP ×${v.hp.toFixed(2)} • ATK ×${v.atk.toFixed(2)} • łup ×${v.loot.toFixed(2)}`:id==='ancient'?'Bardzo rzadka odmiana':'Spotkaj tę wersję w świecie'}</small><p>${known?v.desc:'???'}</p></article>`}).join('')}</div></section>`}
+function openBestiaryMonster(id){
+ const m=MONSTERS.find(x=>x.id===id);if(!m)return;const kills=state.player.bestiary?.[id]||0;if(!kills)return;
+ const places=monsterHabitatNames(m,6);
+ openModal(`<div class="bestiary-modal"><div class="modal-head"><div><span class="eyebrow">BESTIARIUSZ</span><h2>${m.name}</h2><div class="muted">${m.family}${m.role?` • rola: ${m.role}`:''} • poziom ${m.min}–${m.max}</div></div><button class="close" data-close>×</button></div><div class="bestiary-detail"><div class="bestiary-hero-art">${monsterVisual(m.id,'bestiary-modal-sprite')}</div><div><div class="bestiary-stat-grid"><span><b>${kills}</b> pokonanych</span><span><b>${m.weak||'—'}</b> słabość</span><span><b>${m.zone}</b> strefa</span><span><b>${m.xp}</b> bazowe XP</span></div><p>${monsterLore(m)}</p><div class="monster-habitats"><h3>📍 Miejsca występowania</h3><div>${places.map(place=>`<span>${place}</span>`).join('')}</div></div><div class="bestiary-loot"><h3>🎒 Możliwe łupy</h3><p class="muted">Szanse bazowe. Elity i bossowie mogą zwiększać ilość lub szansę materiałów.</p>${monsterLootHTML(m)}</div><div class="lore-tip">Dorian: ${tavernAnecdote()}</div></div></div>${monsterVariantProgressHTML(m)}</div>`)
+}
 function renderBestiary(el){
  state.ui.bestiaryFamily ||= 'Wszystkie';const families=bestiaryFamilies(),knownCount=MONSTERS.filter(m=>(state.player.bestiary?.[m.id]||0)>0).length,filtered=MONSTERS.filter(m=>state.ui.bestiaryFamily==='Wszystkie'||m.family===state.ui.bestiaryFamily);
- el.innerHTML=`<div class="bestiary-shell"><div class="bestiary-top"><div><span class="eyebrow">KSIĘGA POTWORÓW</span><h2>Bestiariusz</h2><p>Poznane stworzenia ujawniają słabości, strefę, historię i możliwe łupy.</p></div><div class="bestiary-counter"><b>${knownCount}</b><span>/ ${MONSTERS.length} poznanych</span></div></div><div class="family-tabs">${families.map(f=>`<button class="${state.ui.bestiaryFamily===f?'active':''}" data-family="${f}">${f}</button>`).join('')}</div><div class="bestiary-grid-23">${filtered.map(m=>{const kills=state.player.bestiary?.[m.id]||0,known=kills>0;return `<button class="bestiary-card-23 ${known?'known':'unknown'}" data-best-monster="${m.id}" ${known?'':'disabled'}><div class="bestiary-art">${known?monsterVisual(m.id,'bestiary-card-sprite'):'<span class="unknown-monster">?</span>'}</div><div class="bestiary-copy"><span>${known?m.family:'NIEODKRYTY'}</span><h3>${known?m.name:'Nieznane stworzenie'}</h3>${known?`<div class="bestiary-line"><b>🎯 ${m.weak||'brak'}</b><b>⚔️ ${kills}×</b></div><small>lvl ${m.min}–${m.max} • ${m.zone}</small>`:'<small>Pokonaj potwora, aby odblokować wpis.</small>'}</div></button>`}).join('')}</div></div>`;
- el.querySelectorAll('[data-family]').forEach(b=>b.onclick=()=>{state.ui.bestiaryFamily=b.dataset.family;save();renderBestiary(el)});el.querySelectorAll('[data-best-monster]').forEach(b=>b.onclick=()=>openBestiaryMonster(b.dataset.bestMonster))
+ el.innerHTML=`<div class="bestiary-shell"><div class="bestiary-top"><div><span class="eyebrow">KSIĘGA POTWORÓW</span><h2>Bestiariusz</h2><p>Poznane stworzenia ujawniają słabości, miejsca występowania, historię i możliwe łupy.</p></div><div class="bestiary-counter"><b>${knownCount}</b><span>/ ${MONSTERS.length} poznanych</span></div></div><div class="family-tabs">${families.map(f=>`<button class="${state.ui.bestiaryFamily===f?'active':''}" data-family="${f}">${f}</button>`).join('')}</div><div class="bestiary-grid-23">${filtered.map(m=>{const kills=state.player.bestiary?.[m.id]||0,known=kills>0,place=monsterHabitatNames(m,1)[0];return `<button class="bestiary-card-23 ${known?'known':'unknown'}" data-best-monster="${m.id}" ${known?'':'disabled'}><div class="bestiary-art">${known?monsterVisual(m.id,'bestiary-card-sprite'):'<span class="unknown-monster">?</span>'}</div><div class="bestiary-copy"><span>${known?m.family:'NIEODKRYTY'}</span><h3>${known?m.name:'Nieznane stworzenie'}</h3>${known?`<div class="bestiary-line"><b>🎯 ${m.weak||'brak'}</b><b>⚔️ ${kills}×</b></div><small>lvl ${m.min}–${m.max} • ${place}</small>`:'<small>Pokonaj potwora, aby odblokować wpis.</small>'}</div></button>`}).join('')}</div></div>`;
+ el.querySelectorAll('[data-family]').forEach(b=>b.onclick=()=>{state.ui.bestiaryFamily=b.dataset.family;save();renderBestiary(el)});el.querySelectorAll('[data-best-monster]').forEach(b=>{const id=b.dataset.bestMonster,count=knownMonsterVariantCount(id),line=b.querySelector('.bestiary-line');if(line)line.insertAdjacentHTML('beforeend',`<b class="variant-count-chip">🧬 ${count}/5</b>`);b.onclick=()=>openBestiaryMonster(id)})
 }
 
 function monsterLore(m){
+ const goblins={goblin:'Lekki zwiadowca plemienia. Okrąża ofiarę, oznacza bezpieczne przejścia na skrawkach map i najczęściej pilnuje traktów.',goblinWarrior:'Ciężej uzbrojony wojownik osłaniający goblińskie patrole. Nosi prowizoryczny puklerz i zbiera metal na naprawy.',goblinMage:'Samouk posługujący się kradzionymi fokusami i niestabilną magią. W jego torbie częściej trafiają się mikstury oraz odłamki run.',goblinChampion:'Dowódca większego oddziału. Sztandar czempiona jest trofeum, a przy nim zwykle znajduje się więcej monet i lepsza broń.'};
+ if(goblins[m.id])return goblins[m.id];
  const lore={Natura:'Dziki mieszkaniec szlaków i lasów. Najczęściej atakuje samotnych wędrowców.',Owady:'Pancerz i jad czynią te stworzenia groźniejszymi, niż sugeruje ich rozmiar.',Nieumarli:'Pozostałość dawnych bitew. Magia utrzymuje ich kości w ruchu.',Zjawy:'Istoty związane z miejscami, w których śmierć zostawiła zbyt silny ślad.',Demony:'Przybysze z miejsc, w których ogień i gniew mają własną wolę.',Żywiołaki:'Skupiska pierwotnej energii związanej z kamieniem, ogniem i burzą.',Ludzie:'Bandytów i kultystów nie ogranicza natura — walczą z wyrachowaniem.',Bestie:'Rzadkie drapieżniki z najniebezpieczniejszych stref świata.'};return lore[m.family]||'Nieznane stworzenie świata Time4Heroes.'
 }
 const CITY_INTERIORS={
  tavern:{title:'Karczma „Pod Krukiem”',npc:'Dorian',role:'Karczmarz • były wojownik',classId:'knight',bg:'assets/tavern-scene-desktop.png',quote:'„Miecz odwiesiłem na ścianę. Pamięć o potworach — nie.”'},
- shop:{title:'Sklep kupiecki',npc:'Selma',role:'Kupcowa',classId:'hunter',bg:'assets/shop-scene-desktop.jpg',bgDesktop:'assets/shop-scene-desktop.jpg',bgMobile:'assets/shop-scene-mobile.jpg',quote:'„Towar musi mieć cenę. Dobra rada czasem jest gratis.”'},
- smith:{title:'Kuźnia Ragora',npc:'Ragor',role:'Kowal i runmistrz',classId:'berserker',bg:'assets/smith-scene-desktop.jpg',bgDesktop:'assets/smith-scene-desktop.jpg',bgMobile:'assets/smith-scene-mobile.jpg',quote:'„Dobra stal ma duszę. Zła ma tylko cenę.”'},
- alchemist:{title:'Pracownia Ilyry',npc:'Ilyra',role:'Alchemiczka',classId:'mage',bg:'assets/alchemist-scene-desktop.jpg',bgDesktop:'assets/alchemist-scene-desktop.jpg',bgMobile:'assets/alchemist-scene-mobile.jpg',quote:'„Rośliny mówią. Trzeba tylko wiedzieć, kiedy nie przeszkadzać.”'},
- auction:{title:'Dom aukcyjny',npc:'Varo',role:'Licytator',classId:'ranger',bg:'assets/auction-scene-desktop.jpg',bgDesktop:'assets/auction-scene-desktop.jpg',bgMobile:'assets/auction-scene-mobile.jpg',quote:'„Każdy przedmiot ma wartość. Pytanie brzmi: dla kogo?”'},
- guild:{title:'Sala gildii',npc:'Edrin',role:'Mistrz Gildii',classId:'knight',bg:'assets/guild-scene-desktop.jpg',bgDesktop:'assets/guild-scene-desktop.jpg',bgMobile:'assets/guild-scene-mobile.jpg',quote:'„Siła to nie tylko miecz. To ludzie, którzy wracają po swoich.”'}
+ shop:{title:'Sklep kupiecki',npc:'Selma',role:'Kupcowa',classId:'hunter',bg:'assets/backgrounds/interior-shop-380.webp',quote:'„Towar musi mieć cenę. Dobra rada czasem jest gratis.”'},
+ smith:{title:'Kuźnia Ragora',npc:'Ragor',role:'Kowal i runmistrz',classId:'berserker',bg:'assets/backgrounds/interior-smith-380.webp',quote:'„Dobra stal ma duszę. Zła ma tylko cenę.”'},
+ alchemist:{title:'Pracownia Ilyry',npc:'Ilyra',role:'Alchemiczka',classId:'mage',bg:'assets/backgrounds/interior-alchemist-380.webp',quote:'„Rośliny mówią. Trzeba tylko wiedzieć, kiedy nie przeszkadzać.”'},
+ auction:{title:'Dom aukcyjny',npc:'Varo',role:'Licytator',classId:'ranger',bg:'assets/backgrounds/interior-auction-380.webp',quote:'„Każdy przedmiot ma wartość. Pytanie brzmi: dla kogo?”'},
+ guild:{title:'Sala gildii',npc:'Edrin',role:'Mistrz Gildii',classId:'knight',bg:'assets/backgrounds/interior-guild-380.webp',quote:'„Siła to nie tylko miecz. To ludzie, którzy wracają po swoich.”'}
 };
 function renderTown(el){
  setAmbient('town');
@@ -1666,6 +1870,7 @@ function buildingSceneHTML(id,view='scene'){
  return `<div class="tavern-clean-stage clean-room-stage room-${id}">
    <picture class="tavern-scene-picture clean-room-picture"><source media="(max-width:620px)" srcset="${c.bgMobile||c.bg}"><img src="${c.bgDesktop||c.bg}" alt="${c.title}"></picture>
    <div class="tavern-scene-vignette clean-room-vignette"></div>
+   <div class="clean-room-scene-npc" aria-label="${c.npc} — ${c.role}">${npcVisual(c.npc,c.classId,'clean-room-scene-sprite')}<span><b>${c.npc}</b><small>${c.role}</small></span></div>
    ${hotspots}${sheet}
  </div>`;
 }
@@ -1746,7 +1951,7 @@ async function installPwa(){
 function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build 3.0.7</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>🌙 Testy</b><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🧪 Reset postaci do testów</b><div class="muted">Usuwa lokalny save oraz stare save’y migracyjne i wraca prosto do kreatora postaci.</div><button class="danger" data-reset-character>Resetuj postać</button></div></div>`;
  el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
-function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='time4heroes-build-3.2.0-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='time4heroes-build-3.8.0-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function importSave(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=normalizeState(JSON.parse(r.result));save();refresh();toast('Zapis zaimportowany.')}catch{toast('Nieprawidłowy plik zapisu.')}};r.readAsText(f)}
 
 
@@ -1789,12 +1994,14 @@ function chooseBossIntent(){
 function startCombat(entity,opts={}){
  const m=monsterTemplate(entity),lvl=opts.level||monsterLevel(m),environment=combatEnvironment(m),scale=.66+lvl*.075,isDungeonBoss=!!opts.dungeon?.boss,isWorldBoss=!!opts.worldBoss,isBoss=isWorldBoss||isDungeonBoss||!!entity.elite,bossHpMult=isDungeonBoss?1.42:isWorldBoss?1.58:entity.elite?1.12:1,bossAtkMult=isDungeonBoss?1.18:isWorldBoss?1.25:entity.elite?1.08:1,maxHp=Math.max(24,Math.floor(m.hp*scale*bossHpMult)),atk=Math.max(4,Math.floor(m.atk*(.62+lvl*.045)*bossAtkMult*environment.enemyDamage));
  combat={entity,monster:m,level:lvl,maxHp,hp:maxHp,atk,baseAtk:atk,environment,log:[`${m.name} staje do walki.`,`${BIOMES[environment.biomeId].icon} ${environment.effect.title}: ${environment.effect.summary}.`],guard:0,debuff:0,debuffTurns:0,poison:0,poisonTurns:0,bleed:0,bleedTurns:0,burn:0,burnTurns:0,freezeTurns:0,mark:0,markTurns:0,dungeon:opts.dungeon||null,worldBoss:isWorldBoss,isBoss,bossPhase:1,enemyTurns:0,intent:null,stagger:0,staggerMax:isBoss?100:0,stunned:0,vulnerableTurns:0,barrier:0,barrierTurns:0,playerWeaken:0,playerWeakenTurns:0,playerCritBuff:0,playerCritBuffTurns:0,playerDodgeBuff:0,playerDodgeBuffTurns:0,playerPowerBuff:0,playerPowerBuffTurns:0,playerBlockBuff:0,playerBlockBuffTurns:0,cooldowns:{},lastPlayerHit:null,lastEnemyHit:null,turnDealt:null,turnTaken:null,turnDealtNote:'',turnTakenNote:'',phase:'player',turnToken:0,storyConsequence:opts.storyConsequence||null,worldEvent:opts.worldEvent||null};
+ if(m.variantId!=='normal')combat.log.push(`${m.variantIcon} Odmiana ${m.variantLabel}: HP ×${monsterVariantDef(m.variantId).hp.toFixed(2)}, ATK ×${monsterVariantDef(m.variantId).atk.toFixed(2)}, łup ×${m.variantLoot.toFixed(2)}.`);
  if(isDungeonBoss)combat.log.push('👑 Boss lochu jest wyraźnie silniejszy od zwykłych przeciwników.');
  openCombat();
 }
 function openCombat(){
  const c=combat,p=state.player;if(!c)return;setAmbient(c.isBoss?'boss':'battle');const cl=climate(),pet=petInstance(),intent=bossIntentInfo(c.intent),resists=(FAMILY_RESISTS[c.monster.family]||[]),locked=c.phase!=='player',phaseLabel=c.phase==='enemyDelay'?'TWÓJ CIOS…':c.phase==='enemyResult'?'PRZECIWNIK ODPOWIADA':'TURA GRACZA';
  app.innerHTML=`<div class="battle-screen ${c.dungeon?'dungeon-battle':''} theme-${battleTheme(c.monster)} fx-${c.fx||'idle'}"><div class="battle-top"><div><span class="build-chip">WALKA 3.0.7</span><h2>${c.worldBoss?'🌍 Boss świata':c.dungeon?'🕳️ Komnata lochu':'⚔️ Spotkanie w świecie'}</h2></div><div>${c.dungeon&&dungeonRun?`⏱️ <span data-dungeon-timer>${formatClock(dungeonRemainingSec())}</span> • `:''}${cl.icon} ${cl.weather} • ${cl.phase}</div></div><div class="battle-arena"><div class="arena-layer layer-back"></div><div class="combatant hero-side ${c.lastEnemyHit?'combat-hit':''}"><div class="combat-name"><b>${p.name}</b><span>${CLASSES[p.class].name} • lvl ${p.level}</span></div><div class="battle-bars"><div class="barwrap bigbar"><div class="bar hp" style="width:${100*p.hp/p.maxHp}%"></div><div class="barlabel">HP ${p.hp}/${p.maxHp}</div></div><div class="barwrap bigbar"><div class="bar mana" style="width:${100*p.mana/p.maxMana}%"></div><div class="barlabel">MANA ${p.mana}/${p.maxMana}</div></div></div><div class="battle-sprite hero-sprite"><div>${classVisual(p.class,'sprite-battle')}</div><span class="shadow"></span>${c.lastEnemyHit?`<strong class="float-damage hero-damage">-${c.lastEnemyHit}</strong>`:''}</div>${pet?`<div class="battle-pet"><span>${petVisual(pet.id,'sprite-pet')}</span><small>${petDef(pet.id).name} lvl ${pet.level}</small></div>`:''}${c.playerWeakenTurns?`<div class="player-status-chip">⬇️ Osłabienie ${c.playerWeakenTurns}</div>`:''}${c.playerCritBuffTurns?`<div class="player-status-chip buff">🎯 Krytyk +${c.playerCritBuff}%</div>`:''}${c.playerDodgeBuffTurns?`<div class="player-status-chip buff">💨 Unik +${c.playerDodgeBuff}%</div>`:''}${c.playerPowerBuffTurns?`<div class="player-status-chip buff">⚔️ Moc +${c.playerPowerBuff}%</div>`:''}${c.playerBlockBuffTurns?`<div class="player-status-chip buff">🛡️ Blok +${c.playerBlockBuff}%</div>`:''}</div><div class="battle-center"><div class="versus">VS</div><div class="turn-indicator">${phaseLabel}</div>${c.isBoss?`<div class="break-wrap"><small>PRZEŁAMANIE</small><div class="break-bar"><span style="width:${Math.min(100,c.stagger)}%"></span></div><b>${Math.floor(c.stagger)}/${c.staggerMax}</b></div>`:''}</div><div class="combatant enemy-side ${c.lastPlayerHit?'combat-hit':''}"><div class="combat-name"><b>${c.entity.elite?'⭐ ':''}${c.monster.name}</b><span>${c.monster.family} • lvl ${c.level}</span></div><div class="battle-bars"><div class="barwrap bigbar"><div class="bar hp enemyhp" style="width:${100*Math.max(0,c.hp)/c.maxHp}%"></div><div class="barlabel">HP ${Math.max(0,c.hp)}/${c.maxHp}</div></div><div class="status-row">${c.poisonTurns?`<span>☠️ Trucizna ${c.poisonTurns}</span>`:''}${c.bleedTurns?`<span>🩸 Krwawienie ${c.bleedTurns}</span>`:''}${c.burnTurns?`<span>🔥 Podpalenie ${c.burnTurns}</span>`:''}${c.freezeTurns?`<span>❄️ Zamrożenie ${c.freezeTurns}</span>`:''}${c.debuffTurns?`<span>⬇️ Osłabienie ${c.debuffTurns}</span>`:''}${c.markTurns?`<span>🎯 Znak ${c.markTurns}</span>`:''}${c.barrierTurns?`<span>🛡️ Bariera ${c.barrierTurns}</span>`:''}${c.vulnerableTurns?`<span>💢 Przełamany</span>`:''}</div></div><div class="battle-sprite enemy-sprite"><div>${monsterVisual(c.monster.id,'sprite-battle')}</div><span class="shadow"></span>${c.lastPlayerHit?`<strong class="float-damage enemy-damage">-${c.lastPlayerHit}</strong>`:''}</div><div class="enemy-meta"><span>ATK ${c.atk}</span><span class="weak-meta">🎯 ${c.monster.weak||'brak'}</span>${resists.length?`<span class="resist-meta">🧱 ${resists.join(', ')}</span>`:''}</div>${c.isBoss?`<div class="boss-intent ${c.intent?'danger-intent':''}"><b>${intent.icon} ${c.intent?intent.name:'Faza '+c.bossPhase}</b><small>${c.intent?intent.hint:'Zapełnij pasek przełamania, aby ogłuszyć bossa.'}</small></div>`:''}</div></div><div class="battle-bottom"><div class="combat-feedback-column">${combatExchangeHTML()}<div class="combat-log"><b>Dziennik walki</b>${c.log.slice(-7).map(x=>`<div>› ${x}</div>`).join('')}</div></div><div><div class="skill-hotbar"><button class="battle-skill basic" data-attack ${locked||(['hunter','ranger'].includes(p.class)&&!countItem('primitiveArrow'))?'disabled':''}><span>${['hunter','ranger'].includes(p.class)?'🏹':'⚔️'}</span><b>Atak</b><small>${['hunter','ranger'].includes(p.class)?`➶ ${countItem('primitiveArrow')}`:'+10 przeł.'}</small></button><button class="battle-skill defend-skill" data-defend ${locked?'disabled':''}><span>🛡️</span><b>Obrona</b><small>na 1 turę</small></button>${p.skills.map(id=>skillDef(id)).filter(Boolean).map(s=>{const meta=combatSkillMeta(s),cd=c.cooldowns?.[s.id]||0,blocked=locked||p.mana<s.mana||cd>0||(['hunter','ranger'].includes(p.class)&&countItem('primitiveArrow')<rangedAmmoCost(s));return `<button class="battle-skill ${c.intent&&meta.interrupt?'interrupt-ready':''} ${cd?'skill-cooldown':''}" data-skill="${s.id}" ${blocked?'disabled':''}><span>${skillIconVisual(s.id,'combat-skill-svg')}</span><b>${s.name}</b><small>${cd?`⏳ CD ${cd}`:`${s.mana} many • ${meta.type}${meta.interrupt?' • PRZERWIJ':''}`}</small></button>`}).join('')}<button class="battle-skill potion-skill" data-combat-potion ${locked||!countItem('potion')?'disabled':''}><span>🧪</span><b>Mikstura</b><small>${countItem('potion')} szt.</small></button><button class="battle-skill flee-skill" data-flee ${locked?'disabled':''}><span>🏃</span><b>Ucieczka</b><small>${c.dungeon?'zablokowana':'70%'}</small></button></div><div class="combat-help"><span>🎯 traf w słabość: +25%</span><span>🧱 odporność: −28%</span><span>💢 100 przełamania = ogłuszenie</span><span>💨 unik ${dodgeChance().toFixed(0)}% • 🛡️ blok ${blockChance().toFixed(0)}%</span></div></div></div></div>`;
+ const battleScreen=document.querySelector('.battle-screen');if(battleScreen){battleScreen.style.setProperty('--battle-bg',`url('${battleBackdrop(c)}')`);for(const cls of battleAtmosphereClass(c).split(' ').filter(Boolean))battleScreen.classList.add(cls)}
  const battleChip=document.querySelector('.battle-top .build-chip');if(battleChip)battleChip.textContent=`WALKA ${BUILD_VERSION}`;
  const contextHost=document.querySelector('.battle-arena');if(contextHost){const banner=document.createElement('div');banner.className='battle-environment-effect';banner.innerHTML=`<span>${BIOMES[c.environment.biomeId].icon}</span><div><b>${BIOMES[c.environment.biomeId].name} — ${c.environment.effect.title}</b><small>${c.environment.effect.summary} • ${cl.icon} ${cl.weather} • ${cl.phase}</small></div>`;contextHost.before(banner)}
  if(c.dungeon&&dungeonRun)startDungeonTimer();document.querySelector('[data-attack]').onclick=()=>playerAction(null);document.querySelector('[data-defend]').onclick=defendAction;document.querySelectorAll('[data-skill]').forEach(b=>b.onclick=()=>playerAction(skillDef(b.dataset.skill)));document.querySelector('[data-combat-potion]')?.addEventListener('click',combatPotion);document.querySelector('[data-flee]').onclick=fleeCombat;
@@ -1909,6 +2116,7 @@ function showBattleVictory(result){renderShell();const lootHtml=result.drops.len
 function showBattleDefeat(onReturn){renderShell();openModal(`<div class="battle-result defeat"><div class="battle-result-mark">💀</div><span class="eyebrow">WYNIK WALKI</span><h2>ZGINĄŁEŚ</h2><button class="primary" data-death-return>Wróć</button></div>`,true);document.querySelector('[data-death-return]')?.addEventListener('click',()=>{closeModal();onReturn?.();renderShell()})}
 function winCombat(){
  const c=combat,m=c.monster,e=c.entity,biomeXp=c.environment?.familyMatch?(c.environment.effect.familyXp||1):1,xp=Math.floor(m.xp*(.65+.055*c.level)*(e.elite?1.75:1)*biomeXp),baseGold=rnd(...m.gold)*(e.elite?2:1);let gold=baseGold,worldBossRep=0;
+ state.player.bestiaryVariants ||= {};const variantKills=state.player.bestiaryVariants[m.id] ||= {},variantId=m.variantId||e.variant||'normal';variantKills[variantId]=(variantKills[variantId]||0)+1;
  state.player.gold+=baseGold;state.player.kills++;playSfx('kill');haptic(18);tutorialEvent('kill');state.player.bestiary[m.id]=(state.player.bestiary[m.id]||0)+1;if(!e.synthetic){e.alive=false;e.respawn=Date.now()+5*60*1000}checkQuestProgress('kill',m.id);const loot=rollCombatLoot(m,e,c);if((c.environment?.effect?.loot||1)>1&&Math.random()<(c.environment.effect.loot-1)){const extra=monsterLootTable(m.id)[0];if(extra)loot.drops=mergeLootDrops([...loot.drops,{id:extra.id,qty:1}])}gainXp(xp);gainPetXp(xp);if(e.elite||c.isBoss)playSfx('loot');if(c.worldBoss){state.adventure.worldBossDay=daySeed();state.adventure.reputation+=25;worldBossRep=25;state.player.gold+=180;gold+=180;loot.drops.push({id:'titanShard',qty:1},{id:'runeShard',qty:2});if(Math.random()<.55)loot.drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1});if(Math.random()<.18)loot.drops.push({id:pick(['stormCrown','cryptHeart']),qty:1});loot.drops=mergeLootDrops(loot.drops)}if(c.storyConsequence?.qid)checkQuestProgress('story',c.storyConsequence.qid);if(c.worldEvent?.eventId){const event=eventById(c.worldEvent.eventId),choice=event?.choices?.find(x=>x.id===c.worldEvent.choiceId);if(event)completeWorldEvent(event,choice||{label:'Walka wygrana'},{deferRender:true})}updateAchievements();const pauseStarted=c.dungeon&&dungeonRun?Date.now():0;if(pauseStarted)clearDungeonTimer();const result={xp,gold,worldBossRep,drops:loot.drops,dungeonInfo:c.dungeon,pauseStarted};combat=null;save();showBattleVictory(result);
 }
 function loseCombat(){const storyRetry=combat?.storyConsequence||null,info=combat?.dungeon,loss=Math.min(250,Math.max(10,Math.floor(state.player.gold*.04)));state.player.hp=Math.max(1,Math.floor(state.player.maxHp*.35));state.player.mana=Math.floor(state.player.maxMana*.35);state.player.gold=Math.max(0,state.player.gold-loss);let after=storyRetry?()=>{if(state.story?.choices)delete state.story.choices[storyRetry.qid];save();setTimeout(()=>queueReadyStoryScene(storyRetry.qid,120),60)}:null;if(dungeonRun){clearDungeonTimer();const d=DUNGEONS.find(x=>x.id===dungeonRun.id),a=dungeonAccess(dungeonRun.id),explore=dungeonExplorationPercent();a.cooldownUntil=Date.now()+DUNGEON_FAIL_COOLDOWN;a.lastResult={type:'death',explore,at:Date.now()};dungeonRun=null}combat=null;save();showBattleDefeat(after)}
@@ -1963,7 +2171,7 @@ function moveDungeon(dir){
  if(!dungeonRun)return;if(dungeonRemainingSec()<=0)return failDungeonRun('time');const delta={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!delta)return;const nx=dungeonRun.x+delta[0],ny=dungeonRun.y+delta[1];if(nx<0||ny<0||nx>=dungeonRun.size||ny>=dungeonRun.size)return toast('Kamienna ściana blokuje przejście.');const c=dungeonRun.grid[ny][nx];if(c.wall)return toast('Nie ma tam przejścia.');const d=DUNGEONS.find(x=>x.id===dungeonRun.id);if(c.type==='boss'&&d?.id!=='trainingCellar'&&dungeonRun.keys<1)return toast('🗝️ Komnata bossa jest zamknięta. Najpierw znajdź klucz w lochu.');dungeonRun.x=nx;dungeonRun.y=ny;c.revealed=true;c.visited=true;revealDungeonAround(nx,ny);save();resolveDungeonRoom(c);
 }
 function dungeonEnemyPool(d){
- const pools={trainingCellar:['slime','rat','beetle'],oldCrypt:['skeleton','ghost','goblin'],forgottenTower:['cultist','ghost','skeleton'],beastLair:['hellhound','demon','wyvern'],sunkenChapel:['mireCrawler','bogWraith','fenStalker'],witchBarrow:['rotCultist','marshHag','bogWraith'],blackrootKeep:['blackrootGuardian','mossGolem','rotCultist'],emberMine:['ashScavenger','fireWasp','cinderCultist','slagGolem'],ashenCitadel:['pyreKnight','ashDrake','emberWraith'],frostVault:['frostRaptor','iceWraith','frozenKnight'],tempestSpire:['stormCultist','thunderGolem','skySerpent']};return pools[d.id]||['skeleton','goblin','ghost']
+ const pools={trainingCellar:['slime','rat','beetle'],oldCrypt:['skeleton','ghost','goblin','goblinWarrior'],forgottenTower:['cultist','ghost','skeleton','goblinMage'],beastLair:['hellhound','demon','wyvern'],sunkenChapel:['mireCrawler','bogWraith','fenStalker'],witchBarrow:['rotCultist','marshHag','bogWraith'],blackrootKeep:['blackrootGuardian','mossGolem','rotCultist'],emberMine:['ashScavenger','fireWasp','cinderCultist','slagGolem'],ashenCitadel:['pyreKnight','ashDrake','emberWraith'],frostVault:['frostRaptor','iceWraith','frozenKnight'],tempestSpire:['stormCultist','thunderGolem','skySerpent']};return pools[d.id]||['skeleton','goblin','goblinWarrior','ghost']
 }
 function resolveDungeonRoom(c){
  if(!dungeonRun||!c)return;if(c.resolved){openDungeonCrawler();return}const d=DUNGEONS.find(x=>x.id===dungeonRun.id);
@@ -2001,5 +2209,7 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 state=load();
+const resumeGpsAfterLaunch=!!state?.player?.position?.gps;
 if(state?.world?.entities){for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true}
 render();
+if(resumeGpsAfterLaunch&&navigator.geolocation)setTimeout(()=>{if(state&&gpsWatch===null)toggleGps()},650);

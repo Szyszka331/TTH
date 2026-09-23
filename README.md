@@ -1,4 +1,62 @@
-# Time4Heroes 3.2.0 — Arsenal & Bestiary
+# Time4Heroes 3.8.0 — Klimatyczne Lokacje
+
+## Nowości w 3.8.0
+
+- Walki otrzymały pięć pełnych, malowanych scenerii zależnych od aktualnego biomu: łąkę, las, ruiny i cmentarz, bagno oraz skaliste wyżyny.
+- W lochach używana jest mroczniejsza sceneria ruin, a noc, mgła, deszcz i burza dodają własną warstwę atmosferyczną.
+- Sklep kupiecki, kuźnia, pracownia alchemiczna, dom aukcyjny i Sala Gildii mają nowe, spójne wnętrza w ciemnym stylu fantasy.
+- Tła są pozbawione przypadkowych postaci; właściwy NPC jest teraz nakładany osobno wraz z podpisem, więc ekran pozostaje czytelny.
+- Nowe grafiki działają również na telefonie, dopasowując kadr do pionowego ekranu bez zasłaniania paneli usług.
+
+## Nowości w 3.7.0
+
+## Nowości w 3.7.0
+
+- Każdy z 117 gatunków może wystąpić w 5 odmianach: zwykłej, młodej, zahartowanej, skażonej i pradawnej — łącznie 585 wersji spotkań.
+- Odmiany zmieniają rozmiar i kolor stworzenia, HP, atak, XP, złoto oraz mnożnik jego podstawowej tabeli łupów.
+- Rzadkie wersje mają dodatkowe materiały: Znak Zahartowania, Skażoną Esencję i Pradawny Relikt.
+- Pradawne osobniki są bardzo rzadkimi mini-bossami, ale nie pojawiają się z pełną siłą na początku gry.
+- Bestiariusz zapamiętuje osobno pokonane odmiany każdego gatunku i pokazuje kolekcję 0–5 wraz z mnożnikami statystyk.
+- Warianty są oznaczone na mapie i mają odrębne efekty wizualne w walce.
+
+## Nowości w 3.6.0
+
+- Berserker może jawnie wybrać dla jednoręcznej broni rękę główną albo drugą rękę — także na telefonie, bez przeciągania.
+- Druga broń daje 45% swoich obrażeń; statystyki, ulepszenia, afiksy, runy i zestawy są uwzględniane bez dublowania jednego egzemplarza.
+- Dodano 4 goblińskie role: Zwiadowcę, Wojownika, Maga i Czempiona, z innymi poziomami, statystykami oraz słabościami.
+- Każda odmiana goblina ma osobną tabelę łupów i unikalne materiały: mapy zwiadowców, puklerze wojowników, fokusy magów i sztandary czempionów.
+- Kontrakty oraz zadania na gobliny zaliczają wszystkie odmiany, a ich składy zależą od poziomu bohatera.
+- Gobliny otrzymały czytelne warianty wizualne i oznaczenia roli na mapie, w walce i bestiariuszu.
+
+- Avatar wybranej klasy płynnie przesuwa się pomiędzy kolejnymi punktami GPS zamiast przeskakiwać.
+- Podczas ruchu postać wykonuje animację kroków z kołysaniem sylwetki, cieniem i drobnym pyłem spod stóp.
+- Kierunek jest wyliczany z kolejnych pozycji GPS albo z czujnika kierunku telefonu.
+- Postać odwraca się w lewo lub w prawo i pokazuje wskaźnik kierunku marszu.
+- Szybszy ruch uruchamia dynamiczniejszą animację, a zatrzymanie GPS automatycznie uspokaja postać.
+- Animacja działa także podczas poruszania strzałkami w trybie testowym.
+- Ustawienie systemowe „ogranicz ruch” wyłącza animacje dla osób, które tego potrzebują.
+
+## Zmiany z wersji 3.4.0
+
+- Moby nie są już przywiązane do miejsca pierwszego uruchomienia gry.
+- Świat został podzielony na sektory GPS 700 × 700 m; wejście do nowego sektora generuje populację w bieżącej okolicy i ośmiu sąsiednich sektorach.
+- Każda lokalna populacja liczy do 126 potworów i jest deterministyczna dla danego dnia oraz miejsca.
+- Zabite potwory zachowują pięciominutowy czas respawnu także po wyjeździe z sektora i powrocie.
+- Dodano 12 miejsc występowania: łąki, lasy, pola, bagna, brzegi wody, cmentarze, kaplice, ruiny, jaskinie, wzgórza, obrzeża osad oraz drogi i rozstaje.
+- Gatunki są dobierane według siedliska i poziomu gracza; po zmianie miejscowości gra automatycznie tworzy nową lokalną populację.
+- Jeżeli GPS był aktywny przy zamknięciu gry, uruchamia się ponownie po następnym otwarciu i od razu sprawdza nową okolicę.
+- Siedliska są widoczne na mapie jako oznaczone obszary, a bestiariusz pokazuje miejsca występowania każdego poznanego potwora.
+
+## Zmiany z wersji 3.3.0
+
+- Odnaleziono 61 grafik potworów, które były w paczce, ale nie występowały jako osobne gatunki w grze.
+- Wszystkie 61 stworzeń dodano do danych, bestiariusza i pul losowania na mapie — gra zawiera teraz 114 gatunków.
+- Każdy odzyskany potwór ma nazwę, rodzinę, zakres poziomów, strefę, słabość, biom, statystyki i tabelę łupów.
+- Powstały cztery nowe, spójne atlasy 4×4 z poprawionymi grafikami odzyskanych stworzeń.
+- Potwory rozłożono między pięć regionów oraz właściwe biomy; zapis z 3.2.0 automatycznie odświeża ich spawny.
+- Liczba codziennie generowanych mobów wzrosła ze 118 do 150.
+
+## Zmiany z wersji 3.2.0
 
 - Nowy, oryginalny atlas broni, tarcz, pancerzy, łuków, kosturów, mikstur i biżuterii.
 - 12 podstawowych przeciwników otrzymało spójne, szczegółowe grafiki do mapy, walki i bestiariusza.

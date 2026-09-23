@@ -1,7 +1,13 @@
-const CACHE='time4heroes-3200';
+const CACHE='time4heroes-3800';
 const CORE=[
-  './','./index.html','./styles.css?v=3200','./app.js?v=3200','./data.js?v=3200','./manifest.webmanifest',
-  './assets/icon-192.png','./assets/icon-512.png','./assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/smith-scene-desktop.jpg','./assets/smith-scene-mobile.jpg','./assets/alchemist-scene-desktop.jpg','./assets/alchemist-scene-mobile.jpg','./assets/shop-scene-desktop.jpg','./assets/shop-scene-mobile.jpg','./assets/guild-scene-desktop.jpg','./assets/guild-scene-mobile.jpg','./assets/auction-scene-desktop.jpg','./assets/auction-scene-mobile.jpg','./assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png','./assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png'
+  './','./index.html','./styles.css?v=3800','./app.js?v=3800','./data.js?v=3800','./manifest.webmanifest',
+  './assets/icon-192.png','./assets/icon-512.png',
+  './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',
+  './assets/backgrounds/battle-meadow-380.webp','./assets/backgrounds/battle-forest-380.webp','./assets/backgrounds/battle-ruins-380.webp','./assets/backgrounds/battle-marsh-380.webp','./assets/backgrounds/battle-highlands-380.webp',
+  './assets/backgrounds/interior-shop-380.webp','./assets/backgrounds/interior-smith-380.webp','./assets/backgrounds/interior-alchemist-380.webp','./assets/backgrounds/interior-auction-380.webp','./assets/backgrounds/interior-guild-380.webp',
+  './assets/npcs/npc-selma-cutout-380.webp','./assets/npcs/npc-ragor-cutout-380.webp','./assets/npcs/npc-ilyra-cutout-380.webp','./assets/npcs/npc-varo-cutout-380.webp','./assets/npcs/npc-edrin-cutout-380.webp',
+  './assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png',
+  './assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png','./assets/atlases/archive-monsters-1-330.png','./assets/atlases/archive-monsters-2-330.png','./assets/atlases/archive-monsters-3-330.png','./assets/atlases/archive-monsters-4-330.png'
 ];
 
 self.addEventListener('install',event=>{
