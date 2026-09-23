@@ -1,3 +1,25 @@
+# Time4Heroes 3.8.1 — Miasto i sklepy (prototyp)
+
+## Jak wypróbować
+
+1. Otwórz `index.html` przez lokalny serwer HTTP albo host HTTPS, uruchom grę i przejdź do zakładki **Miasto**.
+2. Na komputerze kliknij **Wypróbuj miasto (30 min)**, aby sprawdzić budynki i sklepy bez GPS. Dostęp próbny działa tylko na komputerze w trybie demonstracyjnym.
+3. Na telefonie włącz GPS i wybierz **Ustaw miasto tutaj**. Strefa ma promień 200 m; wejście do usług wymaga aktualnej dokładnej pozycji wewnątrz niej. Centrum można przenieść raz na 30 dni.
+4. Rozbuduj budynek na komputerze po potwierdzonej wizycie w strefie. Ulepszenia dają zniżki na zakupy, ulepszanie, warzenie i posiłki albo dodatkową reputację w gildii.
+
+Wersja ZIP przechowuje zapis wyłącznie lokalnie w przeglądarce. Telefon i komputer **nie synchronizują się automatycznie**: aby używać tego samego miasta i bohatera na obu urządzeniach, wyeksportuj zapis w **Menu → Eksportuj**, a potem zaimportuj na drugim urządzeniu. Potwierdzenie wizyty daje dostęp do usług na komputerze przez cztery godziny od ostatniej wizyty zapisanej w pliku. Do automatycznej synchronizacji potrzebny będzie serwer i konto gracza.
+
+## Zmiany 3.8.1
+
+- Selma, Ragor, Ilyra, Varo i Edrin stoją za elementami wystroju swoich lokacji. Lada albo stół zasłania dolną część postaci, a przyciski rozmowy i usług nadal działają.
+- Wszystkie 153 zdefiniowane przedmioty mają własny plik SVG. Ikony są używane w sklepie, ekwipunku, łupach, recepturach i bestiariuszu.
+- Sklep Selmy zawiera katalog dla każdej z pięciu klas, filtry kategorii, wymagany poziom, cenę, informację o braku miejsca w plecaku i sprzedaż łupów z plecaka.
+- Część egzemplarzy sklepowych ma dodatkowe premie do Siły, Zręczności, Inteligencji albo Witalności. Zwykłe egzemplarze nie dostają losowej premii po zakupie. Premie zwiększają wartości pokazywane przy postaci i parametry walki.
+- Miasto można utworzyć z telefonu w obszarze GPS; na telefonie widać strefę na mapie i dostęp do usług, a na komputerze rozbudowę budynków. Tryb próbny na komputerze nie potwierdza wizyty GPS.
+- Zapis z 3.8.0 migruje przy pierwszym uruchomieniu; wersja 3.8.1 zapisuje się pod osobnym kluczem.
+
+---
+
 # Time4Heroes 3.8.0 — Klimatyczne Lokacje
 
 ## Nowości w 3.8.0
