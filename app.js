@@ -1,11 +1,11 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3900';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3910';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.0';
+const BUILD_VERSION='3.9.1';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -34,7 +34,7 @@ let leafletDecorLayers=[];
 let lastGpsTick=0;
 let gpsPausedByBackground=false;
 let playerWalkStopTimer=null;
-const playerMotion={heading:0,speed:0,moving:false,movingUntil:0,lastAt:0};
+const playerMotion={heading:180,speed:0,moving:false,movingUntil:0,lastAt:0};
 let isOnline=navigator.onLine;
 function connectionBanner(){return isOnline?'':'<div class=\"offline-banner\" data-offline-banner>📴 Tryb offline — zapis i większość gry działa, ale OpenStreetMap może być niedostępny.</div>'}
 function refreshConnectionBanner(){const old=document.querySelector('[data-offline-banner]');if(!isOnline&&!old)document.querySelector('.shell')?.insertAdjacentHTML('afterbegin',connectionBanner());if(isOnline&&old)old.remove()}
@@ -900,7 +900,7 @@ function equippedInstanceForState(s,slot){const e=s?.player?.equipped?.[slot];if
 function normalizeState(s){
  if(!s)return null;
  const previousVersion=s.version||0;
- s.version=390;
+ s.version=391;
  s.player ||= {};s.player.name=String(s.player.name||'Wędrowiec').replace(/[<>]/g,'').slice(0,30);if(s.player.guild)s.player.guild=String(s.player.guild).replace(/[<>]/g,'').slice(0,28);
  s.player.stats ||= {str:5,agi:5,int:5,vit:5};
  s.player.inventory ||= [];
@@ -966,8 +966,8 @@ function newGame(name,cls){
  const armor={id:starterArmor(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const boots={id:starterBoots(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const pets=['hunter','ranger'].includes(cls)?[{id:'youngWolf',level:1,xp:0}]:[];
- state={version:390,created:Date.now(),player:{name:String(name||'Wędrowiec').replace(/[<>]/g,'').slice(0,30),class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},bestiaryVariants:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,spawnKey:'',eventDay:0,contextKey:'',monsterRespawns:{},completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:SAVE_KEY===DEMO_SAVE_KEY,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
- state.version=390;ensureCoreState();ensureLivingWorld();ensureExplorationState();save();render();
+ state={version:391,created:Date.now(),player:{name:String(name||'Wędrowiec').replace(/[<>]/g,'').slice(0,30),class:cls,level:1,xp:0,gold:55,hp:c.hp,maxHp:c.hp,mana:c.mana,maxMana:c.mana,stamina:100,maxStamina:100,stats:{...c.base},statPoints:0,skillPoints:1,skills:[],inventoryCapacity:32,inventory:[weapon,armor,boots,...(['hunter','ranger'].includes(cls)?[{id:'primitiveArrow',qty:150}]:[]),{id:'potion',qty:3},{id:'herb',qty:3},{id:'scrap',qty:1}],equipped:{weapon,helmet:null,armor,gloves:null,boots,amulet:null,ring1:null,ring2:null,offhand:null},bestiary:{},bestiaryVariants:{},discovered:[],dungeons:[],dungeonClears:{},position:{x:0,y:0,lat:null,lng:null,gps:false},kills:0,guild:null,friends:[],pets,petActive:pets.length?'youngWolf':null},quests:{active:['q1'],done:[],progress:{}},world:{entities:generateWorld(),gpsOrigin:null,explored:[],fogRadius:100,living:{spawnDay:0,spawnKey:'',eventDay:0,contextKey:'',monsterRespawns:{},completedEvents:[],notifiedEvents:[],eventHistory:[],dailyExplore:{day:daySeed(),cells:{},claimed:false}}},settings:{demo:SAVE_KEY===DEMO_SAVE_KEY,forceNight:false,masterSound:true,audio:true,ambient:true,sfxVolume:.68,ambientVolume:.18,haptics:true,mapMode:'focused',mapFilters:{monster:true,poi:true,dungeon:true,event:true,biome:true,trail:true}},tutorial:{stage:0,complete:false,rewardGiven:false,flags:{},introSeen:false,finishReward:false,mapDismissedStage:-1},ui:{heroView:'char',adventureView:'quests',menuView:'settings'},adventure:{day:daySeed(),reputation:0,bounties:makeDailyBounties(daySeed()),worldBossDay:0,achievements:{}},economy:{elitePity:0,bossPity:0,totalSold:0,totalSalvaged:0}};
+ state.version=391;ensureCoreState();ensureLivingWorld();ensureExplorationState();save();render();
 }
 function resetCharacter(){if(!confirm('Zresetować postać i wrócić do kreatora? Usunie to lokalny postęp tej gry.'))return;try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();for(const key of Object.keys(localStorage)){if(key===SAVE_KEY||key.startsWith('time4heroes_build_')||key.startsWith('georpg_build_'))localStorage.removeItem(key)}state=null;combat=null;dungeonRun=null;battleResult=null;clearDungeonTimer();currentTab='map';destroyRealMap();render();}
 function centerMapOnPlayer(){selectNav('map');setTimeout(()=>{if(realMap&&state?.player?.position?.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],18,{animate:true})}},120)}
@@ -1275,16 +1275,54 @@ function bindShellControls(root=document){
  root.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>selectNav(b.dataset.nav));
  root.querySelectorAll('[data-shortcut]').forEach(b=>b.onclick=()=>{
   const id=b.dataset.shortcut;
-  if(id==='bag'){state.ui.heroView='gear';save();selectNav('hero');return;}
+  if(id==='bag'){toggleGearDrawer();return;}
   if(id==='bestiary'){state.ui.adventureView='bestiary';save();selectNav('adventureHub');return;}
   if(id==='skills'){state.ui.heroView='skills';save();selectNav('hero');return;}
   if(id==='quests'){state.ui.adventureView='quests';save();selectNav('adventureHub');return;}
  });
 }
 
-function renderShell(){destroyRealMap();app.innerHTML=`<div class="shell shell-21">${connectionBanner()}${topbar()}<div class="shell-body"><div class="content-zone"><div class="main"><main class="viewport" id="viewport"></main><aside class="side" id="side"></aside></div></div></div><button class="quest-float" data-quest-float title="Questy">📜<span>${activeTaskCount()||''}</span></button>${bottomNav()}</div>`;bindShellControls(document);document.querySelector('[data-quest-float]')?.addEventListener('click',openQuestView);selectNav(currentTab,false)}
+const DRAWER_BAG_ICON='<svg viewBox="0 0 32 36" aria-hidden="true"><path d="M10 8V5c0-5 12-5 12 0v3M7 10h18l3 22H4Z"/><path d="M5 15q11 7 22 0M9 23h14v8H9ZM13 13h6v7h-6Z"/></svg>';
+function drawerState(){state.ui ||= {};state.ui.gearDrawerTab ||= 'bag';state.ui.gearDrawerFilter ||= 'all';return state.ui}
+function drawerEquipmentSlot(slot,label){const inst=equippedInstance(slot),d=inst?itemDef(inst.id):null;return `<button class="drawer-equip slot-${slot} ${d?'rarity-border-'+d.rarity:''}" data-drawer-slot="${slot}" title="${label}${d?': '+d.name:''}" aria-label="${label}${d?': '+d.name:': pusty'}">${d?itemIconVisual(d.id,'drawer-item-art'):`<span class="empty-slot-mark">${({helmet:'♜',amulet:'◇',weapon:'⚔',armor:'♙',offhand:'⛨',gloves:'⋔',boots:'∩',ring1:'○',ring2:'○'})[slot]}</span>`}<small>${label}</small></button>`}
+function drawerInventoryEntries(filter='all'){
+ return backpackEntries().filter(({item})=>{const d=itemDef(item.id);return filter==='all'||filter==='gear'&&!!d.slot||filter==='usable'&&['consumable','ammo'].includes(d.type)||filter==='materials'&&['material','rune'].includes(d.type)});
+}
+function drawerBagHTML(){
+ const ui=drawerState(),entries=drawerInventoryEntries(ui.gearDrawerFilter),used=inventoryUsedSlots(),cap=inventoryCapacity();
+ const cells=Array.from({length:Math.max(6,ui.gearDrawerFilter==='all'?Math.ceil(Math.max(cap,entries.length)/6)*6:Math.ceil(entries.length/6)*6)},(_,i)=>{const e=entries[i];if(!e)return '<span class="drawer-bag-cell empty" aria-hidden="true"></span>';const d=itemDef(e.item.id);return `<button class="drawer-bag-cell rarity-border-${d.rarity} ${ui.gearDrawerSelection===e.index?'selected':''}" data-drawer-item="${e.index}" title="${itemName(e.item)}" aria-label="${itemName(e.item)}${e.item.qty>1?', '+e.item.qty+' sztuk':''}">${itemIconVisual(d.id,'drawer-item-art')}${e.item.qty>1?`<b class="drawer-qty">${e.item.qty}</b>`:''}${e.item.upgrade?`<em class="drawer-upgrade">+${e.item.upgrade}</em>`:''}</button>`}).join('');
+ return `<div class="drawer-section-heading"><b>PLECAK</b><span>${used} / ${cap}</span></div><div class="drawer-filters" aria-label="Filtr przedmiotów">${[['all','Wszystko'],['gear','Sprzęt'],['usable','Zapasy'],['materials','Materiały']].map(([id,label])=>`<button data-drawer-filter="${id}" aria-pressed="${ui.gearDrawerFilter===id}" class="${ui.gearDrawerFilter===id?'active':''}">${label}</button>`).join('')}</div><div class="drawer-bag-grid">${cells}</div>${!entries.length?'<p class="drawer-hint">Brak przedmiotów w tej kategorii.</p>':''}<p class="drawer-hint">Dotknij przedmiotu, aby go założyć lub użyć.</p>`;
+}
+function drawerStatsHTML(){const p=state.player;return `<div class="drawer-section-heading"><b>BOHATER</b><span>${CLASSES[p.class].name}</span></div><div class="drawer-stat-grid">${[['Siła',p.stats.str],['Zręczność',p.stats.agi],['Intelekt',p.stats.int],['Witalność',p.stats.vit],['Atak',attackPower()],['Pancerz',armorPower()],['Krytyk',critChance().toFixed(0)+'%'],['Unik',dodgeChance().toFixed(0)+'%']].map(([k,v])=>`<div><span>${k}</span><b>${v}</b></div>`).join('')}</div><p class="drawer-hint">${classPassiveText()}</p><button class="drawer-wide-action" data-drawer-skills>Rozwój i umiejętności${p.skillPoints?' • '+p.skillPoints+' pkt':''}</button>`}
+function drawerQuestHTML(){const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean);return `<div class="drawer-section-heading"><b>WYPRAWA</b><span>${active.length} zadań</span></div>${active.map(q=>`<button class="drawer-quest" data-drawer-quest="${q.id}"><b>${q.name}</b><small>${currentQuestStep(q.id)?.step?.label||'Zadanie gotowe'}</small></button>`).join('')||'<p class="drawer-hint">Nowe zadania czekają w karczmie.</p>'}<button class="drawer-wide-action" data-drawer-journal>Otwórz dziennik</button>`}
+function drawerDetailHTML(){const ui=drawerState(),i=state.player.inventory[ui.gearDrawerSelection];if(!i)return '';return `<section class="drawer-item-detail"><button class="drawer-detail-back" data-drawer-back>‹ Wróć do plecaka</button>${inventoryCard(i,ui.gearDrawerSelection)}</section>`}
+function gearDrawerHTML(){const ui=drawerState(),p=state.player,selected=Number.isInteger(ui.gearDrawerSelection)&&state.player.inventory[ui.gearDrawerSelection];return `<button class="drawer-pull-tab" data-drawer-toggle aria-controls="gear-drawer-panel" aria-expanded="${!!ui.gearDrawerOpen}" aria-label="${ui.gearDrawerOpen?'Zwiń':'Rozwiń'} plecak">${DRAWER_BAG_ICON}<span>PLECAK</span><i>${ui.gearDrawerOpen?'›':'‹'}</i></button><section class="drawer-panel" id="gear-drawer-panel" aria-label="Plecak i wyposażenie" ${ui.gearDrawerOpen?'':'inert aria-hidden="true"'}><header class="drawer-title"><span>✦</span><div><b>${p.name}</b><small>${CLASSES[p.class].name} · poziom ${p.level}</small></div><button data-drawer-close aria-label="Zamknij plecak">×</button></header><div class="drawer-vitals"><div class="drawer-meter hp"><i style="width:${clamp(p.hp/p.maxHp*100,0,100)}%"></i><span>Życie ${p.hp} / ${p.maxHp}</span></div><div class="drawer-meter mana"><i style="width:${clamp(p.mana/p.maxMana*100,0,100)}%"></i><span>Mana ${p.mana} / ${p.maxMana}</span></div><div class="drawer-wallet"><span>◈ ${fmt(p.gold)} złota</span><span>${inventoryUsedSlots()} / ${inventoryCapacity()} miejsc</span></div></div><div class="drawer-scroll">${selected?drawerDetailHTML():`<div class="drawer-loadout"><div class="drawer-equipment">${[['ring1','Pierścień'],['helmet','Hełm'],['amulet','Amulet'],['weapon','Broń'],['armor','Pancerz'],['offhand','Druga ręka'],['gloves','Rękawice'],['boots','Buty'],['ring2','Pierścień']].map(([slot,label])=>drawerEquipmentSlot(slot,label)).join('')}</div><div class="drawer-mini-stats"><span>ATAK<b>${attackPower()}</b></span><span>PANCERZ<b>${armorPower()}</b></span><span>KRYTYK<b>${critChance().toFixed(0)}%</b></span><div class="drawer-hero">${classVisual(p.class,'drawer-hero-art')}</div></div></div>${ui.gearDrawerTab==='stats'?drawerStatsHTML():ui.gearDrawerTab==='quests'?drawerQuestHTML():drawerBagHTML()}`}</div><nav class="drawer-tabs" aria-label="Zakładki plecaka">${[['bag','Plecak'],['stats','Bohater'],['quests','Zadania']].map(([id,label])=>`<button data-drawer-tab="${id}" class="${ui.gearDrawerTab===id?'active':''}" aria-pressed="${ui.gearDrawerTab===id}">${label}</button>`).join('')}</nav></section>`}
+function renderGearDrawer(){const host=document.querySelector('#gear-drawer');if(!host||!state)return;const ui=drawerState(),scroll=host.querySelector('.drawer-scroll')?.scrollTop||0;host.classList.toggle('is-open',!!ui.gearDrawerOpen);host.innerHTML=gearDrawerHTML();const scroller=host.querySelector('.drawer-scroll');if(scroller)scroller.scrollTop=scroll;host.onclick=handleGearDrawerClick}
+function toggleGearDrawer(force){if(!state||combat||dungeonRun||battleResult)return;const ui=drawerState();ui.gearDrawerOpen=typeof force==='boolean'?force:!ui.gearDrawerOpen;ui.gearDrawerSelection=null;save();renderGearDrawer();if(!ui.gearDrawerOpen)document.querySelector('[data-drawer-toggle]')?.focus()}
+function handleGearDrawerClick(event){
+ const b=event.target.closest('button');if(!b)return;
+ const ui=drawerState(),d=b.dataset;
+ if(d.drawerToggle!==undefined||d.drawerClose!==undefined){toggleGearDrawer(d.drawerClose!==undefined?false:undefined);return}
+ if(d.drawerTab){ui.gearDrawerTab=d.drawerTab;ui.gearDrawerSelection=null}
+ else if(d.drawerFilter){ui.gearDrawerFilter=d.drawerFilter;ui.gearDrawerSelection=null}
+ else if(d.drawerItem!==undefined){ui.gearDrawerSelection=Number(d.drawerItem)}
+ else if(d.drawerSlot){const item=equippedInstance(d.drawerSlot);if(!item)return toast('To miejsce wyposażenia jest puste.');ui.gearDrawerSelection=state.player.inventory.findIndex(x=>x.uid===item.uid)}
+ else if(d.drawerBack!==undefined){ui.gearDrawerSelection=null}
+ else if(d.drawerSkills!==undefined){toggleGearDrawer(false);state.ui.heroView='skills';selectNav('hero');return}
+ else if(d.drawerQuest){toggleGearDrawer(false);state.ui.questGuideId=d.drawerQuest;save();selectNav('map');return}
+ else if(d.drawerJournal!==undefined){toggleGearDrawer(false);openQuestView();return}
+ else {
+  const idx=ui.gearDrawerSelection,item=state.player.inventory[idx];if(!item)return;ui.gearDrawerSelection=null;
+  if(d.equip!==undefined)equipIndex(idx);else if(d.equipSlot)equipIndexToSlot(idx,d.equipSlot);else if(d.unequip!==undefined)unequipItem(item.uid);else if(d.use!==undefined)useItem(item.id);else if(d.sell!==undefined)sellIndex(idx);else if(d.salvage!==undefined)salvageIndex(idx);else return;
+ }
+ save();renderGearDrawer();
+}
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&state?.ui?.gearDrawerOpen&&!document.querySelector('.modal-back')){toggleGearDrawer(false);event.preventDefault()}});
+document.addEventListener('pointerdown',event=>{if(state?.ui?.gearDrawerOpen&&!event.target.closest('#gear-drawer')&&!event.target.closest('.modal-back')&&!combat&&!dungeonRun)toggleGearDrawer(false)});
+
+function renderShell(){destroyRealMap();app.innerHTML=`<div class="shell shell-21">${connectionBanner()}${topbar()}<div class="shell-body"><div class="content-zone"><div class="main"><main class="viewport" id="viewport"></main><aside class="side" id="side"></aside></div></div></div><button class="quest-float" data-quest-float title="Questy">📜<span>${activeTaskCount()||''}</span></button>${bottomNav()}<aside id="gear-drawer" class="rpg-gear-drawer"></aside></div>`;bindShellControls(document);document.querySelector('[data-quest-float]')?.addEventListener('click',openQuestView);selectNav(currentTab,false);renderGearDrawer()}
 function selectNav(id,rebuild=true){if(id!=='map')destroyRealMap();currentTab=id;document.body.classList.toggle('map-view-active',id==='map');document.body.classList.toggle('scroll-view-active',id!=='map');if(rebuild)document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));const el=document.querySelector('#viewport'),side=document.querySelector('#side'),main=document.querySelector('.main');if(!el||!side)return;main?.classList.toggle('map-main-only',id==='map');side.style.display='none';({map:renderMap,hero:renderHeroHub,adventureHub:renderAdventureHub,town:renderTown,menu:renderMenuHub}[id]||renderMap)(el);bindTutorialControls(document);bindShellControls(document)}
-function refresh(){render()}
+function refresh(){if(state?.ui?.gearDrawerOpen&&document.querySelector('#gear-drawer')&&!combat&&!dungeonRun&&!battleResult){renderGearDrawer();return}render()}
 function renderHeroHub(el){
  ensureCoreState();
  if(state.ui.heroView==='char')state.ui.heroView='stats';
@@ -1348,8 +1386,8 @@ function destroyRealMap(){
  clearTimeout(playerWalkStopTimer);playerWalkStopTimer=null;playerMotion.moving=false;
  fogLayer=null;trailLayer=null;playerMapMarker=null;accuracyCircle=null;interactionCircle=null;questGuideLayer=null;leafletEntityLayers=[];leafletZoneLayers=[];leafletBiomeLayers=[];leafletDecorLayers=[];
 }
-function makeLeafletIcon(html,cls='game-map-icon',size=[48,48]){
- return L.divIcon({html,className:`${cls}-wrap`,iconSize:size,iconAnchor:[size[0]/2,size[1]/2],popupAnchor:[0,-size[1]/2]});
+function makeLeafletIcon(html,cls='game-map-icon',size=[48,48],anchor=null){
+ return L.divIcon({html,className:`${cls}-wrap`,iconSize:size,iconAnchor:anchor||[size[0]/2,size[1]/2],popupAnchor:[0,-size[1]/2]});
 }
 
 function rebuildFog(){
@@ -1480,14 +1518,14 @@ function rebuildGameLayers(){
   const h=HABITATS[e.habitat]||HABITATS.meadow;
   const area=L.circle(ll,{radius:e.radius||270,pane:'biomePane',color:h.color,weight:1.5,dashArray:'5 8',fillColor:h.color,fillOpacity:.075,interactive:false}).addTo(realMap);leafletZoneLayers.push(area);
  }
- for(const {e,ll,d} of visible.filter(x=>x.d<=180&&(x.e.type==='event'||x.e.type==='dungeon'||x.e.elite))){
+ for(const {e,ll,d} of visible.filter(x=>x.d<=180&&(x.e.type==='event'||x.e.type==='dungeon'))){
   const color=e.type==='event'?'#d7b85f':e.type==='dungeon'?'#866eb8':'#b8634f';
   const ring=L.circle(ll,{radius:e.type==='dungeon'?34:24,pane:'overlayPane',color,weight:1.5,dashArray:'3 6',fillColor:color,fillOpacity:.045,interactive:false}).addTo(realMap);leafletZoneLayers.push(ring);
  }
  for(const {e,ll,d} of visible){
   let inner='',label='';
   const questTarget=targets.has(e.id)||(e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template));
-  if(e.type==='monster'){const m=monsterTemplate(e),near=d<=60?' interaction-ready':d<=120?' proximity':'';inner=`<div class="mmo-marker monster-marker ${e.elite?'elite-marker':''} variant-marker-${m.variantId} ${questTarget?'quest-marker':''}${near}">${e.elite?'<span class="mmo-star">★</span>':''}${m.variantId!=='normal'?`<span class="variant-map-badge">${m.variantIcon}</span>`:''}${monsterVisual(m.id,'mmo-sprite',m.variantId)}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=m.name}
+  if(e.type==='monster'){inner=mapMonsterHTML(e,d,questTarget);label=monsterTemplate(e).name}
   else if(e.type==='event'){inner=`<div class="mmo-marker event-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${e.icon}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=e.name}
   else if(e.type==='secret'){const found=state.world.exploration.secretsFound.includes(e.id);inner=`<div class="mmo-marker secret-marker ${found?'found':''}">${found?e.icon:'❔'}</div>`;label=found?e.name:'Sekret w pobliżu'}
   else if(e.type==='quest'){const visual=e.visual==='woundedWolves'?`<span class="quest-wolves">${monsterVisual('wolf','quest-wolf-a')}${monsterVisual('wolf','quest-wolf-b')}</span>`:`<span class="quest-world-icon">${e.icon||'❗'}</span>`;inner=`<div class="mmo-marker quest-world-marker interaction-ready">${visual}<span class="quest-pin">!</span></div>`;label=e.name}
@@ -1495,22 +1533,33 @@ function rebuildGameLayers(){
   else if(e.type==='dungeon'){const known=state.player.dungeons.includes(e.id);inner=`<div class="mmo-marker dungeon-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznany loch'}
   else if(e.type==='habitat'){inner=`<div class="mmo-marker habitat-marker"><span>${e.icon}</span></div>`;label=`${e.name} • miejsce występowania`}
   else {const known=state.player.discovered.includes(e.id);inner=`<div class="mmo-marker poi-marker ${questTarget?'quest-marker':''}${d<=60?' interaction-ready':d<=120?' proximity':''}">${known?e.icon:'❓'}${d<=60?'<span class="ready-pip">!</span>':''}</div>`;label=known?e.name:'Nieznane miejsce'}
-  const marker=L.marker(ll,{pane:'gamePane',icon:makeLeafletIcon(inner,'game-map-icon',[52,52]),title:label}).addTo(realMap);
+  const creatureSize=e.type==='monster'?monsterMapSize(monsterTemplate(e)):null;
+  const marker=L.marker(ll,{pane:'gamePane',icon:creatureSize?makeLeafletIcon(inner,'game-map-icon creature-map-icon',[Math.max(44,creatureSize.width),Math.max(44,creatureSize.height)],[Math.max(44,creatureSize.width)/2,Math.max(44,creatureSize.height)-6]):makeLeafletIcon(inner,'game-map-icon',[52,52]),title:label}).addTo(realMap);
  marker.on('click',()=>interactEntity(e));leafletEntityLayers.push(marker);
  }
 }
+function monsterMapSize(m){
+ const id=m.id||'',name=(m.baseName||m.name||'').toLowerCase();
+ if(/wyvern|drake|dragon|hydra|colossus|titan|leviathan|behemoth|tempestLord|mireMother|cinderMatriarch/i.test(id)||/smok|kolos|hydra|tytan/.test(name))return {width:96,height:100,tier:'huge'};
+ if(/beetle|ant|moth|wasp|fly|spider|rat|bat|slime|toad/i.test(id)||m.family==='Owady')return {width:40,height:38,tier:'small'};
+ if(/wolf|hound|dog|boar|fox|stag|deer|panther/i.test(id)||/wilk|ogar|pies|dzik|jeleń/.test(name))return {width:64,height:62,tier:'medium'};
+ if(m.family==='Demony'||m.family==='Żywiołaki'||/golem|ogre|troll|giant/i.test(id))return {width:82,height:88,tier:'large'};
+ return {width:58,height:68,tier:'normal'};
+}
+function mapMonsterHTML(e,d,questTarget=false){const m=monsterTemplate(e),size=monsterMapSize(m);return `<div class="mmo-marker monster-marker world-creature size-${size.tier} ${e.elite?'elite-marker':''} variant-marker-${m.variantId} ${questTarget?'quest-marker':''} ${d<=60?'interaction-ready':''}" style="--creature-w:${size.width}px;--creature-h:${size.height}px"><i class="creature-shadow"></i>${monsterVisual(m.id,'mmo-sprite',m.variantId)}${e.elite?'<b class="creature-rank" aria-label="Elita">★</b>':''}${questTarget?'<b class="creature-quest" aria-label="Cel zadania">!</b>':''}</div>`}
+function directionalHeroVisual(id){return `<div class="directional-hero hero-${id}" role="img" aria-label="${CLASSES[id]?.name||'Bohater'}"></div>`}
+
 function movementBearing(from,to){
- if(to?.heading!==null&&to?.heading!==undefined&&Number.isFinite(Number(to.heading))&&Number(to.heading)>=0)return Number(to.heading)%360;
- const lat1=Number(from?.lat),lng1=Number(from?.lng),lat2=Number(to?.lat),lng2=Number(to?.lng);
- if(![lat1,lng1,lat2,lng2].every(Number.isFinite))return playerMotion.heading||0;
- const dy=(lat2-lat1)*111320,dx=(lng2-lng1)*111320*Math.cos(lat1*Math.PI/180);
- if(Math.hypot(dx,dy)<.4)return playerMotion.heading||0;
- return (Math.atan2(dx,dy)*180/Math.PI+360)%360;
+ if(from?.lat!=null&&from?.lng!=null&&to?.lat!=null&&to?.lng!=null){
+  const lat1=Number(from.lat),lat2=Number(to.lat),lng1=Number(from.lng),lng2=Number(to.lng);
+  if([lat1,lat2,lng1,lng2].every(Number.isFinite)){const dy=(lat2-lat1)*111320,dx=(lng2-lng1)*111320*Math.cos(lat1*Math.PI/180);if(Math.hypot(dx,dy)>=.4)return (Math.atan2(dx,dy)*180/Math.PI+360)%360}
+ }
+ return to?.heading!=null&&Number.isFinite(Number(to.heading))&&Number(to.heading)>=0?Number(to.heading)%360:playerMotion.heading;
 }
 function playerFacing(heading=0){const h=(heading+360)%360;if(h>=45&&h<135)return'right';if(h>=225&&h<315)return'left';if(h>=135&&h<225)return'down';return'up'}
 function playerMarkerHTML(){
  const facing=playerFacing(playerMotion.heading),cycle=playerMotion.speed>2.8?300:520;
- return `<div class="leaflet-player-marker rpg-player-marker ${playerMotion.moving?'walking':''} ${playerMotion.speed>2.8?'moving-fast':''}" data-player-walker data-facing="${facing}" style="--walk-heading:${playerMotion.heading||0}deg;--walk-cycle:${cycle}ms"><div class="player-heading-arrow"></div><i class="player-walk-shadow"></i><b class="player-step-dust"></b><div class="player-facing"><div class="player-walk-avatar">${classVisual(state.player.class,'mmo-player-sprite')}</div></div><span class="player-pin-tip"></span></div>`;
+ return `<div class="leaflet-player-marker rpg-player-marker ${playerMotion.moving?'walking':''} ${playerMotion.speed>2.8?'moving-fast':''}" data-player-walker data-facing="${facing}" style="--walk-heading:${playerMotion.heading||0}deg;--walk-cycle:${cycle}ms"><div class="player-heading-arrow"></div><i class="player-walk-shadow"></i><b class="player-step-dust"></b><div class="player-facing"><div class="player-walk-avatar">${directionalHeroVisual(state.player.class)}</div></div><span class="player-pin-tip"></span></div>`;
 }
 function syncPlayerMarkerMotion(){
  const markerEl=playerMapMarker?.getElement?.(),walker=markerEl?.querySelector?.('[data-player-walker]');if(!walker)return;
@@ -1521,8 +1570,8 @@ function syncPlayerMarkerMotion(){
 }
 function registerPlayerMovement(from,to){
  const now=Date.now(),distance=geoDistance(from,to),elapsed=playerMotion.lastAt?Math.max(.25,(now-playerMotion.lastAt)/1000):1,threshold=to?.testWalk ? .5 : Math.max(1.8,Math.min(7,(Number(to?.accuracy)||10)*.18));
- const moved=Number.isFinite(distance)&&distance>=threshold;
- if(moved){playerMotion.heading=movementBearing(from,to);playerMotion.speed=to?.testWalk?1.55:clamp(distance/elapsed,.2,18);playerMotion.movingUntil=now+(to?.testWalk?720:Math.round(clamp(900+elapsed*520,1100,2600)));playerMotion.lastStepSeconds=elapsed}
+ const moved=from?.lat!=null&&from?.lng!=null&&to?.lat!=null&&to?.lng!=null&&Number.isFinite(distance)&&distance>=threshold;
+ if(moved){playerMotion.heading=movementBearing(from,to);state.ui.mapHeading=playerMotion.heading;playerMotion.speed=to?.testWalk?1.55:clamp(distance/elapsed,.2,18);playerMotion.movingUntil=now+(to?.testWalk?720:Math.round(clamp(900+elapsed*520,1100,2600)));playerMotion.lastStepSeconds=elapsed}
  playerMotion.moving=moved||now<playerMotion.movingUntil;playerMotion.lastAt=now;
  clearTimeout(playerWalkStopTimer);if(playerMotion.moving)playerWalkStopTimer=setTimeout(()=>{playerMotion.moving=false;playerMotion.speed=0;syncPlayerMarkerMotion()},Math.max(80,playerMotion.movingUntil-Date.now()));
 }
@@ -1531,8 +1580,8 @@ function updateLiveMapPosition(){
  const p=state.player.position,ll=[p.lat,p.lng];
  if(!playerMapMarker){
   const html=playerMarkerHTML();
-  playerMapMarker=L.marker(ll,{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[62,62]),zIndexOffset:1000}).addTo(realMap);
- }else{const previous=playerMapMarker.getLatLng?.();registerPlayerMovement(previous?{lat:previous.lat,lng:previous.lng}:p,p);playerMapMarker.setLatLng(ll);requestAnimationFrame(syncPlayerMarkerMotion)}
+  playerMapMarker=L.marker(ll,{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[64,80],[32,74]),zIndexOffset:1000}).addTo(realMap);
+ }else{playerMapMarker.setLatLng(ll);requestAnimationFrame(syncPlayerMarkerMotion)}
  if(!accuracyCircle)accuracyCircle=L.circle(ll,{pane:'overlayPane',radius:Math.max(8,p.accuracy||15),color:'#66b6db',weight:1,fillColor:'#5ca9d0',fillOpacity:.05,interactive:false}).addTo(realMap);
  else{accuracyCircle.setLatLng(ll);accuracyCircle.setRadius(Math.max(8,p.accuracy||15))}
  if(!interactionCircle)interactionCircle=L.circle(ll,{pane:'overlayPane',radius:60,color:'#e2bd66',weight:2,dashArray:'6 8',fillColor:'#d9b458',fillOpacity:.025,interactive:false}).addTo(realMap);
@@ -1559,7 +1608,7 @@ function initRealMap(){
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
  if(p.lat){
   const html=playerMarkerHTML();
-  playerMapMarker=L.marker([p.lat,p.lng],{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[62,62]),zIndexOffset:1000}).addTo(realMap);
+  playerMapMarker=L.marker([p.lat,p.lng],{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[64,80],[32,74]),zIndexOffset:1000}).addTo(realMap);
   accuracyCircle=L.circle([p.lat,p.lng],{pane:'overlayPane',radius:Math.max(8,p.accuracy||15),color:'#66b6db',weight:1,fillColor:'#5ca9d0',fillOpacity:.05,interactive:false}).addTo(realMap);
   interactionCircle=L.circle([p.lat,p.lng],{pane:'overlayPane',radius:60,color:'#e2bd66',weight:2,dashArray:'6 8',fillColor:'#d9b458',fillOpacity:.025,interactive:false}).addTo(realMap);
  }
@@ -1704,12 +1753,12 @@ function moveDemo(dx,dy){
   const c=realMap?.getCenter?.();
   state.world.gpsOrigin={lat:Number(c?.lat)||52.1,lng:Number(c?.lng)||19.4};
  }
- const pos=state.player.position||{x:0,y:0};
+ const pos=state.player.position||{x:0,y:0},previousLL=worldToLatLng(pos.x||0,pos.y||0),previousPosition=previousLL?{lat:previousLL[0],lng:previousLL[1]}:{...pos};
  pos.x=(pos.x||0)+dx;pos.y=(pos.y||0)+dy;
  const ll=worldToLatLng(pos.x,pos.y);
  if(ll){pos.lat=ll[0];pos.lng=ll[1]}
  pos.gps=false;pos.accuracy=0;pos.heading=null;pos.virtualTravel=false;pos.testWalk=true;
- state.player.position=pos;followGps=true;
+ registerPlayerMovement(previousPosition,pos);state.player.position=pos;followGps=true;
  if(pos.lat&&pos.lng)addExploredPoint(pos.lat,pos.lng,0);
  const added=markExplorationArea(pos.x,pos.y);if(added)registerExplorationProgress(pos.x,pos.y);
  const away=Math.hypot(pos.x,pos.y);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();save();
@@ -1756,7 +1805,7 @@ function toggleGps(){
   const firstOrigin=!state.world.gpsOrigin;
   if(firstOrigin)state.world.gpsOrigin={lat,lng};
   const o=state.world.gpsOrigin,dy=(lat-o.lat)*111320,dx=(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180);
-  state.player.position={x:dx,y:dy,lat,lng,gps:true,accuracy,heading,receivedAt:now,virtualTravel:false,testWalk:false};
+  const nextPosition={x:dx,y:dy,lat,lng,gps:true,accuracy,heading,receivedAt:now,virtualTravel:false,testWalk:false};registerPlayerMovement(state.player.position,nextPosition);state.player.position=nextPosition;
   const revealed=addExploredPoint(lat,lng,accuracy),newSectors=accuracy<=120?markExplorationArea(dx,dy):0;
   if(newSectors>0)registerExplorationProgress(dx,dy);
   const away=Math.hypot(dx,dy);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();if(revealed||newSectors)checkRegionRewards();save();
@@ -2039,7 +2088,7 @@ async function installPwa(){
 function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build 3.0.7</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>${SAVE_KEY===DEMO_SAVE_KEY?'🧪 Osobna przygoda testowa':'📍 Przygoda GPS'}</b><p class="muted">Testy mają osobny zapis. Strzałki i symulacja nocy nie zmieniają postępu przygody GPS.</p><button class="secondary" data-play-mode>${SAVE_KEY===DEMO_SAVE_KEY?'Wróć do przygody GPS':'Otwórz kopię do testów'}</button><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🧪 Reset postaci do testów</b><div class="muted">Usuwa lokalny save oraz stare save’y migracyjne i wraca prosto do kreatora postaci.</div><button class="danger" data-reset-character>Resetuj postać</button></div></div>`;
  el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-play-mode]').onclick=switchPlayMode;el.querySelector('[data-night]').disabled=SAVE_KEY!==DEMO_SAVE_KEY;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
-function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=SAVE_KEY===DEMO_SAVE_KEY?'time4heroes-3.9.0-TEST-save.json':'time4heroes-3.9.0-GPS-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=SAVE_KEY===DEMO_SAVE_KEY?'time4heroes-3.9.1-TEST-save.json':'time4heroes-3.9.1-GPS-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function validateSessionSave(raw){
  const session=raw.session;if(!session)return;
  const c=session.combat,d=session.dungeonRun,r=session.battleResult;
@@ -2097,6 +2146,7 @@ function chooseBossIntent(){
 }
 function startCombat(entity,opts={}){
  if(combat||battleResult)return;
+ state.ui.gearDrawerOpen=false;
  const m=monsterTemplate(entity),lvl=opts.level||monsterLevel(m),environment=combatEnvironment(m),scale=.66+lvl*.075,isDungeonBoss=!!opts.dungeon?.boss,isWorldBoss=!!opts.worldBoss,isBoss=isWorldBoss||isDungeonBoss||!!entity.elite,bossHpMult=isDungeonBoss?1.42:isWorldBoss?1.58:entity.elite?1.12:1,bossAtkMult=isDungeonBoss?1.18:isWorldBoss?1.25:entity.elite?1.08:1,maxHp=Math.max(24,Math.floor(m.hp*scale*bossHpMult)),atk=Math.max(4,Math.floor(m.atk*(.62+lvl*.045)*bossAtkMult*environment.enemyDamage));
  combat={entity,monster:m,level:lvl,maxHp,hp:maxHp,atk,baseAtk:atk,environment,log:[`${m.name} staje do walki.`,`${BIOMES[environment.biomeId].icon} ${environment.effect.title}: ${environment.effect.summary}.`],guard:0,debuff:0,debuffTurns:0,poison:0,poisonTurns:0,bleed:0,bleedTurns:0,burn:0,burnTurns:0,freezeTurns:0,mark:0,markTurns:0,dungeon:opts.dungeon||null,worldBoss:isWorldBoss,isBoss,bossPhase:1,enemyTurns:0,intent:null,stagger:0,staggerMax:isBoss?100:0,stunned:0,vulnerableTurns:0,barrier:0,barrierTurns:0,playerWeaken:0,playerWeakenTurns:0,playerCritBuff:0,playerCritBuffTurns:0,playerDodgeBuff:0,playerDodgeBuffTurns:0,playerPowerBuff:0,playerPowerBuffTurns:0,playerBlockBuff:0,playerBlockBuffTurns:0,cooldowns:{},lastPlayerHit:null,lastEnemyHit:null,turnDealt:null,turnTaken:null,turnDealtNote:'',turnTakenNote:'',phase:'player',turnToken:0,storyConsequence:opts.storyConsequence||null,worldEvent:opts.worldEvent||null};
  if(m.variantId!=='normal')combat.log.push(`${m.variantIcon} Odmiana ${m.variantLabel}: HP ×${monsterVariantDef(m.variantId).hp.toFixed(2)}, ATK ×${monsterVariantDef(m.variantId).atk.toFixed(2)}, łup ×${m.variantLoot.toFixed(2)}.`);
@@ -2333,7 +2383,7 @@ applyStoryChoice=atomicAction(applyStoryChoice);chooseWorldEvent=atomicAction(ch
 winCombat=atomicAction(winCombat);loseCombat=atomicAction(loseCombat);finishBattleResult=atomicAction(finishBattleResult);
 salvageIndex=atomicAction(salvageIndex);sellIndex=atomicAction(sellIndex);equipIndexToSlot=atomicAction(equipIndexToSlot);
 startDungeon=atomicAction(startDungeon);moveDungeon=atomicAction(moveDungeon);completeDungeon=atomicAction(completeDungeon);resolveDungeonRoom=atomicAction(resolveDungeonRoom);
-state=load();restoreSession();
+state=load();restoreSession();if(Number.isFinite(state?.ui?.mapHeading))playerMotion.heading=state.ui.mapHeading;
 const resumeGpsAfterLaunch=!!state?.player?.position?.gps;
 if(state?.world?.entities){for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true}
 render();resumeSession();
