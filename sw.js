@@ -1,6 +1,6 @@
-const CACHE='time4heroes-3810';
+const CACHE='time4heroes-3900';
 const CORE=[
-  './','./index.html','./styles.css?v=3810','./app.js?v=3810','./data.js?v=3810','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3900','./app.js?v=3900','./data.js?v=3900','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png',
   './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',
   './assets/backgrounds/battle-meadow-380.webp','./assets/backgrounds/battle-forest-380.webp','./assets/backgrounds/battle-ruins-380.webp','./assets/backgrounds/battle-marsh-380.webp','./assets/backgrounds/battle-highlands-380.webp',
@@ -17,7 +17,7 @@ self.addEventListener('install',event=>{
 self.addEventListener('activate',event=>{
   event.waitUntil(
     caches.keys()
-      .then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
+      .then(keys=>Promise.all(keys.filter(k=>k.startsWith('time4heroes-')&&k!==CACHE).map(k=>caches.delete(k))))
       .then(()=>self.clients.claim())
   );
 });
@@ -34,11 +34,11 @@ self.addEventListener('fetch',event=>{
     event.respondWith(
       fetch(event.request,{cache:'no-store'})
         .then(res=>{
-          const copy=res.clone();
+          if(!res.ok)throw new Error('HTTP '+res.status);const copy=res.clone();
           caches.open(CACHE).then(c=>c.put(event.request,copy));
           return res;
         })
-        .catch(()=>caches.match(event.request).then(hit=>hit||caches.match('./index.html')))
+        .catch(()=>caches.match(event.request).then(hit=>hit||(event.request.mode==='navigate'?caches.match('./index.html'):Response.error())))
     );
     return;
   }
@@ -46,7 +46,7 @@ self.addEventListener('fetch',event=>{
   // Cache-first is fine for heavy immutable-ish art/audio assets.
   event.respondWith(
     caches.match(event.request).then(hit=>hit||fetch(event.request).then(res=>{
-      const copy=res.clone();
+      if(!res.ok)throw new Error('HTTP '+res.status);const copy=res.clone();
       caches.open(CACHE).then(c=>c.put(event.request,copy));
       return res;
     }))

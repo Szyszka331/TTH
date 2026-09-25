@@ -1,24 +1,66 @@
-# Time4Heroes 3.8.1 — Miasto i sklepy (prototyp)
+# Time4Heroes 3.9.0 — Stabilna Przygoda
 
-## Jak wypróbować
+Aktualizacja przesłanej wersji 3.8.0. Gra nadal działa jako statyczna aplikacja na GitHub Pages; nie wymaga serwera aplikacyjnego ani instalowania pakietów do uruchomienia.
 
-1. Otwórz `index.html` przez lokalny serwer HTTP albo host HTTPS, uruchom grę i przejdź do zakładki **Miasto**.
-2. Na komputerze kliknij **Wypróbuj miasto (30 min)**, aby sprawdzić budynki i sklepy bez GPS. Dostęp próbny działa tylko na komputerze w trybie demonstracyjnym.
-3. Na telefonie włącz GPS i wybierz **Ustaw miasto tutaj**. Strefa ma promień 200 m; wejście do usług wymaga aktualnej dokładnej pozycji wewnątrz niej. Centrum można przenieść raz na 30 dni.
-4. Rozbuduj budynek na komputerze po potwierdzonej wizycie w strefie. Ulepszenia dają zniżki na zakupy, ulepszanie, warzenie i posiłki albo dodatkową reputację w gildii.
+## Uruchomienie i aktualizacja
 
-Wersja ZIP przechowuje zapis wyłącznie lokalnie w przeglądarce. Telefon i komputer **nie synchronizują się automatycznie**: aby używać tego samego miasta i bohatera na obu urządzeniach, wyeksportuj zapis w **Menu → Eksportuj**, a potem zaimportuj na drugim urządzeniu. Potwierdzenie wizyty daje dostęp do usług na komputerze przez cztery godziny od ostatniej wizyty zapisanej w pliku. Do automatycznej synchronizacji potrzebny będzie serwer i konto gracza.
+1. W dotychczasowej grze wybierz Menu → Eksportuj, jeśli chcesz zachować również plik kopii postaci.
+2. Rozpakuj ZIP i wgraj jego zawartość do tego samego katalogu repozytorium, z którego działa GitHub Pages. Plik `index.html` powinien pozostać na dotychczasowym poziomie.
+3. Otwórz grę ponownie. Przy zachowaniu tej samej przeglądarki i adresu zapis 3.8.0 jest automatycznie migrowany do 3.9.0.
+4. Strzałki są teraz w Menu → Otwórz kopię do testów. Powstaje osobny zapis skopiowanej postaci. W tym samym miejscu wrócisz do głównej przygody GPS.
 
-## Zmiany 3.8.1
+Nie opublikowano automatycznie zmian w repozytorium — paczka jest gotowa do wgrania.
 
-- Selma, Ragor, Ilyra, Varo i Edrin stoją za elementami wystroju swoich lokacji. Lada albo stół zasłania dolną część postaci, a przyciski rozmowy i usług nadal działają.
-- Wszystkie 153 zdefiniowane przedmioty mają własny plik SVG. Ikony są używane w sklepie, ekwipunku, łupach, recepturach i bestiariuszu.
-- Sklep Selmy zawiera katalog dla każdej z pięciu klas, filtry kategorii, wymagany poziom, cenę, informację o braku miejsca w plecaku i sprzedaż łupów z plecaka.
-- Część egzemplarzy sklepowych ma dodatkowe premie do Siły, Zręczności, Inteligencji albo Witalności. Zwykłe egzemplarze nie dostają losowej premii po zakupie. Premie zwiększają wartości pokazywane przy postaci i parametry walki.
-- Miasto można utworzyć z telefonu w obszarze GPS; na telefonie widać strefę na mapie i dostęp do usług, a na komputerze rozbudowę budynków. Tryb próbny na komputerze nie potwierdza wizyty GPS.
-- Zapis z 3.8.0 migruje przy pierwszym uruchomieniu; wersja 3.8.1 zapisuje się pod osobnym kluczem.
+## Naprawy
+
+- Zakupy i oferty kupca sprawdzają pojemność plecaka przed pobraniem złota. Istniejące, niepełne stosy są prawidłowo uwzględniane.
+- Crafting uwzględnia miejsce zwalniane przez zużyte składniki. Brak miejsca nie zabiera materiałów ani opłaty.
+- Wyjmowanie run i rozbieranie sprzętu sprawdzają miejsce na rezultat. Nie można sprzedać założonego przedmiotu ani zdjąć go do pełnego plecaka.
+- Zaznaczone łupy, które się nie mieszczą, pozostają na ekranie wyników. Można odznaczyć część przedmiotów. Brak miejsca nie zamyka ekranu i nie usuwa wybranych nagród.
+- Zapis obejmuje walkę, fazę tury, loch, jego mapę i termin zakończenia oraz nieodebrane łupy. Odświeżenie strony przywraca sesję. Czas wyprawy nadal płynie podczas zamknięcia aplikacji; ekran łupów zachowuje dotychczasową pauzę.
+- Czynności z wieloma zmianami zapisują końcowy stan zamiast pośrednich etapów. Stary callback tury nie może uderzyć w nowym starciu.
+- Błąd zapisu w przeglądarce pokazuje komunikat zamiast przerywać kod gry. Uszkodzone dane sesji w imporcie są sprawdzane.
+- Pora codziennego resetu korzysta z lokalnej daty urządzenia.
+
+## Walka i telefon
+
+- Trzy przyciski: mikstura życia, większa mikstura życia, mikstura many.
+- Wypicie zajmuje turę; pełne HP lub mana nie zużywają mikstury. Komunikat podaje rzeczywiście odzyskaną wartość.
+- Przyciski na małych ekranach pokazują liczbę sztuk, koszt many i odnowienie umiejętności. Wskazówka przygotowywanego ataku bossa pozostaje widoczna.
+- Dziennik walki jest rozwijany. Na telefonie przyciski akcji są przed dziennikiem.
+
+## GPS i testy
+
+- Interakcje terenowe wymagają aktualnego GPS z dokładnością do 50 m. Nowa próbka starsza niż 15 sekund jest odrzucana, a pozycja starsza niż 30 sekund nie uprawnia do interakcji.
+- Duże skoki pomiędzy kolejnymi próbkami są filtrowane. Jest to filtr jakości lokalizacji, nie zabezpieczenie serwerowe przed oszukiwaniem.
+- Domyślnie główna przygoda korzysta z GPS. Testy strzałkami i symulacja nocy działają w osobnej kopii postaci.
+- Pliki eksportu wskazują GPS lub TEST. Zapis oznaczony jako testowy nie jest importowany do głównej przygody.
+- Migracja zachowuje dotychczasowy postęp; nie da się ustalić, jaka jego część powstała w starym trybie testowym.
+
+## Grafiki i czytelność
+
+- Każda ze 153 definicji przedmiotów ma dostępny plik SVG bez emoji. Zestaw korzysta z powtarzalnych motywów kategorii, więc nie są to 153 unikalne ilustracje malarskie.
+- Zachowano istniejące malowane atlasy przedmiotów oraz tła i potwory. Przedmioty poza atlasem korzystają z ikon wektorowych; uzupełniono siedem brakujących ikon.
+- Ikony są używane także w łupach, bestiariuszu i składnikach receptur. Dodano subtelne oznaczenia rzadkości oraz tonacje zestawów.
+- Ekran społeczności nie pokazuje fikcyjnych graczy. Katalog kupca nie jest opisywany jako trwająca licytacja.
+- Nazwa biomu w górnym pasku odpowiada aktualnemu biomowi, zamiast stałej nazwy lasu.
+- Service worker nie usuwa cache innych aplikacji i nie zwraca strony HTML w miejsce brakującego kodu JS/CSS.
+
+## Weryfikacja
+
+`node tests/regression.mjs` — 32 testy logiki: transakcje, stosy, mikstury, zapis i wznowienie, odbiór łupów, GPS, oddzielenie testów, migracja i obecność ikon.
+
+Sprawdzono składnię JavaScript, odnośniki do lokalnych zasobów i pliki SVG. Obejrzano zestawienie nowych ikon.
+
+Nie przeprowadzono pełnego testu w przeglądarce ani spaceru z telefonem: w środowisku wykonania zabrakło działającej przeglądarki, a jej pobranie się nie powiodło. Testy używają symulowanego DOM i próbek GPS; nie potwierdzają wizualnego układu na urządzeniu.
+
+## Nadal do rozwoju
+
+Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, drużyny, PvP i handel między graczami wymagają osobnego backendu. Nie zostały dodane w tej aktualizacji. Pogoda i siedliska są symulowane. Zadania kończą się na wymaganym poziomie 50 przy limicie rozwoju 100. Część broni nadal współdzieli ilustracje atlasowe, a starsze postacie i nowe tła pozostają stylistycznie zróżnicowane.
 
 ---
+
+## Historia wcześniejszej paczki
 
 # Time4Heroes 3.8.0 — Klimatyczne Lokacje
 
