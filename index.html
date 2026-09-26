@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Time4Heroes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Time4Heroes — Build 3.9.5.1 — Spójność i Głębia</title>
+  <title>Time4Heroes — Build 3.9.7.1 — 5 postaci</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=3970" />
+  <link rel="stylesheet" href="styles.css?v=3965" />
 </head>
 <body>
   <div id="app"></div>
   <div id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Build 3.9.5.1: spójny interfejs, zachowania potworów, synergie sprzętu i rozwój miasta.
+    // Build 3.9.6.5: wspólny rozwój gildii i Wieża Zwiadowców.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(reg => reg.update())).catch(()=>{});
     }
   </script>
-  <script type="module" src="app.js?v=3970"></script>
+  <script type="module" src="app.js?v=3971"></script>
 </body>
 </html>

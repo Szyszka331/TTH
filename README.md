@@ -1,3 +1,14 @@
+# Time4Heroes 3.9.6.4 — Herosi i Legendy bez blokady drużyny
+
+- Usunięto minimalną liczbę graczy potrzebną do rozpoczęcia walki z Herosem lub Legendą.
+- Herosa i Legendę można zaatakować solo; drużyna jest przewagą, a nie wymogiem.
+- Poziom Herosa/Legendy nie skaluje się już automatycznie powyżej poziomu gracza, więc można wrócić później i realnie go przepoziomować.
+- Karta przeciwnika pokazuje jego poziom, zalecany poziom do próby solo oraz sugerowaną liczebność drużyny.
+- Heros: solo celuje w ok. +5 poziomów przewagi; Legenda: ok. +10 poziomów. To zalecenie, nie blokada.
+- Zachowano zwiększone HP, manę, regenerację, specjalne ataki, przełamanie i pomoc drużyny.
+
+---
+
 # Time4Heroes 3.9.1 — Plecak i sprzedaż
 
 ## Zmiany tej paczki
@@ -158,3 +169,33 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Walka pokazuje kolejno atak gracza, obrażenia i kontratak przeciwnika.
 - Granice i kolory biomów pozostają widoczne, ale nazwy nie zaśmiecają mapy.
 - Zapis z builda 3.1.1 migruje automatycznie i odświeża dzienne spawny.
+
+
+## 3.9.6.2
+- Maksymalna stamina bohatera: 100.
+- Koszt rozpoczęcia walki pozostaje 3 staminy.
+- Dzienne limity karczmy pozostają bez zmian: 2 posiłki/napitki i 2 odpoczynki przy kominku.
+
+## 3.9.6.3
+- Alchemik sprzedaje gotowe mikstury oraz receptury z ograniczoną liczbą użyć.
+- Wytwarzanie z receptur ma niższą opłatę niż kupowanie gotowych mikstur.
+- Sala gildii ma szybkie wejścia do kuźni, alchemika i aukcji.
+- Dodano lokalny prototyp drużyny 4-osobowej przygotowany pod późniejszy backend multiplayer.
+- Dodano grupowych Herosów (min. 2 osoby) i Legendy (min. 4 osoby), dzienne limity, skalowane HP/ATK, pomoc drużyny, osobisty loot i zapis wkładu.
+
+
+## Build 3.9.6.5 — rozwój gildii
+- Wspólny skarbiec gildii i wpłaty złota/materiałów.
+- Budynki gildii ulepszane ze skarbca.
+- Wieża Zwiadowców 0–10 zwiększa zasięg rozpoczęcia walki z potworami z 60 do maks. 80 m.
+- Kuźnia gildii daje do 10% rabatu na złoto przy ulepszaniu.
+- Pracownia Alchemika zwiększa liczbę użyć kupowanych receptur.
+- Sala Wypraw zwiększa nagrody z Herosów i Legend.
+- Rozwój gildii nie zależy od fizycznej lokalizacji członków; backend online może później synchronizować ten sam stan gildii.
+
+
+## Build 3.9.7.1 — 5 postaci
+- Do 5 niezależnych slotów postaci.
+- Przełączanie postaci z Menu > Postacie.
+- Każdy slot zachowuje osobny poziom, ekwipunek, questy, mapę, bestiariusz i zasoby.
+- Usunięcie bieżącej postaci nie kasuje pozostałych slotów.

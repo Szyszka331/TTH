@@ -1859,207 +1859,95 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 }
 
 
-/* 3.9.6.1 — loot-first economy, common-only merchant and simplified forge */
-.rarity-unique{color:#e2b65d!important}.rarity-card-unique{border-color:#a77b2f!important}.rarity-border-unique{border-color:#a77b2f!important}.rarity-frame-unique:before{background:#d2a143!important}.item-grade-unique{filter:drop-shadow(0 0 4px #d7a74c88)!important}
-.shop-basic-body{align-items:start!important;grid-template-columns:minmax(480px,.95fr) minmax(480px,1.05fr)!important}
-.shop-basic-buy,.shop-basic-sell{align-self:start!important;min-height:0!important}
-.shop-basic-head{display:flex;flex-direction:column;gap:4px;padding:10px 12px;margin-bottom:8px;border:1px solid #6c4d2d;background:linear-gradient(180deg,#1c140d,#0c0805);color:#e8d7b3}.shop-basic-head b{font-size:17px;color:#f0cf82}.shop-basic-head small{font-size:10px;line-height:1.4;color:#aa987b}
-.shop-basic-grid{grid-template-columns:repeat(auto-fit,minmax(58px,72px))!important;justify-content:start!important;align-content:start!important;min-height:0!important}
-.shop-buy-preview{margin-top:8px}.compact-buy-summary{min-height:92px!important}.shop-buy-actions{grid-template-columns:1fr auto!important}.shop-sell-hint{display:block;margin:-3px 0 8px;color:#a99677;font-size:9px;line-height:1.35}.shop-quality-rules{display:grid;gap:6px;padding:11px;border:1px solid #5a4328;background:linear-gradient(180deg,#17110c,#090604);color:#cdbb99}.shop-quality-rules b{color:#efd083;font-size:12px}.shop-quality-rules span{font-size:10px}
-.retro-sell-grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))!important}
-.smith-simple-actions{grid-template-columns:1fr 1fr!important}.smith-simple-actions .rune-button{font-size:8px!important}.upgrade-track{grid-template-columns:repeat(3,1fr) auto!important}
-@media(max-width:1050px){.shop-basic-body{grid-template-columns:1fr!important}.shop-basic-buy,.shop-basic-sell{width:100%}.shop-basic-grid{grid-template-columns:repeat(auto-fill,minmax(54px,68px))!important}.shop-buy-actions{grid-template-columns:1fr 1fr!important}}
-@media(max-width:720px){.shop-basic-head b{font-size:14px}.shop-basic-head small{font-size:9px}.shop-basic-grid{grid-template-columns:repeat(auto-fill,minmax(48px,58px))!important}.retro-sell-grid{grid-template-columns:repeat(5,1fr)!important}.smith-simple-actions{grid-template-columns:1fr!important}}
-
-.auction-drop-note{display:grid;gap:6px;margin-top:12px;padding:12px;border:1px solid #624b30;border-radius:11px;background:linear-gradient(180deg,#17110c,#090604);color:#c9b897}.auction-drop-note b{color:#efd083}.auction-drop-note span{font-size:10px}
-
-/* 3.9.6.5 — high-rarity inventory/equipment slot backgrounds */
-/* Unikatowy = green */
-.backpack-slot.rarity-border-unique,
-.drawer-bag-cell.rarity-border-unique,
-.gear-slot.rarity-border-unique,
-.drawer-equip.rarity-border-unique{
-  border-color:#4fa867!important;
-  background:radial-gradient(circle at 50% 42%,#2f6b3a 0,#183820 48%,#09150d 100%)!important;
-  box-shadow:inset 0 0 16px #72d78633,0 0 8px #4fa86744!important;
-}
-.item-card.rarity-card-unique,
-.battle-loot-row.rarity-card-unique{
-  border-color:#4fa867!important;
-  background:linear-gradient(155deg,#17341d,#0a150d)!important;
-  box-shadow:inset 0 0 20px #65ca7b22!important;
-}
-.rarity-unique{color:#79d98d!important}
-.rarity-border-unique{border-color:#4fa867!important}
-.rarity-card-unique{border-color:#4fa867!important}
-.rarity-frame-unique:before{background:#4fa867!important}
-
-/* Heroiczny = pink/magenta */
-.backpack-slot.rarity-border-heroic,
-.drawer-bag-cell.rarity-border-heroic,
-.gear-slot.rarity-border-heroic,
-.drawer-equip.rarity-border-heroic{
-  border-color:#d95b9c!important;
-  background:radial-gradient(circle at 50% 42%,#7b2d59 0,#43182f 48%,#180912 100%)!important;
-  box-shadow:inset 0 0 16px #ff86c333,0 0 8px #d95b9c44!important;
-}
-.item-card.rarity-card-heroic,
-.battle-loot-row.rarity-card-heroic{
-  border-color:#d95b9c!important;
-  background:linear-gradient(155deg,#4b1a35,#180a12)!important;
-  box-shadow:inset 0 0 20px #ff79bd20!important;
-}
-.rarity-heroic{color:#ff82c0!important}
-.rarity-border-heroic{border-color:#d95b9c!important}
-.rarity-card-heroic{border-color:#d95b9c!important}
-.rarity-frame-heroic:before{background:#d95b9c!important}
-
-/* Legendarny = purple */
-.backpack-slot.rarity-border-legendary,
-.drawer-bag-cell.rarity-border-legendary,
-.gear-slot.rarity-border-legendary,
-.drawer-equip.rarity-border-legendary{
-  border-color:#9b63e8!important;
-  background:radial-gradient(circle at 50% 42%,#55308d 0,#2d1b50 48%,#10091e 100%)!important;
-  box-shadow:inset 0 0 18px #b98aff38,0 0 10px #9b63e84d!important;
-}
-.item-card.rarity-card-legendary,
-.battle-loot-row.rarity-card-legendary{
-  border-color:#9b63e8!important;
-  background:linear-gradient(155deg,#34205a,#110a20)!important;
-  box-shadow:inset 0 0 22px #ad78ff26!important;
-}
-.rarity-legendary{color:#b98aff!important}
-.rarity-border-legendary{border-color:#9b63e8!important}
-.rarity-card-legendary{border-color:#9b63e8!important}
-.rarity-frame-legendary:before{background:#9b63e8!important}
-
-/* Keep selected/drag states readable on colored rarity tiles. */
-.backpack-slot.rarity-border-unique.bag-move-selected,
-.backpack-slot.rarity-border-heroic.bag-move-selected,
-.backpack-slot.rarity-border-legendary.bag-move-selected,
-.drawer-bag-cell.rarity-border-unique.selected,
-.drawer-bag-cell.rarity-border-heroic.selected,
-.drawer-bag-cell.rarity-border-legendary.selected{
-  outline:2px solid #f1d98b!important;
-  outline-offset:-2px;
-}
-
-
-/* 3.9.6.6 — natural walking animation on map: separate arm/leg motion instead of full-body sway */
-.directional-hero{
-  position:absolute;
-  bottom:0;
-  width:64px;
-  height:64px;
-  image-rendering:auto;
-  filter:drop-shadow(0 3px 2px #0009);
-  isolation:isolate;
-  --hero-dir-x:0%;
-}
-.directional-hero-layer{
-  position:absolute;
-  inset:0;
-  background-image:url('assets/characters/heroes-directions-391.png');
-  background-size:400% 500%;
-  background-position:var(--hero-dir-x) var(--hero-row,0%);
-  background-repeat:no-repeat;
-  image-rendering:auto;
-  will-change:transform;
-}
-.directional-hero .torso{clip-path:inset(0 22% 36% 22%);z-index:4}
-.directional-hero .arm{z-index:3}
-.directional-hero .arm-left{clip-path:inset(17% 52% 36% 18%);transform-origin:62% 24%}
-.directional-hero .arm-right{clip-path:inset(17% 18% 36% 52%);transform-origin:38% 24%}
-.directional-hero .leg{z-index:2}
-.directional-hero .leg-left{clip-path:inset(48% 50% 0 19%);transform-origin:58% 54%}
-.directional-hero .leg-right{clip-path:inset(48% 19% 0 50%);transform-origin:42% 54%}
-[data-facing="down"] .directional-hero{--hero-dir-x:0%}
-[data-facing="up"] .directional-hero{--hero-dir-x:33.333333%}
-[data-facing="left"] .directional-hero{--hero-dir-x:66.666667%}
-[data-facing="right"] .directional-hero{--hero-dir-x:100%}
-
-/* Replace old side-to-side wobble with a gentler body bob, then animate limbs explicitly. */
-.rpg-player-marker.walking .player-walk-avatar{animation:t4hMapWalkNatural var(--walk-cycle,520ms) linear infinite!important}
-.rpg-player-marker.walking .directional-hero .arm-left{animation:t4hArmSwingL var(--walk-cycle,520ms) ease-in-out infinite}
-.rpg-player-marker.walking .directional-hero .arm-right{animation:t4hArmSwingR var(--walk-cycle,520ms) ease-in-out infinite}
-.rpg-player-marker.walking .directional-hero .leg-left{animation:t4hLegStepL var(--walk-cycle,520ms) ease-in-out infinite}
-.rpg-player-marker.walking .directional-hero .leg-right{animation:t4hLegStepR var(--walk-cycle,520ms) ease-in-out infinite}
-.rpg-player-marker.walking .directional-hero .torso{animation:t4hTorsoBob var(--walk-cycle,520ms) ease-in-out infinite}
-.rpg-player-marker.moving-fast .player-walk-avatar{animation-duration:calc(var(--walk-cycle,520ms) * .78)!important}
-.rpg-player-marker.moving-fast .directional-hero .arm-left,
-.rpg-player-marker.moving-fast .directional-hero .arm-right,
-.rpg-player-marker.moving-fast .directional-hero .leg-left,
-.rpg-player-marker.moving-fast .directional-hero .leg-right,
-.rpg-player-marker.moving-fast .directional-hero .torso{animation-duration:calc(var(--walk-cycle,520ms) * .78)!important}
-
-@keyframes t4hMapWalkNatural{
-  0%,100%{transform:translateY(0)}
-  25%{transform:translateY(-1px)}
-  50%{transform:translateY(-2px)}
-  75%{transform:translateY(-1px)}
-}
-@keyframes t4hTorsoBob{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-1px)}
-}
-@keyframes t4hArmSwingL{
-  0%,100%{transform:rotate(10deg) translateY(0)}
-  50%{transform:rotate(-9deg) translate(-1px,1px)}
-}
-@keyframes t4hArmSwingR{
-  0%,100%{transform:rotate(-10deg) translateY(0)}
-  50%{transform:rotate(9deg) translate(1px,1px)}
-}
-@keyframes t4hLegStepL{
-  0%,100%{transform:rotate(-7deg) translate(-1px,0)}
-  50%{transform:rotate(8deg) translate(1px,-1px)}
-}
-@keyframes t4hLegStepR{
-  0%,100%{transform:rotate(7deg) translate(1px,0)}
-  50%{transform:rotate(-8deg) translate(-1px,-1px)}
-}
-
+/* 3.9.6.1 — quest/elite enemy mana */
+.battle-screen .enemy-mana-bar{border-color:#274f76!important;box-shadow:inset 0 0 8px #1c4d7a55!important}
+.battle-screen .enemy-mana-bar .barlabel{color:#d6e9ff!important;text-shadow:0 1px 2px #000!important}
 @media(max-width:720px){
-  .directional-hero .arm-left{clip-path:inset(18% 51% 36% 17%)}
-  .directional-hero .arm-right{clip-path:inset(18% 17% 36% 51%)}
-  .directional-hero .leg-left{clip-path:inset(49% 49% 0 18%)}
-  .directional-hero .leg-right{clip-path:inset(49% 18% 0 49%)}
+  .battle-screen .enemy-side .battle-bars{gap:3px!important}
+  .battle-screen .enemy-side .combat-name{top:80px!important}
 }
 
-@media(prefers-reduced-motion:reduce){
-  .rpg-player-marker.walking .player-walk-avatar,
-  .rpg-player-marker.walking .directional-hero .torso,
-  .rpg-player-marker.walking .directional-hero .arm,
-  .rpg-player-marker.walking .directional-hero .leg{animation:none!important}
+/* 3.9.6.3 — alchemist licenses, guild party and Hero/Legend raids */
+.alchemy-ready-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important}
+.alchemy-license-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin:10px 0 18px}
+.alchemy-license{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:11px;border:1px solid #5e472c;border-radius:12px;background:linear-gradient(180deg,#17110c,#0c0806);box-shadow:inset 0 0 0 1px #24190f}
+.alchemy-license-icon{font-size:30px;text-align:center}.alchemy-license-copy{display:grid;gap:3px}.alchemy-license-copy>span{font-size:8px;letter-spacing:1.1px;color:#d4b56e}.alchemy-license-copy h3{margin:0;font-size:14px}.alchemy-license-copy small{color:#a99578;font-size:9px}.alchemy-license-copy em{font-size:9px;color:#d8c49f;font-style:normal}.alchemy-license-buy{display:grid;gap:6px;text-align:right}.alchemy-license-buy b{color:#f1cf7a}.alchemy-use-badge{margin-top:4px;font-size:9px;color:#d9bf87}.recipe-locked{opacity:.58}.recipe-locked .ingredient-tray{filter:grayscale(.35)}
+.guild-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 18px}.guild-party-panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}.guild-party-member{display:flex;gap:8px;align-items:center;min-height:62px;padding:9px;border:1px solid #59442d;border-radius:11px;background:linear-gradient(180deg,#17110d,#0c0907)}.guild-party-member>span{font-size:25px}.guild-party-member b,.guild-party-member small{display:block}.guild-party-member small{font-size:8px;color:#a89476}.guild-party-member.self{border-color:#9b793e;box-shadow:inset 0 0 16px #8e6c2524}.guild-party-member.empty{opacity:.48;border-style:dashed}.guild-party-actions{display:flex;gap:8px;flex-wrap:wrap}.guild-online-note{display:block;margin:7px 0 18px;color:#94836b;font-size:9px}.guild-raids{display:grid;grid-template-columns:1fr 1fr;gap:10px}.guild-raid-card{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;padding:13px;border:1px solid #6a4b2d;border-radius:14px;background:radial-gradient(circle at 10% 50%,#4c321d55,transparent 35%),linear-gradient(180deg,#17110d,#090604)}.guild-raid-card.tier-legend{border-color:#8f6c31;box-shadow:inset 0 0 22px #9c6d1c24}.guild-raid-mark{font-size:38px;text-align:center}.guild-raid-copy>span{font-size:8px;letter-spacing:1.2px;color:#d9b768}.guild-raid-copy h3{margin:2px 0 5px}.guild-raid-copy p{margin:0;color:#b7a78e;font-size:10px;line-height:1.35}.guild-raid-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.guild-raid-meta span{font-size:8px;padding:3px 6px;border:1px solid #493a29;border-radius:999px;background:#0d0906}.raid-party-strip{display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:1500px;margin:0 auto 6px;padding:6px 9px;border:1px solid #60472a;border-radius:10px;background:#0d0907dd;color:#d8c39d;font-size:9px}.raid-party-strip>b{color:#efc86c}.raid-party-strip span{padding:3px 6px;border:1px solid #453522;border-radius:999px;background:#17100b}.raid-party-strip em{margin-left:auto;font-style:normal;color:#a99578}
+@media(max-width:720px){.alchemy-license-grid{grid-template-columns:1fr}.alchemy-license{grid-template-columns:40px 1fr}.alchemy-license-buy{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center}.guild-services{grid-template-columns:1fr}.guild-party-panel{grid-template-columns:1fr 1fr}.guild-raids{grid-template-columns:1fr}.guild-raid-card{grid-template-columns:44px 1fr}.guild-raid-card>button{grid-column:1/-1}.raid-party-strip{font-size:8px}.raid-party-strip em{width:100%;margin-left:0}}
+
+
+/* 3.9.6.5 — shared guild development and Scout Tower */
+.guild-development-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:14px;border:1px solid #785a32;border-radius:14px;background:radial-gradient(circle at 10% 40%,#6d4b2033,transparent 42%),linear-gradient(180deg,#17110c,#0c0806)}
+.guild-development-head small{display:block;font-size:8px;letter-spacing:1.2px;color:#cba55e}.guild-development-head h3{margin:2px 0 5px;font-size:19px;color:#efd38f}.guild-development-head span{font-size:10px;color:#bbaa8d}.guild-level-seal{width:58px;height:58px;flex:0 0 58px;border:2px solid #96733a;border-radius:50%;display:grid;place-items:center;align-content:center;background:#120c07;box-shadow:inset 0 0 20px #9b6d2022}.guild-level-seal small{font-size:7px}.guild-level-seal b{font-size:22px;color:#f1cc76}
+.guild-treasury{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:8px 0}.guild-treasury>div{padding:9px;border:1px solid #4e3b28;border-radius:10px;background:#0d0907;text-align:center}.guild-treasury small{display:block;font-size:7px;color:#93836d;letter-spacing:.8px}.guild-treasury b{display:block;margin-top:3px;color:#e5c780;font-size:11px}
+.guild-contribute{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border:1px solid #493824;border-radius:11px;background:#100c09}.guild-contribute>div:first-child b,.guild-contribute>div:first-child small{display:block}.guild-contribute>div:first-child small{margin-top:3px;font-size:8px;color:#9e8c71}.guild-contribute-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.guild-contribute-actions button{min-height:30px;padding:5px 8px;font-size:8px}
+.guild-buildings-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 16px}.guild-building-card{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border:1px solid #5c452b;border-radius:13px;background:linear-gradient(180deg,#17110c,#0b0806)}.guild-building-icon{font-size:30px;text-align:center}.guild-building-copy>span{font-size:7px;letter-spacing:1px;color:#c29f5b}.guild-building-copy h3{margin:2px 0 4px;font-size:13px}.guild-building-copy p{margin:0;color:#a8977d;font-size:8px;line-height:1.35}.guild-building-copy>b{display:block;margin-top:6px;color:#dfc17b;font-size:9px}.guild-building-action{min-width:105px;text-align:right}.guild-building-action small{display:block;margin-bottom:5px;color:#b19c78;font-size:7px;line-height:1.3}.guild-building-action>b{color:#d8b967;font-size:10px}.guild-building-pips{display:flex;gap:3px;margin-top:7px;flex-wrap:wrap}.guild-building-pips i{width:10px;height:4px;border-radius:99px;background:#2e271d;border:1px solid #433727}.guild-building-pips i.on{background:#c5a04e;border-color:#d7bb70;box-shadow:0 0 5px #c59c3b44}
+.guild-shared-note{margin:8px 0 12px;padding:9px 11px;border:1px dashed #665032;border-radius:10px;background:#100c08;color:#ad9b7e;font-size:9px;line-height:1.4}.guild-log{padding:10px;border:1px solid #493824;border-radius:11px;background:#0d0907}.guild-log h3{margin:0 0 7px;font-size:12px}.guild-log-row{display:grid;grid-template-columns:12px 1fr;gap:4px;padding:4px 0;border-top:1px dashed #30261c}.guild-log-row:first-of-type{border-top:0}.guild-log-row span{color:#c9a45c}.guild-log-row p{margin:0;color:#aa997e;font-size:8px}.guild-log-empty{color:#897b67;font-size:8px}
+@media(max-width:720px){.guild-treasury{grid-template-columns:1fr 1fr}.guild-contribute{display:grid}.guild-contribute-actions{justify-content:flex-start}.guild-buildings-grid{grid-template-columns:1fr}.guild-building-card{grid-template-columns:38px minmax(0,1fr)}.guild-building-action{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:center;min-width:0;text-align:left}.guild-building-action small{margin:0}.guild-development-head{padding:11px}.guild-level-seal{width:50px;height:50px;flex-basis:50px}.guild-level-seal b{font-size:19px}}
+
+
+/* 3.9.6.6 — personal guild rank E→SS, counted from joining the guild */
+.guild-rank-banner{border-color:#80653a!important;background:radial-gradient(circle at 12% 50%,#a87f2b22,transparent 34%),linear-gradient(120deg,#1d170f,#0c0906)!important}
+.guild-rank-banner>span{border-color:#a98243!important;background:#171006!important;box-shadow:inset 0 0 18px #b98b3030,0 0 14px #0008!important}
+.guild-rank-banner h3{font-size:27px!important;color:#f1cf78!important;letter-spacing:1.6px!important;text-shadow:0 2px 8px #000!important}
+.guild-rank-banner .guild-rep-track{border-color:#73582f!important;background:#090704!important}
+.guild-rank-banner .guild-rep-track i{background:linear-gradient(90deg,#8c682e,#e2bb5c)!important;box-shadow:0 0 9px #d4a94388!important}
+.guild-rank-banner.rank-SS h3{color:#ffe79b!important;text-shadow:0 0 12px #efc66266,0 2px 8px #000!important}
+.guild-member-line b{color:#f0cb75}
+
+
+/* 3.9.6.7 — visible, persistent monster level on the world map */
+.real-map-rpg .world-creature .creature-level{
+  position:absolute;
+  left:50%;
+  bottom:-8px;
+  transform:translateX(-50%);
+  z-index:5;
+  min-width:34px;
+  padding:2px 5px;
+  border:1px solid #9a7a43;
+  border-radius:999px;
+  background:#090704e8;
+  box-shadow:0 2px 5px #000a;
+  color:#f0d69a;
+  font:800 9px/1.1 Georgia,serif;
+  letter-spacing:.2px;
+  text-align:center;
+  white-space:nowrap;
+  pointer-events:none;
+}
+.real-map-rpg .world-creature .creature-level.level-easy{border-color:#557c55;color:#b9dda8}
+.real-map-rpg .world-creature .creature-level.level-danger{border-color:#9b4f45;color:#ffb0a3}
+@media(max-width:620px){
+  .real-map-rpg .world-creature .creature-level{bottom:-7px;min-width:31px;padding:2px 4px;font-size:8px}
 }
 
 
-/* 3.9.6.7 — all accepted tasks in map panel + guidance for contracts */
-.map-journal-sheet .bounty-entry{border-left:3px solid #7d6630}
-.map-journal-sheet .bounty-entry.guided{border-left-color:#e1bd5e;box-shadow:inset 3px 0 #e1bd5e22}
-.map-journal-sheet .quest-guide-btn.complete{border-color:#577d45!important;background:linear-gradient(180deg,#294523,#152a14)!important;color:#d9efc9!important}
-.map-journal-sheet .quest-entry{margin-bottom:8px}
-@media(max-width:720px){.map-journal-sheet .quest-entry{margin-bottom:7px}.map-journal-sheet .quest-guide-btn{min-height:34px}}
+/* 3.9.6.8 — delayed HP loss + short defeat beat before victory loot */
+.battle-screen .enemy-hp-wrap{position:relative!important;overflow:hidden!important}
+.battle-screen .enemy-hp-wrap .bar{position:absolute!important;left:0!important;top:0!important;bottom:0!important;height:100%!important}
+.battle-screen .enemy-hp-loss{
+  z-index:1!important;
+  background:linear-gradient(90deg,#55595c,#8b8e90)!important;
+  box-shadow:inset 0 1px #ffffff20,inset 0 -2px #0007!important;
+  animation:enemyHpGhostDrain .58s .14s ease-out forwards!important;
+}
+.battle-screen .enemy-hp-current{z-index:2!important;transition:width .22s ease-out!important}
+.battle-screen .enemy-hp-wrap .barlabel{z-index:3!important}
+@keyframes enemyHpGhostDrain{from{width:var(--ghost-start)}to{width:var(--ghost-end)}}
+
+.battle-screen .enemy-side.enemy-defeated .enemy-sprite>div{
+  animation:enemyDefeatVanish .42s ease-in forwards!important;
+  pointer-events:none!important;
+}
+.battle-screen .enemy-side.enemy-defeated .enemy-sprite .shadow{animation:enemyShadowVanish .36s ease-in forwards!important}
+@keyframes enemyDefeatVanish{
+  0%{opacity:1;filter:drop-shadow(0 18px 16px #000a) brightness(1)}
+  55%{opacity:.55;filter:drop-shadow(0 10px 10px #0007) brightness(1.35)}
+  100%{opacity:0;filter:drop-shadow(0 0 0 transparent) brightness(1.8)}
+}
+@keyframes enemyShadowVanish{to{opacity:0;transform:scale(.55)}}
 
 
-/* 3.9.6.8 — scalable rotating tavern contracts + Dorian monster-loot hints */
-.quest-board-foot b{color:#e5c77c}
-.tavern-loot-hints{margin:10px 0;padding:10px;border:1px solid #6c5534;border-radius:10px;background:linear-gradient(180deg,#171008,#0d0906);box-shadow:inset 0 0 0 1px #24190f}
-.tavern-loot-hints>b{display:block;margin-bottom:7px;color:#e7c978;font:700 12px Georgia,serif;letter-spacing:.3px}
-.tavern-loot-hints>div{display:flex;gap:9px;align-items:center;padding:7px 0;border-top:1px dashed #49371f}
-.tavern-loot-hints>div:first-of-type{border-top:0}
-.tavern-loot-hints span{font-size:24px;min-width:30px;text-align:center}
-.tavern-loot-hints p{margin:0;display:grid;gap:2px}
-.tavern-loot-hints strong{color:#f0dfb3;font-size:11px}
-.tavern-loot-hints small{color:#bfae8c;font-size:9px;line-height:1.35}
-.contract-paper[data-loot],.quest-paper.contract-paper{min-height:220px}
-@media(max-width:620px){.tavern-loot-hints{padding:8px}.tavern-loot-hints span{font-size:20px}.tavern-loot-hints strong{font-size:10px}.tavern-loot-hints small{font-size:8px}}
-
-
-/* 3.9.7.0 — skill ranks + equipped arrow offhand */
-.skill-orb{position:relative}
-.skill-rank-badge{position:absolute;right:-7px;bottom:-5px;min-width:27px;padding:2px 4px;border:1px solid #b28b47;border-radius:999px;background:#090705;color:#f0d18a;font:800 8px Georgia,serif;text-align:center;box-shadow:0 2px 6px #0009}
-.skill-rank-pips{display:flex;gap:3px;margin:4px 0 3px}.skill-rank-pips i{width:18px;height:4px;border-radius:99px;background:#2b241b;border:1px solid #4a3a25}.skill-rank-pips i.filled{background:linear-gradient(90deg,#8b6b34,#e0b85f);border-color:#9d793d;box-shadow:0 0 5px #c89a3f55}
-.skill-current-effect,.skill-next-effect{margin-top:6px;padding:6px 7px;border-radius:6px;font-size:9px;line-height:1.35}.skill-current-effect{border:1px solid #4c5839;background:#10150d;color:#d8d9b1}.skill-next-effect{border:1px dashed #6b5431;background:#100c08;color:#bcae91}.skill-next-effect strong{color:#e5c476}.skill-next-effect span{color:#907f67}.skill-upgrade-btn{border-color:#a77f39!important}.skill-maxed{font:900 9px Georgia,serif;letter-spacing:1px;color:#f0c96f}.skill-level-inline,.combat-skill-level{font-style:normal;font-size:.72em;color:#e0bc6c;white-space:nowrap}.gear-slot[data-slot="offhand"] .equipped-dot{color:#d6bd78}
-@media(max-width:650px){.skill-node{grid-template-columns:42px 1fr!important}.skill-node-actions{grid-column:2;width:100%;align-items:stretch!important}.skill-rank-pips i{flex:1;max-width:24px}}
+/* 3.9.7.1 — five independent character slots */
+.create-slot-kicker{display:inline-flex;margin-bottom:8px;padding:5px 9px;border:1px solid #795b35;border-radius:999px;background:#171009;color:#e8c879;font:700 10px Georgia,serif;letter-spacing:1px}.character-list-create{width:100%;margin-top:8px}.character-manager{display:grid;gap:14px}.character-manager h2{margin-bottom:3px}.character-slot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.character-slot-card{position:relative;display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center;min-height:124px;padding:12px;border:1px solid #554028;border-radius:13px;background:linear-gradient(160deg,#17110d,#090705);overflow:hidden}.character-slot-card.active{border-color:#d1a959;box-shadow:inset 0 0 0 1px #6e542e}.character-slot-card.empty{grid-template-columns:1fr;text-align:center;place-items:center;gap:5px;border-style:dashed;opacity:.92}.character-slot-number{position:absolute;right:8px;top:7px;color:#b69b68;font:700 8px Georgia,serif;letter-spacing:1px}.character-slot-avatar{width:70px;height:84px;display:grid;place-items:center;overflow:hidden;border:1px solid #4e3a25;border-radius:10px;background:radial-gradient(circle,#2b2117,#080604)}.character-slot-avatar img,.character-slot-avatar svg,.sprite-character-slot{max-width:100%;max-height:100%;object-fit:contain}.character-slot-copy{min-width:0;padding-top:13px}.character-slot-copy b{display:block;color:#f0d69c;font:700 18px Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.character-slot-copy span,.character-slot-copy small{display:block;color:#bbaa8d;margin-top:3px}.character-slot-copy span{font-size:11px}.character-slot-copy small{font-size:9px}.character-slot-actions{grid-column:1/-1;display:flex;gap:7px}.character-slot-actions button{flex:1}.character-slot-actions .compact{flex:0 0 auto;padding-inline:10px}.character-slot-empty{font-size:34px;color:#b8975d;line-height:1}.character-slot-card.empty>small{color:#9c8d76}.character-manager-note{padding:9px 10px;border:1px solid #493922;border-radius:9px;background:#0e0a07;color:#ab9b82;font-size:10px;line-height:1.45}@media(max-width:620px){.character-slot-grid{grid-template-columns:1fr}.character-slot-card{grid-template-columns:66px 1fr;min-height:112px;padding:10px}.character-slot-avatar{width:62px;height:74px}.character-slot-copy b{font-size:16px}}
