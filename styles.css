@@ -1857,3 +1857,18 @@ body.modal-open .map-biome-button{pointer-events:none!important}
   .shop-sell-sheet-actions{grid-template-columns:1fr}
   .shop-sell-sheet-actions .ghost:last-child{grid-column:auto}
 }
+
+
+/* 3.9.6.1 — loot-first economy, common-only merchant and simplified forge */
+.rarity-unique{color:#e2b65d!important}.rarity-card-unique{border-color:#a77b2f!important}.rarity-border-unique{border-color:#a77b2f!important}.rarity-frame-unique:before{background:#d2a143!important}.item-grade-unique{filter:drop-shadow(0 0 4px #d7a74c88)!important}
+.shop-basic-body{align-items:start!important;grid-template-columns:minmax(480px,.95fr) minmax(480px,1.05fr)!important}
+.shop-basic-buy,.shop-basic-sell{align-self:start!important;min-height:0!important}
+.shop-basic-head{display:flex;flex-direction:column;gap:4px;padding:10px 12px;margin-bottom:8px;border:1px solid #6c4d2d;background:linear-gradient(180deg,#1c140d,#0c0805);color:#e8d7b3}.shop-basic-head b{font-size:17px;color:#f0cf82}.shop-basic-head small{font-size:10px;line-height:1.4;color:#aa987b}
+.shop-basic-grid{grid-template-columns:repeat(auto-fit,minmax(58px,72px))!important;justify-content:start!important;align-content:start!important;min-height:0!important}
+.shop-buy-preview{margin-top:8px}.compact-buy-summary{min-height:92px!important}.shop-buy-actions{grid-template-columns:1fr auto!important}.shop-sell-hint{display:block;margin:-3px 0 8px;color:#a99677;font-size:9px;line-height:1.35}.shop-quality-rules{display:grid;gap:6px;padding:11px;border:1px solid #5a4328;background:linear-gradient(180deg,#17110c,#090604);color:#cdbb99}.shop-quality-rules b{color:#efd083;font-size:12px}.shop-quality-rules span{font-size:10px}
+.retro-sell-grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))!important}
+.smith-simple-actions{grid-template-columns:1fr 1fr!important}.smith-simple-actions .rune-button{font-size:8px!important}.upgrade-track{grid-template-columns:repeat(3,1fr) auto!important}
+@media(max-width:1050px){.shop-basic-body{grid-template-columns:1fr!important}.shop-basic-buy,.shop-basic-sell{width:100%}.shop-basic-grid{grid-template-columns:repeat(auto-fill,minmax(54px,68px))!important}.shop-buy-actions{grid-template-columns:1fr 1fr!important}}
+@media(max-width:720px){.shop-basic-head b{font-size:14px}.shop-basic-head small{font-size:9px}.shop-basic-grid{grid-template-columns:repeat(auto-fill,minmax(48px,58px))!important}.retro-sell-grid{grid-template-columns:repeat(5,1fr)!important}.smith-simple-actions{grid-template-columns:1fr!important}}
+
+.auction-drop-note{display:grid;gap:6px;margin-top:12px;padding:12px;border:1px solid #624b30;border-radius:11px;background:linear-gradient(180deg,#17110c,#090604);color:#c9b897}.auction-drop-note b{color:#efd083}.auction-drop-note span{font-size:10px}
