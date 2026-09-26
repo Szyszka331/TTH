@@ -232,3 +232,9 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Slot postaci jest źródłem prawdy; główny klucz zapisu jest tylko lustrem aktywnego slotu.
 - Stare identyczne duplikaty utworzone przez poprzedni błąd są scalane do jednego slotu (preferowany jest aktywny slot), a drugi slot zostaje zwolniony.
 - Tworzenie nowej postaci nadal zapisuje ją wyłącznie do wybranego pustego slotu.
+
+
+## Build 3.9.7.8 — wyspecjalizowane Próby Klasowe
+- Każda klasa ma własne wyzwania zamiast ogólnego „zabij X potworów”.
+- Próby reagują na styl gry: blok, unik, dystans, krytyki, statusy, chowańce, niskie HP, przełamanie bossa i używanie wcześniejszych umiejętności.
+- Przykład Tropiciela: Leśna pułapka wymaga wytropienia i pokonania 10 Szarych Wilków.
