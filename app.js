@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3971';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3972';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
@@ -8,7 +8,7 @@ const CHARACTER_META_TEST='time4heroes_character_active_sandbox';
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.7.1';
+const BUILD_VERSION='3.9.7.4';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -214,9 +214,9 @@ function upgradeCityBuilding(id){ensureCityState();const rule=CITY_UPGRADE_RULES
 
 const TUTORIAL_STEPS=[
  {id:'move',title:'Pierwszy krok',text:'Odejdź 60 m od punktu startowego. GPS pokazuje Twoją pozycję, a tryb testowy pozwala sprawdzić grę bez wychodzenia.',go:'map'},
- {id:'kill',title:'Pierwsza walka',text:'Podejdź do słabego przeciwnika i wygraj pierwszą walkę.',go:'map'},
+ {id:'kill',title:'Pierwsza walka',text:'Podejdź do słabego przeciwnika i wygraj pierwszą walkę. Pierwszy pokonany potwór gwarantuje sprzęt dla Twojej klasy.',go:'map'},
  {id:'tavern',title:'Bezpieczny powrót',text:'Odwiedź Karczmę „Pod Krukiem”. To Twój pierwszy bezpieczny hub.',go:'town'},
- {id:'inventory',title:'Sprawdź zdobycz',text:'Otwórz Bohater → Ekwipunek. Po pierwszej walce czeka tam treningowy łup.',go:'inventory'},
+ {id:'inventory',title:'Sprawdź zdobycz',text:'Otwórz Bohater → Ekwipunek. Po pierwszej walce masz gwarantowany klasowy przedmiot z łupu.',go:'inventory'},
  {id:'equip',title:'Załóż nowy sprzęt',text:'Wyposaż znaleziony przedmiot i zobacz, jak zmienia statystyki.',go:'inventory'},
  {id:'skill',title:'Pierwsza umiejętność',text:'W Bohater → Postać wydaj pierwszy punkt umiejętności. Każda klasa rozwija się inaczej.',go:'skills'},
  {id:'secret',title:'Coś poza szlakiem',text:'Odkryj pierwszy sekret. Poza głównym szlakiem czekają miejsca, których jeszcze nie znasz.',go:'map'},
@@ -348,8 +348,8 @@ const ITEM_ART_ATLAS={
 };
 function atlasStyle(path,pos,cols,rows){const x=cols===1?0:pos[0]/(cols-1)*100,y=rows===1?0:pos[1]/(rows-1)*100;return `--atlas-image:url('${path}');--atlas-size:${cols*100}% ${rows*100}%;--atlas-x:${x}%;--atlas-y:${y}%`}
 function itemIconVisual(id,cls='item-svg'){
- const d=itemDef(id),pos=ITEM_ART_ATLAS[id],family=/^(mist|storm)/.test(id)?'frost':/^(ash|ember|cinder)/.test(id)?'ember':/^(wild|forest|wolf)/.test(id)?'forest':'neutral';
- const art=pos?`<span class="atlas-sprite item-atlas-sprite ${cls} item-tone-${family}" role="img" aria-label="${d.name}" style="${atlasStyle('assets/atlases/item-atlas-320.png',pos,4,4)}"></span>`:`<img src="assets/icons/items/${id}.svg" class="${cls}" alt="${d.name}" loading="lazy">`;
+ const d=itemDef(id),visualId=d.visualId||id,pos=ITEM_ART_ATLAS[visualId],family=/^(mist|storm)/.test(visualId)?'frost':/^(ash|ember|cinder)/.test(visualId)?'ember':/^(wild|forest|wolf)/.test(visualId)?'forest':'neutral';
+ const art=pos?`<span class="atlas-sprite item-atlas-sprite ${cls} item-tone-${family}" role="img" aria-label="${d.name}" style="${atlasStyle('assets/atlases/item-atlas-320.png',pos,4,4)}"></span>`:`<img src="assets/icons/items/${visualId}.svg" class="${cls}" alt="${d.name}" loading="lazy">`;
  return `<span class="item-icon-shell item-grade-${d.rarity}" title="${d.name} • ${rarityName(d.rarity)}">${art}</span>`;
 }
 function skillIconVisual(id,cls='skill-svg'){return `<img src="assets/icons/skills/${id}.svg" class="${cls}" alt="">`}
@@ -430,10 +430,12 @@ function dungeonExplorationPercent(){if(!dungeonRun)return 0;let floor=0,seen=0;
 function dungeonGuardianId(d){return DUNGEON_GUARDIANS[d.id]||'skeleton'}
 function dungeonGuardianMonster(d){return MONSTERS.find(m=>m.id===dungeonGuardianId(d))||MONSTERS[0]}
 
+const TUTORIAL_CLASS_DROPS={knight:'tutorialKnightShield',mage:'tutorialMageStaff',hunter:'tutorialHunterBow',berserker:'tutorialBerserkerAxe',ranger:'tutorialRangerHood'};
+function tutorialClassDropId(cls=state?.player?.class){return TUTORIAL_CLASS_DROPS[cls]||'leatherGloves'}
 function tutorialInfo(){ensureCoreState();return state.tutorial.complete?null:TUTORIAL_STEPS[Math.min(state.tutorial.stage,TUTORIAL_STEPS.length-1)]}
 function tutorialStepDone(step){const f=state.tutorial.flags||{};if(f[step.id])return true;if(step.id==='skill')return state.player.skills.length>0;if(step.id==='secret')return (state.world.exploration?.secretsFound||[]).length>0;if(step.id==='dungeonDiscover')return state.player.discovered.includes('trainingCellar');if(step.id==='dungeonComplete')return (state.player.dungeonClears?.trainingCellar||0)>0;return false}
 function advanceTutorial(){ensureCoreState();if(state.tutorial.complete)return;let moved=false;while(state.tutorial.stage<TUTORIAL_STEPS.length&&tutorialStepDone(TUTORIAL_STEPS[state.tutorial.stage])){state.tutorial.stage++;moved=true}if(state.tutorial.stage>=TUTORIAL_STEPS.length){state.tutorial.complete=true;if(!state.tutorial.finishReward){state.tutorial.finishReward=true;state.player.gold+=80;gainXp(180);addItem('potion',2);playSfx('level');haptic([25,40,25]);toast('Pierwsza wyprawa ukończona! +180 XP • +80 🪙 • 2 mikstury')}}if(moved)save()}
-function tutorialEvent(type,value=0){ensureCoreState();if(state.tutorial.complete)return;const f=state.tutorial.flags; if(type==='move'&&value>=60)f.move=true;else if(type==='kill'){f.kill=true;if(!state.tutorial.rewardGiven){state.tutorial.rewardGiven=true;addItem('scoutHood');playSfx('loot');toast('Pierwszy łup: Kaptur zwiadowcy trafił do plecaka.')}}else if(type==='tavern')f.tavern=true;else if(type==='inventory')f.inventory=true;else if(type==='equip')f.equip=true;else if(type==='skill')f.skill=true;else if(type==='secret')f.secret=true;else if(type==='dungeonDiscover')f.dungeonDiscover=true;else if(type==='dungeonComplete')f.dungeonComplete=true;advanceTutorial();save()}
+function tutorialEvent(type,value=0){ensureCoreState();if(state.tutorial.complete)return;const f=state.tutorial.flags; if(type==='move'&&value>=60)f.move=true;else if(type==='kill'){f.kill=true}else if(type==='tavern')f.tavern=true;else if(type==='inventory')f.inventory=true;else if(type==='equip')f.equip=true;else if(type==='skill')f.skill=true;else if(type==='secret')f.secret=true;else if(type==='dungeonDiscover')f.dungeonDiscover=true;else if(type==='dungeonComplete')f.dungeonComplete=true;advanceTutorial();save()}
 function tutorialMapOverlay(){const t=tutorialInfo();if(!t||state.tutorial.mapDismissedStage===state.tutorial.stage)return'';const pct=Math.round((state.tutorial.stage/TUTORIAL_STEPS.length)*100);return `<div class="tutorial-map-card"><div class="npe-progress"><i style="width:${pct}%"></i></div><button class="tutorial-map-close" data-tutorial-hide aria-label="Zamknij">×</button><span>WSKAZÓWKA ${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}</span><b>${t.title}</b><small>${t.text}</small></div>`}
 function tutorialJournalHTML(){const t=tutorialInfo();if(!t)return `<div class="panel-item first-hour-card"><b>✅ Samouczek ukończony</b><div class="muted">Pierwsza godzina została zakończona.</div></div>`;return `<div class="panel-item first-hour-card"><b>🎓 Samouczek • ${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}: ${t.title}</b><p>${t.text}</p><button class="secondary" data-tutorial-go>Pokaż na mapie</button></div>`}
 function tutorialNavigate(){const t=tutorialInfo();if(!t)return;if(t.go==='town'){selectNav('town');return}if(t.go==='inventory'){state.ui.heroView='gear';save();selectNav('hero');return}if(t.go==='skills'){state.ui.heroView='skills';save();selectNav('hero');return}selectNav('map')}
@@ -462,13 +464,39 @@ function toast(msg){toastEl.textContent=msg;toastEl.classList.add('show');clearT
 function save(){
  if(!state||saveDepth)return;
  state.playMode=SAVE_KEY===DEMO_SAVE_KEY?'sandbox':'gps';state.session={combat,dungeonRun,battleResult};
- try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));save.failed=false}
+ try{
+  const json=JSON.stringify(state);
+  localStorage.setItem(characterSlotKey(activeCharacterSlot()),json);
+  localStorage.setItem(SAVE_KEY,json);
+  localStorage.setItem(characterRegistryKey(),'1');
+  save.failed=false;
+ }
  catch(error){if(!save.failed)toast('Nie udało się zapisać postępu. Zwolnij miejsce lub wyeksportuj zapis w Menu.');save.failed=true;console.warn('Zapis gry niedostępny',error.name)}
 }
 
 function rawLoad(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}}
 function characterModeId(){return SAVE_KEY===DEMO_SAVE_KEY?'sandbox':'gps'}
 function characterActiveMetaKey(){return SAVE_KEY===DEMO_SAVE_KEY?CHARACTER_META_TEST:CHARACTER_META_REAL}
+function characterRegistryKey(mode=characterModeId()){return `time4heroes_character_registry_${mode}_v2`}
+function characterSaveIdentity(save){return save?.created?`created:${save.created}`:save?.player?`${save.player.name||''}|${save.player.class||''}|${save.player.level||1}`:''}
+function characterSlotRowsRaw(mode=characterModeId()){return Array.from({length:CHARACTER_LIMIT},(_,i)=>({slot:i+1,save:rawLoad(characterSlotKey(i+1,mode))}))}
+function repairCharacterRegistry(){
+ const mode=characterModeId(),rows=characterSlotRowsRaw(mode),canonical=rawLoad(SAVE_KEY);
+ let active=activeCharacterSlot(),occupied=rows.filter(x=>x.save?.player);
+ if(!occupied.length&&canonical?.player){localStorage.setItem(characterSlotKey(1,mode),JSON.stringify(canonical));setActiveCharacterSlot(1);active=1;occupied=[{slot:1,save:canonical}]}
+ else if(canonical?.player){
+  const cid=characterSaveIdentity(canonical),match=occupied.find(x=>characterSaveIdentity(x.save)===cid);
+  if(!match){
+   const activeRow=rows.find(x=>x.slot===active);
+   if(!activeRow?.save?.player)localStorage.setItem(characterSlotKey(active,mode),JSON.stringify(canonical));
+   else {const empty=rows.find(x=>!x.save?.player);if(empty)localStorage.setItem(characterSlotKey(empty.slot,mode),JSON.stringify(canonical))}
+  }
+ }
+ const activeSave=rawLoad(characterSlotKey(active,mode));
+ if(activeSave?.player)localStorage.setItem(SAVE_KEY,JSON.stringify(activeSave));
+ localStorage.setItem(characterRegistryKey(mode),'1');
+ return rawLoad(characterSlotKey(active,mode));
+}
 function activeCharacterSlot(){
  const n=Number(localStorage.getItem(characterActiveMetaKey())||1);
  return Number.isInteger(n)&&n>=1&&n<=CHARACTER_LIMIT?n:1;
@@ -481,19 +509,20 @@ function setActiveCharacterSlot(slot){
 function characterSlotKey(slot,mode=characterModeId()){return `time4heroes_character_${mode}_${Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1))}`}
 function characterSnapshot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
+ const stored=rawLoad(characterSlotKey(slot));
  if(slot===activeCharacterSlot()&&state)return state;
- return rawLoad(characterSlotKey(slot));
+ return stored;
 }
 function characterSlots(){return Array.from({length:CHARACTER_LIMIT},(_,i)=>{const slot=i+1,save=characterSnapshot(slot);return {slot,save,active:slot===activeCharacterSlot()}})}
 function characterCount(){return characterSlots().filter(x=>x.save?.player).length}
 function persistCurrentCharacterSlot(){
  if(!state)return false;
  const copy=JSON.parse(JSON.stringify(state));copy.playMode=SAVE_KEY===DEMO_SAVE_KEY?'sandbox':'gps';copy.session={combat,dungeonRun,battleResult};
- try{localStorage.setItem(characterSlotKey(activeCharacterSlot()),JSON.stringify(copy));return true}catch{return false}
+ try{const json=JSON.stringify(copy);localStorage.setItem(characterSlotKey(activeCharacterSlot()),json);localStorage.setItem(SAVE_KEY,json);localStorage.setItem(characterRegistryKey(),'1');return true}catch{return false}
 }
 function prepareCharacterChange(){
  if(combat||dungeonRun||battleResult){toast('Najpierw zakończ walkę lub wyprawę.');return false}
- save();persistCurrentCharacterSlot();
+ if(state&&!persistCurrentCharacterSlot())return toast('Nie udało się zapisać bieżącej postaci.'),false;
  try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}
  gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();return true;
 }
@@ -506,9 +535,10 @@ function switchCharacterSlot(slot){
 }
 function createCharacterSlot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
- if(characterSnapshot(slot)?.player)return toast('Ten slot jest już zajęty.');
+ if(rawLoad(characterSlotKey(slot))?.player)return toast('Ten slot jest już zajęty.');
  if(!prepareCharacterChange())return;
- setActiveCharacterSlot(slot);localStorage.removeItem(SAVE_KEY);state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';render();
+ setActiveCharacterSlot(slot);localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);localStorage.setItem(characterRegistryKey(),'1');
+ state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';render();
 }
 function removeCharacterSlot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
@@ -518,7 +548,7 @@ function removeCharacterSlot(slot){
  const isActive=slot===activeCharacterSlot();
  if(isActive){
   try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
-  localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);if(SAVE_KEY===REAL_SAVE_KEY)for(const key of MIGRATION_KEYS)localStorage.removeItem(key);
+  localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
   let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
   if(replacement){setActiveCharacterSlot(replacement.slot);localStorage.setItem(SAVE_KEY,JSON.stringify(replacement.save))}else setActiveCharacterSlot(1);
   state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';location.reload();return;
@@ -541,6 +571,25 @@ function openCharacterManager(){
 }
 function itemDef(id){return ITEMS[id]||{id,name:id,icon:'❓',type:'unknown',rarity:'common',value:0}}
 function skillDef(id){return (SKILLS[state.player.class]||[]).find(s=>s.id===id)}
+const CLASS_SKILL_TRIALS={
+ knight:{shield:{type:'kills',count:1,label:'Pokonaj pierwszego przeciwnika'},counter:{type:'kills',count:10,label:'Pokonaj 10 przeciwników'},taunt:{type:'kills',count:18,label:'Pokonaj 18 przeciwników'}},
+ mage:{fire:{type:'kills',count:1,label:'Pokonaj pierwszego przeciwnika'},frost:{type:'family',family:'Nieumarli',count:6,label:'Pokonaj 6 Nieumarłych'},spark:{type:'kills',count:14,label:'Pokonaj 14 przeciwników'}},
+ hunter:{double:{type:'kills',count:1,label:'Pokonaj pierwszego przeciwnika'},petStrike:{type:'family',family:'Natura',count:12,label:'Pokonaj 12 stworzeń Natury'},camouflage:{type:'kills',count:22,label:'Pokonaj 22 przeciwników'},volley:{type:'kills',count:36,label:'Pokonaj 36 przeciwników'}},
+ berserker:{rage:{type:'kills',count:1,label:'Pokonaj pierwszego przeciwnika'},cleave:{type:'kills',count:10,label:'Pokonaj 10 przeciwników'},dualCut:{type:'kills',count:16,label:'Pokonaj 16 przeciwników'}},
+ ranger:{poison:{type:'kills',count:1,label:'Pokonaj pierwszego przeciwnika'},trap:{type:'monster',monster:'wolf',count:10,label:'Pokonaj 10 Szarych Wilków'},spirit:{type:'family',family:'Natura',count:15,label:'Pokonaj 15 stworzeń Natury'}}
+};
+function skillTrialDef(skill){
+ const special=CLASS_SKILL_TRIALS[state.player.class]?.[skill.id];if(special)return special;
+ return {type:'kills',count:Math.max(6,Math.round((skill.req||1)*4)),label:`Pokonaj ${Math.max(6,Math.round((skill.req||1)*4))} przeciwników`};
+}
+function skillTrialProgress(skill){
+ const t=skillTrialDef(skill),b=state.player.bestiary||{};let value=0;
+ if(t.type==='monster')value=Number(b[t.monster]||0);
+ else if(t.type==='family')value=Object.entries(b).reduce((sum,[id,n])=>sum+((MONSTERS.find(m=>m.id===id)?.family===t.family)?Number(n||0):0),0);
+ else value=Number(state.player.kills||0);
+ return {trial:t,value:Math.min(t.count,value),raw:value,done:value>=t.count};
+}
+function skillTrialText(skill){const x=skillTrialProgress(skill);return `${x.trial.label} • ${x.value}/${x.trial.count}`}
 const MAX_ACTIVE_SKILLS=4;
 function ensureCombatSkillLoadout(s=state){
  const p=s?.player;if(!p)return[];
@@ -695,7 +744,10 @@ function rollCombatLoot(m,e,c){ensureEconomyState();let gearDrop=null;const drop
  if(!elite&&!boss&&Math.random()<variantGearChance)gearDrop=randomGearFrom(m.variantId==='ancient'?'rare':m.variantId==='corrupted'&&Math.random()<.22?'rare':'uncommon');
  if(elite&&!boss){state.economy.elitePity++;if(Math.random()<.18||state.economy.elitePity>=4){gearDrop=randomGearFrom(Math.random()<.22?'epic':'rare');state.economy.elitePity=0}if(Math.random()<.16)drops.push({id:'runeShard',qty:1})}
  if(boss){state.economy.bossPity++;const epicGuaranteed=state.economy.bossPity>=3;if(Math.random()<.58||epicGuaranteed){gearDrop=randomGearFrom(Math.random()<.18?'heroic':'epic');state.economy.bossPity=0}else gearDrop=randomGearFrom('rare');if(Math.random()<.55)drops.push({id:'runeShard',qty:rnd(1,2)});if(Math.random()<.08)drops.push({id:pick(['runePower','runeGuard','runePrecision']),qty:1})}
- if(gearDrop)drops.push({id:gearDrop,qty:1,gear:true});return {gearDrop,drops:mergeLootDrops(drops)};
+ if(gearDrop)drops.push({id:gearDrop,qty:1,gear:true});
+ let finalDrops=mergeLootDrops(drops);
+ if(!state.tutorial?.complete&&!state.tutorial?.rewardGiven){const tutorialDrop=tutorialClassDropId();finalDrops=[{id:tutorialDrop,qty:1,gear:true,tutorial:true},...finalDrops];state.tutorial.rewardGiven=true;playSfx('loot')}
+ return {gearDrop,drops:finalDrops};
 }
 function addItem(id,qty=1){if(!ITEMS[id]||!Number.isInteger(qty)||qty<=0)return 0;let left=Math.max(0,qty|0),added=0;if(isStackable(id)){const lim=stackLimit(id);for(const st of state.player.inventory.filter(x=>x.id===id&&isStackable(x.id)&&((x.qty||1)<lim))){if(left<=0)break;const room=lim-(st.qty||1),take=Math.min(room,left);st.qty=(st.qty||1)+take;left-=take;added+=take}while(left>0&&inventoryHasRoom()){const take=Math.min(lim,left);state.player.inventory.push({id,qty:take});left-=take;added+=take}}else{while(left>0&&inventoryHasRoom()){state.player.inventory.push(createGearInstance(id));left--;added++}}if(left>0)toast(`🎒 Plecak pełny — nie zmieściło się ${left}× ${itemDef(id).name}.`);if(added)checkQuestProgress('item',id);save();return added}
 function removeItem(id,qty=1){let left=qty;for(let i=state.player.inventory.length-1;i>=0&&left>0;i--){const x=state.player.inventory[i];if(x.id!==id)continue;const q=x.qty||1;if(q>left){x.qty=q-left;left=0}else{left-=q;state.player.inventory.splice(i,1)}}save();return left===0}
@@ -1203,10 +1255,10 @@ function normalizeState(s){
 }
 
 function load(){
- const now=rawLoad(SAVE_KEY);if(now)return normalizeState(now);
- const slotBackup=rawLoad(characterSlotKey(activeCharacterSlot()));if(slotBackup?.player){localStorage.setItem(SAVE_KEY,JSON.stringify(slotBackup));return normalizeState(slotBackup)}
- if(SAVE_KEY===DEMO_SAVE_KEY||localStorage.getItem(characterActiveMetaKey())!==null)return null;
- for(const key of MIGRATION_KEYS){const old=rawLoad(key);if(old){const migrated=normalizeState(old);localStorage.setItem(SAVE_KEY,JSON.stringify(migrated));return migrated}}
+ const repaired=repairCharacterRegistry();if(repaired?.player)return normalizeState(repaired);
+ const now=rawLoad(SAVE_KEY);if(now?.player){localStorage.setItem(characterSlotKey(activeCharacterSlot()),JSON.stringify(now));localStorage.setItem(characterRegistryKey(),'1');return normalizeState(now)}
+ if(SAVE_KEY===DEMO_SAVE_KEY||localStorage.getItem(characterActiveMetaKey())!==null||localStorage.getItem(characterRegistryKey())!==null)return null;
+ for(const key of MIGRATION_KEYS){const old=rawLoad(key);if(old){const migrated=normalizeState(old);setActiveCharacterSlot(1);localStorage.setItem(characterSlotKey(1),JSON.stringify(migrated));localStorage.setItem(SAVE_KEY,JSON.stringify(migrated));localStorage.setItem(characterRegistryKey(),'1');return migrated}}
  return null;
 }
 function newGame(name,cls){
@@ -1222,7 +1274,7 @@ function resetCharacter(){
  const slot=activeCharacterSlot(),name=state?.player?.name||'postać';
  if(!confirm(`Usunąć bieżącą postać „${name}” ze slotu ${slot}? Pozostałe postacie zostaną zachowane.`))return;
  try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
- localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);if(SAVE_KEY===REAL_SAVE_KEY)for(const key of MIGRATION_KEYS)localStorage.removeItem(key);
+ localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
  let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
  if(replacement){setActiveCharacterSlot(replacement.slot);localStorage.setItem(SAVE_KEY,JSON.stringify(replacement.save))}else setActiveCharacterSlot(1);
  state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';location.reload();
@@ -1319,6 +1371,10 @@ function supportGearPower(){return Object.keys(state.player.equipped||{}).filter
 function weaponDamageRange(){const mainInst=equippedInstance('weapon'),main=itemDef(mainInst?.id),fallback=Math.max(1,main.power||1),base=main.damage||[Math.max(1,fallback-2),fallback+2],mainBonus=(mainInst?.upgrade||0)*2+instanceBonus(mainInst,'power');let min=base[0]+mainBonus,max=base[1]+mainBonus;if(state.player.class==='berserker'){const offInst=equippedInstance('offhand'),off=itemDef(offInst?.id);if(off?.type==='weapon'){const od=off.damage||[Math.max(1,(off.power||1)-2),(off.power||1)+2],offBonus=(offInst?.upgrade||0)*2+instanceBonus(offInst,'power');min+=(od[0]+offBonus)*.45;max+=(od[1]+offBonus)*.45}}const stat=primaryCombatStat()*.75+state.player.level*.55+supportGearPower();return {min:Math.max(1,Math.floor(min+stat)),max:Math.max(2,Math.ceil(max+stat))}}
 function rollPlayerBaseDamage(){const r=weaponDamageRange();return rnd(r.min,r.max)}
 function attackPower(){const r=weaponDamageRange();return Math.round((r.min+r.max)/2)}
+function combatLevelGap(level=combat?.level){return Math.max(-20,Math.min(20,(Number(level)||state.player.level)-state.player.level))}
+function playerVsEnemyLevelMultiplier(){const gap=combatLevelGap();return gap>0?Math.max(.72,1-gap*.03):1}
+function enemyHpLevelGapMultiplier(level){const gap=Math.max(0,combatLevelGap(level));return 1+Math.min(.20,gap*.02)}
+function enemyAtkLevelGapMultiplier(level){const gap=Math.max(0,combatLevelGap(level));return 1+Math.min(.25,gap*.02)}
 function hitChance(){const p=state.player;return p.class==='mage'?100:Math.min(99,92+p.stats.agi*.32+(['hunter','ranger'].includes(p.class)?3:0))}
 function armorPower(){const p=state.player;return Math.floor(p.stats.vit*.55+gearStat('armor'))}
 function critChance(){const p=state.player,pet=p.petActive?petDef(p.petActive):null,classBonus=p.class==='hunter'?5:p.class==='ranger'?2:0,biomeBonus=combat?.environment?.effect?.crit||0;return Math.min(70,5+p.stats.agi*.55+gearStat('crit')+(pet?.crit||0)+classBonus+biomeBonus)}
@@ -1629,7 +1685,7 @@ function renderHeroStats(el){
 function renderSkillsTree(el){
  const p=state.player,c=CLASSES[p.class],branches=[...new Set((SKILLS[p.class]||[]).map(s=>s.branch||'Umiejętności'))];
  ensureCombatSkillLoadout();
- el.innerHTML=`<div class="section-title"><div><h2>🌳 Umiejętności</h2><div class="muted">${c.name} • rozwijaj wybraną ścieżkę bohatera.</div></div><span class="pill gold">${p.skillPoints} pkt</span></div><div class="class-passive-card"><b>Pasyw klasy</b><span>${classPassiveText()}</span></div>${combatLoadoutHTML()}<div class="skill-branches standalone-skills">${branches.map(branch=>`<section class="skill-branch"><h4>${branch}</h4>${(SKILLS[p.class]||[]).filter(s=>(s.branch||'Umiejętności')===branch).map(s=>skillCard(s)).join('<div class="skill-link">↓</div>')}</section>`).join('')}</div>`;
+ el.innerHTML=`<div class="section-title"><div><h2>🌳 Umiejętności</h2><div class="muted">${c.name} • ukończ próby klasowe, a potem wydawaj punkty na wybrane zdolności.</div></div><span class="pill gold">${p.skillPoints} pkt</span></div><div class="class-passive-card"><b>Pasyw klasy</b><span>${classPassiveText()}</span></div>${combatLoadoutHTML()}<div class="skill-branches standalone-skills">${branches.map(branch=>`<section class="skill-branch"><h4>${branch}</h4>${(SKILLS[p.class]||[]).filter(s=>(s.branch||'Umiejętności')===branch).map(s=>skillCard(s)).join('<div class="skill-link">↓</div>')}</section>`).join('')}</div>`;
  el.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>learnSkill(b.dataset.learn));
  el.querySelectorAll('[data-active-skill]').forEach(b=>b.onclick=()=>{toggleCombatSkill(b.dataset.activeSkill);renderSkillsTree(el)});
  el.querySelectorAll('[data-remove-active]').forEach(b=>b.onclick=()=>{toggleCombatSkill(b.dataset.removeActive);renderSkillsTree(el)});
@@ -2107,7 +2163,7 @@ function toggleGps(){
 function renderCharacter(el){
  const p=state.player,c=CLASSES[p.class],slots=[['helmet','Hełm','⛑️'],['amulet','Amulet','📿'],['weapon','Broń główna','⚔️'],['armor','Pancerz','🛡️'],['offhand',p.class==='berserker'?'Druga broń':'Druga ręka',p.class==='berserker'?'🪓':'🛡️'],['gloves','Rękawice','🧤'],['ring1','Pierścień I','💍'],['ring2','Pierścień II','💍'],['boots','Buty','🥾']];
  const branches=[...new Set((SKILLS[p.class]||[]).map(s=>s.branch||'Umiejętności'))];
- el.innerHTML=`<div class="section-title"><div><h2>${p.name}</h2><div class="muted">${c.name} • ${c.desc}</div></div><span class="pill">lvl ${p.level}</span></div><div class="character-layout"><div class="paperdoll"><div class="paperdoll-title">WYPOSAŻENIE</div><div class="paperdoll-grid">${slots.map(([slot,label,ico])=>equipmentSlotHTML(slot,label,ico)).join('')}<div class="hero-silhouette"><div class="hero-pixel">${classVisual(p.class,'sprite-hero')}</div><b>${p.name}</b><span>${c.name}</span></div></div></div><div class="character-stats"><h3>Statystyki</h3><div class="stat-grid">${Object.entries(p.stats).map(([k,v])=>`<div class="stat-card"><b>${k.toUpperCase()}</b><div class="stat-number">${v}</div>${p.statPoints?`<button class="secondary mini" data-stat="${k}">+1</button>`:''}</div>`).join('')}</div><div class="derived-grid"><div><b>${attackPower()}</b><span>Atak</span></div><div><b>${armorPower()}</b><span>Pancerz</span></div><div><b>${critChance().toFixed(0)}%</b><span>Krytyk</span></div><div><b>${p.skillPoints}</b><span>Pkt skilli</span></div></div></div></div><div class="skill-tree-head"><div><h3>🌳 Drzewko umiejętności</h3><div class="muted">Wybierz kierunek rozwoju. Umiejętności wymagają poprzednich w swojej ścieżce.</div></div><span class="pill gold">${p.skillPoints} pkt</span></div><div class="skill-branches">${branches.map(branch=>`<section class="skill-branch"><h4>${branch}</h4>${(SKILLS[p.class]||[]).filter(s=>(s.branch||'Umiejętności')===branch).map(s=>skillCard(s)).join('<div class="skill-link">↓</div>')}</section>`).join('')}</div><h3 style="margin-top:22px">🐾 Chowańce</h3>${petSection()}`;
+ el.innerHTML=`<div class="section-title"><div><h2>${p.name}</h2><div class="muted">${c.name} • ${c.desc}</div></div><span class="pill">lvl ${p.level}</span></div><div class="character-layout"><div class="paperdoll"><div class="paperdoll-title">WYPOSAŻENIE</div><div class="paperdoll-grid">${slots.map(([slot,label,ico])=>equipmentSlotHTML(slot,label,ico)).join('')}<div class="hero-silhouette"><div class="hero-pixel">${classVisual(p.class,'sprite-hero')}</div><b>${p.name}</b><span>${c.name}</span></div></div></div><div class="character-stats"><h3>Statystyki</h3><div class="stat-grid">${Object.entries(p.stats).map(([k,v])=>`<div class="stat-card"><b>${k.toUpperCase()}</b><div class="stat-number">${v}</div>${p.statPoints?`<button class="secondary mini" data-stat="${k}">+1</button>`:''}</div>`).join('')}</div><div class="derived-grid"><div><b>${attackPower()}</b><span>Atak</span></div><div><b>${armorPower()}</b><span>Pancerz</span></div><div><b>${critChance().toFixed(0)}%</b><span>Krytyk</span></div><div><b>${p.skillPoints}</b><span>Pkt skilli</span></div></div></div></div><div class="skill-tree-head"><div><h3>🌳 Drzewko umiejętności</h3><div class="muted">Poziom nie blokuje zdolności. Ukończ próbę klasową i wymagane wcześniejsze zdolności.</div></div><span class="pill gold">${p.skillPoints} pkt</span></div><div class="skill-branches">${branches.map(branch=>`<section class="skill-branch"><h4>${branch}</h4>${(SKILLS[p.class]||[]).filter(s=>(s.branch||'Umiejętności')===branch).map(s=>skillCard(s)).join('<div class="skill-link">↓</div>')}</section>`).join('')}</div><h3 style="margin-top:22px">🐾 Chowańce</h3>${petSection()}`;
  el.querySelectorAll('[data-stat]').forEach(b=>b.onclick=()=>{if(p.statPoints<=0)return;p.stats[b.dataset.stat]++;p.statPoints--;if(b.dataset.stat==='vit'){p.maxHp+=5;p.hp+=5}if(b.dataset.stat==='int'){p.maxMana+=4;p.mana+=4}save();refresh()});
  el.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>learnSkill(b.dataset.learn));
  el.querySelectorAll('[data-active-skill]').forEach(b=>b.onclick=()=>{toggleCombatSkill(b.dataset.activeSkill);refresh()});
@@ -2118,8 +2174,8 @@ function equipmentSlotHTML(slot,label,ico){
  const i=equippedInstance(slot),d=i?itemDef(i.id):null;
  return `<button class="gear-slot dnd-equip-slot ${i?`rarity-border-${d.rarity}`:'empty'}" data-equip-drop="${slot}" data-slot="${slot}" title="${i?itemName(i):`Przeciągnij tutaj: ${label}`}"><span>${d?itemIconVisual(d.id,'gear-item-svg'):ico}</span><b>${label}</b><small>${d?itemName(i):'pusty'}</small>${i?'<em class="equipped-dot">ZAŁOŻONE</em>':''}</button>`;
 }
-function skillCard(s){const p=state.player,learned=p.skills.includes(s.id),active=learned&&ensureCombatSkillLoadout().includes(s.id),reqSkill=s.requires,canLevel=p.level>=s.req,canPrev=!reqSkill||p.skills.includes(reqSkill),can=canLevel&&canPrev&&p.skillPoints>=s.cost;return `<div class="skill-node ${learned?'learned':!can?'locked':''} ${active?'active-loadout':''}"><div class="skill-orb">${skillIconVisual(s.id,'skill-node-svg')}</div><div class="skill-copy"><b>${s.name}</b><div class="tiny">lvl ${s.req} • ${s.cost} pkt • mana ${s.mana}${s.cooldown?` • CD ${s.cooldown}`:''}</div><p>${s.desc}</p>${reqSkill&&!canPrev?`<div class="tiny danger-text">Wymaga: ${skillDef(reqSkill)?.name||reqSkill}</div>`:''}</div>${learned?`<div class="skill-node-actions"><span class="pill ${active?'gold':'green'}">${active?'NA PASKU':'NAUCZONE'}</span><button class="secondary mini" data-active-skill="${s.id}">${active?'Usuń z paska':'Dodaj do walki'}</button></div>`:`<button class="secondary" data-learn="${s.id}" ${can?'':'disabled'}>Odblokuj</button>`}</div>`}
-function learnSkill(id){const p=state.player,s=(SKILLS[p.class]||[]).find(x=>x.id===id);if(!s||p.skills.includes(id))return;if(p.level<s.req)return toast(`Wymagany poziom ${s.req}.`);if(s.requires&&!p.skills.includes(s.requires))return toast(`Najpierw odblokuj: ${skillDef(s.requires)?.name||s.requires}.`);if(p.skillPoints<s.cost)return toast('Za mało punktów umiejętności.');p.skillPoints-=s.cost;p.skills.push(id);const active=ensureCombatSkillLoadout();if(active.length<MAX_ACTIVE_SKILLS&&!active.includes(id))p.activeSkills=[...active,id];tutorialEvent('skill');save();refresh();toast(`Odblokowano: ${s.name}${p.activeSkills.includes(id)?' • dodano do paska walki':''}`)}
+function skillCard(s){const p=state.player,learned=p.skills.includes(s.id),active=learned&&ensureCombatSkillLoadout().includes(s.id),reqSkill=s.requires,canPrev=!reqSkill||p.skills.includes(reqSkill),trial=skillTrialProgress(s),can=trial.done&&canPrev&&p.skillPoints>=s.cost;return `<div class="skill-node ${learned?'learned':!can?'locked':''} ${active?'active-loadout':''}"><div class="skill-orb">${skillIconVisual(s.id,'skill-node-svg')}</div><div class="skill-copy"><b>${s.name}</b><div class="tiny">${s.cost} pkt • mana ${s.mana}${s.cooldown?` • CD ${s.cooldown}`:''}</div><p>${s.desc}</p>${!learned?`<div class="skill-trial ${trial.done?'done':''}"><b>PRÓBA KLASOWA</b><span>${skillTrialText(s)}</span><i><em style="width:${Math.min(100,100*trial.value/trial.trial.count)}%"></em></i></div>`:''}${reqSkill&&!canPrev?`<div class="tiny danger-text">Wymaga umiejętności: ${skillDef(reqSkill)?.name||reqSkill}</div>`:''}</div>${learned?`<div class="skill-node-actions"><span class="pill ${active?'gold':'green'}">${active?'NA PASKU':'NAUCZONE'}</span><button class="secondary mini" data-active-skill="${s.id}">${active?'Usuń z paska':'Dodaj do walki'}</button></div>`:`<button class="secondary" data-learn="${s.id}" ${can?'':'disabled'}>${trial.done?'Odblokuj':'Ukończ próbę'}</button>`}</div>`}
+function learnSkill(id){const p=state.player,s=(SKILLS[p.class]||[]).find(x=>x.id===id);if(!s||p.skills.includes(id))return;const trial=skillTrialProgress(s);if(!trial.done)return toast(`Próba klasowa: ${skillTrialText(s)}.`);if(s.requires&&!p.skills.includes(s.requires))return toast(`Najpierw odblokuj: ${skillDef(s.requires)?.name||s.requires}.`);if(p.skillPoints<s.cost)return toast('Za mało punktów umiejętności.');p.skillPoints-=s.cost;p.skills.push(id);const active=ensureCombatSkillLoadout();if(active.length<MAX_ACTIVE_SKILLS&&!active.includes(id))p.activeSkills=[...active,id];tutorialEvent('skill');save();refresh();toast(`Odblokowano: ${s.name}${p.activeSkills.includes(id)?' • dodano do paska walki':''}`)}
 function petSection(){const p=state.player;if(!['hunter','ranger'].includes(p.class))return `<div class="panel-item"><b>🔒 Chowańce bojowe</b><div class="muted">Bojowe chowańce są specjalizacją Łowcy i Tropiciela.</div></div>`;if(!p.pets.length)return `<div class="panel-item">Nie masz jeszcze chowańca.</div>`;return `<div class="pet-grid">${p.pets.map(x=>{const d=petDef(x.id),need=x.level*90;return `<div class="pet-card-v03 ${p.petActive===x.id?'active':''}"><div class="pet-portrait">${d.icon}</div><div><b>${d.name} • lvl ${x.level}</b><div class="tiny">Aktywna: ${d.skill} • Pasywna: ${d.passive}</div><div class="muted">${d.desc}</div><div class="barwrap"><div class="bar petbar" style="width:${100*x.xp/need}%"></div><div class="barlabel">XP ${x.xp}/${need}</div></div></div><button class="secondary" data-pet="${x.id}" ${p.petActive===x.id?'disabled':''}>${p.petActive===x.id?'Aktywny':'Wybierz'}</button></div>`}).join('')}</div>`}
 function inventoryItemEquippedSlot(i){if(!i?.uid)return null;return Object.entries(state.player.equipped||{}).find(([,x])=>x?.uid===i.uid)?.[0]||null}
 function isOneHandedWeapon(d){return d?.type==='weapon'&&['sword','axe','hammer'].includes(d.weaponKind)}
@@ -2632,10 +2688,11 @@ function startCombat(entity,opts={}){
  ensureStaminaCap();const p=state.player;if(p.stamina<3){toast('⚡ Potrzebujesz 3 staminy, aby rozpocząć walkę. Odpocznij lub zjedz w karczmie.');return false}
  state.ui.gearDrawerOpen=false;
  const m=monsterTemplate(entity),lvl=opts.level??entityMonsterLevel(entity,m),environment=combatEnvironment(m),scale=.66+lvl*.075,isDungeonBoss=!!opts.dungeon?.boss,isWorldBoss=!!opts.worldBoss,questFight=!!opts.storyConsequence,raidTier=opts.raid?.tier||null,isRaid=!!raidTier,isBoss=isWorldBoss||isDungeonBoss||isRaid||!!entity.elite,bossHpMult=isRaid?(raidTier==='legend'?GROUP_RAIDS.legend.hp:GROUP_RAIDS.hero.hp):isDungeonBoss?1.58:isWorldBoss?1.72:entity.elite?1.38:1,questHpMult=questFight?1.75:1,bossAtkMult=isRaid?(raidTier==='legend'?GROUP_RAIDS.legend.atk:GROUP_RAIDS.hero.atk):isDungeonBoss?1.20:isWorldBoss?1.28:entity.elite?1.12:1,questAtkMult=questFight?1.10:1;
- let maxHp=Math.max(24,Math.floor(m.hp*scale*bossHpMult*questHpMult));if(questFight){const questFloor=attackPower()*(entity.elite?5.5:3.8);maxHp=Math.max(maxHp,Math.floor(questFloor))}const atk=Math.max(4,Math.floor(m.atk*(.62+lvl*.045)*bossAtkMult*questAtkMult*environment.enemyDamage)),maxEnemyMana=isRaid?(raidTier==='legend'?160:130):Math.min(140,isWorldBoss||isDungeonBoss?120:entity.elite?Math.max(78,72+lvl*3):questFight?Math.max(52,48+lvl*2):0),enemyManaRegen=maxEnemyMana?(isRaid?(raidTier==='legend'?14:12):entity.elite?11:8):0;
+ let maxHp=Math.max(24,Math.floor(m.hp*scale*bossHpMult*questHpMult*enemyHpLevelGapMultiplier(lvl)));if(questFight){const questFloor=attackPower()*(entity.elite?5.5:3.8);maxHp=Math.max(maxHp,Math.floor(questFloor))}const atk=Math.max(4,Math.floor(m.atk*(.62+lvl*.045)*bossAtkMult*questAtkMult*environment.enemyDamage*enemyAtkLevelGapMultiplier(lvl))),maxEnemyMana=isRaid?(raidTier==='legend'?160:130):Math.min(140,isWorldBoss||isDungeonBoss?120:entity.elite?Math.max(78,72+lvl*3):questFight?Math.max(52,48+lvl*2):0),enemyManaRegen=maxEnemyMana?(isRaid?(raidTier==='legend'?14:12):entity.elite?11:8):0;
  p.stamina=Math.max(0,p.stamina-3);
  combat={entity,monster:m,level:lvl,maxHp,hp:maxHp,atk,baseAtk:atk,environment,log:[`⚡ Rozpoczęcie walki: -3 staminy • pozostało ${p.stamina}/${p.maxStamina}.`,`${m.name} staje do walki.`,`${BIOMES[environment.biomeId].icon} ${environment.effect.title}: ${environment.effect.summary}.`],guard:0,debuff:0,debuffTurns:0,poison:0,poisonTurns:0,bleed:0,bleedTurns:0,burn:0,burnTurns:0,freezeTurns:0,mark:0,markTurns:0,dungeon:opts.dungeon||null,worldBoss:isWorldBoss,isBoss,questFight,bossPhase:1,enemyTurns:0,intent:null,maxEnemyMana,enemyMana:maxEnemyMana,enemyManaRegen,enemyRegenCooldown:0,enemySpecialCooldown:0,stagger:0,staggerMax:isBoss?100:0,stunned:0,vulnerableTurns:0,barrier:0,barrierTurns:0,playerWeaken:0,playerWeakenTurns:0,playerCritBuff:0,playerCritBuffTurns:0,playerDodgeBuff:0,playerDodgeBuffTurns:0,playerPowerBuff:0,playerPowerBuffTurns:0,playerBlockBuff:0,playerBlockBuffTurns:0,cooldowns:{},lastPlayerHit:null,lastEnemyHit:null,enemyHpGhostFrom:null,victoryAnimating:false,enemyVanishing:false,turnDealt:null,turnTaken:null,turnDealtNote:'',turnTakenNote:'',phase:'player',turnToken:0,distance:1,menu:'main',approachBuffTurns:0,storyConsequence:opts.storyConsequence||null,worldEvent:opts.worldEvent||null,raidTier,partyMembers:opts.raid?.party||[],raidPlayerDamage:0,raidPartyDamage:0,raidPlayerActions:0};
  if(m.variantId!=='normal')combat.log.push(`${m.variantIcon} Odmiana ${m.variantLabel}: HP ×${monsterVariantDef(m.variantId).hp.toFixed(2)}, ATK ×${monsterVariantDef(m.variantId).atk.toFixed(2)}, łup ×${m.variantLoot.toFixed(2)}.`);
+ const levelGap=lvl-p.level;if(levelGap>=3)combat.log.push(`⚠️ Przeciwnik ma +${levelGap} poziomów: więcej HP i obrażeń, a Twoje ciosy są słabsze.`);
  if(questFight)combat.log.push(`📜 Przeciwnik questowy: wzmocnione HP${maxEnemyMana?' • własna mana • specjalne ataki':''}.`);
  if(entity.elite&&maxEnemyMana)combat.log.push('⭐ Elita może regenerować HP, odnawia manę i używa silniejszych zdolności.');
  if(isDungeonBoss)combat.log.push('👑 Boss lochu jest wyraźnie silniejszy od zwykłych przeciwników.');
@@ -2660,7 +2717,7 @@ function combatExchangeHTML(){if(!combat)return '';const dealt=combat.turnDealt,
 function hitDamage(mult=1,critBonus=0,type='fizyczne'){
  const p=state.player,phasePenalty=combat.monster.family==='Zjawy'&&type==='fizyczne'?12:0,miss=Math.random()*100>=Math.max(20,hitChance()-phasePenalty);
  if(miss){combat.fx='idle';return {dmg:0,crit:false,weak:false,resist:false,type,miss:true}}
- const crit=Math.random()*100<critChance()+(combat.mark||0)+(combat.playerCritBuff||0)+critBonus,weak=weaknessMod(type),weaken=1-(combat.playerWeaken||0),vulnerable=combat.vulnerableTurns?1.35:1,barrier=combat.barrierTurns?.55:1,powerBuff=1+(combat.playerPowerBuff||0)/100,berserkMult=p.class==='berserker'?1+(1-p.hp/p.maxHp)*.25:1,storyMult=combat.monster.family==='Natura'&&storyChoiceFor('q2')==='finish'?1.05:1,environmentMult=(combat.environment?.damage||1)*(type==='trucizna'?(combat.environment?.poison||1):1),rangeMult=combatRangeDamageMultiplier(),gearMult=combatGearDamageMultiplier(),base=rollPlayerBaseDamage()*mult,dmg=Math.max(1,Math.floor(base*(crit?1.65:1)*weak.mult*weaken*vulnerable*barrier*powerBuff*berserkMult*storyMult*environmentMult*rangeMult*gearMult));
+ const crit=Math.random()*100<critChance()+(combat.mark||0)+(combat.playerCritBuff||0)+critBonus,weak=weaknessMod(type),weaken=1-(combat.playerWeaken||0),vulnerable=combat.vulnerableTurns?1.35:1,barrier=combat.barrierTurns?.55:1,powerBuff=1+(combat.playerPowerBuff||0)/100,berserkMult=p.class==='berserker'?1+(1-p.hp/p.maxHp)*.25:1,storyMult=combat.monster.family==='Natura'&&storyChoiceFor('q2')==='finish'?1.05:1,environmentMult=(combat.environment?.damage||1)*(type==='trucizna'?(combat.environment?.poison||1):1),rangeMult=combatRangeDamageMultiplier(),gearMult=combatGearDamageMultiplier(),levelMult=playerVsEnemyLevelMultiplier(),base=rollPlayerBaseDamage()*mult,dmg=Math.max(1,Math.floor(base*(crit?1.65:1)*weak.mult*weaken*vulnerable*barrier*powerBuff*berserkMult*storyMult*environmentMult*rangeMult*gearMult*levelMult));
  if(crit){combat.fx='crit';playSfx('crit');haptic(22)}else{combat.fx=weak.kind==='weak'?'weak':'hit';playSfx('hit')}if(weak.kind==='weak')haptic(12);return {dmg,crit,weak:weak.kind==='weak',resist:weak.kind==='resist',type,miss:false};
 }
 function hitSuffix(h){return `${h.miss?' • PUDŁO':''}${h.crit?' • KRYTYK':''}${h.weak?' • 🎯 SŁABOŚĆ':''}${h.resist?' • 🧱 ODPORNOŚĆ':''}`}
@@ -2773,7 +2830,7 @@ function combatPotion(id='potion'){
 }
 
 function fleeCombat(){if(!combat||combat.phase!=='player')return;if(combat?.dungeon||combat?.raidTier)return toast(combat?.raidTier?'Nie możesz opuścić rozpoczętej wyprawy drużynowej.':'Nie możesz uciec z tej komnaty lochu.');if(Math.random()<.7){combat=null;save();renderShell();toast('Udało Ci się uciec.')}else{logCombat('Nie udało się uciec!');queueEnemyTurn()}}
-function battleLootRow(drop,index){const d=itemDef(drop.id);return `<label class="battle-loot-row rarity-card-${d.rarity}"><input type="checkbox" data-battle-loot="${index}" checked><span class="battle-loot-icon">${itemIconVisual(d.id,'shop-item-svg')}</span><span class="battle-loot-copy"><b class="rarity-${d.rarity}">${d.name}</b><small>${drop.qty>1?`${drop.qty} szt. • `:''}${d.rarity} • ${d.type==='material'?'materiał':d.type==='consumable'?'zużywalny':d.slot?'ekwipunek':'przedmiot'}</small></span><span class="battle-loot-take">ZABIERZ</span></label>`}
+function battleLootRow(drop,index){const d=itemDef(drop.id);return `<label class="battle-loot-row rarity-card-${d.rarity} ${drop.tutorial?'tutorial-class-loot':''}"><input type="checkbox" data-battle-loot="${index}" checked><span class="battle-loot-icon">${itemIconVisual(d.id,'shop-item-svg')}</span><span class="battle-loot-copy"><b class="rarity-${d.rarity}">${d.name}</b><small>${drop.tutorial?'🎓 GWARANTOWANY ŁUP KLASOWY • ':''}${drop.qty>1?`${drop.qty} szt. • `:''}${d.rarity} • ${d.type==='material'?'materiał':d.type==='consumable'?'zużywalny':d.slot?'ekwipunek':'przedmiot'}</small></span><span class="battle-loot-take">ZABIERZ</span></label>`}
 function collectSelectedBattleLoot(result){const selected=[...document.querySelectorAll('[data-battle-loot]:checked')].map(x=>Number(x.dataset.battleLoot)).filter(Number.isInteger);let taken=[];for(const i of selected){const drop=result.drops[i];if(!drop)continue;const added=addItem(drop.id,drop.qty||1);if(added)taken.push({id:drop.id,qty:added})}return taken}
 function finishBattleResult(result,takeLoot=true){if(result!==battleResult)return;if(takeLoot){const drops=[...document.querySelectorAll('[data-battle-loot]:checked')].map(x=>result.drops[Number(x.dataset.battleLoot)]).filter(Boolean);if(!requireItemRoom(drops))return}const taken=takeLoot?collectSelectedBattleLoot(result):[];if(result.dungeonInfo&&dungeonRun&&result.pauseStarted){dungeonRun.deadline+=Math.max(0,Date.now()-result.pauseStarted)}battleResult=null;closeModal();save();if(taken.length){playSfx('loot');toast(`Zabrano: ${lootToastText(taken)}`)}if(result.dungeonInfo){advanceDungeonAfterCombat(result.dungeonInfo);return}renderShell();queueReadyStoryScene(null,260)}
 function showBattleVictory(result){renderShell();const lootHtml=result.drops.length?`<div class="battle-loot-list">${result.drops.map(battleLootRow).join('')}</div><div class="battle-loot-tools"><button class="secondary" data-loot-all>Zaznacz wszystko</button><button class="ghost" data-loot-none>Odznacz</button></div>`:`<div class="battle-loot-empty">Ten przeciwnik niczego nie upuścił.</div>`;openModal(`<div class="battle-result victory"><div class="battle-result-mark">🏆</div><span class="eyebrow">WYNIK WALKI</span><h2>WYGRANA</h2><div class="battle-result-rewards"><span><b>+${result.xp}</b> XP</span><span><b>+${result.gold}</b> 🪙</span>${result.worldBossRep?`<span><b>+${result.worldBossRep}</b> reputacji</span>`:''}${result.raidRep?`<span><b>+${result.raidRep}</b> reputacji</span>`:''}${result.raidTier?`<span><b>${result.raidContribution}%</b> wkładu</span>`:''}</div><div class="battle-loot-head"><div><h3>${result.raidTier?'Łup osobisty':'Łupy'}</h3><p>${result.raidTier?`Nagrody są liczone osobno dla każdego członka drużyny • drużyna ${result.raidPartySize}/4.`:'Zaznacz tylko rzeczy, które chcesz zabrać. Reszta zostanie na miejscu.'}</p></div><span>🎒 ${inventoryUsedSlots()}/${inventoryCapacity()}</span></div>${lootHtml}<div class="battle-result-actions"><button class="primary" data-take-battle-loot>Zabierz wybrane</button><button class="secondary" data-leave-battle-loot>Zostaw wszystko</button></div></div>`,true);document.querySelector('[data-loot-all]')?.addEventListener('click',()=>document.querySelectorAll('[data-battle-loot]').forEach(x=>x.checked=true));document.querySelector('[data-loot-none]')?.addEventListener('click',()=>document.querySelectorAll('[data-battle-loot]').forEach(x=>x.checked=false));document.querySelector('[data-take-battle-loot]')?.addEventListener('click',()=>finishBattleResult(result,true));document.querySelector('[data-leave-battle-loot]')?.addEventListener('click',()=>finishBattleResult(result,false))}

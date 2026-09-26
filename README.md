@@ -193,9 +193,21 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Sala Wypraw zwiększa nagrody z Herosów i Legend.
 - Rozwój gildii nie zależy od fizycznej lokalizacji członków; backend online może później synchronizować ten sam stan gildii.
 
+## Build 3.9.7.2 — poprawka wielu postaci
+- Każdy slot postaci jest teraz niezależnym zapisem i źródłem prawdy.
+- Każdy normalny zapis gry trafia jednocześnie do aktywnego slotu i kopii bieżącej postaci.
+- Tworzenie nowego slotu nie może nadpisać poprzedniej postaci.
+- Przy starcie gra naprawia układ slotów z wersji 3.9.7.1 i próbuje zachować odrębny zapis, jeśli znajdzie go w starej kopii aktywnej postaci.
 
-## Build 3.9.7.1 — 5 postaci
-- Do 5 niezależnych slotów postaci.
-- Przełączanie postaci z Menu > Postacie.
-- Każdy slot zachowuje osobny poziom, ekwipunek, questy, mapę, bestiariusz i zasoby.
-- Usunięcie bieżącej postaci nie kasuje pozostałych slotów.
+
+## Build 3.9.7.3 — gwarantowany pierwszy łup klasowy
+- Pierwszy potwór zabity w samouczku zawsze dodaje do ekranu łupu jeden przedmiot dla wybranej klasy.
+- Rycerz: Tarcza młodego strażnika. Mag: Kostur pierwszej iskry. Łowca: Łuk młodego łowcy. Berserker: Toporek pierwszej furii. Tropiciel: Kaptur młodego tropiciela.
+- Wszystkie przedmioty wymagają poziomu 1 i można je od razu założyć.
+- Stary, błędny Kaptur zwiadowcy dla każdej klasy został usunięty z samouczka.
+
+
+## Build 3.9.7.4 — balans poziomów i próby klasowe
+- Przewaga poziomów potwora wzmacnia jego HP/ATK i zmniejsza obrażenia gracza.
+- Umiejętności nie są już blokowane poziomem; wymagają prób klasowych + punktów + poprzednich skilli.
+- Tropiciel: Leśna pułapka wymaga zabicia 10 Szarych Wilków.

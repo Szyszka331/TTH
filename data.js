@@ -208,6 +208,13 @@ export const ITEMS = {
  primitiveBow:{id:'primitiveBow',name:'Prymitywny łuk',icon:'🏹',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'common',reqLevel:1,value:5,damage:[3,5],power:1,classes:['hunter','ranger'],ammo:'primitiveArrow'},
  primitiveArrow:{id:'primitiveArrow',name:'Prymitywna strzała',icon:'➶',type:'ammo',rarity:'common',value:1,maxStack:250},
 
+ // GWARANTOWANY ŁUP KLASOWY Z PIERWSZEJ WALKI — od razu używalny na 1 poziomie
+ tutorialKnightShield:{id:'tutorialKnightShield',name:'Tarcza młodego strażnika',icon:'🛡️',visualId:'woodenShield',type:'gear',slot:'offhand',rarity:'uncommon',reqLevel:1,value:18,armor:3,classes:['knight']},
+ tutorialMageStaff:{id:'tutorialMageStaff',name:'Kostur pierwszej iskry',icon:'🪄',visualId:'noviceStaff',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'uncommon',reqLevel:1,value:18,damage:[5,8],power:2,classes:['mage'],magicAlwaysHits:true},
+ tutorialHunterBow:{id:'tutorialHunterBow',name:'Łuk młodego łowcy',icon:'🏹',visualId:'hunterBow',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'uncommon',reqLevel:1,value:18,damage:[4,7],power:2,crit:1,classes:['hunter'],ammo:'primitiveArrow'},
+ tutorialBerserkerAxe:{id:'tutorialBerserkerAxe',name:'Toporek pierwszej furii',icon:'🪓',visualId:'ironAxe',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'uncommon',reqLevel:1,value:18,damage:[3,8],power:2,classes:['berserker']},
+ tutorialRangerHood:{id:'tutorialRangerHood',name:'Kaptur młodego tropiciela',icon:'🥷',visualId:'scoutHood',type:'gear',slot:'helmet',rarity:'uncommon',reqLevel:1,value:18,armor:1,crit:2,classes:['ranger']},
+
  // BROŃ — RYCERZ / BERSERKER
  rustySword:{id:'rustySword',name:'Zardzewiały miecz',icon:'🗡️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'common',reqLevel:3,value:18,damage:[3,7],power:2,classes:['knight','berserker']},
  shortSword:{id:'shortSword',name:'Krótki miecz',icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'uncommon',reqLevel:7,value:44,damage:[6,11],power:4,classes:['knight','berserker']},
