@@ -238,3 +238,9 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Każda klasa ma własne wyzwania zamiast ogólnego „zabij X potworów”.
 - Próby reagują na styl gry: blok, unik, dystans, krytyki, statusy, chowańce, niskie HP, przełamanie bossa i używanie wcześniejszych umiejętności.
 - Przykład Tropiciela: Leśna pułapka wymaga wytropienia i pokonania 10 Szarych Wilków.
+
+
+## Build 3.9.7.9 — natychmiastowe odświeżanie HUD
+- HP i mana aktualizują się od razu po użyciu mikstury poza walką.
+- Odpoczynek przy kominku natychmiast aktualizuje HP, manę, staminę i złoto w górnym HUD.
+- Posiłek u karczmarza natychmiast aktualizuje staminę i złoto.
