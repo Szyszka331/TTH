@@ -1656,3 +1656,110 @@ body.modal-open .map-biome-button{pointer-events:none!important}
   .battle-screen .pokemon-command{min-height:52px!important}
   .battle-screen .combat-help{display:none!important}
 }
+
+
+/* 3.9.5.4 — explicit backpack arrange mode, including empty slots */
+.bag-arrange-toggle{min-height:30px;padding:5px 9px;border:1px solid #715936;border-radius:6px;background:linear-gradient(180deg,#1a140e,#0b0805);color:#d9c08d;font:700 10px Georgia,serif;white-space:nowrap;cursor:pointer}
+.bag-arrange-toggle.active{border-color:#e0bd69;background:linear-gradient(180deg,#4b3719,#211509);color:#ffe7a9;box-shadow:0 0 0 1px #8b6a35 inset,0 0 10px #cfa84f35}
+.bag-move-selected{border-color:#f3d77e!important;box-shadow:0 0 0 2px #f3d77e,inset 0 0 14px #d8b75d44,0 0 18px #d8b75d55!important;transform:scale(.96)}
+.drawer-bag-cell.empty.drawer-drop-target,.backpack-slot.empty.bag-drop-target{pointer-events:auto!important;cursor:pointer!important}
+.drawer-bag-cell.empty.drawer-drop-target:hover,.backpack-slot.empty.bag-drop-target:hover,.backpack-slot.empty.arrange-target{border-color:#8b7445!important;background:radial-gradient(circle,#2d2918,#0c0906 72%)!important;opacity:.9!important}
+@media(max-width:620px){.bag-arrange-toggle{min-height:28px;padding:4px 7px;font-size:9px}.backpack-tools{align-items:flex-start}.drawer-bag-tools{gap:5px;flex-wrap:wrap}}
+
+
+/* 3.9.5.5 — mobile battle HUD: player HP/mana top-left, enemy HP top-right, log open by default */
+@media(max-width:720px){
+  .battle-screen .battle-arena{overflow:hidden!important}
+  .battle-screen .hero-side .battle-bars{
+    position:absolute!important;
+    left:8px!important;
+    top:8px!important;
+    bottom:auto!important;
+    width:168px!important;
+    z-index:12!important;
+    gap:4px!important;
+  }
+  .battle-screen .hero-side .combat-name{
+    left:10px!important;
+    top:60px!important;
+    bottom:auto!important;
+    width:155px!important;
+    padding:2px 4px!important;
+    background:linear-gradient(180deg,#080605dd,#00000088)!important;
+    z-index:12!important;
+  }
+  .battle-screen .enemy-side .battle-bars{
+    position:absolute!important;
+    left:auto!important;
+    right:8px!important;
+    top:8px!important;
+    width:170px!important;
+    z-index:12!important;
+  }
+  .battle-screen .enemy-side .combat-name{
+    left:auto!important;
+    right:8px!important;
+    top:60px!important;
+    width:170px!important;
+    text-align:right!important;
+    padding:2px 4px!important;
+    background:linear-gradient(180deg,#080605dd,#00000088)!important;
+    z-index:12!important;
+  }
+  .battle-screen .enemy-side .status-row{display:none!important}
+  .battle-screen .bigbar{height:17px!important}
+  .battle-screen .bigbar .barlabel{font-size:8px!important}
+  .battle-screen .hero-side .battle-sprite{left:3%!important;bottom:2%!important;width:136px!important;height:130px!important}
+  .battle-screen .enemy-side .battle-sprite{right:3%!important;bottom:30%!important;width:145px!important;height:118px!important}
+  .battle-screen .battle-center{top:46%!important}
+  .battle-screen .combat-log{
+    max-height:none!important;
+    min-height:84px!important;
+  }
+  .battle-screen .combat-log[open] summary::after{content:' — aktywny';opacity:.7}
+}
+
+/* 3.9.5.6 — boss break meter moved to upper-right combat HUD */
+.battle-screen .break-wrap{
+  position:absolute!important;
+  top:92px!important;
+  right:10px!important;
+  left:auto!important;
+  width:220px!important;
+  z-index:13!important;
+  padding:7px 9px!important;
+  border:1px solid #6a5130!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,#120e0bcc,#070504dd)!important;
+  box-shadow:0 6px 14px #0007,inset 0 0 0 1px #24180e!important;
+  text-align:left!important;
+}
+.battle-screen .break-wrap small{
+  display:block!important;
+  margin-bottom:3px!important;
+  color:#d7c29b!important;
+  font-size:8px!important;
+  letter-spacing:.8px!important;
+}
+.battle-screen .break-wrap b{
+  display:block!important;
+  margin-top:3px!important;
+  text-align:right!important;
+  font-size:8px!important;
+  color:#f0d99d!important;
+}
+.battle-screen .break-bar{
+  height:9px!important;
+  margin:0!important;
+}
+@media(max-width:720px){
+  .battle-screen .break-wrap{
+    top:82px!important;
+    right:8px!important;
+    width:168px!important;
+    padding:5px 7px!important;
+  }
+  .battle-screen .break-wrap small{font-size:7px!important}
+  .battle-screen .break-wrap b{font-size:7px!important}
+  .battle-screen .break-bar{height:8px!important}
+}
