@@ -1149,7 +1149,7 @@ body.dungeon-open .dungeon-choice-grid .dungeon-action{
 .drawer-hint{font:10px/1.5 Georgia,serif;color:#a6ab83;margin:8px 2px}.drawer-tabs{display:flex;gap:4px;padding:8px 9px;border-top:2px ridge #7f7746;background:#08190f;flex-shrink:0}.drawer-tabs button{min-height:36px;flex:1;cursor:pointer;font:bold 11px Georgia,serif;color:#bbb087;border:2px ridge #6c7549;border-radius:4px;background:linear-gradient(#293c24,#112414)}.drawer-tabs button.active{border-color:#d0ae69;color:#f6dfab;background:linear-gradient(#655031,#342a19)}
 .drawer-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.drawer-stat-grid>div{padding:8px;border:1px solid #52683d;background:#05150c88;display:flex;flex-direction:column;font-size:11px;color:#b5b78f}.drawer-stat-grid b{font-size:20px;color:#f0d7a3;margin-top:3px}.drawer-wide-action,.drawer-quest,.drawer-detail-back{width:100%;padding:10px;border:1px solid #7f784b;border-radius:3px;color:#e5d4a1;background:linear-gradient(#233b24,#0f2114);font:12px Georgia,serif;cursor:pointer}.drawer-quest{display:block;text-align:left;margin:6px 0}.drawer-quest b,.drawer-quest small{display:block}.drawer-quest small{font-size:11px;line-height:1.4;margin-top:5px;color:#b5b38c}.drawer-item-detail .item-card{margin-top:10px;background:#0a1d12;border-color:#798157;padding:10px;max-width:100%}.drawer-item-detail .item-top{flex-wrap:wrap}.drawer-item-detail .item-top>div{min-width:0}.drawer-item-detail .item-icon{max-width:60px}.drawer-item-detail .item-actions,.drawer-item-detail .tabs{display:flex;flex-wrap:wrap;gap:5px}.drawer-item-detail button{min-height:36px}.drawer-item-detail .item-card b{overflow-wrap:anywhere}
 body.building-open .rpg-gear-drawer,body.dungeon-open .rpg-gear-drawer{display:none}
-@media(max-width:620px){.rpg-gear-drawer{width:min(350px,calc(100vw - 44px));top:max(6px,env(safe-area-inset-top));bottom:max(70px,calc(env(safe-area-inset-bottom) + 62px))}.drawer-scroll{padding:6px 8px 10px}.drawer-title b{font-size:17px}.drawer-loadout{gap:7px}.drawer-equip small{font-size:6px}.drawer-mini-stats{padding:4px}.drawer-tabs{padding:6px}.drawer-bag-cell{min-height:0}}
+@media(max-width:620px){.rpg-gear-drawer{width:min(350px,calc(100vw - 44px));top:max(6px,env(safe-area-inset-top));bottom:max(70px,calc(env(safe-area-inset-bottom) + 62px))}.drawer-pull-tab{top:42%}.drawer-scroll{padding:6px 8px 10px}.drawer-title b{font-size:17px}.drawer-loadout{gap:7px}.drawer-equip small{font-size:6px}.drawer-mini-stats{padding:4px}.drawer-tabs{padding:6px}.drawer-bag-cell{min-height:0}}
 /* Suppress every legacy frame on monsters, including elite and variant halos. */
 .real-map-rpg .mmo-marker.monster-marker.world-creature{width:var(--creature-w)!important;height:var(--creature-h)!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;filter:none!important;overflow:visible!important;display:flex;align-items:flex-end;justify-content:center;position:relative}
 .real-map-rpg .world-creature:before,.real-map-rpg .world-creature:after{display:none!important}
@@ -1167,3 +1167,175 @@ body.building-open .rpg-gear-drawer,body.dungeon-open .rpg-gear-drawer{display:n
 [data-facing="down"] .directional-hero{background-position-x:0%}[data-facing="up"] .directional-hero{background-position-x:33.333333%}[data-facing="left"] .directional-hero{background-position-x:66.666667%}[data-facing="right"] .directional-hero{background-position-x:100%}
 .rpg-player-marker .player-walk-shadow{bottom:3px;width:26px;height:7px}.rpg-player-marker .player-step-dust{bottom:2px}
 @media(prefers-reduced-motion:reduce){.rpg-gear-drawer{transition:none}}
+
+/* 3.9.1 — compact combat loadout: 4 active skills + grouped potions */
+.combat-loadout-card{margin:14px 0 18px;padding:14px;border:1px solid #5a472d;border-radius:14px;background:linear-gradient(180deg,#17120ddd,#0b0907ee);box-shadow:inset 0 0 0 1px #2a1e12}
+.combat-loadout-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.combat-loadout-head h3{margin:2px 0 4px}.combat-loadout-head p{margin:0;color:#a99a82;font-size:12px;line-height:1.45;max-width:680px}
+.combat-loadout-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.combat-loadout-slot{min-height:82px;border:1px solid #4b3b28;border-radius:11px;background:#0d0b09;color:#e8d8b6;padding:8px;display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;text-align:left;gap:2px 7px;align-items:center}.combat-loadout-slot>span{grid-row:1/3;display:grid;place-items:center;font-size:24px}.combat-loadout-slot img,.combat-loadout-slot svg,.loadout-skill-svg{width:30px;height:30px}.combat-loadout-slot b{font-size:12px}.combat-loadout-slot small{font-size:9px;color:#a99a82}.combat-loadout-slot.filled{cursor:pointer;border-color:#8b6a35;background:linear-gradient(180deg,#1b1510,#0d0906)}.combat-loadout-slot.filled:hover{border-color:#d2ad61}.combat-loadout-slot.empty{opacity:.55;border-style:dashed}.combat-loadout-slot.empty>span{font-size:28px;color:#8f7a55}
+.skill-node-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;min-width:112px}.skill-node.active-loadout{box-shadow:inset 3px 0 #c69a46}.skill-node-actions .mini{white-space:nowrap}
+.compact-hotbar{grid-template-columns:repeat(3,minmax(0,1fr))}
+.battle-utility-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:7px}.battle-utility{min-height:48px;border:1px solid #4b3a27;border-radius:12px;background:linear-gradient(180deg,#15110d,#0b0806);color:#eadbbd;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:7px;padding:7px 10px;text-align:left}.battle-utility>span{font-size:21px}.battle-utility b{font-size:12px}.battle-utility small{font-size:9px;color:#a99a82}.battle-utility.active{border-color:#c79a4c;box-shadow:inset 0 0 14px #9c762625}.battle-utility:disabled{opacity:.42;cursor:not-allowed}
+.combat-potion-drawer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:7px;padding:8px;border:1px solid #4a3926;border-radius:12px;background:#080705cc}.combat-potion-option{min-height:58px;border:1px solid #4f3d29;border-radius:10px;background:#15100c;color:#e7d7b5;padding:7px;display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;text-align:left;gap:2px 7px}.combat-potion-option>span{grid-row:1/3;display:grid;place-items:center}.combat-potion-option b{font-size:11px}.combat-potion-option small{font-size:9px;color:#ad9d84}.combat-potion-option:disabled{opacity:.38;cursor:not-allowed}
+@media(max-width:720px){.combat-loadout-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.skill-node-actions{min-width:96px}.compact-hotbar{grid-template-columns:repeat(2,minmax(0,1fr))!important}.battle-utility-row{grid-template-columns:1fr 1fr}.combat-potion-drawer{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:430px){.combat-loadout-card{padding:10px}.combat-loadout-slot{min-height:70px}.combat-potion-drawer{grid-template-columns:1fr}.combat-potion-option{min-height:50px}.battle-utility{padding:6px 8px}.skill-node-actions{align-items:stretch;min-width:88px}.skill-node-actions .mini{font-size:10px;padding:7px 8px}}
+
+/* 3.9.1 inventory organisation — manual slots, sorting and shop-only selling */
+.backpack-tools{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}.bag-sort-control{display:flex;align-items:center;gap:6px;color:#bda77f;font-size:10px}.bag-sort-control span{font-weight:800;letter-spacing:.6px;text-transform:uppercase}.bag-sort-control select{min-height:30px;padding:4px 26px 4px 8px;border:1px solid #725837;border-radius:6px;background:#0d0906;color:#ead5a4;font:700 11px Georgia,serif}.bag-drop-target{transition:.12s transform,.12s border-color,.12s box-shadow,.12s background}.bag-drop-target.bag-drop-valid{border-color:#8b7445!important}.bag-drop-target.bag-drop-hover{transform:scale(1.045);border-color:#e2c16b!important;background:radial-gradient(circle,#4b3a1e,#120d08 72%)!important;box-shadow:inset 0 0 12px #d7b55b33,0 0 14px #d9bb6755!important}.dnd-bag-item{cursor:grab}.dnd-bag-item:active,.drawer-dnd-item:active{cursor:grabbing}.drawer-dnd-item{touch-action:none;cursor:grab}.drawer-dnd-item.dragging,.dnd-bag-item.dragging{opacity:.35}.drawer-bag-tools{display:flex;justify-content:flex-end;margin:0 0 6px}.drawer-bag-tools .bag-sort-control{width:100%;justify-content:space-between}.drawer-bag-tools select{min-width:118px}.drawer-bag-cell.bag-drop-valid{border-color:#77845d}.drawer-bag-cell.bag-drop-hover{transform:scale(1.06);z-index:3;border-color:#ebd181!important;background:#31462b!important;box-shadow:0 0 10px #e4c56d66,inset 0 0 8px #e4c56d33!important}.inventory-sell-note{margin-top:9px;padding:7px 9px;border:1px solid #554127;border-radius:7px;background:#0d0906;color:#bba77d;font-size:10px;line-height:1.4}.shop-sell-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.shop-sell-card{position:relative;padding:10px;border:1px solid #4b3925;border-radius:14px;background:linear-gradient(155deg,#17110c,#0a0705);box-shadow:inset 0 0 20px #0005,0 5px 14px #0005}.shop-sell-card:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:#71614b;border-radius:14px 0 0 14px}.shop-sell-product{display:grid;grid-template-columns:54px minmax(0,1fr);gap:9px;align-items:center}.shop-sell-product b,.shop-sell-product small{display:block}.shop-sell-product small{margin-top:4px;color:#9e917d;font-size:10px}.shop-sell-card footer{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid #342719}.shop-sell-card footer>div:first-child small,.shop-sell-card footer>div:first-child b{display:block}.shop-sell-card footer>div:first-child small{color:#8f8069;font-size:9px}.shop-sell-card footer>div:first-child b{color:#e7ca83}.shop-sell-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.shop-sell-actions button{min-height:34px;padding:7px 9px;font-size:10px}
+@media(max-width:720px){.backpack-topline{align-items:flex-start}.backpack-tools{gap:5px}.bag-sort-control span{display:none}.bag-sort-control select{min-height:28px;font-size:10px}.shop-sell-grid{grid-template-columns:1fr}.shop-sell-card{padding:9px}.shop-sell-product{grid-template-columns:48px minmax(0,1fr)}.shop-sell-actions{max-width:58%}}
+
+/* 3.9.1a — remove rectangular combat backplates behind hero and monster */
+.battle-arena{
+  align-items:end;
+}
+.combatant{
+  border:none !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:8px 8px 0 !important;
+  overflow:visible !important;
+}
+.combat-name{
+  padding:0 0 8px !important;
+  border-bottom:none !important;
+  background:transparent !important;
+}
+.battle-bars{
+  margin:8px 0 4px !important;
+}
+.battle-sprite{
+  min-height:300px;
+  background:transparent !important;
+}
+.battle-sprite > div{
+  background:transparent !important;
+}
+.battle-sprite img,.battle-sprite svg{
+  filter:drop-shadow(0 18px 16px #000c) !important;
+}
+@media(max-width:900px){
+  .combatant{padding:6px 4px 0 !important}
+}
+@media(max-width:620px){
+  .combatant{padding:4px 2px 0 !important}
+  .battle-sprite{min-height:190px}
+}
+
+
+/* 3.9.2 — pokemon-style diagonal battle staging with back-view hero */
+.battle-arena{grid-template-columns:minmax(0,1fr) 76px minmax(0,1fr)!important;grid-template-rows:1fr 1fr!important;align-items:stretch!important;min-height:560px!important;padding:18px 18px 12px!important}
+.battle-center{grid-column:2!important;grid-row:1 / span 2!important;align-self:center!important;justify-self:center!important;z-index:5!important}
+.hero-side{grid-column:1 / span 2!important;grid-row:2!important;justify-self:start!important;align-self:end!important;width:min(72vw,560px)!important;min-height:250px!important;padding:0!important;position:relative!important}
+.enemy-side{grid-column:2 / span 2!important;grid-row:1!important;justify-self:end!important;align-self:start!important;width:min(72vw,560px)!important;min-height:240px!important;padding:0!important;position:relative!important}
+.hero-side .battle-sprite{justify-content:flex-start!important;align-items:flex-end!important;height:230px!important;padding:0 0 0 24px!important}
+.enemy-side .battle-sprite{justify-content:flex-end!important;align-items:flex-start!important;height:210px!important;padding:16px 34px 0 0!important}
+.hero-side .battle-sprite .shadow{left:16px!important;right:auto!important;bottom:2px!important;width:120px!important;height:22px!important}
+.enemy-side .battle-sprite .shadow{left:auto!important;right:44px!important;bottom:8px!important;width:128px!important;height:22px!important}
+.pokemon-back{width:170px;height:170px;display:grid;place-items:end start;transform:scale(1.95);transform-origin:20% 100%}
+.hero-side .pokemon-back .directional-hero{position:relative!important;bottom:auto!important;width:64px!important;height:64px!important;image-rendering:pixelated!important;filter:drop-shadow(0 7px 6px #000c)!important}
+.enemy-side .battle-sprite img,.enemy-side .battle-sprite svg{max-height:180px!important;max-width:80%!important}
+.hero-side .combat-name,.hero-side .battle-bars{left:auto!important;right:0!important;width:min(255px,54%)!important}
+.hero-side .combat-name{top:auto!important;bottom:72px!important;text-align:left!important}
+.hero-side .battle-bars{top:auto!important;bottom:4px!important}
+.enemy-side .combat-name,.enemy-side .battle-bars{left:0!important;right:auto!important;width:min(255px,54%)!important;text-align:left!important}
+.enemy-side .combat-name{top:2px!important}
+.enemy-side .battle-bars{top:50px!important}
+.hero-side .player-status-chip{display:inline-flex!important;align-self:flex-end!important;margin:6px 0 0 auto!important;max-width:255px}
+.hero-side .battle-pet{left:6px!important;bottom:-2px!important}
+.enemy-side .enemy-meta,.enemy-side .boss-intent{margin-top:6px!important;margin-left:auto!important;max-width:255px!important}
+@media(max-width:900px){.battle-arena{grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr)!important;min-height:430px!important;padding:14px 10px 10px!important}.hero-side,.enemy-side{width:min(84vw,480px)!important}.hero-side .combat-name,.hero-side .battle-bars,.enemy-side .combat-name,.enemy-side .battle-bars{width:min(190px,58%)!important}.hero-side .combat-name{bottom:54px!important}.pokemon-back{transform:scale(1.6)!important;transform-origin:14% 100%!important;width:132px!important;height:132px!important}.hero-side .battle-sprite{height:180px!important;padding-left:10px!important}.enemy-side .battle-sprite{height:160px!important;padding-right:14px!important}.enemy-side .battle-sprite img,.enemy-side .battle-sprite svg{max-height:140px!important}.hero-side .battle-pet{left:0!important;bottom:-6px!important}}
+@media(max-width:620px){.battle-arena{min-height:360px!important}.hero-side,.enemy-side{width:100%!important}.battle-center .versus{font-size:18px!important}.hero-side .combat-name,.hero-side .battle-bars,.enemy-side .combat-name,.enemy-side .battle-bars{width:155px!important}.hero-side .combat-name{bottom:48px!important}.pokemon-back{transform:scale(1.35)!important;width:108px!important;height:108px!important}.hero-side .battle-sprite{height:145px!important;padding-left:6px!important}.enemy-side .battle-sprite{height:132px!important;padding:8px 6px 0 0!important}.enemy-side .battle-sprite img,.enemy-side .battle-sprite svg{max-height:116px!important;max-width:72%!important}.hero-side .battle-pet{display:none!important}.player-status-chip{font-size:8px!important;padding:4px 6px!important}}
+
+/* 3.9.2 — four-command battle menu + real distance system */
+.range-indicator{margin-top:6px;padding:5px 9px;border:1px solid #8d6a35;border-radius:999px;background:#0c0906d9;color:#f0d08b;font:800 9px Georgia,serif;letter-spacing:1.1px;white-space:nowrap}
+.battle-command-panel{border:1px solid #5d472e;border-radius:15px;background:linear-gradient(180deg,#15100ddd,#090705ee);padding:10px;box-shadow:inset 0 0 0 1px #271b10}
+.command-question{display:flex;justify-content:space-between;align-items:end;gap:12px;padding:2px 4px 9px}.command-question b{font:700 18px Georgia,serif;color:#f1dfbc}.command-question span{font-size:10px;color:#b8a98d;text-align:right}
+.pokemon-command-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pokemon-command{min-height:78px;border:1px solid #6a5031;border-radius:12px;background:linear-gradient(180deg,#1d1711,#0b0806);color:#efe0c2;padding:9px 10px;display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;text-align:left;align-items:center;column-gap:8px;box-shadow:inset 0 0 0 1px #25180e}.pokemon-command>span{grid-row:1/3;font-size:27px;display:grid;place-items:center}.pokemon-command b{font:700 16px Georgia,serif}.pokemon-command small{font-size:9px;color:#ad9c80}.pokemon-command:hover:not(:disabled){border-color:#d2aa60;transform:translateY(-1px)}.pokemon-command:disabled{opacity:.38;cursor:not-allowed;transform:none}.pokemon-command.fight{border-color:#8e5f39}.pokemon-command.position{border-color:#74623a}.pokemon-command.heal{border-color:#3e7151}.pokemon-command.flee{border-color:#70424a}
+.command-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px;padding:2px 3px}.command-panel-head>div{display:flex;flex-direction:column;gap:2px}.command-panel-head span{font:800 13px Georgia,serif;color:#efd391;letter-spacing:.7px}.command-panel-head small{font-size:9px;color:#ad9d84}.command-back{border:1px solid #59442d;border-radius:9px;background:#100c08;color:#d9c39b;padding:7px 10px;font-size:10px}.command-fight-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.command-heal-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}.position-command-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.range-track{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto 1fr auto;align-items:center;gap:7px;padding:8px 4px 0;color:#806f56;font:700 8px Georgia,serif;letter-spacing:.6px}.range-track i{height:2px;background:#493a29}.range-track span.active{color:#f2d58c;text-shadow:0 0 8px #d7aa5655}
+.battle-arena[data-distance="0"] .hero-sprite{transform:translate(34px,-8px)}.battle-arena[data-distance="0"] .enemy-sprite{transform:translate(-34px,9px)}.battle-arena[data-distance="1"] .hero-sprite,.battle-arena[data-distance="1"] .enemy-sprite{transform:none}.battle-arena[data-distance="2"] .hero-sprite{transform:translate(-18px,5px)}.battle-arena[data-distance="2"] .enemy-sprite{transform:translate(18px,-5px)}.battle-sprite{transition:transform .28s ease}
+@media(max-width:720px){.command-question{align-items:flex-start;flex-direction:column;gap:3px}.command-question span{text-align:left}.pokemon-command{min-height:70px;padding:7px 8px}.pokemon-command b{font-size:14px}.command-heal-grid{grid-template-columns:1fr 1fr!important}.battle-arena[data-distance="0"] .hero-sprite{transform:translate(20px,-5px)}.battle-arena[data-distance="0"] .enemy-sprite{transform:translate(-20px,5px)}.battle-arena[data-distance="2"] .hero-sprite{transform:translate(-10px,3px)}.battle-arena[data-distance="2"] .enemy-sprite{transform:translate(10px,-3px)}}
+@media(max-width:430px){.battle-command-panel{padding:8px}.pokemon-command-grid,.position-command-grid{gap:6px}.pokemon-command{min-height:64px;grid-template-columns:31px 1fr;padding:6px}.pokemon-command>span{font-size:23px}.pokemon-command b{font-size:13px}.pokemon-command small{font-size:8px}.command-heal-grid{grid-template-columns:1fr!important}.command-fight-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+
+/* 3.9.3 — retro shop layout inspired by classic MMORPG shop windows */
+.market-service.market-shop{padding:8px 8px calc(94px + env(safe-area-inset-bottom));background:radial-gradient(circle at top,#3a251233,#0d0907 64%)}
+.market-shop .panel-back,.retro-shop-shell .service-hero,.retro-shop-shell .merchant-quote,.retro-shop-shell .market-grid,.retro-shop-shell .shop-sell-grid,.retro-shop-shell .service-section-title{display:none!important}
+.retro-shop-shell{border:3px solid #3c2817;border-radius:14px;background:linear-gradient(180deg,#5b361b,#2d1b0f 16%,#2a190f 100%);box-shadow:0 18px 40px #0007,inset 0 0 0 2px #7d5832;color:#f1e7d3;overflow:hidden}
+.retro-shop-banner{position:relative;display:flex;align-items:center;justify-content:center;padding:10px 52px;background:linear-gradient(180deg,#4f311b,#2c1b0f);border-bottom:3px solid #1a1008}
+.retro-shop-title{min-width:220px;padding:10px 22px;border:2px solid #6f7782;border-radius:18px;background:linear-gradient(180deg,#384047,#1e2428);box-shadow:inset 0 0 0 1px #9ca6b3;color:#fff3d8;font:700 24px Georgia,serif;text-align:center}
+.retro-shop-close{position:absolute;right:10px;top:8px;width:38px;height:38px;border:2px solid #753534;border-radius:10px;background:linear-gradient(180deg,#822e28,#4e130e)!important;color:#fff!important;font-size:24px;line-height:1}
+.retro-shop-awning{height:62px;background:repeating-linear-gradient(90deg,#7e48b5 0 44px,#f0ecf6 44px 88px);border-top:2px solid #a57c4f;border-bottom:5px solid #140d09;box-shadow:inset 0 -12px 16px #0003}
+.retro-shop-body{display:grid;grid-template-columns:minmax(0,1.28fr) 360px;gap:16px;padding:14px}
+.retro-shop-left{display:flex;flex-direction:column;gap:10px}
+.retro-shop-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;padding:8px;border:3px solid #4b311d;background:linear-gradient(180deg,#796121,#5f4c18 66%,#46380e);box-shadow:inset 0 0 0 2px #ad8e3f}
+.retro-shop-slot,.retro-sell-slot{position:relative;aspect-ratio:1;border:2px solid #413a31;background:linear-gradient(180deg,#2e2d2f,#121214);display:grid;place-items:center;padding:3px;color:#fff;border-radius:0;box-shadow:inset 0 0 0 1px #69614d}
+.retro-shop-slot.empty,.retro-sell-slot.empty{opacity:.8;background:linear-gradient(180deg,#2a2928,#141312)}
+.retro-shop-slot.selected,.retro-sell-slot.selected{border-color:#e3c76e;box-shadow:0 0 0 2px #f3de95,inset 0 0 0 1px #fff0bd;background:radial-gradient(circle,#5b4920,#191611 74%)}
+.retro-shop-slot .retro-shop-slot-icon,.retro-sell-slot>span{display:grid;place-items:center;width:100%;height:100%}
+.retro-shop-slot .shop-item-svg,.retro-sell-slot .shop-item-svg{width:36px!important;height:36px!important;max-width:36px!important;max-height:36px!important}
+.retro-sell-slot i{position:absolute;right:2px;bottom:1px;min-width:16px;padding:0 2px;border-radius:4px;background:#0e0d0c;border:1px solid #8f8163;color:#fff;font:700 10px/1.3 Georgia,serif}
+.retro-shop-left-foot{padding:10px 12px;border:2px solid #654225;background:linear-gradient(180deg,#eadbb2,#d5c18f);color:#3b2919}.retro-shop-left-foot b{display:block;font-size:18px;margin-bottom:3px}.retro-shop-left-foot small{display:block;line-height:1.35;color:#5b4733}
+.retro-shop-right{display:flex;flex-direction:column;gap:10px}
+.retro-shop-pane{border:3px solid #4f311d;background:linear-gradient(180deg,#613c1e,#321d0f);padding:8px;box-shadow:inset 0 0 0 2px #84562d}.retro-shop-pane h4{margin:0 0 8px;color:#fff0cb;font-size:18px}
+.retro-tray{min-height:86px;border:2px solid #4b473c;background:linear-gradient(180deg,#28292d,#121214);display:grid;grid-template-columns:56px 1fr;gap:8px;align-items:center;padding:8px}.retro-tray.muted-slot{grid-template-columns:1fr;place-items:center;color:#9d978a}.retro-tray.ready{box-shadow:inset 0 0 0 1px #b89f59}.retro-tray-icon{width:56px;height:56px;display:grid;place-items:center;border:1px solid #7d7149;background:#15130f}.retro-tray-icon .shop-item-svg{width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important}.retro-tray b,.retro-summary-copy b{display:block}.retro-tray small{color:#c7b796}
+.retro-sell-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.retro-shop-pagebar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.retro-shop-pagebar button{min-height:44px;border:2px solid #31561a;border-radius:12px;background:linear-gradient(180deg,#468a26,#1f5610);color:#f1f6e5;font:700 16px Georgia,serif}.retro-shop-pagebar button.active,.retro-shop-pagebar button:hover{box-shadow:0 0 0 2px #9dd05a inset}.retro-shop-pagebar .retro-options{font-size:14px}
+.retro-shop-filters{display:flex;justify-content:space-between;gap:8px;padding:0 4px;color:#eadab0;font-size:11px}.retro-shop-filters b{color:#fff}
+.retro-shop-summary{padding:12px;border:3px solid #5d4423;background:linear-gradient(180deg,#efe2bb,#d9c99a);color:#402c1b;min-height:126px;display:flex;flex-direction:column;gap:9px}.retro-summary-copy p{margin:2px 0 3px;font:700 20px/1.1 Georgia,serif}.retro-summary-copy small{display:block;color:#6a5640;line-height:1.35}.retro-summary-stats{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;font-weight:700}.retro-summary-stats span{min-width:78px}.retro-summary-totals{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;text-align:right;gap:6px;margin-top:auto}.retro-summary-totals em{font-style:normal;font:700 24px/1 Georgia,serif}.retro-summary-totals .minus{color:#c42f28}.retro-summary-totals .plus{color:#159d34}.retro-summary-totals .net{color:#159d34;font-size:18px}
+.retro-shop-actions{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center}.retro-shop-actions .retro-accept,.retro-shop-actions .retro-accept-all,.retro-shop-actions .retro-exit{min-height:54px;border-radius:14px;font:700 18px Georgia,serif}.retro-shop-actions .retro-accept{background:linear-gradient(180deg,#3e8920,#17530c)!important;border-color:#8ecb61!important}.retro-shop-actions .retro-accept-all{background:linear-gradient(180deg,#5a4f8a,#35254c)!important;border-color:#9d8bcc!important}.retro-shop-actions .retro-exit{background:linear-gradient(180deg,#8d2f2b,#56140f)!important;border-color:#c66f6d!important;color:#fff!important}
+@media(max-width:1080px){.retro-shop-body{grid-template-columns:1fr}.retro-shop-right{order:2}.retro-shop-left{order:1}.retro-shop-actions{grid-template-columns:1fr 1fr}.retro-shop-actions .retro-exit{grid-column:1/-1}}
+@media(max-width:720px){.market-service.market-shop{padding:4px 4px calc(106px + env(safe-area-inset-bottom))}.retro-shop-title{min-width:0;width:100%;font-size:20px}.retro-shop-awning{height:40px}.retro-shop-body{padding:8px;gap:8px}.retro-shop-grid{grid-template-columns:repeat(6,1fr)}.retro-shop-slot .shop-item-svg,.retro-sell-slot .shop-item-svg{width:30px!important;height:30px!important;max-width:30px!important;max-height:30px!important}.retro-sell-grid{grid-template-columns:repeat(5,1fr)}.retro-shop-summary{min-height:112px;padding:10px}.retro-summary-copy p{font-size:16px}.retro-summary-totals em{font-size:20px}.retro-shop-pane h4{font-size:16px}.retro-shop-filters{flex-direction:column;gap:4px}.retro-shop-pagebar button{min-height:38px}}
+@media(max-width:420px){.retro-shop-grid{grid-template-columns:repeat(5,1fr)}.retro-shop-actions{grid-template-columns:1fr}.retro-shop-actions .retro-exit{grid-column:auto}.retro-sell-grid{grid-template-columns:repeat(4,1fr)}.retro-shop-slot,.retro-sell-slot{padding:2px}}
+
+
+/* 3.9.4 — player auction listings */
+.auction-listing-form{padding:12px;border:1px solid #71552d;border-radius:14px;background:linear-gradient(155deg,#1c140c,#0a0705);box-shadow:inset 0 0 24px #0007}.auction-listing-form>label{display:grid;gap:5px;margin-bottom:10px}.auction-listing-form label>span{color:#bba783;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}.auction-listing-form select,.auction-listing-form input{width:100%;min-height:38px;padding:7px 9px;border:1px solid #695033;border-radius:8px;background:#090705;color:#ead9b7}.auction-list-preview{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;padding:9px;border:1px solid #453521;border-radius:10px;background:#0c0906;margin-bottom:10px}.auction-list-preview>div{width:58px;height:58px;display:grid;place-items:center;border:1px solid #655035;border-radius:9px;background:radial-gradient(circle,#302113,#0a0705 72%)}.auction-list-preview .shop-item-svg{width:44px!important;height:44px!important;max-width:44px!important;max-height:44px!important}.auction-list-preview p{margin:0}.auction-list-preview b,.auction-list-preview small{display:block}.auction-list-preview b{color:#ebd7ad}.auction-list-preview small{margin-top:4px;color:#9f9078}.auction-list-controls{display:grid;grid-template-columns:.65fr 1fr 1fr auto;gap:8px;align-items:end}.auction-list-controls label{display:grid;gap:4px}.auction-list-submit{min-height:38px;white-space:nowrap}.auction-local-note{display:block;margin-top:9px;color:#8f8069;font-size:9px;line-height:1.4}.own-auction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.own-auction-card{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid #4e3a26;border-radius:13px;background:linear-gradient(155deg,#17110c,#090705);box-shadow:inset 0 0 18px #0005}.own-auction-card.status-sold{border-color:#547443;background:linear-gradient(155deg,#142012,#080d07)}.own-auction-card.status-expired{border-color:#68413a;background:linear-gradient(155deg,#21110f,#0c0706)}.own-auction-icon{width:56px;height:56px;display:grid;place-items:center;border:1px solid #59452e;border-radius:10px;background:radial-gradient(circle,#2b1e12,#090604 72%)}.own-auction-icon .shop-item-svg{width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important}.own-auction-copy b,.own-auction-copy small,.own-auction-copy em{display:block}.own-auction-copy b{color:#ead7ae;font-size:12px}.own-auction-copy small{margin-top:3px;color:#b3a284;font-size:9px}.own-auction-copy em{margin-top:5px;color:#d1b86f;font-size:9px;font-style:normal}.status-sold .own-auction-copy em{color:#85c97c}.status-expired .own-auction-copy em{color:#d68a7e}.own-auction-actions button{min-width:104px;min-height:36px;font-size:9px}.market-auction .service-hero{--service-accent:#c99b45;--service-glow:#5d411c}
+@media(max-width:900px){.own-auction-grid{grid-template-columns:1fr}.auction-list-controls{grid-template-columns:1fr 1fr}.auction-list-submit{grid-column:1/-1}.own-auction-card{grid-template-columns:50px minmax(0,1fr)}.own-auction-actions{grid-column:1/-1}.own-auction-actions button{width:100%}}
+@media(max-width:520px){.auction-list-controls{grid-template-columns:1fr}.auction-list-submit{grid-column:auto}.auction-list-preview{grid-template-columns:52px 1fr}.auction-list-preview>div{width:48px;height:48px}.own-auction-card{padding:8px}.own-auction-copy b{font-size:11px}}
+
+/* ===== 3.9.5 — visual cohesion, battle identity and city progression ===== */
+:root{--t4h-wood:#2b190f;--t4h-wood2:#442a18;--t4h-green:#173321;--t4h-green2:#284b31;--t4h-gold:#d5b56b;--t4h-gold2:#f0d79a;--t4h-ink:#090806;--t4h-paper:#d9c99c}
+body,.shell{background:radial-gradient(circle at 50% -10%,#26301f 0,#0d100c 36%,#080907 78%);font-family:Georgia,'Times New Roman',serif}
+.primary,.secondary,.ghost,.danger,.navbtn,.pokemon-command,.battle-skill{font-family:Georgia,'Times New Roman',serif}
+.fantasy-card,.hero-stat-card,.building-panel,.battle-command-panel,.combat-log,.adventure-shell,.bestiary-shell,.trips-shell,.city-progress-panel{border-color:#6d5534!important;background-image:linear-gradient(180deg,#19130edb,#0a0806ee)!important;box-shadow:inset 0 0 0 1px #271b10,0 8px 22px #0005}
+.primary{background:linear-gradient(180deg,#82652e,#4b3518);border-color:#d1ae61}.secondary{background:linear-gradient(180deg,#283329,#151c17);border-color:#68734d}.ghost{border-color:#5d4c35;color:#d8c39a}.danger{background:linear-gradient(180deg,#6e3029,#3c1713);border-color:#9b5548}
+.eyebrow,.gold,.market-badge{color:var(--t4h-gold)!important}
+
+/* Dedicated back-view battle art. */
+.pokemon-back{display:grid!important;place-items:end start!important;width:190px!important;height:220px!important;transform:none!important;overflow:visible!important}
+.battle-back-hero{display:block;width:190px!important;height:210px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center bottom;filter:drop-shadow(0 12px 8px #000c)!important;image-rendering:auto}
+.hero-side .battle-sprite{overflow:visible!important}
+.enemy-meta .ai-meta{border-color:#59693e;background:#10190e;color:#b9cb92}
+.battle-command-panel{border:1px solid #6b512f;border-radius:16px;padding:10px;background:linear-gradient(180deg,#17110c,#0a0705)}
+.main-command-panel .pokemon-command{border-color:#60482e;background:linear-gradient(180deg,#1e1711,#0c0907)}
+.main-command-panel .pokemon-command:hover:not(:disabled){border-color:#d2ad63;box-shadow:inset 0 0 18px #c79a3922}
+.range-indicator{border-color:#8a7345!important;background:#151008!important;color:#eed69d!important}
+
+/* The retro shop keeps its grid but adopts the same T4H materials and palette. */
+.retro-shop-shell{border-color:#6b5030!important;background:linear-gradient(180deg,#3a2818,#1c130d 18%,#100c09 100%)!important;box-shadow:0 18px 40px #0008,inset 0 0 0 2px #8d7042!important}
+.retro-shop-banner{background:linear-gradient(180deg,#3b2b1b,#1d140d)!important}
+.retro-shop-title{border-color:#8d7445!important;background:linear-gradient(180deg,#29432e,#15271b)!important;box-shadow:inset 0 0 0 1px #b99a5c!important;color:#f3ddaa!important}
+.retro-shop-awning{background:repeating-linear-gradient(90deg,#244a2c 0 44px,#d2b56d 44px 88px)!important;border-top-color:#a17f47!important}
+.retro-shop-grid{border-color:#5f4528!important;background:linear-gradient(180deg,#493d1c,#302911 66%,#211a0a)!important;box-shadow:inset 0 0 0 2px #826d35!important}
+.retro-shop-pane{border-color:#60462a!important;background:linear-gradient(180deg,#362617,#17100a)!important;box-shadow:inset 0 0 0 2px #6e522f!important}
+.retro-shop-pagebar button{border-color:#587442!important;background:linear-gradient(180deg,#315c36,#18341f)!important}.retro-shop-pagebar button.active{box-shadow:0 0 0 2px #c8ab61 inset!important;color:#ffe8af}
+.retro-shop-left-foot,.retro-shop-summary{background:linear-gradient(180deg,#e1d0a3,#c9b985)!important;border-color:#755733!important}
+
+/* City metaprogression. */
+.city-progress-panel{margin-top:18px;padding:16px;border:1px solid #705535;border-radius:18px}
+.city-progress-panel .section-title{align-items:flex-start}.city-progress-panel h3{margin:2px 0 4px;color:#ecd49d}.city-progress-panel p{margin:0}
+.city-upgrade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.city-upgrade-card{padding:12px;border:1px solid #5e492f;border-radius:13px;background:linear-gradient(155deg,#1a140e,#0c0907);box-shadow:inset 0 0 18px #0005;display:flex;flex-direction:column;gap:8px}
+.city-upgrade-card.maxed{border-color:#667c4b;background:linear-gradient(155deg,#152016,#090d08)}.city-upgrade-card.locked{opacity:.55}
+.city-upgrade-head{display:grid;grid-template-columns:38px 1fr;gap:9px;align-items:center}.city-upgrade-head>span{font-size:28px}.city-upgrade-head b,.city-upgrade-head small{display:block}.city-upgrade-head b{color:#ecd6a7;font-size:13px}.city-upgrade-head small{color:#a8987d;font-size:9px;margin-top:2px}.city-upgrade-card p{color:#baa98d;font-size:10px;line-height:1.4;min-height:28px}.city-upgrade-card button{margin-top:auto;min-height:38px;font-size:9px}
+.city-building-copy em{color:#cbb783!important}
+
+/* More compact mobile HUD: keep information, remove visual competition. */
+@media(max-width:720px){
+ .topbar-fantasy{gap:4px!important}.topbar-fantasy .world-meta{font-size:9px}.topbar-fantasy .world-meta span:first-child{display:none}
+ .resource-fantasy{gap:5px!important}.resource-fantasy span{padding:4px 7px!important}
+ .city-upgrade-grid{grid-template-columns:1fr 1fr}.city-progress-panel{padding:10px}
+ .pokemon-back{width:132px!important;height:155px!important}.battle-back-hero{width:132px!important;height:150px!important}
+ .enemy-meta .ai-meta{display:none}
+}
+@media(max-width:430px){.city-upgrade-grid{grid-template-columns:1fr}.pokemon-back{width:112px!important;height:132px!important}.battle-back-hero{width:112px!important;height:128px!important}}

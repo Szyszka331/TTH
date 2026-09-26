@@ -1,3 +1,17 @@
+# Time4Heroes 3.9.1 — Plecak i sprzedaż
+
+## Zmiany tej paczki
+
+- Plecak obsługuje ręczne przeciąganie przedmiotów pomiędzy polami, również na telefonie.
+- Dodano segregowanie plecaka według typu, rzadkości, nazwy i wartości.
+- Pozycje przedmiotów są zapisywane; przeciągnięcie na zajęty slot zamienia przedmioty miejscami.
+- Sprzedaż została usunięta z podglądu plecaka i szczegółów przedmiotu.
+- Sprzedaż odbywa się u kupca w sklepie; stosy można sprzedawać po jednej sztuce albo w całości.
+- Zmieniono wersję cache zasobów, aby GitHub Pages szybciej pobierał nowy JS/CSS po aktualizacji.
+- Testy regresji: 51/51.
+
+---
+
 # Time4Heroes 3.9.0 — Stabilna Przygoda
 
 Aktualizacja przesłanej wersji 3.8.0. Gra nadal działa jako statyczna aplikacja na GitHub Pages; nie wymaga serwera aplikacyjnego ani instalowania pakietów do uruchomienia.
