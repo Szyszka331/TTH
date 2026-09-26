@@ -1,11 +1,11 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3950';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3951';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.5';
+const BUILD_VERSION='3.9.5.1';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -1229,8 +1229,8 @@ const GRAPHICS={
   'frozenKnight':'assets/monsters/nawiedzony-rycerz.png',
  },
  npcs:{
-  Dorian:'assets/npc-dorian.png',Selma:'assets/npcs/npc-selma-cutout-380.webp',Ragor:'assets/npcs/npc-ragor-cutout-380.webp',
-  Ilyra:'assets/npcs/npc-ilyra-cutout-380.webp',Varo:'assets/npcs/npc-varo-cutout-380.webp',Edrin:'assets/npcs/npc-edrin-cutout-380.webp'
+  Dorian:'assets/npc-dorian.png',Selma:null,Ragor:null,
+  Ilyra:null,Varo:null,Edrin:'assets/npc-edrin.png'
  },
  pets:{youngWolf:'assets/wolf.png',cinderHound:'assets/hellhound.png'}
 };

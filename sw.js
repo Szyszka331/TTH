@@ -1,18 +1,30 @@
-const CACHE='time4heroes-3950';
+const CACHE='time4heroes-3951';
 const CORE=[
-  './','./index.html','./styles.css?v=3950','./app.js?v=3950','./data.js?v=3950','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3951','./app.js?v=3951','./data.js?v=3951','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
   './assets/characters/battle-backs/knight-back.png','./assets/characters/battle-backs/mage-back.png','./assets/characters/battle-backs/hunter-back.png','./assets/characters/battle-backs/berserker-back.png','./assets/characters/battle-backs/ranger-back.png',
   './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',
   './assets/backgrounds/battle-meadow-380.webp','./assets/backgrounds/battle-forest-380.webp','./assets/backgrounds/battle-ruins-380.webp','./assets/backgrounds/battle-marsh-380.webp','./assets/backgrounds/battle-highlands-380.webp',
   './assets/backgrounds/interior-shop-380.webp','./assets/backgrounds/interior-smith-380.webp','./assets/backgrounds/interior-alchemist-380.webp','./assets/backgrounds/interior-auction-380.webp','./assets/backgrounds/interior-guild-380.webp',
-  './assets/npcs/npc-selma-cutout-380.webp','./assets/npcs/npc-ragor-cutout-380.webp','./assets/npcs/npc-ilyra-cutout-380.webp','./assets/npcs/npc-varo-cutout-380.webp','./assets/npcs/npc-edrin-cutout-380.webp',
+  
   './assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png',
   './assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png','./assets/atlases/archive-monsters-1-330.png','./assets/atlases/archive-monsters-2-330.png','./assets/atlases/archive-monsters-3-330.png','./assets/atlases/archive-monsters-4-330.png'
 ];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache=>Promise.allSettled(CORE.map(async url=>{
+        try{
+          const res=await fetch(url,{cache:'no-store'});
+          if(!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
+          await cache.put(url,res.clone());
+        }catch(err){
+          console.warn('[T4H SW] Pominięto zasób podczas precache:',url,err);
+        }
+      })))
+      .then(()=>self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate',event=>{
