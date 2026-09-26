@@ -1674,7 +1674,7 @@ function monsterMapSize(m){
  return {width:58,height:68,tier:'normal'};
 }
 function mapMonsterHTML(e,d,questTarget=false){const m=monsterTemplate(e),size=monsterMapSize(m);return `<div class="mmo-marker monster-marker world-creature size-${size.tier} ${e.elite?'elite-marker':''} variant-marker-${m.variantId} ${questTarget?'quest-marker':''} ${d<=60?'interaction-ready':''}" style="--creature-w:${size.width}px;--creature-h:${size.height}px"><i class="creature-shadow"></i>${monsterVisual(m.id,'mmo-sprite',m.variantId)}${e.elite?'<b class="creature-rank" aria-label="Elita">★</b>':''}${questTarget?'<b class="creature-quest" aria-label="Cel zadania">!</b>':''}</div>`}
-function directionalHeroVisual(id){return `<div class="directional-hero hero-${id}" role="img" aria-label="${CLASSES[id]?.name||'Bohater'}"></div>`}
+function directionalHeroVisual(id){return `<div class="directional-hero hero-${id}" role="img" aria-label="${CLASSES[id]?.name||'Bohater'}"><i class="directional-hero-layer torso"></i><i class="directional-hero-layer arm arm-left"></i><i class="directional-hero-layer arm arm-right"></i><i class="directional-hero-layer leg leg-left"></i><i class="directional-hero-layer leg leg-right"></i></div>`}
 function battleBackVisual(id){return `<img class="battle-back-hero battle-back-${id}" src="assets/characters/battle-backs/${id}-back.png" alt="${CLASSES[id]?.name||'Bohater'} od tyłu">`}
 
 function movementBearing(from,to){

@@ -1944,3 +1944,92 @@ body.modal-open .map-biome-button{pointer-events:none!important}
   outline:2px solid #f1d98b!important;
   outline-offset:-2px;
 }
+
+
+/* 3.9.6.6 — natural walking animation on map: separate arm/leg motion instead of full-body sway */
+.directional-hero{
+  position:absolute;
+  bottom:0;
+  width:64px;
+  height:64px;
+  image-rendering:auto;
+  filter:drop-shadow(0 3px 2px #0009);
+  isolation:isolate;
+  --hero-dir-x:0%;
+}
+.directional-hero-layer{
+  position:absolute;
+  inset:0;
+  background-image:url('assets/characters/heroes-directions-391.png');
+  background-size:400% 500%;
+  background-position:var(--hero-dir-x) var(--hero-row,0%);
+  background-repeat:no-repeat;
+  image-rendering:auto;
+  will-change:transform;
+}
+.directional-hero .torso{clip-path:inset(0 22% 36% 22%);z-index:4}
+.directional-hero .arm{z-index:3}
+.directional-hero .arm-left{clip-path:inset(17% 52% 36% 18%);transform-origin:62% 24%}
+.directional-hero .arm-right{clip-path:inset(17% 18% 36% 52%);transform-origin:38% 24%}
+.directional-hero .leg{z-index:2}
+.directional-hero .leg-left{clip-path:inset(48% 50% 0 19%);transform-origin:58% 54%}
+.directional-hero .leg-right{clip-path:inset(48% 19% 0 50%);transform-origin:42% 54%}
+[data-facing="down"] .directional-hero{--hero-dir-x:0%}
+[data-facing="up"] .directional-hero{--hero-dir-x:33.333333%}
+[data-facing="left"] .directional-hero{--hero-dir-x:66.666667%}
+[data-facing="right"] .directional-hero{--hero-dir-x:100%}
+
+/* Replace old side-to-side wobble with a gentler body bob, then animate limbs explicitly. */
+.rpg-player-marker.walking .player-walk-avatar{animation:t4hMapWalkNatural var(--walk-cycle,520ms) linear infinite!important}
+.rpg-player-marker.walking .directional-hero .arm-left{animation:t4hArmSwingL var(--walk-cycle,520ms) ease-in-out infinite}
+.rpg-player-marker.walking .directional-hero .arm-right{animation:t4hArmSwingR var(--walk-cycle,520ms) ease-in-out infinite}
+.rpg-player-marker.walking .directional-hero .leg-left{animation:t4hLegStepL var(--walk-cycle,520ms) ease-in-out infinite}
+.rpg-player-marker.walking .directional-hero .leg-right{animation:t4hLegStepR var(--walk-cycle,520ms) ease-in-out infinite}
+.rpg-player-marker.walking .directional-hero .torso{animation:t4hTorsoBob var(--walk-cycle,520ms) ease-in-out infinite}
+.rpg-player-marker.moving-fast .player-walk-avatar{animation-duration:calc(var(--walk-cycle,520ms) * .78)!important}
+.rpg-player-marker.moving-fast .directional-hero .arm-left,
+.rpg-player-marker.moving-fast .directional-hero .arm-right,
+.rpg-player-marker.moving-fast .directional-hero .leg-left,
+.rpg-player-marker.moving-fast .directional-hero .leg-right,
+.rpg-player-marker.moving-fast .directional-hero .torso{animation-duration:calc(var(--walk-cycle,520ms) * .78)!important}
+
+@keyframes t4hMapWalkNatural{
+  0%,100%{transform:translateY(0)}
+  25%{transform:translateY(-1px)}
+  50%{transform:translateY(-2px)}
+  75%{transform:translateY(-1px)}
+}
+@keyframes t4hTorsoBob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-1px)}
+}
+@keyframes t4hArmSwingL{
+  0%,100%{transform:rotate(10deg) translateY(0)}
+  50%{transform:rotate(-9deg) translate(-1px,1px)}
+}
+@keyframes t4hArmSwingR{
+  0%,100%{transform:rotate(-10deg) translateY(0)}
+  50%{transform:rotate(9deg) translate(1px,1px)}
+}
+@keyframes t4hLegStepL{
+  0%,100%{transform:rotate(-7deg) translate(-1px,0)}
+  50%{transform:rotate(8deg) translate(1px,-1px)}
+}
+@keyframes t4hLegStepR{
+  0%,100%{transform:rotate(7deg) translate(1px,0)}
+  50%{transform:rotate(-8deg) translate(-1px,-1px)}
+}
+
+@media(max-width:720px){
+  .directional-hero .arm-left{clip-path:inset(18% 51% 36% 17%)}
+  .directional-hero .arm-right{clip-path:inset(18% 17% 36% 51%)}
+  .directional-hero .leg-left{clip-path:inset(49% 49% 0 18%)}
+  .directional-hero .leg-right{clip-path:inset(49% 18% 0 49%)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .rpg-player-marker.walking .player-walk-avatar,
+  .rpg-player-marker.walking .directional-hero .torso,
+  .rpg-player-marker.walking .directional-hero .arm,
+  .rpg-player-marker.walking .directional-hero .leg{animation:none!important}
+}
