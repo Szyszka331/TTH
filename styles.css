@@ -1959,3 +1959,19 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 /* 3.9.7.4 — class trials replace level gates in the skill tree */
 .skill-trial{margin-top:7px;padding:7px 8px;border:1px solid #5a4328;border-radius:8px;background:#0d0906;color:#bba989;display:grid;gap:4px}
 .skill-trial>b{font-size:7px;letter-spacing:1px;color:#d8b766}.skill-trial>span{font-size:9px;line-height:1.3}.skill-trial>i{display:block;height:5px;background:#050403;border:1px solid #382b1d;border-radius:999px;overflow:hidden}.skill-trial>i>em{display:block;height:100%;background:linear-gradient(90deg,#76572d,#d2a74d)}.skill-trial.done{border-color:#567044}.skill-trial.done>b{color:#a8d57c}.skill-trial.done>i>em{width:100%}
+
+
+/* 3.9.7.6 — tutorial first, story quests after onboarding */
+.guided-tutorial-card .tutorial-map-action{width:100%;margin-top:10px;min-height:38px}
+.tutorial-lock-note{margin:9px 0;padding:8px 10px;border:1px solid #68512c;border-radius:8px;background:#0d0a06;color:#d7bd83;font-size:10px}
+.tutorial-only-journal{display:grid;gap:12px;max-width:780px;margin:0 auto}
+.tutorial-only-hero{padding:18px;border:1px solid #74572e;border-radius:14px;background:linear-gradient(145deg,#20160e,#0b0805);box-shadow:inset 0 0 30px #0006}
+.tutorial-only-hero h2{margin:4px 0 7px;color:#f0d092}
+.tutorial-only-hero p{color:#baa98d;line-height:1.5}
+.tutorial-only-progress{display:flex;align-items:center;gap:10px;margin-top:12px}.tutorial-only-progress>div{flex:1;height:9px;border:1px solid #58452b;border-radius:99px;background:#090705;overflow:hidden}.tutorial-only-progress i{display:block;height:100%;background:linear-gradient(90deg,#80622e,#e1b85d)}.tutorial-only-progress b{color:#f0ce87;font-size:11px}
+.quests-locked-preview{display:flex;align-items:center;gap:13px;padding:15px;border:1px dashed #58462e;border-radius:12px;background:#0d0a07;color:#b8a98e}.quests-locked-preview b{display:block;color:#dfc58f;margin-bottom:3px}.quests-locked-preview p{margin:0;font-size:10px;line-height:1.45}.locked-quest-icon{font-size:28px}
+.tutorial-board-lock{max-width:520px;margin:14px auto!important}
+.tutorial-quest-float{border-color:#d1a852!important;box-shadow:0 0 0 4px #d1a85220,0 8px 24px #0009!important}
+.tutorial-focus{position:relative!important;outline:2px solid #efc45f!important;box-shadow:0 0 0 5px #efc45f2b,0 0 28px #efc45f55!important;animation:tutorialPulse 1.05s ease-in-out infinite alternate!important;z-index:1600!important}
+@keyframes tutorialPulse{from{filter:brightness(1)}to{filter:brightness(1.24)}}
+@media(max-width:620px){.tutorial-only-hero{padding:14px}.guided-tutorial-card .tutorial-map-action{font-size:10px}.tutorial-focus{outline-width:2px!important}}

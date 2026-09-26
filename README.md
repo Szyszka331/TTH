@@ -219,3 +219,10 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - HP Herosa skaluje się: 100/165/220/270% dla 1–4 graczy.
 - HP Legendy skaluje się: 100/180/250/320% dla 1–4 graczy.
 - XP i nagrody są osobiste; w drużynie bardzo niski poziom lub minimalny wkład ogranicza nagrody, ale solo nie ma kary anty-boost.
+
+
+## 3.9.7.6 — samouczek przed fabułą
+- Nowa postać zaczyna bez aktywnych questów fabularnych.
+- 6-krokowy samouczek prowadzi przez mapę, pierwszą walkę, ekwipunek, założenie łupu, umiejętność i karczmę.
+- Interfejs podświetla przycisk/element, który trzeba kliknąć.
+- Tablica zadań i fabuła odblokowują się dopiero po ukończeniu tutoriala.
