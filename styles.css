@@ -1339,3 +1339,320 @@ body,.shell{background:radial-gradient(circle at 50% -10%,#26301f 0,#0d100c 36%,
  .enemy-meta .ai-meta{display:none}
 }
 @media(max-width:430px){.city-upgrade-grid{grid-template-columns:1fr}.pokemon-back{width:112px!important;height:132px!important}.battle-back-hero{width:112px!important;height:128px!important}}
+
+
+/* 3.9.5.2 — cleaner map HUD: icon-only biome, lower test controls and bag pull-tab */
+.map-location-pill{display:none!important}
+.map-biome-button{
+  position:absolute;
+  z-index:721;
+  top:16px;
+  left:72px;
+  width:46px;
+  height:46px;
+  min-height:46px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:2px solid #a98243;
+  border-radius:50%;
+  background:linear-gradient(180deg,#171008ed,#090604ed);
+  color:#f0ddb5;
+  box-shadow:0 5px 16px #0008,inset 0 0 0 1px #3a2715;
+  cursor:pointer;
+}
+.map-biome-button>span{font-size:22px;line-height:1;filter:drop-shadow(0 2px 2px #000a)}
+.map-biome-button:hover,.map-biome-button:focus-visible{border-color:#e4c475;box-shadow:0 5px 16px #0008,0 0 0 2px #d9b45a55,inset 0 0 0 1px #5f4525}
+/* Move the test pad closer to the bottom edge of the map. */
+.test-move-pad{bottom:18px!important}
+/* Move the backpack pull-tab down, away from the quest/event panel header. */
+.drawer-pull-tab{top:58%!important}
+body.modal-open .map-biome-button{pointer-events:none!important}
+@media(max-width:900px){
+  .map-biome-button{top:10px;left:60px;width:40px;height:40px;min-height:40px}
+  .map-biome-button>span{font-size:19px}
+  .drawer-pull-tab{top:58%!important}
+}
+@media(max-width:620px){
+  .map-biome-button{top:8px;left:8px;width:40px;height:40px;min-height:40px}
+  /* Compass itself is hidden on very small screens, so the biome button takes its place. */
+  .test-move-pad{bottom:12px!important}
+  .drawer-pull-tab{top:61%!important}
+}
+
+/* 3.9.5.3 — grounded battle staging + compact one-screen combat UI */
+.battle-screen{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:100dvh!important;
+  padding:6px 10px 10px!important;
+  overflow:auto!important;
+}
+/* Environment banner already carries the context; remove the duplicated battle header. */
+.battle-screen>.battle-top{display:none!important}
+.battle-environment-effect{
+  flex:0 0 auto!important;
+  width:min(1500px,calc(100% - 8px))!important;
+  margin:0 auto 6px!important;
+  padding:6px 10px!important;
+  min-height:38px!important;
+}
+.battle-environment-effect>span{font-size:20px!important}
+.battle-environment-effect b{font-size:10px!important}
+.battle-environment-effect small{font-size:8px!important}
+
+/* Arena no longer stretches to fill the screen. Characters are anchored to the ground plane. */
+.battle-screen .battle-arena{
+  position:relative!important;
+  display:block!important;
+  flex:0 0 auto!important;
+  width:min(1500px,100%)!important;
+  height:clamp(410px,52vh,510px)!important;
+  min-height:410px!important;
+  max-height:510px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.battle-screen .combatant{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  padding:0!important;
+  pointer-events:none;
+}
+.battle-screen .combatant button{pointer-events:auto}
+
+/* Hero: lower-left/centre, with feet visibly touching the foreground road. */
+.battle-screen .hero-side .battle-sprite{
+  position:absolute!important;
+  left:14%!important;
+  bottom:6%!important;
+  width:230px!important;
+  height:215px!important;
+  min-height:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  transform-origin:50% 100%!important;
+}
+.battle-screen .pokemon-back{
+  width:190px!important;
+  height:205px!important;
+  place-items:end center!important;
+}
+.battle-screen .battle-back-hero{
+  width:185px!important;
+  height:200px!important;
+  object-position:center bottom!important;
+}
+.battle-screen .hero-side .battle-sprite .shadow{
+  left:47px!important;
+  right:auto!important;
+  bottom:1px!important;
+  width:135px!important;
+  height:20px!important;
+  z-index:-1!important;
+}
+
+/* Enemy: farther away and higher on the same ground plane instead of floating in the corner. */
+.battle-screen .enemy-side .battle-sprite{
+  position:absolute!important;
+  right:12%!important;
+  bottom:34%!important;
+  width:230px!important;
+  height:185px!important;
+  min-height:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  transform-origin:50% 100%!important;
+}
+.battle-screen .enemy-side .battle-sprite>div{
+  height:auto!important;
+  display:grid!important;
+  place-items:end center!important;
+}
+.battle-screen .enemy-side .battle-sprite img,
+.battle-screen .enemy-side .battle-sprite svg,
+.battle-screen .enemy-side .battle-sprite .sprite-battle{
+  max-height:170px!important;
+  max-width:210px!important;
+}
+.battle-screen .enemy-side .battle-sprite .shadow{
+  left:48px!important;
+  right:auto!important;
+  bottom:0!important;
+  width:134px!important;
+  height:18px!important;
+  z-index:-1!important;
+}
+
+/* Status cards stay readable but stop dictating character position. */
+.battle-screen .hero-side .combat-name,
+.battle-screen .hero-side .battle-bars{
+  left:30%!important;
+  right:auto!important;
+  width:270px!important;
+}
+.battle-screen .hero-side .combat-name{
+  top:auto!important;
+  bottom:53px!important;
+  padding:4px 6px!important;
+}
+.battle-screen .hero-side .battle-bars{
+  top:auto!important;
+  bottom:4px!important;
+  margin:0!important;
+  gap:4px!important;
+}
+.battle-screen .enemy-side .combat-name,
+.battle-screen .enemy-side .battle-bars{
+  left:47%!important;
+  right:auto!important;
+  width:285px!important;
+  text-align:left!important;
+}
+.battle-screen .enemy-side .combat-name{
+  top:8px!important;
+  padding:4px 6px!important;
+}
+.battle-screen .enemy-side .battle-bars{
+  top:50px!important;
+  margin:0!important;
+  gap:4px!important;
+}
+.battle-screen .combat-name b{font-size:17px!important}
+.battle-screen .combat-name span{font-size:9px!important}
+.battle-screen .bigbar{height:19px!important}
+.battle-screen .bigbar .barlabel{font-size:9px!important}
+.battle-screen .enemy-side .enemy-meta{
+  position:absolute!important;
+  right:1.5%!important;
+  top:38%!important;
+  max-width:285px!important;
+  justify-content:flex-end!important;
+  margin:0!important;
+}
+.battle-screen .enemy-side .boss-intent{
+  position:absolute!important;
+  right:1.5%!important;
+  top:54%!important;
+  max-width:285px!important;
+  margin:0!important;
+}
+.battle-screen .hero-side .player-status-chip{
+  position:relative!important;
+  z-index:8!important;
+}
+.battle-screen .hero-side .battle-pet{left:4%!important;bottom:5%!important}
+
+/* VS / turn / distance stay in the visual centre without consuming a grid column. */
+.battle-screen .battle-center{
+  position:absolute!important;
+  left:50%!important;
+  top:49%!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:7!important;
+  gap:6px!important;
+}
+.battle-screen .versus{font-size:32px!important}
+.battle-screen .turn-indicator{padding:5px 8px!important;font-size:8px!important}
+.battle-screen .range-indicator{margin-top:1px!important;padding:4px 8px!important;font-size:8px!important}
+
+/* Compact lower interface: log + all four main commands remain visible below the arena. */
+.battle-screen .battle-bottom{
+  flex:0 0 auto!important;
+  width:min(1500px,100%)!important;
+  margin:7px auto 0!important;
+  display:grid!important;
+  grid-template-columns:minmax(245px,.72fr) minmax(0,1.55fr)!important;
+  gap:8px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+.battle-screen .combat-feedback-column{gap:5px!important}
+.battle-screen .combat-exchange{gap:5px!important}
+.battle-screen .combat-exchange.empty{padding:6px 8px!important;font-size:9px!important}
+.battle-screen .exchange-card{padding:6px!important;border-radius:10px!important}
+.battle-screen .exchange-card small{font-size:7px!important}
+.battle-screen .exchange-card b{font-size:22px!important;margin:3px 0!important}
+.battle-screen .exchange-card span{font-size:7px!important}
+.battle-screen .combat-log{
+  padding:5px 8px!important;
+  min-height:34px!important;
+  max-height:82px!important;
+  border-radius:10px!important;
+  font-size:9px!important;
+}
+.battle-screen .combat-log summary{padding:2px!important;min-height:20px!important;font-size:9px!important}
+.battle-screen .combat-log div{padding:3px 0!important;font-size:9px!important}
+.battle-screen .battle-command-panel{padding:6px!important;border-radius:11px!important}
+.battle-screen .command-question{padding:0 2px 5px!important;gap:6px!important}
+.battle-screen .command-question b{font-size:14px!important}
+.battle-screen .command-question span{font-size:8px!important}
+.battle-screen .pokemon-command-grid{gap:5px!important}
+.battle-screen .pokemon-command{
+  min-height:55px!important;
+  padding:5px 7px!important;
+  grid-template-columns:30px 1fr!important;
+  column-gap:6px!important;
+  border-radius:9px!important;
+}
+.battle-screen .pokemon-command>span{font-size:21px!important}
+.battle-screen .pokemon-command b{font-size:12px!important}
+.battle-screen .pokemon-command small{font-size:7px!important}
+.battle-screen .combat-help{margin-top:4px!important;gap:4px!important}
+.battle-screen .combat-help span{padding:3px 5px!important;font-size:7px!important}
+.battle-screen .command-panel-head{margin-bottom:5px!important}
+.battle-screen .battle-skill{min-height:58px!important;padding:5px!important}
+
+/* Distance movement now starts from grounded positions. */
+.battle-screen .battle-arena[data-distance="0"] .hero-sprite{transform:translate(38px,-3px)!important}
+.battle-screen .battle-arena[data-distance="0"] .enemy-sprite{transform:translate(-38px,5px)!important}
+.battle-screen .battle-arena[data-distance="1"] .hero-sprite,
+.battle-screen .battle-arena[data-distance="1"] .enemy-sprite{transform:none!important}
+.battle-screen .battle-arena[data-distance="2"] .hero-sprite{transform:translate(-24px,3px)!important}
+.battle-screen .battle-arena[data-distance="2"] .enemy-sprite{transform:translate(24px,-3px)!important}
+
+@media(max-width:1000px){
+  .battle-screen .battle-arena{height:430px!important;min-height:430px!important;max-height:430px!important}
+  .battle-screen .hero-side .battle-sprite{left:9%!important;bottom:5%!important;width:185px!important;height:175px!important}
+  .battle-screen .pokemon-back{width:150px!important;height:165px!important}
+  .battle-screen .battle-back-hero{width:148px!important;height:160px!important}
+  .battle-screen .enemy-side .battle-sprite{right:8%!important;bottom:35%!important;width:190px!important;height:155px!important}
+  .battle-screen .enemy-side .battle-sprite img,.battle-screen .enemy-side .battle-sprite svg,.battle-screen .enemy-side .battle-sprite .sprite-battle{max-height:145px!important;max-width:175px!important}
+  .battle-screen .hero-side .combat-name,.battle-screen .hero-side .battle-bars{left:28%!important;width:225px!important}
+  .battle-screen .enemy-side .combat-name,.battle-screen .enemy-side .battle-bars{left:45%!important;width:235px!important}
+  .battle-screen .battle-bottom{grid-template-columns:220px minmax(0,1fr)!important}
+}
+@media(max-width:720px){
+  .battle-screen{padding:4px 5px calc(80px + env(safe-area-inset-bottom))!important}
+  .battle-screen .battle-arena{height:350px!important;min-height:350px!important;max-height:350px!important;border-radius:12px!important}
+  .battle-screen .hero-side .battle-sprite{left:2%!important;bottom:4%!important;width:140px!important;height:135px!important}
+  .battle-screen .pokemon-back{width:118px!important;height:128px!important}
+  .battle-screen .battle-back-hero{width:116px!important;height:124px!important}
+  .battle-screen .enemy-side .battle-sprite{right:1%!important;bottom:38%!important;width:145px!important;height:120px!important}
+  .battle-screen .enemy-side .battle-sprite img,.battle-screen .enemy-side .battle-sprite svg,.battle-screen .enemy-side .battle-sprite .sprite-battle{max-height:112px!important;max-width:135px!important}
+  .battle-screen .hero-side .combat-name,.battle-screen .hero-side .battle-bars{left:24%!important;width:170px!important}
+  .battle-screen .hero-side .combat-name{bottom:45px!important}
+  .battle-screen .enemy-side .combat-name,.battle-screen .enemy-side .battle-bars{left:43%!important;width:175px!important}
+  .battle-screen .enemy-side .combat-name{top:5px!important}
+  .battle-screen .enemy-side .battle-bars{top:40px!important}
+  .battle-screen .combat-name b{font-size:12px!important}.battle-screen .combat-name span{display:none!important}
+  .battle-screen .enemy-side .enemy-meta{display:none!important}
+  .battle-screen .battle-center{top:50%!important}.battle-screen .versus{font-size:20px!important}
+  .battle-screen .battle-bottom{grid-template-columns:1fr!important;gap:5px!important}
+  .battle-screen .combat-feedback-column{display:grid!important;grid-template-columns:1fr!important;order:2!important}
+  .battle-screen .combat-exchange{display:none!important}
+  .battle-screen .combat-log{max-height:66px!important}
+  .battle-screen .pokemon-command{min-height:52px!important}
+  .battle-screen .combat-help{display:none!important}
+}
