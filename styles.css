@@ -2033,3 +2033,11 @@ body.modal-open .map-biome-button{pointer-events:none!important}
   .rpg-player-marker.walking .directional-hero .arm,
   .rpg-player-marker.walking .directional-hero .leg{animation:none!important}
 }
+
+
+/* 3.9.6.7 — all accepted tasks in map panel + guidance for contracts */
+.map-journal-sheet .bounty-entry{border-left:3px solid #7d6630}
+.map-journal-sheet .bounty-entry.guided{border-left-color:#e1bd5e;box-shadow:inset 3px 0 #e1bd5e22}
+.map-journal-sheet .quest-guide-btn.complete{border-color:#577d45!important;background:linear-gradient(180deg,#294523,#152a14)!important;color:#d9efc9!important}
+.map-journal-sheet .quest-entry{margin-bottom:8px}
+@media(max-width:720px){.map-journal-sheet .quest-entry{margin-bottom:7px}.map-journal-sheet .quest-guide-btn{min-height:34px}}

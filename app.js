@@ -1773,36 +1773,50 @@ function mapQuickActionsHTML(){
  const p=state.player,hasGeo=!!(p.position.lat&&p.position.lng),virtual=!!p.position.virtualTravel;
  return `<div class="map-quick-actions"><button class="secondary" data-map-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-map-center>🎯 Do mnie</button><button class="secondary" data-shortcut="quests">📜 Zadania</button><button class="secondary" data-nav="town">🏰 Miasto</button><span class="map-status-chip">${p.position.testWalk?'🧪 TEST • strzałki':virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span></div>`;
 }
-function activeGuideQuest(){
+function activeGuideTask(){
+ const ref=state.ui.questGuideId;if(!ref)return null;
+ if(String(ref).startsWith('bounty:')){
+  const id=String(ref).slice(7),b=(state.adventure?.bounties||[]).find(x=>x.id===id&&x.accepted&&!x.claimed);
+  return b?{kind:'bounty',id:`bounty:${b.id}`,title:b.name,bounty:b}:null;
+ }
  const active=state.quests.active||[];
- if(state.ui.questGuideId && active.includes(state.ui.questGuideId))return QUESTS.find(q=>q.id===state.ui.questGuideId)||null;
+ if(active.includes(ref)){const q=QUESTS.find(x=>x.id===ref);if(q)return {kind:'quest',id:q.id,title:q.name,quest:q}}
  return null;
 }
-function questGuideTarget(q=activeGuideQuest()){
- if(!q)return null;
- const prog=state.quests.progress[q.id]||[];
+function activeGuideQuest(){const task=activeGuideTask();return task?.kind==='quest'?task.quest:null}
+function questGuideTarget(task=activeGuideTask()){
+ if(!task)return null;
+ if(task.kind==='bounty'){
+  const b=task.bounty;spawnBountyTargets(b);
+  if((b.progress||0)>=b.need)return {task,title:b.name,name:'Cel wykonany — odbierz nagrodę w panelu zadań',distance:null,noMapTarget:true};
+  const pool=(state.world.entities||[]).filter(e=>e.bountyId===b.id&&!e.done&&(e.type!=='monster'||e.alive));
+  const entity=pool.sort((a,b2)=>dist(a,state.player.position)-dist(b2,state.player.position))[0]||null;
+  if(entity){const name=entity.type==='monster'?monsterTemplate(entity).name:(entity.name||itemDef(entity.item)?.name||bountyTargetName(b));return {task,title:b.name,bounty:b,x:entity.x,y:entity.y,name,distance:Math.round(dist(entity,state.player.position)),entityId:entity.id}}
+  return {task,title:b.name,bounty:b,name:bountyObjective(b),distance:null,noMapTarget:true};
+ }
+ const q=task.quest,prog=state.quests.progress[q.id]||[];
  const stepIndex=q.steps.findIndex((s,i)=>(prog[i]||0)<(s.count||1));
  if(stepIndex<0)return null;
  const step=q.steps[stepIndex];
  let entity=null;
  if(step.type==='discover'||step.type==='dungeon'||step.type==='questInteract')entity=state.world.entities.find(e=>e.id===step.target&&questWorldEntityVisible(e))||null;
  else if(step.type==='kill'){
- const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&monsterTargetMatches(step.target,e.template));
+  const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&monsterTargetMatches(step.target,e.template));
   entity=pool.sort((a,b)=>dist(a,state.player.position)-dist(b,state.player.position))[0]||null;
  }
- if(entity){return {q,step,stepIndex,x:entity.x,y:entity.y,name:entity.type==='monster'?monsterTemplate(entity).name:(entity.name||step.label),distance:Math.round(dist(entity,state.player.position)),entityId:entity.id}}
+ if(entity){return {task,q,step,stepIndex,title:q.name,x:entity.x,y:entity.y,name:entity.type==='monster'?monsterTemplate(entity).name:(entity.name||step.label),distance:Math.round(dist(entity,state.player.position)),entityId:entity.id}}
  if(step.type==='move'){
   const needed=Number(step.target)||Number(step.count)||60,p=state.player.position||{x:0,y:0},r=Math.hypot(p.x||0,p.y||0),remain=Math.max(0,Math.ceil(needed-r));
   let ux=0,uy=1;if(r>5){ux=(p.x||0)/r;uy=(p.y||0)/r}
-  return {q,step,stepIndex,x:(p.x||0)+ux*Math.max(remain,30),y:(p.y||0)+uy*Math.max(remain,30),name:step.label||q.name,distance:remain,moveGoal:true};
+  return {task,q,step,stepIndex,title:q.name,x:(p.x||0)+ux*Math.max(remain,30),y:(p.y||0)+uy*Math.max(remain,30),name:step.label||q.name,distance:remain,moveGoal:true};
  }
- return {q,step,stepIndex,name:step.label||q.name,distance:null,noMapTarget:true};
+ return {task,q,step,stepIndex,title:q.name,name:step.label||q.name,distance:null,noMapTarget:true};
 }
 function questGuideHTML(){
  const g=questGuideTarget();if(!g)return '';
- if(g.noMapTarget)return `<div class="quest-guide-hud no-target" data-guide-hud><span>🧭</span><div><b>${g.q.name}</b><small>${g.name}</small></div><button data-guide-stop>×</button></div>`;
+ if(g.noMapTarget)return `<div class="quest-guide-hud no-target" data-guide-hud><span>🧭</span><div><b>${g.title}</b><small>${g.name}</small></div><button data-guide-stop>×</button></div>`;
  const p=state.player.position||{x:0,y:0},dx=g.x-(p.x||0),dy=g.y-(p.y||0),angle=Math.atan2(dx,dy)*180/Math.PI;
- return `<div class="quest-guide-hud" data-guide-hud><div class="quest-guide-arrow" data-guide-arrow style="transform:rotate(${angle}deg)">▲</div><div><b>${g.q.name}</b><small data-guide-distance>${g.distance!=null?`${g.distance} m • `:''}${g.name}</small></div><button data-guide-stop title="Wyłącz prowadzenie">×</button></div>`;
+ return `<div class="quest-guide-hud" data-guide-hud><div class="quest-guide-arrow" data-guide-arrow style="transform:rotate(${angle}deg)">▲</div><div><b>${g.title}</b><small data-guide-distance>${g.distance!=null?`${g.distance} m • `:''}${g.name}</small></div><button data-guide-stop title="Wyłącz prowadzenie">×</button></div>`;
 }
 function refreshQuestGuide(){
  const root=document.querySelector('[data-guide-hud]');if(!root)return;const g=questGuideTarget();if(!g){root.remove();return}const d=root.querySelector('[data-guide-distance]');if(d)d.textContent=`${g.distance!=null?`${g.distance} m • `:''}${g.name}`;const a=root.querySelector('[data-guide-arrow]');if(a&&!g.noMapTarget){const p=state.player.position||{x:0,y:0},angle=Math.atan2(g.x-(p.x||0),g.y-(p.y||0))*180/Math.PI;a.style.transform=`rotate(${angle}deg)`}}
@@ -1824,8 +1838,11 @@ function biomeInfoSheetHTML(){
 function mapSideTab(){state.ui.mapPanelTab ||= 'quests';return state.ui.mapPanelTab}
 function mapSideTabsHTML(){const cur=mapSideTab();const tabs=[['quests','Zadania'],['events','Wydarzenia'],['nearby','W pobliżu']];return `<div class="mobile-sheet-head map-sheet-head"><b>${cur==='quests'?'📜 Zadania':cur==='events'?'✨ Wydarzenia':'📍 W pobliżu'}</b><button data-map-sheet-collapse>▾ Zwiń</button></div><div class="map-panel-tabs">${tabs.map(([id,label])=>`<button class="${cur===id?'active':''}" data-map-side-tab="${id}">${label}</button>`).join('')}</div>`}
 function mapQuestPanelHTML(){
- const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean).slice(0,4),guided=activeGuideQuest();const next=nextStoryQuestAvailable();
- return `<div class="parchment-panel-v2"><div class="panel-heading"><h3>Zadania</h3><span>${activeTaskCount()}/${activeTaskLimit()}</span></div>${active.length?active.map(q=>{const prog=state.quests.progress[q.id]||[],done=q.steps.reduce((n,s,i)=>n+((prog[i]||0)>=(s.count||1)?1:0),0),total=q.steps?.length||1,step=q.steps.find((s,i)=>(prog[i]||0)<(s.count||1));return `<div class="quest-entry ${guided?.id===q.id?'guided':''}"><div><b>${q.name}</b><small>${q.chapter||'Przygoda'} • lvl ${q.level}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,done/total*100)}%"></span></div><p>${step?.label||q.desc||'Kontynuuj zadanie na mapie.'}</p><button class="secondary quest-guide-btn ${guided?.id===q.id?'active':''}" data-guide-quest="${q.id}">${guided?.id===q.id?'🧭 Prowadzenie włączone':'➤ Prowadź do celu'}</button></div>`}).join(''):`<div class="panel-empty">Brak aktywnych zadań.</div>`}${next?`<div class="quest-entry available"><div><b>Dostępne dalej</b><small>${next.chapter||'Przygoda'} • lvl ${next.level}</small></div><p>${next.name}</p><button class="secondary" data-open-quests>Otwórz dziennik</button></div>`:''}</div>`;
+ const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean),contracts=(state.adventure?.bounties||[]).filter(b=>b.accepted&&!b.claimed),guided=activeGuideTask(),next=nextStoryQuestAvailable();
+ const questCards=active.map(q=>{const prog=state.quests.progress[q.id]||[],done=q.steps.reduce((n,s,i)=>n+((prog[i]||0)>=(s.count||1)?1:0),0),total=q.steps?.length||1,step=q.steps.find((s,i)=>(prog[i]||0)<(s.count||1)),isGuided=guided?.id===q.id;return `<div class="quest-entry ${isGuided?'guided':''}"><div><b>${q.name}</b><small>${q.chapter||'Przygoda'} • lvl ${q.level}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,done/total*100)}%"></span></div><p>${step?.label||q.desc||'Kontynuuj zadanie na mapie.'}</p><button class="secondary quest-guide-btn ${isGuided?'active':''}" data-guide-task="${q.id}">${isGuided?'🧭 Prowadzenie włączone':'➤ Prowadź do celu'}</button></div>`}).join('');
+ const bountyCards=contracts.map(b=>{const isGuided=guided?.id===`bounty:${b.id}`,pct=Math.min(100,(b.progress||0)/Math.max(1,b.need)*100),complete=(b.progress||0)>=b.need;return `<div class="quest-entry bounty-entry ${isGuided?'guided':''}"><div><b>${b.icon||'📌'} ${b.name}</b><small>Kontrakt • ${b.progress||0}/${b.need}</small></div><div class="quest-progress-mini"><span style="width:${pct}%"></span></div><p>${bountyObjective(b)}</p>${complete?`<button class="secondary quest-guide-btn complete" data-claim-bounty="${b.id}">✓ Odbierz nagrodę</button>`:`<button class="secondary quest-guide-btn ${isGuided?'active':''}" data-guide-task="bounty:${b.id}">${isGuided?'🧭 Prowadzenie włączone':'➤ Prowadź do celu'}</button>`}</div>`}).join('');
+ const empty=!active.length&&!contracts.length?'<div class="panel-empty">Brak aktywnych zadań.</div>':'';
+ return `<div class="parchment-panel-v2"><div class="panel-heading"><h3>Przyjęte zadania</h3><span>${activeTaskCount()}/${activeTaskLimit()}</span></div>${questCards}${bountyCards}${empty}${next?`<div class="quest-entry available"><div><b>Dostępne dalej</b><small>${next.chapter||'Przygoda'} • lvl ${next.level}</small></div><p>${next.name}</p><button class="secondary" data-open-quests>Otwórz dziennik</button></div>`:''}</div>`;
 }
 function mapEventsPanelHTML(){
  const discovered=state.player.discovered.slice(-3).reverse(),done=state.quests.done.slice(-2).reverse(),entries=[],nearest=(state.world.entities||[]).filter(e=>e.type==='event'&&!e.done).map(e=>({e,d:Math.round(dist(e,state.player.position))})).sort((a,b)=>a.d-b.d)[0];entries.push({t:'Teraz',text:`${biomeInfoAtPlayer().icon} ${biomeInfoAtPlayer().name} • ${climate().icon} ${climate().weather} • ${climate().phase}`});if(nearest)entries.push({t:'✨ Sygnał',text:`${nearest.e.signal||nearest.e.name} • ${nearest.d} m`});if(state.player.kills>0)entries.push({t:'Przed chwilą',text:`Pokonane potwory łącznie: ${state.player.kills}`});discovered.forEach(id=>{const e=state.world.entities.find(x=>x.id===id);if(e)entries.push({t:'Odkrycie',text:`Odkryto: ${e.name}`})});done.forEach(id=>{const q=QUESTS.find(x=>x.id===id);if(q)entries.push({t:'Ukończono',text:`Quest: ${q.name}`})});return `<div class="parchment-panel-v2"><div class="panel-heading"><h3>Wydarzenia</h3><span>Na bieżąco</span></div>${nearest?`<button class="nearby-event-signal" data-world-event="${nearest.e.id}"><span>${nearest.e.icon||'✨'}</span><div><b>${nearest.e.name}</b><small>${nearest.d} m • ${eventTimeLabel(nearest.e)}</small></div></button>`:''}<div class="event-feed">${entries.slice(0,6).map(e=>`<div class="event-row"><b>${e.t}</b><p>${e.text}</p></div>`).join('')}</div></div>`;
@@ -1865,8 +1882,9 @@ function renderMap(el){
  el.querySelectorAll('[data-map-sheet-collapse]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=false;save();renderMap(el)});
  el.querySelector('[data-biome-info]')?.addEventListener('click',()=>{state.ui.biomeInfoOpen=!state.ui.biomeInfoOpen;save();renderMap(el)});
  el.querySelector('[data-biome-info-close]')?.addEventListener('click',()=>{state.ui.biomeInfoOpen=false;save();renderMap(el)});
- el.querySelectorAll('[data-guide-quest]').forEach(b=>b.onclick=()=>{state.ui.questGuideId=state.ui.questGuideId===b.dataset.guideQuest?null:b.dataset.guideQuest;state.ui.mapSheetOpen=false;save();renderMap(el)});
+ el.querySelectorAll('[data-guide-task]').forEach(btn=>btn.onclick=()=>{const ref=btn.dataset.guideTask;if(String(ref).startsWith('bounty:')){const b=(state.adventure?.bounties||[]).find(x=>x.id===String(ref).slice(7));if(b)spawnBountyTargets(b)}state.ui.questGuideId=state.ui.questGuideId===ref?null:ref;state.ui.mapSheetOpen=false;save();renderMap(el)});
  el.querySelector('[data-guide-stop]')?.addEventListener('click',()=>{state.ui.questGuideId=null;save();renderMap(el)});
+ el.querySelectorAll('[data-claim-bounty]').forEach(btn=>btn.onclick=()=>claimBounty(btn.dataset.claimBounty));
  el.querySelector('[data-open-quests]')?.addEventListener('click',openQuestView);
  el.querySelectorAll('[data-world-event]').forEach(b=>b.onclick=()=>{const e=eventById(b.dataset.worldEvent);if(!e)return;const d=dist(e,state.player.position);if(d<=60&&gpsInteractionReady())openWorldEvent(e);else toast(`${e.signal||e.name} • ${Math.round(d)} m`)});
  bindNearbyTray(el);bindShellControls(el);bindTutorialControls(el);initRealMap();
@@ -2068,7 +2086,7 @@ function renderQuests(el){
  el.querySelectorAll('[data-focus-quest]').forEach(b=>b.onclick=()=>{state.ui.questFocus=b.dataset.focusQuest;save();renderQuests(el)});
  el.querySelectorAll('[data-story-scene]').forEach(b=>b.onclick=()=>openStoryScene(b.dataset.storyScene));
  el.querySelectorAll('[data-claim-bounty]').forEach(b=>b.onclick=()=>claimBounty(b.dataset.claimBounty));
- el.querySelectorAll('[data-show-bounty]').forEach(btn=>btn.onclick=()=>{const b=state.adventure.bounties.find(x=>x.id===btn.dataset.showBounty);if(!b)return;spawnBountyTargets(b);save();selectNav('map');toast(`${bountyObjective(b)} • cele są zaznaczone na mapie`) });bindTutorialControls(el)
+ el.querySelectorAll('[data-show-bounty]').forEach(btn=>btn.onclick=()=>{const b=state.adventure.bounties.find(x=>x.id===btn.dataset.showBounty);if(!b)return;spawnBountyTargets(b);state.ui.questGuideId=`bounty:${b.id}`;state.ui.mapPanelTab='quests';state.ui.mapSheetOpen=false;save();selectNav('map');toast(`${bountyObjective(b)} • prowadzenie do celu włączone`) });bindTutorialControls(el)
 }
 function eventTimeLabel(e){if(e.persistent)return 'Skutek decyzji';const left=Math.max(0,(e.expiresAt||0)-Date.now());if(!left)return 'do końca dnia';const h=Math.floor(left/3600000),m=Math.floor(left%3600000/60000);return h?`${h} h ${m} min`:`${Math.max(1,m)} min`}
 function renderEvents(el){
