@@ -1975,3 +1975,15 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 .tutorial-focus{position:relative!important;outline:2px solid #efc45f!important;box-shadow:0 0 0 5px #efc45f2b,0 0 28px #efc45f55!important;animation:tutorialPulse 1.05s ease-in-out infinite alternate!important;z-index:1600!important}
 @keyframes tutorialPulse{from{filter:brightness(1)}to{filter:brightness(1.24)}}
 @media(max-width:620px){.tutorial-only-hero{padding:14px}.guided-tutorial-card .tutorial-map-action{font-size:10px}.tutorial-focus{outline-width:2px!important}}
+
+
+/* 3.9.8.0 — aktywne zadanie widoczne bez otwierania panelu */
+.mobile-map-sheet-toggle.has-task{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;text-align:left;padding:9px 13px!important}
+.mobile-map-sheet-toggle.has-task>span{font-size:20px}
+.mobile-map-sheet-toggle.has-task>div{min-width:0;display:flex;flex-direction:column}
+.mobile-map-sheet-toggle.has-task b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f0d49a}
+.mobile-map-sheet-toggle.has-task small{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#bda988;margin-top:2px}
+.mobile-map-sheet-toggle.has-task em{font-style:normal;color:#b9914d}
+.map-task-subtitle{margin:13px 0 2px;padding-top:9px;border-top:1px solid #aa8956;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#72582f}
+.bounty-task-entry strong,.quest-entry strong{color:#6d4b1f}
+.tutorial-task-entry{background:#fff5d044;border-radius:10px;padding:10px}

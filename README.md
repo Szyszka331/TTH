@@ -244,3 +244,11 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - HP i mana aktualizują się od razu po użyciu mikstury poza walką.
 - Odpoczynek przy kominku natychmiast aktualizuje HP, manę, staminę i złoto w górnym HUD.
 - Posiłek u karczmarza natychmiast aktualizuje staminę i złoto.
+
+
+## Build 3.9.8.0 — balans poziomów + pasek zadań
+- Równy poziom gracza i potwora nie ma ukrytych modyfikatorów poziomu.
+- Normalne potwory mają minimalne HP/ATK wynikające z ich poziomu, aby walka na równym lvl była pełną wymianą ciosów.
+- Przewaga poziomu przeciwnika jest znacznie groźniejsza.
+- Zwinięty pasek zadań pokazuje nazwę i bieżący cel.
+- Panel zadań na mapie pokazuje również zaakceptowane zlecenia z karczmy.
