@@ -211,3 +211,11 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Przewaga poziomów potwora wzmacnia jego HP/ATK i zmniejsza obrażenia gracza.
 - Umiejętności nie są już blokowane poziomem; wymagają prób klasowych + punktów + poprzednich skilli.
 - Tropiciel: Leśna pułapka wymaga zabicia 10 Szarych Wilków.
+
+
+## Build 3.9.7.5 — skalowanie drużynowe
+- Poziom Herosa/Legendy pozostaje stały i nie jest uśredniany z poziomem drużyny.
+- Każdy członek jest liczony indywidualnie względem poziomu przeciwnika.
+- HP Herosa skaluje się: 100/165/220/270% dla 1–4 graczy.
+- HP Legendy skaluje się: 100/180/250/320% dla 1–4 graczy.
+- XP i nagrody są osobiste; w drużynie bardzo niski poziom lub minimalny wkład ogranicza nagrody, ale solo nie ma kary anty-boost.
