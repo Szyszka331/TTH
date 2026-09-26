@@ -1,4 +1,4 @@
-const CACHE='time4heroes-3964';
+const CACHE='time4heroes-3965';
 const CORE=[
   './','./index.html','./styles.css?v=3963','./app.js?v=3963','./data.js?v=3963','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
