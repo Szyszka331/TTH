@@ -226,3 +226,9 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - 6-krokowy samouczek prowadzi przez mapę, pierwszą walkę, ekwipunek, założenie łupu, umiejętność i karczmę.
 - Interfejs podświetla przycisk/element, który trzeba kliknąć.
 - Tablica zadań i fabuła odblokowują się dopiero po ukończeniu tutoriala.
+
+## Build 3.9.7.7 — twarda naprawa przełączania postaci
+- Zablokowano autosave podczas przełączania slotu, aby `pagehide` / `visibilitychange` nie nadpisywały docelowej postaci starym stanem.
+- Slot postaci jest źródłem prawdy; główny klucz zapisu jest tylko lustrem aktywnego slotu.
+- Stare identyczne duplikaty utworzone przez poprzedni błąd są scalane do jednego slotu (preferowany jest aktywny slot), a drugi slot zostaje zwolniony.
+- Tworzenie nowej postaci nadal zapisuje ją wyłącznie do wybranego pustego slotu.

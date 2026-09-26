@@ -5,10 +5,11 @@ let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_
 const CHARACTER_LIMIT=5;
 const CHARACTER_META_REAL='time4heroes_character_active_gps';
 const CHARACTER_META_TEST='time4heroes_character_active_sandbox';
+let characterSlotTransition=false;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.7.6';
+const BUILD_VERSION='3.9.7.7';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -504,7 +505,7 @@ document.addEventListener('click',e=>{if(e.target.closest('button'))playSfx('cli
 function xpNeed(lvl){return Math.floor(110+60*lvl+20*lvl*lvl)}
 function toast(msg){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toastEl.classList.remove('show'),2500)}
 function save(){
- if(!state||saveDepth)return;
+ if(!state||saveDepth||characterSlotTransition)return;
  state.playMode=SAVE_KEY===DEMO_SAVE_KEY?'sandbox':'gps';state.session={combat,dungeonRun,battleResult};
  try{
   const json=JSON.stringify(state);
@@ -519,25 +520,42 @@ function save(){
 function rawLoad(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}}
 function characterModeId(){return SAVE_KEY===DEMO_SAVE_KEY?'sandbox':'gps'}
 function characterActiveMetaKey(){return SAVE_KEY===DEMO_SAVE_KEY?CHARACTER_META_TEST:CHARACTER_META_REAL}
-function characterRegistryKey(mode=characterModeId()){return `time4heroes_character_registry_${mode}_v2`}
+function characterRegistryKey(mode=characterModeId()){return `time4heroes_character_registry_${mode}_v3`}
 function characterSaveIdentity(save){return save?.created?`created:${save.created}`:save?.player?`${save.player.name||''}|${save.player.class||''}|${save.player.level||1}`:''}
 function characterSlotRowsRaw(mode=characterModeId()){return Array.from({length:CHARACTER_LIMIT},(_,i)=>({slot:i+1,save:rawLoad(characterSlotKey(i+1,mode))}))}
 function repairCharacterRegistry(){
- const mode=characterModeId(),rows=characterSlotRowsRaw(mode),canonical=rawLoad(SAVE_KEY);
- let active=activeCharacterSlot(),occupied=rows.filter(x=>x.save?.player);
- if(!occupied.length&&canonical?.player){localStorage.setItem(characterSlotKey(1,mode),JSON.stringify(canonical));setActiveCharacterSlot(1);active=1;occupied=[{slot:1,save:canonical}]}
- else if(canonical?.player){
-  const cid=characterSaveIdentity(canonical),match=occupied.find(x=>characterSaveIdentity(x.save)===cid);
-  if(!match){
-   const activeRow=rows.find(x=>x.slot===active);
-   if(!activeRow?.save?.player)localStorage.setItem(characterSlotKey(active,mode),JSON.stringify(canonical));
-   else {const empty=rows.find(x=>!x.save?.player);if(empty)localStorage.setItem(characterSlotKey(empty.slot,mode),JSON.stringify(canonical))}
-  }
+ const mode=characterModeId();
+ let active=activeCharacterSlot();
+ let rows=characterSlotRowsRaw(mode);
+ let occupied=rows.filter(x=>x.save?.player);
+ const canonical=rawLoad(SAVE_KEY);
+ // One-time migration only: the old single save may seed slot 1 only when no slots exist yet.
+ if(!occupied.length&&canonical?.player){
+  localStorage.setItem(characterSlotKey(1,mode),JSON.stringify(canonical));
+  setActiveCharacterSlot(1);active=1;
+  rows=characterSlotRowsRaw(mode);occupied=rows.filter(x=>x.save?.player);
  }
- const activeSave=rawLoad(characterSlotKey(active,mode));
+ // Clean up exact duplicate characters produced by the old slot-switch race.
+ const groups=new Map();
+ for(const row of occupied){
+  const id=characterSaveIdentity(row.save);if(!id)continue;
+  if(!groups.has(id))groups.set(id,[]);groups.get(id).push(row);
+ }
+ for(const dupes of groups.values()){
+  if(dupes.length<2)continue;
+  const keep=dupes.find(x=>x.slot===active)||dupes[0];
+  for(const row of dupes){if(row.slot!==keep.slot)localStorage.removeItem(characterSlotKey(row.slot,mode))}
+ }
+ rows=characterSlotRowsRaw(mode);occupied=rows.filter(x=>x.save?.player);
+ let activeSave=rawLoad(characterSlotKey(active,mode));
+ if(!activeSave?.player&&occupied.length){
+  active=occupied[0].slot;setActiveCharacterSlot(active);activeSave=occupied[0].save;
+ }
+ // From this point the selected slot is the source of truth. The legacy key is mirror-only.
  if(activeSave?.player)localStorage.setItem(SAVE_KEY,JSON.stringify(activeSave));
+ else localStorage.removeItem(SAVE_KEY);
  localStorage.setItem(characterRegistryKey(mode),'1');
- return rawLoad(characterSlotKey(active,mode));
+ return activeSave?.player?activeSave:null;
 }
 function activeCharacterSlot(){
  const n=Number(localStorage.getItem(characterActiveMetaKey())||1);
@@ -573,14 +591,22 @@ function switchCharacterSlot(slot){
  if(slot===activeCharacterSlot())return toast('Ta postać jest już aktywna.');
  const next=rawLoad(characterSlotKey(slot));if(!next?.player)return toast('Ten slot jest pusty.');
  if(!prepareCharacterChange())return;
- setActiveCharacterSlot(slot);localStorage.setItem(SAVE_KEY,JSON.stringify(next));location.reload();
+ // Freeze all unload/visibility autosaves before changing the active slot.
+ characterSlotTransition=true;
+ setActiveCharacterSlot(slot);
+ state=JSON.parse(JSON.stringify(next));
+ localStorage.setItem(SAVE_KEY,JSON.stringify(next));
+ location.reload();
 }
 function createCharacterSlot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
  if(rawLoad(characterSlotKey(slot))?.player)return toast('Ten slot jest już zajęty.');
  if(!prepareCharacterChange())return;
+ characterSlotTransition=true;
  setActiveCharacterSlot(slot);localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);localStorage.setItem(characterRegistryKey(),'1');
- state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';render();
+ state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';
+ // Creation continues in the same document, so re-enable saving for the new character only now.
+ characterSlotTransition=false;render();
 }
 function removeCharacterSlot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
@@ -589,6 +615,7 @@ function removeCharacterSlot(slot){
  if(!confirm(`Usunąć postać „${name}” ze slotu ${slot}? Tego nie można cofnąć.`))return;
  const isActive=slot===activeCharacterSlot();
  if(isActive){
+  characterSlotTransition=true;
   try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
   localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
   let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
@@ -1298,12 +1325,12 @@ function normalizeState(s){
 
 function load(){
  const repaired=repairCharacterRegistry();if(repaired?.player)return normalizeState(repaired);
- const now=rawLoad(SAVE_KEY);if(now?.player){localStorage.setItem(characterSlotKey(activeCharacterSlot()),JSON.stringify(now));localStorage.setItem(characterRegistryKey(),'1');return normalizeState(now)}
  if(SAVE_KEY===DEMO_SAVE_KEY||localStorage.getItem(characterActiveMetaKey())!==null||localStorage.getItem(characterRegistryKey())!==null)return null;
  for(const key of MIGRATION_KEYS){const old=rawLoad(key);if(old){const migrated=normalizeState(old);setActiveCharacterSlot(1);localStorage.setItem(characterSlotKey(1),JSON.stringify(migrated));localStorage.setItem(SAVE_KEY,JSON.stringify(migrated));localStorage.setItem(characterRegistryKey(),'1');return migrated}}
  return null;
 }
 function newGame(name,cls){
+ characterSlotTransition=false;
  const c=CLASSES[cls];
  const weapon={id:starterWeapon(cls),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
  const armor={id:starterArmor(),uid:uid(),upgrade:0,rune:null,enchant:null,affix:null};
@@ -1315,6 +1342,7 @@ function newGame(name,cls){
 function resetCharacter(){
  const slot=activeCharacterSlot(),name=state?.player?.name||'postać';
  if(!confirm(`Usunąć bieżącą postać „${name}” ze slotu ${slot}? Pozostałe postacie zostaną zachowane.`))return;
+ characterSlotTransition=true;
  try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
  localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
  let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
@@ -2585,7 +2613,7 @@ async function installPwa(){
 function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build ${BUILD_VERSION}</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>👥 Postacie</b><div class="muted">Możesz prowadzić maksymalnie 5 niezależnych bohaterów. Aktualnie: slot ${activeCharacterSlot()} • ${state.player.name} (${CLASSES[state.player.class]?.name||state.player.class}, lvl ${state.player.level}).</div><button class="secondary" data-character-manager>Wybierz postać • ${characterCount()}/${CHARACTER_LIMIT}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>${SAVE_KEY===DEMO_SAVE_KEY?'🧪 Osobna przygoda testowa':'📍 Przygoda GPS'}</b><p class="muted">Testy mają osobny zapis. Strzałki i symulacja nocy nie zmieniają postępu przygody GPS.</p><button class="secondary" data-play-mode>${SAVE_KEY===DEMO_SAVE_KEY?'Wróć do przygody GPS':'Otwórz kopię do testów'}</button><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🗑️ Usuń bieżącą postać</b><div class="muted">Usuwa tylko aktualnie wybraną postać. Pozostałe sloty zostają bez zmian.</div><button class="danger" data-reset-character>Usuń tę postać</button></div></div>`;
  el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-character-manager]')?.addEventListener('click',openCharacterManager);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-play-mode]').onclick=switchPlayMode;el.querySelector('[data-night]').disabled=SAVE_KEY!==DEMO_SAVE_KEY;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};hideStoryUntilTutorial();save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
-function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=SAVE_KEY===DEMO_SAVE_KEY?'time4heroes-3.9.7.1-TEST-save.json':'time4heroes-3.9.7.1-GPS-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=SAVE_KEY===DEMO_SAVE_KEY?'time4heroes-3.9.7.7-TEST-save.json':'time4heroes-3.9.7.7-GPS-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function validateSessionSave(raw){
  const session=raw.session;if(!session)return;
  const c=session.combat,d=session.dungeonRun,r=session.battleResult;
