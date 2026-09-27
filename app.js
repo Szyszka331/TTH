@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3976';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3982';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
@@ -9,7 +9,7 @@ let characterSlotTransition=false;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.8.0';
+const BUILD_VERSION='3.9.8.2';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -40,6 +40,10 @@ let gpsPausedByBackground=false;
 let playerWalkStopTimer=null;
 const playerMotion={heading:180,speed:0,moving:false,movingUntil:0,lastAt:0};
 let isOnline=navigator.onLine;
+let roadNetwork={key:'',segments:[],loading:false,loaded:false,lastFailAt:0};
+let roadRequestController=null;
+const ROAD_QUERY_RADIUS=2200;
+const ROAD_TYPES='residential|living_street|service|unclassified|tertiary|track|path|footway|pedestrian|cycleway';
 function connectionBanner(){return isOnline?'':'<div class=\"offline-banner\" data-offline-banner>📴 Tryb offline — zapis i większość gry działa, ale OpenStreetMap może być niedostępny.</div>'}
 function refreshConnectionBanner(){const old=document.querySelector('[data-offline-banner]');if(!isOnline&&!old)document.querySelector('.shell')?.insertAdjacentHTML('afterbegin',connectionBanner());if(isOnline&&old)old.remove()}
 window.addEventListener('online',()=>{isOnline=true;refreshConnectionBanner();toast('Połączenie wróciło.')});
@@ -226,10 +230,10 @@ function upgradeCityBuilding(id){ensureCityState();const rule=CITY_UPGRADE_RULES
 
 const TUTORIAL_STEPS=[
  {id:'move',title:'1. Rusz w świat',text:'Jesteś na MAPIE. W prawdziwej grze włącz GPS, a w zapisie testowym użyj strzałek. Oddal się co najmniej 60 m od punktu startowego.',go:'map',action:'Pokaż mapę'},
- {id:'kill',title:'2. Pierwsza walka',text:'Kliknij słabego potwora w swoim zasięgu, a potem wybierz WALKA → ATAK. Pierwszy pokonany potwór gwarantuje przedmiot dla Twojej klasy.',go:'map',action:'Znajdź potwora'},
+ {id:'kill',title:'2. Pierwsza walka',text:'Na mapie pojawi się treningowy Błotny Pełzacz lvl 1. Podejdź do niego i wybierz WALKA → ATAK. To bezpieczna pierwsza walka, a zwycięstwo gwarantuje przedmiot klasowy i zalicza pierwszą próbę umiejętności.',go:'map',action:'Znajdź potwora lvl 1'},
  {id:'inventory',title:'3. Otwórz plecak',text:'Kliknij na dole BOHATER → EKWIPUNEK + PLECAK. Tutaj znajdziesz łup z pierwszej walki oraz cały swój sprzęt.',go:'inventory',action:'Otwórz ekwipunek'},
  {id:'equip',title:'4. Załóż klasowy przedmiot',text:'Kliknij gwarantowany przedmiot z pierwszego łupu i wybierz ZAŁÓŻ. Zmiana wyposażenia od razu wpływa na Twoje statystyki.',go:'inventory',action:'Przejdź do plecaka'},
- {id:'skill',title:'5. Naucz się umiejętności',text:'Wejdź w BOHATER → UMIEJĘTNOŚCI. Ukończona próba klasowa pozwala wydać punkt na zdolność. Pierwsza próba wymaga tylko pierwszego zabicia.',go:'skills',action:'Otwórz umiejętności'},
+ {id:'skill',title:'5. Naucz się pierwszej umiejętności',text:'Wejdź w BOHATER → UMIEJĘTNOŚCI. Pierwsza zdolność Twojej klasy ma już ukończoną próbę po pierwszej walce — wydaj 1 punkt i odblokuj ją. Kolejne umiejętności mają już wyspecjalizowane Próby Klasowe.',go:'skills',action:'Odblokuj pierwszą umiejętność'},
  {id:'tavern',title:'6. Poznaj karczmę',text:'Kliknij MIASTO, a następnie KARCMĘ „POD KRUKIEM”. Tutaj odpoczywasz, odzyskujesz staminę i po samouczku znajdziesz tablicę zadań.',go:'town',action:'Idź do miasta'}
 ];
 
@@ -362,7 +366,7 @@ function itemIconVisual(id,cls='item-svg'){
  return `<span class="item-icon-shell item-grade-${d.rarity}" title="${d.name} • ${rarityName(d.rarity)}">${art}</span>`;
 }
 function skillIconVisual(id,cls='skill-svg'){return `<img src="assets/icons/skills/${id}.svg" class="${cls}" alt="">`}
-function ensureCoreState(s=state){if(!s)return;ensureStoryState(s);ensureCityState(s);s.ui ||= {heroView:'char',adventureView:'quests',menuView:'settings'};s.tutorial ||= {stage:0,complete:false,rewardGiven:false,flags:{},introSeen:true};s.tutorial.flags ||= {};s.tutorial.introSeen ??= true;s.tutorial.mapDismissedStage ??= -1;s.settings ||= {};s.settings.audio ??= true;s.settings.ambient ??= true;s.settings.masterSound ??= (s.settings.audio||s.settings.ambient);s.settings.sfxVolume ??= .68;s.settings.ambientVolume ??= .18;s.settings.haptics ??= true;s.settings.mapMode ||= 'focused';s.settings.mapFilters ||= {};s.settings.mapFilters.trail ??= true;s.player.inventoryCapacity ??= 32;s.player.trialStats ||= {};s.world.regionRewards ||= {};s.world.fogRadius=100;ensureDungeonAccessState(s);ensureCombatSkillLoadout(s);ensureBackpackSlots(s);ensureAlchemyState(s);ensureSocialState(s);}
+function ensureCoreState(s=state){if(!s)return;ensureStoryState(s);ensureCityState(s);s.ui ||= {heroView:'char',adventureView:'quests',menuView:'settings'};s.tutorial ||= {stage:0,complete:false,rewardGiven:false,flags:{},introSeen:true};s.tutorial.flags ||= {};s.tutorial.introSeen ??= true;s.tutorial.mapDismissedStage ??= -1;s.settings ||= {};s.settings.audio ??= true;s.settings.ambient ??= true;s.settings.masterSound ??= (s.settings.audio||s.settings.ambient);s.settings.sfxVolume ??= .68;s.settings.ambientVolume ??= .18;s.settings.haptics ??= true;s.settings.mapMode ||= 'focused';s.settings.mapFilters ||= {};s.settings.mapFilters.trail ??= true;s.player.inventoryCapacity ??= 32;s.player.trialStats ||= {};s.world.regionRewards ||= {};s.world.fogRadius=100;ensureDungeonAccessState(s);ensureCombatSkillLoadout(s);ensureBackpackSlots(s);ensureAlchemyState(s);ensureSocialState(s);ensureTutorialStarterMonster(s);}
 
 
 const DUNGEON_DAILY_LIMIT=3;
@@ -441,6 +445,18 @@ function dungeonGuardianMonster(d){return MONSTERS.find(m=>m.id===dungeonGuardia
 
 const TUTORIAL_CLASS_DROPS={knight:'tutorialKnightShield',mage:'tutorialMageStaff',hunter:'tutorialHunterBow',berserker:'tutorialBerserkerAxe',ranger:'tutorialRangerHood'};
 function tutorialClassDropId(cls=state?.player?.class){return TUTORIAL_CLASS_DROPS[cls]||'leatherGloves'}
+const TUTORIAL_FIRST_MONSTER_ID='tutorial_first_monster';
+function ensureTutorialStarterMonster(target=state,reposition=false){
+ if(!target?.world||target.tutorial?.complete||target.tutorial?.flags?.kill)return null;
+ const ready=(target.tutorial?.stage||0)>=1||!!target.tutorial?.flags?.move;if(!ready)return null;
+ target.world.entities ||= [];
+ let e=target.world.entities.find(x=>x.id===TUTORIAL_FIRST_MONSTER_ID);
+ const pos=target.player?.position||{x:0,y:0};
+ if(!e){e={id:TUTORIAL_FIRST_MONSTER_ID,type:'monster',template:'slime',variant:'normal',level:1,x:(pos.x||0)+36,y:pos.y||0,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false,tutorialStarter:true};target.world.entities.unshift(e)}
+ else {e.template='slime';e.variant='normal';e.level=1;e.elite=false;e.tutorialStarter=true;e.alive=true;e.respawn=Number.MAX_SAFE_INTEGER;if(reposition){e.x=(pos.x||0)+36;e.y=pos.y||0;e.roadAlignKey=''}}
+ if(target===state)alignEntityToRoad(e);
+ return e;
+}
 function tutorialLocksStory(){return !!state&&!state.tutorial?.complete}
 function hideStoryUntilTutorial(target=state){
  if(!target?.quests||target.tutorial?.complete)return;
@@ -478,7 +494,7 @@ function advanceTutorial(){
  }
  if(moved){state.tutorial.mapDismissedStage=-1;save();setTimeout(applyTutorialFocus,40)}
 }
-function tutorialEvent(type,value=0){ensureCoreState();if(state.tutorial.complete)return;const f=state.tutorial.flags;if(type==='move'&&value>=60)f.move=true;else if(type==='kill')f.kill=true;else if(type==='tavern')f.tavern=true;else if(type==='inventory')f.inventory=true;else if(type==='equip')f.equip=true;else if(type==='skill')f.skill=true;advanceTutorial();save()}
+function tutorialEvent(type,value=0){ensureCoreState();if(state.tutorial.complete)return;const f=state.tutorial.flags;if(type==='move'&&value>=60){f.move=true;advanceTutorial();ensureTutorialStarterMonster(state,true);save();return}else if(type==='kill')f.kill=true;else if(type==='tavern')f.tavern=true;else if(type==='inventory')f.inventory=true;else if(type==='equip')f.equip=true;else if(type==='skill')f.skill=true;advanceTutorial();save()}
 function tutorialMapOverlay(){const t=tutorialInfo();if(!t||state.tutorial.mapDismissedStage===state.tutorial.stage)return'';const pct=Math.round((state.tutorial.stage/TUTORIAL_STEPS.length)*100);return `<div class="tutorial-map-card guided-tutorial-card"><div class="npe-progress"><i style="width:${pct}%"></i></div><button class="tutorial-map-close" data-tutorial-hide aria-label="Zamknij">×</button><span>SAMOUCZEK ${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}</span><b>${t.title}</b><small>${t.text}</small><button class="primary tutorial-map-action" data-tutorial-go>${tutorialActionLabel(t)}</button></div>`}
 function tutorialJournalHTML(){const t=tutorialInfo();if(!t)return `<div class="panel-item first-hour-card"><b>✅ Samouczek ukończony</b><div class="muted">Główny wątek fabularny jest już dostępny.</div></div>`;return `<div class="panel-item first-hour-card tutorial-journal-lock"><b>🎓 Samouczek • ${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}: ${t.title}</b><p>${t.text}</p><div class="tutorial-lock-note">🔒 Zadania fabularne odblokują się po ukończeniu samouczka.</div><button class="primary" data-tutorial-go>${tutorialActionLabel(t)}</button></div>`}
 function tutorialNavigate(){const t=tutorialInfo();if(!t)return;if(t.go==='town'){selectNav('town');setTimeout(applyTutorialFocus,100);return}if(t.go==='inventory'){state.ui.heroView='gear';save();selectNav('hero');setTimeout(applyTutorialFocus,100);return}if(t.go==='skills'){state.ui.heroView='skills';save();selectNav('hero');setTimeout(applyTutorialFocus,100);return}selectNav('map');setTimeout(applyTutorialFocus,150)}
@@ -488,7 +504,7 @@ function currentQuestStepIndex(qid){const q=QUESTS.find(x=>x.id===qid);if(!q)ret
 function currentQuestStep(qid){const q=QUESTS.find(x=>x.id===qid),i=currentQuestStepIndex(qid);return q&&i>=0?{q,step:q.steps[i],index:i}:null}
 function activeQuestTargets(){const set=new Set();for(const qid of state.quests.active){const cur=currentQuestStep(qid);if(cur?.step?.target)set.add(cur.step.target)}return set}
 function questPoiVisible(e){if(!e||e.type!=='poi')return true;const refs=[];for(const q of QUESTS)q.steps.forEach((s,i)=>{if(s.type==='discover'&&s.target===e.id)refs.push({q,i})});if(!refs.length)return true;if(state.player.discovered.includes(e.id))return true;return refs.some(({q,i})=>state.quests.active.includes(q.id)&&currentQuestStepIndex(q.id)===i)}
-function questWorldEntityVisible(e){if(!e)return false;if(tutorialLocksStory()&&(e.questOnly||e.bountyId))return false;if(e.questOnly){if(!state.quests.active.includes(e.questId))return false;const cur=currentQuestStep(e.questId);return !!cur&&cur.index===e.questStage&&!e.done}if(e.bountyId){const b=(state.adventure?.bounties||[]).find(x=>x.id===e.bountyId);return !!b&&b.accepted&&!b.claimed&&!e.done&&(e.type!=='monster'||e.alive)}return questPoiVisible(e)}
+function questWorldEntityVisible(e){if(!e)return false;if(tutorialLocksStory()&&!state.tutorial?.flags?.kill&&e.type==='monster'&&!e.tutorialStarter)return false;if(tutorialLocksStory()&&(e.questOnly||e.bountyId))return false;if(e.questOnly){if(!state.quests.active.includes(e.questId))return false;const cur=currentQuestStep(e.questId);return !!cur&&cur.index===e.questStage&&!e.done}if(e.bountyId){const b=(state.adventure?.bounties||[]).find(x=>x.id===e.bountyId);return !!b&&b.accepted&&!b.claimed&&!e.done&&(e.type!=='monster'||e.alive)}return questPoiVisible(e)}
 function focusedEntityVisible(e){
  if(state.settings.mapMode!=='focused')return true;
  const d=dist(e,state.player.position),targets=activeQuestTargets(),specificMonster=e.type==='monster'&&e.template&&e.template!=='any'&&targets.has(e.template);
@@ -642,7 +658,7 @@ function itemDef(id){return ITEMS[id]||{id,name:id,icon:'❓',type:'unknown',rar
 function skillDef(id){return (SKILLS[state.player.class]||[]).find(s=>s.id===id)}
 const CLASS_SKILL_TRIALS={
  knight:{
-  shield:{type:'stat',key:'closeKills',count:1,label:'Pokonaj przeciwnika w zwarciu'},
+  shield:{type:'tutorialKill',count:1,label:'Pokonaj pierwszego potwora w samouczku'},
   fortress:{type:'stat',key:'blocks',count:5,label:'Zablokuj tarczą 5 ataków'},
   lastStand:{type:'stat',key:'lowHpWins',count:3,label:'Wygraj 3 walki mając 35% HP lub mniej'},
   counter:{type:'stat',key:'defends',count:6,label:'Przyjmij postawę Obrony 6 razy'},
@@ -653,7 +669,7 @@ const CLASS_SKILL_TRIALS={
   banner:{type:'stat',key:'eliteWins',count:5,label:'Pokonaj 5 elitarnych przeciwników'}
  },
  mage:{
-  fire:{type:'stat',key:'mageKills',count:1,label:'Pokonaj przeciwnika magią'},
+  fire:{type:'tutorialKill',count:1,label:'Pokonaj pierwszego potwora w samouczku'},
   elemental:{type:'stat',key:'burnApplied',count:8,label:'Podpal przeciwników 8 razy'},
   meteor:{type:'stat',key:'burningKills',count:5,label:'Pokonaj 5 przeciwników, gdy są podpaleni'},
   frost:{type:'family',family:'Nieumarli',count:6,label:'Pokonaj 6 Nieumarłych'},
@@ -664,7 +680,7 @@ const CLASS_SKILL_TRIALS={
   arcaneRift:{type:'stat',key:'bossBreaks',count:2,label:'Przełam 2 bossów, Herosów lub Legendy'}
  },
  hunter:{
-  double:{type:'stat',key:'rangedKills',count:1,label:'Pokonaj przeciwnika z dystansu'},
+  double:{type:'tutorialKill',count:1,label:'Pokonaj pierwszego potwora w samouczku'},
   mark:{type:'stat',key:'farHits',count:12,label:'Traf przeciwników 12 razy z dystansu DALEKO'},
   eagleEye:{type:'stat',key:'markedCrits',count:5,label:'Zadaj 5 krytyków oznaczonym celom'},
   petStrike:{type:'stat',key:'petAttacks',count:10,label:'Niech chowaniec wykona 10 ataków'},
@@ -675,7 +691,7 @@ const CLASS_SKILL_TRIALS={
   piercingShot:{type:'stat',key:'weakHits',count:10,label:'Traf słabość przeciwnika 10 razy'}
  },
  berserker:{
-  rage:{type:'stat',key:'closeKills',count:1,label:'Pokonaj przeciwnika w zwarciu'},
+  rage:{type:'tutorialKill',count:1,label:'Pokonaj pierwszego potwora w samouczku'},
   roar:{type:'stat',key:'damageTaken',count:200,label:'Przyjmij łącznie 200 obrażeń'},
   berserk:{type:'stat',key:'lowHpWins',count:3,label:'Wygraj 3 walki mając 35% HP lub mniej'},
   cleave:{type:'stat',key:'closeHits',count:12,label:'Traf przeciwników 12 razy w zwarciu'},
@@ -686,7 +702,7 @@ const CLASS_SKILL_TRIALS={
   bloodRush:{type:'stat',key:'critLowHp',count:6,label:'Zadaj 6 krytyków mając mniej niż połowę HP'}
  },
  ranger:{
-  poison:{type:'stat',key:'rangedKills',count:1,label:'Pokonaj przeciwnika z dystansu'},
+  poison:{type:'tutorialKill',count:1,label:'Pokonaj pierwszego potwora w samouczku'},
   destiny:{type:'stat',key:'poisonApplied',count:8,label:'Zatruj przeciwników 8 razy'},
   venomRain:{type:'stat',key:'poisonedKills',count:5,label:'Pokonaj 5 zatrutych przeciwników'},
   trap:{type:'monster',monster:'wolf',count:10,label:'Wytrop i pokonaj 10 Szarych Wilków'},
@@ -708,6 +724,7 @@ function skillTrialProgress(skill){
  if(t.type==='monster')value=Number(b[t.monster]||0);
  else if(t.type==='family')value=Object.entries(b).reduce((sum,[id,n])=>sum+((MONSTERS.find(m=>m.id===id)?.family===t.family)?Number(n||0):0),0);
  else if(t.type==='kills')value=Number(state.player.kills||0);
+ else if(t.type==='tutorialKill')value=state.tutorial?.flags?.kill?1:0;
  else if(t.type==='stat')value=trialStatValue(t.key);
  return {trial:t,value:Math.min(t.count,value),raw:value,done:value>=t.count};
 }
@@ -1170,7 +1187,9 @@ function ensureLivingWorld(s=state){
   const event=makeContextEvent(s,contextKey);if(!L.completedEvents.includes(event.id))s.world.entities.push(event);
   L.contextKey=contextKey;
  }
+ alignRoadEntities(s);
 }
+
 function explorationCell(x,y,size=100){return `${Math.floor(x/size)}:${Math.floor(y/size)}`}
 function registerExplorationProgress(x,y){
  ensureLivingWorld();
@@ -1427,7 +1446,7 @@ function questEntityById(id){return (state.world?.entities||[]).find(e=>e.id===i
 function removeQuestEntities(qid){if(!state?.world?.entities)return;state.world.entities=state.world.entities.filter(e=>e.questId!==qid)}
 function questSpawnPoint(baseX,baseY,distance=80,angle=0){return {x:baseX+Math.cos(angle)*distance,y:baseY+Math.sin(angle)*distance}}
 function spawnQuestEntity(def){
- state.world.entities ||= [];const old=state.world.entities.find(e=>e.id===def.id);if(old)return old;const e={type:'quest',icon:'❗',questOnly:true,done:false,...def};state.world.entities.push(e);return e;
+ state.world.entities ||= [];const old=state.world.entities.find(e=>e.id===def.id);if(old){alignEntityToRoad(old);return old}const e={type:'quest',icon:'❗',questOnly:true,done:false,...def};alignEntityToRoad(e);state.world.entities.push(e);return e;
 }
 function syncQ2World(){
  if(!state.quests.active.includes('q2')){removeQuestEntities('q2');return}
@@ -1457,8 +1476,8 @@ function spawnBountyTargets(b){
  const need=Math.max(0,remaining-present);
  for(let i=0;i<need;i++){
   const idx=present+i,pt=bountySpawnPoint(idx,Math.max(1,remaining));
-  if(b.type==='gather')state.world.entities.push({id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false});
-  else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
+  const entity=b.type==='gather'?{id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false}:{id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false};
+  alignEntityToRoad(entity);state.world.entities.push(entity);
  }
 }
 function syncQuestWorld(){
@@ -1482,6 +1501,7 @@ function monsterTemplate(e){const base=MONSTERS.find(m=>m.id===e.template)||MONS
 function monsterLevel(m){const p=state?.player?.level||1;return clamp(p+rnd(-2,2),m.min,m.max)}
 function entityMonsterLevel(e,m=null){
  m ||= monsterTemplate(e);
+ if(e?.tutorialStarter)return 1;
  const saved=Number(e?.level);
  if(Number.isFinite(saved)&&saved>0)return clamp(Math.round(saved),m.min,m.max);
  const p=state?.player?.level||1,seed=stableTextSeed(`${e?.id||e?.template||m.id}:map-level:${daySeed()}`),offset=Math.floor(seeded(seed)*5)-2,lvl=clamp(p+offset,m.min,m.max);
@@ -1840,6 +1860,68 @@ function renderAdventureHub(el){
 }
 function renderMenuHub(el){renderMore(el)}
 
+function latLngToWorld(lat,lng,source=state){
+ const o=source?.world?.gpsOrigin;if(!o)return null;
+ return {x:(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180),y:(lat-o.lat)*111320};
+}
+function roadNetworkKey(lat,lng){return `${Math.round(lat*120)/120}:${Math.round(lng*120)/120}`}
+function roadEligibleEntity(e){
+ if(!e)return false;
+ if(['monster','quest','resource','event'].includes(e.type))return true;
+ if((e.type==='poi'||e.type==='dungeon')&&activeQuestTargets?.().has?.(e.id))return true;
+ return false;
+}
+function nearestRoadPoint(x,y){
+ let best=null,bestD2=Infinity;
+ for(const seg of roadNetwork.segments){
+  const ax=seg.ax,ay=seg.ay,bx=seg.bx,by=seg.by,vx=bx-ax,vy=by-ay,len2=vx*vx+vy*vy;if(len2<.01)continue;
+  const t=clamp(((x-ax)*vx+(y-ay)*vy)/len2,0,1),px=ax+t*vx,py=ay+t*vy,dx=x-px,dy=y-py,d2=dx*dx+dy*dy;
+  if(d2<bestD2){bestD2=d2;best={x:px,y:py,vx,vy,distance:Math.sqrt(d2)}}
+ }
+ return best;
+}
+function alignEntityToRoad(e){
+ if(!e||!roadEligibleEntity(e)||!roadNetwork.loaded||!roadNetwork.segments.length)return false;
+ if(e.roadAlignKey===roadNetwork.key)return !!e.roadAligned;
+ const near=nearestRoadPoint(Number(e.x)||0,Number(e.y)||0);if(!near)return false;
+ const len=Math.hypot(near.vx,near.vy)||1,seed=stableTextSeed(e.id||`${e.type}:${e.x}:${e.y}`),sign=seed%2?1:-1;
+ const offset=e.type==='monster'?6+(seed%7):e.type==='event'?5+(seed%6):3+(seed%5);
+ e.x=near.x+(-near.vy/len)*offset*sign;e.y=near.y+(near.vx/len)*offset*sign;
+ e.roadAligned=true;e.roadAlignKey=roadNetwork.key;e.roadDistanceBefore=Math.round(near.distance);
+ return true;
+}
+function alignRoadEntities(source=state){
+ if(!source?.world?.entities||!roadNetwork.loaded)return 0;let changed=0;
+ for(const e of source.world.entities)if(alignEntityToRoad(e))changed++;
+ return changed;
+}
+function roadBBox(lat,lng,radius=ROAD_QUERY_RADIUS){
+ const dLat=radius/111320,dLng=radius/(111320*Math.max(.2,Math.cos(lat*Math.PI/180)));
+ return {south:lat-dLat,west:lng-dLng,north:lat+dLat,east:lng+dLng};
+}
+async function fetchRoadNetwork(lat,lng){
+ const key=roadNetworkKey(lat,lng);if(roadNetwork.loading||roadNetwork.key===key&&roadNetwork.loaded)return;
+ if(roadNetwork.lastFailAt&&Date.now()-roadNetwork.lastFailAt<45000)return;
+ roadNetwork.loading=true;roadNetwork.key=key;roadNetwork.loaded=false;
+ try{roadRequestController?.abort?.()}catch{}roadRequestController=typeof AbortController!=='undefined'?new AbortController():null;
+ try{
+ const b=roadBBox(lat,lng),query=`[out:json][timeout:12];way["highway"~"^(${ROAD_TYPES})$"]["access"!="private"]["access"!="no"](${b.south},${b.west},${b.north},${b.east});out geom;`;
+ const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];let data=null,lastErr=null;
+ for(const url of endpoints){try{const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:`data=${encodeURIComponent(query)}`,...(roadRequestController?{signal:roadRequestController.signal}:{})});if(!res.ok)throw new Error(`HTTP ${res.status}`);data=await res.json();break}catch(err){if(err?.name==='AbortError')throw err;lastErr=err}}
+ if(!data)throw lastErr||new Error('Brak danych dróg');
+ const segments=[];
+ for(const way of data.elements||[]){const g=way.geometry||[];for(let i=1;i<g.length;i++){const a=latLngToWorld(g[i-1].lat,g[i-1].lon),c=latLngToWorld(g[i].lat,g[i].lon);if(!a||!c)continue;segments.push({ax:a.x,ay:a.y,bx:c.x,by:c.y});if(segments.length>=6500)break}if(segments.length>=6500)break}
+ roadNetwork.segments=segments;roadNetwork.loaded=segments.length>0;roadNetwork.lastFailAt=0;
+ if(roadNetwork.loaded&&state){const moved=alignRoadEntities(state);if(moved){save();if(currentTab==='map'&&realMap){rebuildGameLayers();refreshQuestGuide();rebuildQuestGuideLayer()}}}
+ }catch(err){if(err?.name!=='AbortError'){roadNetwork.lastFailAt=Date.now();roadNetwork.segments=[];roadNetwork.loaded=false}}
+ finally{roadNetwork.loading=false}
+}
+function ensureRoadNetwork(){
+ if(typeof fetch!=='function')return;
+ const p=state?.player?.position,o=state?.world?.gpsOrigin,lat=Number(p?.lat)||Number(o?.lat),lng=Number(p?.lng)||Number(o?.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng)||!isOnline)return;
+ const key=roadNetworkKey(lat,lng);if(key!==roadNetwork.key||!roadNetwork.loaded)fetchRoadNetwork(lat,lng);
+}
+
 function worldToLatLng(x,y){
  const o=state.world.gpsOrigin;if(!o)return null;
  return [o.lat+y/111320,o.lng+x/(111320*Math.cos(o.lat*Math.PI/180))];
@@ -1975,7 +2057,7 @@ function rebuildGameLayers(){
  if(!realMap||!state.world.gpsOrigin)return;
  leafletEntityLayers.forEach(x=>realMap.removeLayer(x));leafletEntityLayers=[];
  leafletZoneLayers.forEach(x=>realMap.removeLayer(x));leafletZoneLayers=[];
- ensureLivingWorld();const filters=state.settings.mapFilters,z=rareZones(),targets=activeQuestTargets();
+ ensureLivingWorld();ensureRoadNetwork();alignRoadEntities(state);const filters=state.settings.mapFilters,z=rareZones(),targets=activeQuestTargets();
  for(const [name,a] of Object.entries(z)){
   const ll=worldToLatLng(a.x,a.y);if(!ll)continue;
  }
@@ -2086,6 +2168,7 @@ function initRealMap(){
  const p=state.player.position,origin=state.world.gpsOrigin;
  const center=p.lat?[p.lat,p.lng]:origin?[origin.lat,origin.lng]:[52.1,19.4];
  realMap.setView(center,p.lat?18:origin?17:7);
+ ensureRoadNetwork();
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
  if(p.lat){
   const html=playerMarkerHTML();
@@ -2246,6 +2329,7 @@ function moveDemo(dx,dy){
  registerPlayerMovement(previousPosition,pos);state.player.position=pos;followGps=true;
  if(pos.lat&&pos.lng)addExploredPoint(pos.lat,pos.lng,0);
  const added=markExplorationArea(pos.x,pos.y);if(added)registerExplorationProgress(pos.x,pos.y);
+ ensureRoadNetwork();alignRoadEntities(state);
  const away=Math.hypot(pos.x,pos.y);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();save();
  if(currentTab==='map'&&realMap){updateLiveMapPosition();rebuildGameLayers();refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer()}
  else if(currentTab==='map')selectNav('map');
@@ -2291,6 +2375,7 @@ function toggleGps(){
   if(firstOrigin)state.world.gpsOrigin={lat,lng};
   const o=state.world.gpsOrigin,dy=(lat-o.lat)*111320,dx=(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180);
   const nextPosition={x:dx,y:dy,lat,lng,gps:true,accuracy,heading,receivedAt:now,virtualTravel:false,testWalk:false};registerPlayerMovement(state.player.position,nextPosition);state.player.position=nextPosition;
+  ensureRoadNetwork();alignRoadEntities(state);
   const revealed=addExploredPoint(lat,lng,accuracy),newSectors=accuracy<=120?markExplorationArea(dx,dy):0;
   if(newSectors>0)registerExplorationProgress(dx,dy);
   const away=Math.hypot(dx,dy);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();if(revealed||newSectors)checkRegionRewards();save();
@@ -2843,6 +2928,7 @@ function startCombat(entity,opts={}){
  p.stamina=Math.max(0,p.stamina-3);
  combat={entity,monster:m,level:lvl,maxHp,hp:maxHp,atk,baseAtk:atk,environment,log:[`⚡ Rozpoczęcie walki: -3 staminy • pozostało ${p.stamina}/${p.maxStamina}.`,`${m.name} staje do walki.`,`${BIOMES[environment.biomeId].icon} ${environment.effect.title}: ${environment.effect.summary}.`],guard:0,debuff:0,debuffTurns:0,poison:0,poisonTurns:0,bleed:0,bleedTurns:0,burn:0,burnTurns:0,freezeTurns:0,mark:0,markTurns:0,dungeon:opts.dungeon||null,worldBoss:isWorldBoss,isBoss,questFight,bossPhase:1,enemyTurns:0,intent:null,maxEnemyMana,enemyMana:maxEnemyMana,enemyManaRegen,enemyRegenCooldown:0,enemySpecialCooldown:0,stagger:0,staggerMax:isBoss?100:0,stunned:0,vulnerableTurns:0,barrier:0,barrierTurns:0,playerWeaken:0,playerWeakenTurns:0,playerCritBuff:0,playerCritBuffTurns:0,playerDodgeBuff:0,playerDodgeBuffTurns:0,playerPowerBuff:0,playerPowerBuffTurns:0,playerBlockBuff:0,playerBlockBuffTurns:0,cooldowns:{},lastPlayerHit:null,lastEnemyHit:null,enemyHpGhostFrom:null,victoryAnimating:false,enemyVanishing:false,turnDealt:null,turnTaken:null,turnDealtNote:'',turnTakenNote:'',damageTakenTotal:0,usedPotion:false,phase:'player',turnToken:0,distance:1,menu:'main',approachBuffTurns:0,storyConsequence:opts.storyConsequence||null,worldEvent:opts.worldEvent||null,raidTier,partyMembers:opts.raid?.party||[],raidPartyHpMult,raidPlayerDamage:0,raidPartyDamage:0,raidPlayerActions:0};
  if(m.variantId!=='normal')combat.log.push(`${m.variantIcon} Odmiana ${m.variantLabel}: HP ×${monsterVariantDef(m.variantId).hp.toFixed(2)}, ATK ×${monsterVariantDef(m.variantId).atk.toFixed(2)}, łup ×${m.variantLoot.toFixed(2)}.`);
+ if(entity.tutorialStarter)combat.log.push('🎓 Przeciwnik treningowy lvl 1 — po zwycięstwie pierwsza Próba Klasowa zostanie zaliczona.');
  const levelGap=lvl-p.level;if(levelGap===0)combat.log.push('⚖️ Równy poziom: brak kar za różnicę lvl — wynik zależy od ekwipunku i decyzji.');else if(levelGap>=2)combat.log.push(`⚠️ Przeciwnik ma +${levelGap} poziomów: wyraźnie więcej HP i obrażeń, a Twoje ciosy są słabsze.`);
  if(questFight)combat.log.push(`📜 Przeciwnik questowy: wzmocnione HP${maxEnemyMana?' • własna mana • specjalne ataki':''}.`);
  if(entity.elite&&maxEnemyMana)combat.log.push('⭐ Elita może regenerować HP, odnawia manę i używa silniejszych zdolności.');

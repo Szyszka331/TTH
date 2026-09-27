@@ -1987,3 +1987,7 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 .map-task-subtitle{margin:13px 0 2px;padding-top:9px;border-top:1px solid #aa8956;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#72582f}
 .bounty-task-entry strong,.quest-entry strong{color:#6d4b1f}
 .tutorial-task-entry{background:#fff5d044;border-radius:10px;padding:10px}
+
+/* 3.9.8.1 — tutorial starter monster */
+.tutorial-monster-marker{filter:drop-shadow(0 0 7px rgba(232,194,93,.78))}
+.tutorial-monster-marker .creature-level{border-color:#e2bd66!important;box-shadow:0 0 0 2px #20170b,0 0 10px #e2bd6655!important}
