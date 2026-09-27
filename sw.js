@@ -1,6 +1,6 @@
-const CACHE='time4heroes-3982';
+const CACHE='time4heroes-3983';
 const CORE=[
-  './','./index.html','./styles.css?v=3982','./app.js?v=3982','./data.js?v=3982','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3983','./app.js?v=3983','./data.js?v=3983','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
   './assets/characters/battle-backs/knight-back.png','./assets/characters/battle-backs/mage-back.png','./assets/characters/battle-backs/hunter-back.png','./assets/characters/battle-backs/berserker-back.png','./assets/characters/battle-backs/ranger-back.png',
   './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',

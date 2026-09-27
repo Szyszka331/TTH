@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3982';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3983';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
@@ -9,7 +9,7 @@ let characterSlotTransition=false;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.8.2';
+const BUILD_VERSION='3.9.8.3';
 function refreshVisibleBuildLabels(){const walker=document.createTreeWalker(app,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))if(node.nodeValue?.includes('3.0.7'))node.nodeValue=node.nodeValue.replaceAll('3.0.7',BUILD_VERSION)}
 new MutationObserver(refreshVisibleBuildLabels).observe(app,{childList:true,subtree:true});
 let state=null;
@@ -40,10 +40,6 @@ let gpsPausedByBackground=false;
 let playerWalkStopTimer=null;
 const playerMotion={heading:180,speed:0,moving:false,movingUntil:0,lastAt:0};
 let isOnline=navigator.onLine;
-let roadNetwork={key:'',segments:[],loading:false,loaded:false,lastFailAt:0};
-let roadRequestController=null;
-const ROAD_QUERY_RADIUS=2200;
-const ROAD_TYPES='residential|living_street|service|unclassified|tertiary|track|path|footway|pedestrian|cycleway';
 function connectionBanner(){return isOnline?'':'<div class=\"offline-banner\" data-offline-banner>📴 Tryb offline — zapis i większość gry działa, ale OpenStreetMap może być niedostępny.</div>'}
 function refreshConnectionBanner(){const old=document.querySelector('[data-offline-banner]');if(!isOnline&&!old)document.querySelector('.shell')?.insertAdjacentHTML('afterbegin',connectionBanner());if(isOnline&&old)old.remove()}
 window.addEventListener('online',()=>{isOnline=true;refreshConnectionBanner();toast('Połączenie wróciło.')});
@@ -453,8 +449,7 @@ function ensureTutorialStarterMonster(target=state,reposition=false){
  let e=target.world.entities.find(x=>x.id===TUTORIAL_FIRST_MONSTER_ID);
  const pos=target.player?.position||{x:0,y:0};
  if(!e){e={id:TUTORIAL_FIRST_MONSTER_ID,type:'monster',template:'slime',variant:'normal',level:1,x:(pos.x||0)+36,y:pos.y||0,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false,tutorialStarter:true};target.world.entities.unshift(e)}
- else {e.template='slime';e.variant='normal';e.level=1;e.elite=false;e.tutorialStarter=true;e.alive=true;e.respawn=Number.MAX_SAFE_INTEGER;if(reposition){e.x=(pos.x||0)+36;e.y=pos.y||0;e.roadAlignKey=''}}
- if(target===state)alignEntityToRoad(e);
+ else {e.template='slime';e.variant='normal';e.level=1;e.elite=false;e.tutorialStarter=true;e.alive=true;e.respawn=Number.MAX_SAFE_INTEGER;if(reposition){e.x=(pos.x||0)+36;e.y=pos.y||0}}
  return e;
 }
 function tutorialLocksStory(){return !!state&&!state.tutorial?.complete}
@@ -1187,9 +1182,7 @@ function ensureLivingWorld(s=state){
   const event=makeContextEvent(s,contextKey);if(!L.completedEvents.includes(event.id))s.world.entities.push(event);
   L.contextKey=contextKey;
  }
- alignRoadEntities(s);
 }
-
 function explorationCell(x,y,size=100){return `${Math.floor(x/size)}:${Math.floor(y/size)}`}
 function registerExplorationProgress(x,y){
  ensureLivingWorld();
@@ -1446,7 +1439,7 @@ function questEntityById(id){return (state.world?.entities||[]).find(e=>e.id===i
 function removeQuestEntities(qid){if(!state?.world?.entities)return;state.world.entities=state.world.entities.filter(e=>e.questId!==qid)}
 function questSpawnPoint(baseX,baseY,distance=80,angle=0){return {x:baseX+Math.cos(angle)*distance,y:baseY+Math.sin(angle)*distance}}
 function spawnQuestEntity(def){
- state.world.entities ||= [];const old=state.world.entities.find(e=>e.id===def.id);if(old){alignEntityToRoad(old);return old}const e={type:'quest',icon:'❗',questOnly:true,done:false,...def};alignEntityToRoad(e);state.world.entities.push(e);return e;
+ state.world.entities ||= [];const old=state.world.entities.find(e=>e.id===def.id);if(old)return old;const e={type:'quest',icon:'❗',questOnly:true,done:false,...def};state.world.entities.push(e);return e;
 }
 function syncQ2World(){
  if(!state.quests.active.includes('q2')){removeQuestEntities('q2');return}
@@ -1476,8 +1469,8 @@ function spawnBountyTargets(b){
  const need=Math.max(0,remaining-present);
  for(let i=0;i<need;i++){
   const idx=present+i,pt=bountySpawnPoint(idx,Math.max(1,remaining));
-  const entity=b.type==='gather'?{id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false}:{id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false};
-  alignEntityToRoad(entity);state.world.entities.push(entity);
+  if(b.type==='gather')state.world.entities.push({id:bountyWorldId(b,idx),type:'resource',bountyId:b.id,item:b.target,name:itemDef(b.target).name,icon:'🌿',x:pt.x,y:pt.y,done:false});
+  else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
  }
 }
 function syncQuestWorld(){
@@ -1860,68 +1853,6 @@ function renderAdventureHub(el){
 }
 function renderMenuHub(el){renderMore(el)}
 
-function latLngToWorld(lat,lng,source=state){
- const o=source?.world?.gpsOrigin;if(!o)return null;
- return {x:(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180),y:(lat-o.lat)*111320};
-}
-function roadNetworkKey(lat,lng){return `${Math.round(lat*120)/120}:${Math.round(lng*120)/120}`}
-function roadEligibleEntity(e){
- if(!e)return false;
- if(['monster','quest','resource','event'].includes(e.type))return true;
- if((e.type==='poi'||e.type==='dungeon')&&activeQuestTargets?.().has?.(e.id))return true;
- return false;
-}
-function nearestRoadPoint(x,y){
- let best=null,bestD2=Infinity;
- for(const seg of roadNetwork.segments){
-  const ax=seg.ax,ay=seg.ay,bx=seg.bx,by=seg.by,vx=bx-ax,vy=by-ay,len2=vx*vx+vy*vy;if(len2<.01)continue;
-  const t=clamp(((x-ax)*vx+(y-ay)*vy)/len2,0,1),px=ax+t*vx,py=ay+t*vy,dx=x-px,dy=y-py,d2=dx*dx+dy*dy;
-  if(d2<bestD2){bestD2=d2;best={x:px,y:py,vx,vy,distance:Math.sqrt(d2)}}
- }
- return best;
-}
-function alignEntityToRoad(e){
- if(!e||!roadEligibleEntity(e)||!roadNetwork.loaded||!roadNetwork.segments.length)return false;
- if(e.roadAlignKey===roadNetwork.key)return !!e.roadAligned;
- const near=nearestRoadPoint(Number(e.x)||0,Number(e.y)||0);if(!near)return false;
- const len=Math.hypot(near.vx,near.vy)||1,seed=stableTextSeed(e.id||`${e.type}:${e.x}:${e.y}`),sign=seed%2?1:-1;
- const offset=e.type==='monster'?6+(seed%7):e.type==='event'?5+(seed%6):3+(seed%5);
- e.x=near.x+(-near.vy/len)*offset*sign;e.y=near.y+(near.vx/len)*offset*sign;
- e.roadAligned=true;e.roadAlignKey=roadNetwork.key;e.roadDistanceBefore=Math.round(near.distance);
- return true;
-}
-function alignRoadEntities(source=state){
- if(!source?.world?.entities||!roadNetwork.loaded)return 0;let changed=0;
- for(const e of source.world.entities)if(alignEntityToRoad(e))changed++;
- return changed;
-}
-function roadBBox(lat,lng,radius=ROAD_QUERY_RADIUS){
- const dLat=radius/111320,dLng=radius/(111320*Math.max(.2,Math.cos(lat*Math.PI/180)));
- return {south:lat-dLat,west:lng-dLng,north:lat+dLat,east:lng+dLng};
-}
-async function fetchRoadNetwork(lat,lng){
- const key=roadNetworkKey(lat,lng);if(roadNetwork.loading||roadNetwork.key===key&&roadNetwork.loaded)return;
- if(roadNetwork.lastFailAt&&Date.now()-roadNetwork.lastFailAt<45000)return;
- roadNetwork.loading=true;roadNetwork.key=key;roadNetwork.loaded=false;
- try{roadRequestController?.abort?.()}catch{}roadRequestController=typeof AbortController!=='undefined'?new AbortController():null;
- try{
- const b=roadBBox(lat,lng),query=`[out:json][timeout:12];way["highway"~"^(${ROAD_TYPES})$"]["access"!="private"]["access"!="no"](${b.south},${b.west},${b.north},${b.east});out geom;`;
- const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];let data=null,lastErr=null;
- for(const url of endpoints){try{const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:`data=${encodeURIComponent(query)}`,...(roadRequestController?{signal:roadRequestController.signal}:{})});if(!res.ok)throw new Error(`HTTP ${res.status}`);data=await res.json();break}catch(err){if(err?.name==='AbortError')throw err;lastErr=err}}
- if(!data)throw lastErr||new Error('Brak danych dróg');
- const segments=[];
- for(const way of data.elements||[]){const g=way.geometry||[];for(let i=1;i<g.length;i++){const a=latLngToWorld(g[i-1].lat,g[i-1].lon),c=latLngToWorld(g[i].lat,g[i].lon);if(!a||!c)continue;segments.push({ax:a.x,ay:a.y,bx:c.x,by:c.y});if(segments.length>=6500)break}if(segments.length>=6500)break}
- roadNetwork.segments=segments;roadNetwork.loaded=segments.length>0;roadNetwork.lastFailAt=0;
- if(roadNetwork.loaded&&state){const moved=alignRoadEntities(state);if(moved){save();if(currentTab==='map'&&realMap){rebuildGameLayers();refreshQuestGuide();rebuildQuestGuideLayer()}}}
- }catch(err){if(err?.name!=='AbortError'){roadNetwork.lastFailAt=Date.now();roadNetwork.segments=[];roadNetwork.loaded=false}}
- finally{roadNetwork.loading=false}
-}
-function ensureRoadNetwork(){
- if(typeof fetch!=='function')return;
- const p=state?.player?.position,o=state?.world?.gpsOrigin,lat=Number(p?.lat)||Number(o?.lat),lng=Number(p?.lng)||Number(o?.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng)||!isOnline)return;
- const key=roadNetworkKey(lat,lng);if(key!==roadNetwork.key||!roadNetwork.loaded)fetchRoadNetwork(lat,lng);
-}
-
 function worldToLatLng(x,y){
  const o=state.world.gpsOrigin;if(!o)return null;
  return [o.lat+y/111320,o.lng+x/(111320*Math.cos(o.lat*Math.PI/180))];
@@ -2057,7 +1988,7 @@ function rebuildGameLayers(){
  if(!realMap||!state.world.gpsOrigin)return;
  leafletEntityLayers.forEach(x=>realMap.removeLayer(x));leafletEntityLayers=[];
  leafletZoneLayers.forEach(x=>realMap.removeLayer(x));leafletZoneLayers=[];
- ensureLivingWorld();ensureRoadNetwork();alignRoadEntities(state);const filters=state.settings.mapFilters,z=rareZones(),targets=activeQuestTargets();
+ ensureLivingWorld();const filters=state.settings.mapFilters,z=rareZones(),targets=activeQuestTargets();
  for(const [name,a] of Object.entries(z)){
   const ll=worldToLatLng(a.x,a.y);if(!ll)continue;
  }
@@ -2168,7 +2099,6 @@ function initRealMap(){
  const p=state.player.position,origin=state.world.gpsOrigin;
  const center=p.lat?[p.lat,p.lng]:origin?[origin.lat,origin.lng]:[52.1,19.4];
  realMap.setView(center,p.lat?18:origin?17:7);
- ensureRoadNetwork();
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
  if(p.lat){
   const html=playerMarkerHTML();
@@ -2329,7 +2259,6 @@ function moveDemo(dx,dy){
  registerPlayerMovement(previousPosition,pos);state.player.position=pos;followGps=true;
  if(pos.lat&&pos.lng)addExploredPoint(pos.lat,pos.lng,0);
  const added=markExplorationArea(pos.x,pos.y);if(added)registerExplorationProgress(pos.x,pos.y);
- ensureRoadNetwork();alignRoadEntities(state);
  const away=Math.hypot(pos.x,pos.y);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();save();
  if(currentTab==='map'&&realMap){updateLiveMapPosition();rebuildGameLayers();refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer()}
  else if(currentTab==='map')selectNav('map');
@@ -2375,7 +2304,6 @@ function toggleGps(){
   if(firstOrigin)state.world.gpsOrigin={lat,lng};
   const o=state.world.gpsOrigin,dy=(lat-o.lat)*111320,dx=(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180);
   const nextPosition={x:dx,y:dy,lat,lng,gps:true,accuracy,heading,receivedAt:now,virtualTravel:false,testWalk:false};registerPlayerMovement(state.player.position,nextPosition);state.player.position=nextPosition;
-  ensureRoadNetwork();alignRoadEntities(state);
   const revealed=addExploredPoint(lat,lng,accuracy),newSectors=accuracy<=120?markExplorationArea(dx,dy):0;
   if(newSectors>0)registerExplorationProgress(dx,dy);
   const away=Math.hypot(dx,dy);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();if(revealed||newSectors)checkRegionRewards();save();

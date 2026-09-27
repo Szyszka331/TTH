@@ -254,8 +254,7 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Panel zadań na mapie pokazuje również zaakceptowane zlecenia z karczmy.
 
 
-## Build 3.9.8.2 — spawn przy drogach
-- Potwory, eventy i cele questowe są przyciągane do pobliskich dróg i ścieżek OpenStreetMap.
-- Pomijane są drogi oznaczone jako prywatne/no-access oraz autostrady i główne trasy szybkiego ruchu.
-- Obiekty są odsunięte kilka metrów od osi drogi, żeby nie stały dokładnie na jezdni.
-- Gdy usługa danych dróg jest chwilowo niedostępna, gra zachowuje dotychczasowy spawn jako fallback.
+## Build 3.9.8.3 — powrót do losowych spawnów
+- Usunięto przyciąganie mobów, questów i eventów do dróg OpenStreetMap.
+- Spawny znów są losowe jak przed wersją 3.9.8.2.
+- Pozostałe mechaniki z 3.9.8.1 zostały zachowane.
