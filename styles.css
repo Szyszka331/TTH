@@ -1991,3 +1991,12 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 /* 3.9.8.1 — tutorial starter monster */
 .tutorial-monster-marker{filter:drop-shadow(0 0 7px rgba(232,194,93,.78))}
 .tutorial-monster-marker .creature-level{border-color:#e2bd66!important;box-shadow:0 0 0 2px #20170b,0 0 10px #e2bd6655!important}
+
+/* 3.9.8.4 — passive resource regeneration */
+.regen-hint{margin-left:2px;color:#8fc18f;font-size:8px;vertical-align:top}.resource-fantasy span[title]{cursor:help}
+
+.recipe-kind{display:inline-flex;margin-top:3px;padding:2px 6px;border:1px solid #5b4932;border-radius:999px;background:#16100b;color:#cbb07a;font-size:8px;letter-spacing:.7px;text-transform:uppercase}.recipe-note{margin-top:5px;color:#9f927d;font-size:9px;line-height:1.35}
+
+/* 3.9.9.2 — HP sojuszników w rajdzie i wybór celu leczenia */
+.raid-party-strip span.down{opacity:.48;border-color:#733f3f;text-decoration:line-through;background:#1a0d0dcc}
+.heal-target-down{filter:grayscale(.65)}

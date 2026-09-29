@@ -1,9 +1,9 @@
 export const CLASSES = {
-  knight:{name:'Ciężki Rycerz',icon:'🛡️',accent:'stal',desc:'Tank. Blok, pancerz, tarcza i kontrola przeciwnika.',base:{str:7,agi:3,int:2,vit:9},hp:150,mana:45},
-  mage:{name:'Mag',icon:'🔮',accent:'arkanum',desc:'Silne zaklęcia, mana i efekty żywiołów.',base:{str:2,agi:4,int:10,vit:5},hp:95,mana:125},
-  hunter:{name:'Łowca',icon:'🏹',accent:'las',desc:'Krytyki, podwójny strzał i współpraca z chowańcem.',base:{str:4,agi:10,int:3,vit:5},hp:108,mana:75},
-  berserker:{name:'Berserker',icon:'🪓',accent:'krew',desc:'Ogromne obrażenia, furia i premie przy niskim HP.',base:{str:10,agi:5,int:1,vit:7},hp:138,mana:40},
-  ranger:{name:'Tropiciel',icon:'🌿',accent:'natura',desc:'Trucizny, pułapki, mobilność i chowaniec.',base:{str:4,agi:8,int:6,vit:5},hp:112,mana:90}
+  knight:{name:'Ciężki Rycerz',icon:'🛡️',accent:'stal',desc:'Tank. Blok, pancerz, tarcza i kontrola przeciwnika.',base:{str:7,agi:3,int:2,vit:9,lck:3},hp:150,mana:45},
+  mage:{name:'Mag',icon:'🔮',accent:'arkanum',desc:'Silne zaklęcia, mana i efekty żywiołów.',base:{str:2,agi:4,int:10,vit:5,lck:3},hp:95,mana:125},
+  hunter:{name:'Łowca',icon:'🏹',accent:'las',desc:'Krytyki, podwójny strzał i współpraca z chowańcem.',base:{str:4,agi:10,int:3,vit:5,lck:3},hp:108,mana:75},
+  berserker:{name:'Berserker',icon:'🪓',accent:'krew',desc:'Ogromne obrażenia, furia i premie przy niskim HP.',base:{str:10,agi:5,int:1,vit:7,lck:3},hp:138,mana:40},
+  ranger:{name:'Tropiciel',icon:'🌿',accent:'natura',desc:'Trucizny, pułapki, mobilność i chowaniec.',base:{str:4,agi:8,int:6,vit:5,lck:3},hp:112,mana:90}
 };
 
 // Build 3.3 — stworzenia odnalezione w starym katalogu grafik. Każde ma
@@ -245,6 +245,69 @@ export const ITEMS = {
  ashBow:{id:'ashBow',name:'Łuk Popielnego Szlaku',icon:'🏹',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:36,value:425,damage:[34,48],power:17,crit:6,set:'ashguard',classes:['hunter','ranger'],ammo:'primitiveArrow'},
  stormBow:{id:'stormBow',name:'Łuk Nawałnicy',icon:'🏹',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:45,value:565,damage:[43,61],power:21,crit:7,set:'stormforged',classes:['hunter','ranger'],ammo:'primitiveArrow'},
 
+ // NOWE BRONIE BUILDOWE 3.9.8.5 — kilka równorzędnych wyborów na tym samym progu poziomu
+ steelSaber:{id:'steelSaber',name:"Stalowa Szabla Wartownika",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'uncommon',reqLevel:7,value:48,damage:[6,10],power:4,crit:2,build:"blok i pewne ciosy",classes:['knight']},
+ watchmanMace:{id:'watchmanMace',name:"Buława Straży",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'uncommon',reqLevel:7,value:48,damage:[5,10],power:4,build:"przełamanie",classes:['knight']},
+ oathSword:{id:'oathSword',name:"Miecz Żelaznej Przysięgi",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'rare',reqLevel:12,value:92,damage:[11,16],power:7,crit:1,build:"obrona",classes:['knight']},
+ ironVowHammer:{id:'ironVowHammer',name:"Młot Żelaznej Przysięgi",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'rare',reqLevel:12,value:94,damage:[10,16],power:7,build:"przełamanie",classes:['knight']},
+ bastionBlade:{id:'bastionBlade',name:"Ostrze Bastionu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:20,value:258,damage:[18,28],power:11,crit:2,build:"tank",classes:['knight']},
+ guardianSpear:{id:'guardianSpear',name:"Włócznia Strażnika",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'spear',rarity:'epic',reqLevel:20,value:258,damage:[18,27],power:11,crit:3,build:"kontrola dystansu",classes:['knight']},
+ mistBulwarkSword:{id:'mistBulwarkSword',name:"Ostrze Bastionu Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:28,value:332,damage:[25,37],power:14,crit:3,build:"blok",classes:['knight']},
+ sentinelHammer:{id:'sentinelHammer',name:"Młot Strażnika Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'epic',reqLevel:28,value:334,damage:[25,38],power:14,crit:1,build:"przełamanie",classes:['knight']},
+ ashOathSword:{id:'ashOathSword',name:"Popielne Ostrze Przysięgi",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:36,value:432,damage:[33,47],power:17,crit:4,build:"walka w zwarciu",classes:['knight']},
+ ashSentinelHammer:{id:'ashSentinelHammer',name:"Popielny Młot Bastionu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'epic',reqLevel:36,value:434,damage:[32,48],power:17,crit:2,build:"przełamanie",classes:['knight']},
+ stormHalberd:{id:'stormHalberd',name:"Halabarda Nawałnicy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'spear',rarity:'epic',reqLevel:45,value:568,damage:[42,60],power:21,crit:5,build:"kontrola dystansu",classes:['knight']},
+ stormOathBlade:{id:'stormOathBlade',name:"Ostrze Burzowej Przysięgi",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:45,value:570,damage:[43,60],power:21,crit:5,build:"blok i zwarcie",classes:['knight']},
+ raiderAxe:{id:'raiderAxe',name:"Topór Łupieżcy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'uncommon',reqLevel:7,value:50,damage:[7,12],power:4,build:"niski poziom HP",classes:['berserker']},
+ cleaver:{id:'cleaver',name:"Tasak Rzeźnika",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'uncommon',reqLevel:7,value:50,damage:[6,11],power:4,crit:3,build:"krytyki",classes:['berserker']},
+ bloodAxe:{id:'bloodAxe',name:"Topór Krwawego Szału",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'rare',reqLevel:12,value:96,damage:[11,18],power:7,build:"niski poziom HP",classes:['berserker']},
+ skullHammer:{id:'skullHammer',name:"Młot Łamacza Czaszek",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'rare',reqLevel:12,value:96,damage:[10,18],power:7,build:"przełamanie",classes:['berserker']},
+ ravenAxe:{id:'ravenAxe',name:"Kruczy Topór",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'epic',reqLevel:20,value:264,damage:[20,31],power:11,crit:3,build:"krytyki",classes:['berserker']},
+ executionerBlade:{id:'executionerBlade',name:"Ostrze Kata",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:20,value:264,damage:[19,31],power:11,crit:2,build:"niski poziom HP",classes:['berserker']},
+ mistReaver:{id:'mistReaver',name:"Rozpruwacz Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'epic',reqLevel:28,value:338,damage:[27,40],power:14,crit:4,build:"cele z efektami",classes:['berserker']},
+ breakerMaul:{id:'breakerMaul',name:"Młot Przełamania Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'epic',reqLevel:28,value:338,damage:[26,41],power:14,crit:1,build:"przełamanie",classes:['berserker']},
+ ashReaver:{id:'ashReaver',name:"Popielny Rozpruwacz",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'epic',reqLevel:36,value:438,damage:[36,51],power:17,crit:4,build:"niski poziom HP",classes:['berserker']},
+ ashSkullMaul:{id:'ashSkullMaul',name:"Popielny Łamacz Czaszek",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'hammer',rarity:'epic',reqLevel:36,value:438,damage:[34,51],power:17,crit:2,build:"przełamanie",classes:['berserker']},
+ stormGreatAxe:{id:'stormGreatAxe',name:"Wielki Topór Nawałnicy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'axe',rarity:'epic',reqLevel:45,value:578,damage:[45,64],power:21,crit:5,build:"krytyki",classes:['berserker']},
+ stormBloodBlade:{id:'stormBloodBlade',name:"Burzowe Ostrze Krwi",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'sword',rarity:'epic',reqLevel:45,value:578,damage:[43,63],power:21,crit:5,build:"niski poziom HP",classes:['berserker']},
+ focusWand:{id:'focusWand',name:"Różdżka Skupienia",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'uncommon',reqLevel:7,value:52,damage:[7,12],power:4,crit:3,build:"krytyki",classes:['mage'],magicAlwaysHits:true},
+ sparkRod:{id:'sparkRod',name:"Berło Iskry",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'uncommon',reqLevel:7,value:52,damage:[7,11],power:4,crit:1,build:"oszczędzanie many",classes:['mage'],magicAlwaysHits:true},
+ frostStaff:{id:'frostStaff',name:"Kostur Lodowego Kręgu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'rare',reqLevel:12,value:90,damage:[11,17],power:7,crit:2,build:"efekty żywiołów",classes:['mage'],magicAlwaysHits:true},
+ manaRod:{id:'manaRod',name:"Berło Rezerwy Many",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'rare',reqLevel:12,value:90,damage:[10,16],power:7,crit:1,build:"oszczędzanie many",classes:['mage'],magicAlwaysHits:true},
+ emberStaff:{id:'emberStaff',name:"Kostur Płonącego Znaku",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'epic',reqLevel:20,value:260,damage:[19,28],power:11,crit:3,build:"efekty żywiołów",classes:['mage'],magicAlwaysHits:true},
+ voidWand:{id:'voidWand',name:"Różdżka Pustki",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'epic',reqLevel:20,value:262,damage:[18,29],power:11,crit:5,build:"krytyki",classes:['mage'],magicAlwaysHits:true},
+ runeStaff20:{id:'runeStaff20',name:"Kostur Arkanicznej Rezerwy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'epic',reqLevel:20,value:260,damage:[18,27],power:11,crit:2,build:"mana",classes:['mage'],magicAlwaysHits:true},
+ mistWand:{id:'mistWand',name:"Różdżka Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'epic',reqLevel:28,value:336,damage:[27,39],power:14,crit:5,build:"mana",classes:['mage'],magicAlwaysHits:true},
+ frostScepter:{id:'frostScepter',name:"Berło Wiecznego Lodu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'epic',reqLevel:28,value:336,damage:[27,40],power:14,crit:3,build:"efekty żywiołów",classes:['mage'],magicAlwaysHits:true},
+ ashWand:{id:'ashWand',name:"Popielna Różdżka",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'epic',reqLevel:36,value:438,damage:[35,50],power:17,crit:7,build:"krytyki",classes:['mage'],magicAlwaysHits:true},
+ runicScepter:{id:'runicScepter',name:"Berło Wielkiej Runy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'epic',reqLevel:36,value:438,damage:[34,49],power:17,crit:4,build:"mana",classes:['mage'],magicAlwaysHits:true},
+ tempestWand:{id:'tempestWand',name:"Różdżka Nawałnicy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'wand',rarity:'epic',reqLevel:45,value:580,damage:[44,63],power:21,crit:7,build:"atak z daleka",classes:['mage'],magicAlwaysHits:true},
+ stormScepter:{id:'stormScepter',name:"Berło Oka Burzy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'staff',rarity:'epic',reqLevel:45,value:580,damage:[43,62],power:21,crit:5,build:"mana i dystans",classes:['mage'],magicAlwaysHits:true},
+ scoutLongbow:{id:'scoutLongbow',name:"Długi Łuk Zwiadowcy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'uncommon',reqLevel:7,value:50,damage:[6,11],power:4,crit:2,build:"dystans",classes:['hunter'],ammo:'primitiveArrow'},
+ quickBow:{id:'quickBow',name:"Krótki Łuk Sokoła",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'uncommon',reqLevel:7,value:50,damage:[6,10],power:4,crit:4,build:"krytyki",classes:['hunter'],ammo:'primitiveArrow'},
+ eagleBow:{id:'eagleBow',name:"Łuk Orlego Oka",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'rare',reqLevel:12,value:104,damage:[10,16],power:7,crit:5,build:"krytyki",classes:['hunter'],ammo:'primitiveArrow'},
+ piercingBow:{id:'piercingBow',name:"Łuk Przebijający",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'rare',reqLevel:12,value:104,damage:[11,17],power:7,crit:2,build:"przełamanie",classes:['hunter'],ammo:'primitiveArrow'},
+ ravenLongbow:{id:'ravenLongbow',name:"Kruczy Długi Łuk",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:20,value:258,damage:[18,28],power:11,crit:5,build:"dystans",classes:['hunter'],ammo:'primitiveArrow'},
+ beastmasterBow:{id:'beastmasterBow',name:"Łuk Władcy Bestii",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:20,value:258,damage:[17,27],power:11,crit:4,build:"chowaniec",classes:['hunter'],ammo:'primitiveArrow'},
+ mistLongbow:{id:'mistLongbow',name:"Długi Łuk Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:28,value:334,damage:[26,38],power:14,crit:5,build:"dystans",classes:['hunter'],ammo:'primitiveArrow'},
+ falconBow:{id:'falconBow',name:"Łuk Srebrnego Sokoła",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:28,value:334,damage:[25,37],power:14,crit:7,build:"krytyki",classes:['hunter'],ammo:'primitiveArrow'},
+ ashLongbow:{id:'ashLongbow',name:"Popielny Długi Łuk",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:36,value:432,damage:[34,48],power:17,crit:6,build:"dystans",classes:['hunter'],ammo:'primitiveArrow'},
+ marksmanBow:{id:'marksmanBow',name:"Łuk Mistrza Strzelców",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:36,value:432,damage:[33,47],power:17,crit:9,build:"krytyki",classes:['hunter'],ammo:'primitiveArrow'},
+ stormLongbow:{id:'stormLongbow',name:"Długi Łuk Nawałnicy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:45,value:570,damage:[42,60],power:21,crit:7,build:"dystans",classes:['hunter'],ammo:'primitiveArrow'},
+ skyPiercer:{id:'skyPiercer',name:"Łuk Przebijający Niebo",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:45,value:572,damage:[43,61],power:21,crit:6,build:"przełamanie",classes:['hunter'],ammo:'primitiveArrow'},
+ serpentBow:{id:'serpentBow',name:"Łuk Żmijowego Kła",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'uncommon',reqLevel:7,value:50,damage:[6,10],power:4,crit:2,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+ trailBow:{id:'trailBow',name:"Łuk Cichego Szlaku",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'uncommon',reqLevel:7,value:50,damage:[6,10],power:4,crit:3,build:"unik",classes:['ranger'],ammo:'primitiveArrow'},
+ venomBow:{id:'venomBow',name:"Łuk Jadowej Strzały",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'rare',reqLevel:12,value:104,damage:[10,16],power:7,crit:3,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+ trapperBow:{id:'trapperBow',name:"Łuk Sidlarza",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'rare',reqLevel:12,value:104,damage:[10,17],power:7,crit:2,build:"kontrola",classes:['ranger'],ammo:'primitiveArrow'},
+ wildVenomBow:{id:'wildVenomBow',name:"Łuk Dzikiego Jadu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:20,value:258,damage:[18,27],power:11,crit:4,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+ beastBondBow:{id:'beastBondBow',name:"Łuk Więzi Bestii",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:20,value:258,damage:[17,27],power:11,crit:4,build:"chowaniec",classes:['ranger'],ammo:'primitiveArrow'},
+ mistVenomBow:{id:'mistVenomBow',name:"Jadowity Łuk Mgieł",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:28,value:334,damage:[25,37],power:14,crit:5,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+ stalkerBow:{id:'stalkerBow',name:"Łuk Nocnego Tropiciela",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:28,value:334,damage:[25,38],power:14,crit:5,build:"unik",classes:['ranger'],ammo:'primitiveArrow'},
+ ashVenomBow:{id:'ashVenomBow',name:"Popielny Łuk Jadu",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:36,value:432,damage:[33,47],power:17,crit:6,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+ shadowBow:{id:'shadowBow',name:"Łuk Cienia",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:36,value:432,damage:[33,48],power:17,crit:6,build:"cele z efektami",classes:['ranger'],ammo:'primitiveArrow'},
+ tempestTrackerBow:{id:'tempestTrackerBow',name:"Łuk Tropiciela Nawałnicy",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:45,value:570,damage:[42,60],power:21,crit:7,build:"cele z efektami",classes:['ranger'],ammo:'primitiveArrow'},
+ stormSerpentBow:{id:'stormSerpentBow',name:"Burzowy Łuk Żmii",icon:'⚔️',type:'weapon',slot:'weapon',weaponKind:'bow',rarity:'epic',reqLevel:45,value:572,damage:[42,60],power:21,crit:6,build:"trucizna",classes:['ranger'],ammo:'primitiveArrow'},
+
  // PANCERZE I UBRANIA
  leather:{id:'leather',name:'Łatana skórzana kamizelka',icon:'🥋',type:'armor',slot:'armor',rarity:'common',reqLevel:3,value:16,armor:3,classes:['hunter','ranger','berserker']},
  apprenticeRobe:{id:'apprenticeRobe',name:'Szata ucznia',icon:'🥻',type:'armor',slot:'armor',rarity:'uncommon',reqLevel:4,value:34,armor:2,power:2,classes:['mage']},
@@ -379,6 +442,78 @@ export const ITEMS = {
  skySteel:{id:'skySteel',name:'Stal niebios',icon:'⚡',type:'material',rarity:'epic',value:50,maxStack:99}
 };
 
+
+// 3.9.8.6 — pełne pule klasowego wyposażenia. Każda klasa ma cztery progi
+// zestawów (12 / 28 / 45 / 70), a elementy wzmacniają różne style gry.
+const CLASS_GEAR_TIERS=[
+ {level:12,rarity:'rare',value:96,mult:1.00},
+ {level:28,rarity:'epic',value:330,mult:1.85},
+ {level:45,rarity:'heroic',value:680,mult:2.70},
+ {level:70,rarity:'legendary',value:1320,mult:3.85},
+ {level:80,rarity:'legendary',value:1760,mult:4.55},
+ {level:90,rarity:'legendary',value:2280,mult:5.25},
+ {level:100,rarity:'legendary',value:3050,mult:6.10}
+];
+const CLASS_GEAR_META={
+ knight:{
+  setNames:{12:'Rynsztunek Żelaznej Straży',28:'Rynsztunek Strażnika Mgieł',45:'Rynsztunek Nawałnicy',70:'Rynsztunek Smoczego Bastionu',80:'Rynsztunek Skalnego Gryfa',90:'Rynsztunek Władcy Nawałnicy',100:'Rynsztunek Wiecznego Bastionu'},
+  short:{12:'Żelaznej Straży',28:'Strażnika Mgieł',45:'Nawałnicy',70:'Smoczego Bastionu',80:'Skalnego Gryfa',90:'Władcy Nawałnicy',100:'Wiecznego Bastionu'},
+  art:'knight',slots:{helmet:'Hełm',armor:'Napierśnik',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring:'Pierścień',offhand:'Tarcza'},
+  base:{helmet:{armor:6,power:1},armor:{armor:12,power:2},gloves:{armor:4,power:2},boots:{armor:4,crit:1},amulet:{power:3,crit:1},ring:{power:2,crit:2},offhand:{armor:9,power:1}},
+  perks:{helmet:{blockBonus:.04,label:'+4% blok'},armor:{closeGuard:.05,label:'-5% obrażeń na BLISKO'},gloves:{staggerBonus:7,label:'+7 przełamania'},boots:{blockBonus:.03,label:'+3% blok'},amulet:{approachDamage:.07,label:'+7% obrażeń po podejściu'},ring:{critDamage:.08,label:'+8% obrażeń krytycznych'},offhand:{blockBonus:.08,closeGuard:.04,label:'+8% blok • -4% obrażeń na BLISKO'}},
+  setTwo:{armor:4},setThree:{power:5,armor:3}
+ },
+ berserker:{
+  setNames:{12:'Rynsztunek Krwawego Szlaku',28:'Rynsztunek Rzeźnika Mgieł',45:'Rynsztunek Gniewu Nawałnicy',70:'Rynsztunek Smoczej Furii',80:'Rynsztunek Krwawego Gryfa',90:'Rynsztunek Rozdarcia Nawałnicy',100:'Rynsztunek Ostatniej Furii'},
+  short:{12:'Krwawego Szlaku',28:'Rzeźnika Mgieł',45:'Gniewu Nawałnicy',70:'Smoczej Furii',80:'Krwawego Gryfa',90:'Rozdarcia Nawałnicy',100:'Ostatniej Furii'},
+  art:'berserker',slots:{helmet:'Hełm',armor:'Napierśnik',gloves:'Karwasze',boots:'Buty',amulet:'Amulet',ring:'Pierścień'},
+  base:{helmet:{armor:3,power:3,crit:1},armor:{armor:7,power:4},gloves:{armor:2,power:4,crit:1},boots:{armor:2,power:2,crit:2},amulet:{power:4,crit:1},ring:{power:3,crit:3}},
+  perks:{helmet:{lowHpDamage:.07,label:'+7% obrażeń poniżej 50% HP'},armor:{bleedAmp:.10,label:'+10% siły krwawienia'},gloves:{critDamage:.10,label:'+10% obrażeń krytycznych'},boots:{closeDamage:.06,label:'+6% obrażeń na BLISKO'},amulet:{statusDamage:.07,label:'+7% obrażeń na cele z efektem'},ring:{staggerBonus:7,label:'+7 przełamania'}},
+  setTwo:{power:5},setThree:{power:4,crit:4}
+ },
+ mage:{
+  setNames:{12:'Szaty Runicznego Adepta',28:'Szaty Arkanum Mgieł',45:'Szaty Oka Burzy',70:'Szaty Astralnego Władcy',80:'Szaty Niebiańskiego Węża',90:'Szaty Serca Nawałnicy',100:'Szaty Eteru'},
+  short:{12:'Runicznego Adepta',28:'Arkanum Mgieł',45:'Oka Burzy',70:'Astralnego Władcy',80:'Niebiańskiego Węża',90:'Serca Nawałnicy',100:'Eteru'},
+  art:'mage',slots:{helmet:'Kaptur',armor:'Szata',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring:'Pierścień',offhand:'Fokus'},
+  base:{helmet:{armor:2,power:3,crit:2},armor:{armor:4,power:5},gloves:{armor:1,power:4,crit:2},boots:{armor:1,power:2,crit:2},amulet:{power:5,crit:2},ring:{power:4,crit:3},offhand:{power:5,crit:1}},
+  perks:{helmet:{farMana:1,label:'-1 many na DALEKO'},armor:{farDamage:.07,label:'+7% obrażeń na DALEKO'},gloves:{critDamage:.10,label:'+10% obrażeń krytycznych'},boots:{dodgeBonus:3,label:'+3% uniku'},amulet:{statusDamage:.08,label:'+8% obrażeń na cele z efektem'},ring:{critDamage:.08,label:'+8% obrażeń krytycznych'},offhand:{farMana:2,farDamage:.05,label:'-2 many i +5% obrażeń na DALEKO'}},
+  setTwo:{crit:3},setThree:{power:6}
+ },
+ hunter:{
+  setNames:{12:'Rynsztunek Srebrnego Sokoła',28:'Rynsztunek Kruczego Łowcy',45:'Rynsztunek Łowcy Burzy',70:'Rynsztunek Smoczego Zwiadowcy',80:'Rynsztunek Skrzydła Gryfa',90:'Rynsztunek Gromowego Strzelca',100:'Rynsztunek Łowcy Horyzontu'},
+  short:{12:'Srebrnego Sokoła',28:'Kruczego Łowcy',45:'Łowcy Burzy',70:'Smoczego Zwiadowcy',80:'Skrzydła Gryfa',90:'Gromowego Strzelca',100:'Łowcy Horyzontu'},
+  art:'hunter',slots:{helmet:'Hełm',armor:'Pancerz',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring:'Pierścień',offhand:'Kołczan'},
+  base:{helmet:{armor:3,power:2,crit:3},armor:{armor:6,power:3,crit:1},gloves:{armor:2,power:3,crit:3},boots:{armor:2,power:2,crit:3},amulet:{power:3,crit:3},ring:{power:2,crit:4},offhand:{power:3,crit:3}},
+  perks:{helmet:{critDamage:.08,label:'+8% obrażeń krytycznych'},armor:{farDamage:.06,label:'+6% obrażeń na DALEKO'},gloves:{markDamage:.08,label:'+8% obrażeń w oznaczony cel'},boots:{dodgeBonus:4,label:'+4% uniku'},amulet:{petDamage:.10,label:'+10% obrażeń chowańca'},ring:{staggerBonus:6,label:'+6 przełamania'},offhand:{farDamage:.06,markDamage:.05,label:'+6% DALEKO • +5% na oznaczony cel'}},
+  setTwo:{crit:4},setThree:{power:5,crit:2}
+ },
+ ranger:{
+  setNames:{12:'Rynsztunek Zielonego Tropu',28:'Rynsztunek Leśnego Cienia',45:'Rynsztunek Żmijowej Burzy',70:'Rynsztunek Pradawnego Tropiciela',80:'Rynsztunek Jadowitego Bazyliszka',90:'Rynsztunek Cienia Nawałnicy',100:'Rynsztunek Pradawnego Śladu'},
+  short:{12:'Zielonego Tropu',28:'Leśnego Cienia',45:'Żmijowej Burzy',70:'Pradawnego Tropiciela',80:'Jadowitego Bazyliszka',90:'Cienia Nawałnicy',100:'Pradawnego Śladu'},
+  art:'ranger',slots:{helmet:'Kaptur',armor:'Skórznia',gloves:'Rękawice',boots:'Buty',amulet:'Amulet',ring:'Pierścień',offhand:'Zestaw pułapek'},
+  base:{helmet:{armor:2,power:2,crit:2},armor:{armor:5,power:3,crit:1},gloves:{armor:2,power:3,crit:2},boots:{armor:2,power:2,crit:3},amulet:{power:3,crit:2},ring:{power:2,crit:3},offhand:{power:3,crit:2}},
+  perks:{helmet:{poisonAmp:.10,label:'+10% siły trucizny'},armor:{dodgeBonus:4,label:'+4% uniku'},gloves:{statusDamage:.08,label:'+8% obrażeń na cele z efektem'},boots:{dodgeBonus:5,label:'+5% uniku'},amulet:{petDamage:.10,label:'+10% obrażeń chowańca'},ring:{critDamage:.07,label:'+7% obrażeń krytycznych'},offhand:{poisonAmp:.12,statusDamage:.05,label:'+12% trucizny • +5% na cele z efektem'}},
+  setTwo:{crit:3},setThree:{power:4,armor:3}
+ }
+};
+function classGearScaleStats(base,mult){const out={};for(const [k,v] of Object.entries(base||{}))out[k]=Math.max(1,Math.round(v*mult));return out}
+function classGearSetId(cls,level){return `class_${cls}_${level}`}
+function classGearArtFile(cls,slot){const artSlot=slot==='offhand'?'offhand':slot;return `assets/icons/classgear/${cls}-${artSlot}.png`}
+function buildClassGearItems(){
+ const out={};
+ for(const [cls,meta] of Object.entries(CLASS_GEAR_META))for(const tier of CLASS_GEAR_TIERS){
+  const set=classGearSetId(cls,tier.level),setName=meta.setNames[tier.level],short=meta.short[tier.level];
+  for(const [slot,label] of Object.entries(meta.slots)){
+   const id=`cg_${cls}_${tier.level}_${slot}`;
+   const stats=classGearScaleStats(meta.base[slot],tier.mult);
+   const value=Math.round(tier.value*(slot==='armor'?1.22:slot==='offhand'?1.12:(slot==='amulet'||slot==='ring')?0.88:1));
+   out[id]={id,name:`${label} ${short}`,icon:slot==='ring'?'💍':slot==='amulet'?'📿':slot==='boots'?'🥾':slot==='gloves'?'🧤':slot==='helmet'?'⛑️':slot==='offhand'?'◇':'🛡️',artFile:classGearArtFile(cls,slot),type:'gear',slot,rarity:tier.rarity,reqLevel:tier.level,value,classes:[cls],classGear:true,build:meta.perks[slot]?.label||'ekwipunek klasowy',perk:meta.perks[slot]||null,set,setName,setTwo:classGearScaleStats(meta.setTwo,Math.max(1,tier.mult*.72)),setThree:classGearScaleStats(meta.setThree,Math.max(1,tier.mult*.72)),setClass:cls,setLevel:tier.level,...stats};
+  }
+ }
+ return out;
+}
+Object.assign(ITEMS,buildClassGearItems());
+
 export const SKILLS = {
  knight:[
   {id:'shield',branch:'Bastion',name:'Uderzenie tarczą',icon:'🛡️',req:1,cost:1,mana:8,kind:'damage',mult:1.25,cooldown:1,status:'stun',statusChance:.18,desc:'125% obrażeń, osłabienie ataku i szansa na ogłuszenie.',debuff:0.15},
@@ -400,7 +535,8 @@ export const SKILLS = {
   {id:'frostNova',branch:'Lód',name:'Nova Mrozu',icon:'🌨️',req:14,cost:2,mana:30,kind:'damage',mult:1.85,cooldown:4,requires:'iceArmor',status:'freeze',statusTurns:3,statusChance:1,desc:'185% obrażeń i gwarantowane zamrożenie.'},
   {id:'spark',branch:'Arkanum',name:'Łańcuch Iskier',icon:'⚡',req:4,cost:1,mana:15,kind:'multi',hits:2,mult:.9,cooldown:1,desc:'Dwa magiczne trafienia po 90%.'},
   {id:'arcaneSurge',branch:'Arkanum',name:'Przypływ Arkanum',icon:'🔷',req:9,cost:2,mana:18,kind:'buff',buff:'crit',value:22,turns:3,cooldown:4,requires:'spark',desc:'Przez 3 tury mocno zwiększa szansę na krytyczne czary.'},
-  {id:'arcaneRift',branch:'Arkanum',name:'Szczelina Arkanum',icon:'🌀',req:16,cost:3,mana:40,kind:'damage',mult:2.65,cooldown:5,requires:'arcaneSurge',status:'stun',statusChance:.5,desc:'265% obrażeń i szansa na ogłuszenie przeciwnika.'}
+  {id:'arcaneRift',branch:'Arkanum',name:'Szczelina Arkanum',icon:'🌀',req:16,cost:3,mana:40,kind:'damage',mult:2.65,cooldown:5,requires:'arcaneSurge',status:'stun',statusChance:.5,desc:'265% obrażeń i szansa na ogłuszenie przeciwnika.'},
+  {id:'heal',branch:'Odnowa',name:'Uzdrowienie',icon:'✨',req:3,cost:1,mana:18,kind:'heal',healPct:.16,healInt:.8,cooldown:2,desc:'Leczy Ciebie albo wybranego sojusznika. Siła leczenia rośnie z Inteligencją.'}
  ],
  hunter:[
   {id:'double',branch:'Strzelectwo',name:'Podwójny strzał',icon:'🏹',req:1,cost:1,mana:10,kind:'multi',hits:2,mult:0.82,cooldown:0,desc:'Dwa trafienia po 82% obrażeń.'},

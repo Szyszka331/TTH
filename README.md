@@ -1,3 +1,40 @@
+## 3.9.9.2 — Szczęście i leczenie Maga
+
+- Dodano piątą podstawową statystykę: **Szczęście (LCK)**. Każda klasa startuje z 3 LCK i może rozwijać je punktami statystyk.
+- Każde 10 LCK daje +1 punkt procentowy szansy na krytyk.
+- Każde 10 LCK daje +2% względnej premii do szans rzadkiego lub lepszego łupu; statystyka nie dodaje przedmiotów spoza tabeli dropu potwora.
+- Runa Szczęścia daje teraz +5 LCK zamiast bezpośredniego krytyka.
+- Mag otrzymał umiejętność **Uzdrowienie**: 18 many, 2 tury odnowienia, leczenie skaluje się z Inteligencją.
+- Uzdrowienie działa na Maga oraz wybranego żywego sojusznika w walce drużynowej.
+- Sojusznicy w rajdach Heros/Legenda mają własne HP, mogą zostać powaleni i po powaleniu przestają atakować.
+
+## 3.9.9.1 — Drop ponad crafting
+
+- Unikatowe (kod `epic`), Heroiczne i Legendarne wyposażenie nie może być wytwarzane u kowala.
+- Te trzy klasy jakości pozostają nagrodą z potworów, Elit, Herosów, Legend i odpowiednich aktywności.
+- Crafting wyposażenia kończy się na jakości Rzadkiej.
+- Każda receptura tworząca Rzadki element wyposażenia wymaga co najmniej jednego materiału jakości Rzadkiej lub wyższej.
+- Dawne receptury endgame 80/90/100 na Legendarne EQ są automatycznie usuwane z katalogu kowala.
+- Materiały bossowe nadal są wartościowe: służą do run, ulepszeń, enchantu i rzadkiego craftingu, ale nie omijają polowania na bossowy loot.
+
+## 3.9.9.0 — Pełny crafting z materiałów potworów
+
+- Surowce z potworów mają zastosowanie w przetwarzaniu i recepturach.
+- 11 półproduktów rzemieślniczych i alchemicznych.
+- 15 craft-only przedmiotów klasowych na lvl 25 / 55 / 75.
+- Alternatywne receptury mikstur i konwersje materiałów.
+- Katalog kowala podzielony na Przetwarzanie / Runy / Broń / Ekwipunek.
+
+## 3.9.8.9 — Runy, enchant, ulepszanie i ekonomia
+
+- 13 run z własnymi efektami bojowymi, ograniczeniami slotów i recepturami u kowala.
+- Ulepszanie sprzętu do +5…+10 zależnie od rzadkości; wyższe poziomy wymagają kryształów i odłamków runicznych.
+- 8 enchantów zależnych od slotu; przerzut zaklęcia ma 12-godzinne odnowienie.
+- Runy i enchanty wpływają bezpośrednio na walkę (blok, unik, trucizna, przełamanie, mana, krytyki itd.).
+- Zbalansowano skup, sklep, aukcje, crafting i ogólne szanse na losowy sprzęt.
+- Aukcje: 3% opłaty za wystawienie i 7% prowizji po sprzedaży.
+- Usunięto aktywne robocze wpisy dropu i dodano konkretne unikaty Rusałki Topieli.
+
 # Time4Heroes 3.9.6.4 — Herosi i Legendy bez blokady drużyny
 
 - Usunięto minimalną liczbę graczy potrzebną do rozpoczęcia walki z Herosem lub Legendą.
@@ -258,3 +295,46 @@ Gra jest jednoosobowym prototypem. Konta, synchronizacja, prawdziwe gildie, dru�
 - Usunięto przyciąganie mobów, questów i eventów do dróg OpenStreetMap.
 - Spawny znów są losowe jak przed wersją 3.9.8.2.
 - Pozostałe mechaniki z 3.9.8.1 zostały zachowane.
+
+
+## Build 3.9.8.4 — własne grafiki broni + regeneracja
+- Wszystkie bronie korzystają z osobnych, lokalnych SVG przygotowanych dla Time4Heroes zamiast wspólnego atlasu.
+- HP regeneruje 1% maksymalnego życia na minutę poza walką i lochem.
+- Mana regeneruje 2% maksymalnej many na minutę poza walką i lochem.
+- Stamina regeneruje 1 punkt co 3 minuty poza walką i lochem.
+- Regeneracja działa również po powrocie do gry (do 24 h przerwy) i aktualizuje HUD automatycznie.
+
+
+## Build 3.9.8.5 — bronie pod buildy
+- Dodano 61 nowych broni, łącznie 91 broni.
+- Progi 7/12/20/28/36/45 mają minimum 3 wybory dla każdej klasy.
+- Nowe style: blok, przełamanie, niski HP, krytyki, mana, dystans, statusy, trucizna, chowaniec i unik.
+- Sklep dobiera bronie do klasy i poziomu gracza; nowe bronie mogą też wypadać jako loot.
+
+## Build 3.9.8.6 — klasowe zestawy ekwipunku
+- Dodano 136 nowych elementów klasowego EQ dla 5 klas.
+- Progi zestawów: lvl 12, 28, 45 i 70.
+- Każda klasa ma hełm, pancerz, rękawice, buty, amulet i pierścień; Rycerz, Mag, Łowca i Tropiciel mają też własny off-hand.
+- Off-hand: Rycerz — tarcza, Mag — fokus, Łowca — kołczan, Tropiciel — zestaw pułapek; Berserker zachowuje dual wield.
+- Przedmioty wzmacniają różne buildy: blok, przełamanie, niski HP, krwawienie, mana, dystans, krytyki, oznaczenie, chowaniec, trucizna i unik.
+- Dodano bonusy za 2 i 3 części klasowego zestawu.
+- Grafiki klasowych elementów są lokalnymi PNG wyciętymi z wygenerowanych arkuszy i są cache'owane przez PWA.
+- Gear lvl 12/28/45 trafia do odpowiednich pul dropu, a lvl 70 do puli legendarnej. Legenda gildyjna ma dodatkową szansę na klasowy legendarny drop.
+
+
+## 3.9.8.7 — dropy 117 potworów
+- Poziomy wszystkich 117 potworów zsynchronizowane z kolumną „Docelowy lvl” z dokumentu użytkownika.
+- Każdy potwór ma własną tabelę łupów zamiast rodzinnego fallbacku.
+- Materiały, EQ, runy, strzały i unikaty z dokumentu są realnymi przedmiotami.
+- Brakujące dropy dla Żywiołaków, Demonów i wysokopoziomowych Bestii zostały uzupełnione tematycznie.
+- Elity, Herosi i Legendy z dokumentu są traktowane jako walki bossowe; Herosi/Legendy mają lepsze pule losowego EQ.
+
+
+## 3.9.8.8 — bossowe unikaty i endgame 80–100
+- Smok Burzowy i Bazyliszek poprawieni do rangi Legenda zgodnie z tabelą użytkownika.
+- 15 nowych endgame'owych broni klasowych na lvl 80 / 90 / 100.
+- Pełne zestawy klasowe 80 / 90 / 100 dla 5 klas, z bonusami setów i klasowymi off-handami.
+- Nowe materiały: Pieczęć Gryfa, Pieczęć Nawałnicy, Rdzeń Wieczności, Perła Głębin i Serce Bazyliszka.
+- Kowal automatycznie pokazuje receptury na endgame EQ i bronie po klasie gracza.
+- Ręcznie dopracowane pule Leszego, Jednorożca, Kościeja, Wilkołaka, Krakena, Smoka Burzowego, Bazyliszka, Gryfa, Węża Niebios i Gryfa Nawałnicy.
+- Usunięte tekstowe placeholdery typu „dopisz jeszcze kilka” z aktywnych pul dropu bossów.

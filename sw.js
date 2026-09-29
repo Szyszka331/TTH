@@ -1,6 +1,6 @@
-const CACHE='time4heroes-3983';
+const CACHE='time4heroes-3992';
 const CORE=[
-  './','./index.html','./styles.css?v=3983','./app.js?v=3983','./data.js?v=3983','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3992','./app.js?v=3992','./data.js?v=3992','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
   './assets/characters/battle-backs/knight-back.png','./assets/characters/battle-backs/mage-back.png','./assets/characters/battle-backs/hunter-back.png','./assets/characters/battle-backs/berserker-back.png','./assets/characters/battle-backs/ranger-back.png',
   './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',
@@ -8,7 +8,46 @@ const CORE=[
   './assets/backgrounds/interior-shop-380.webp','./assets/backgrounds/interior-smith-380.webp','./assets/backgrounds/interior-alchemist-380.webp','./assets/backgrounds/interior-auction-380.webp','./assets/backgrounds/interior-guild-380.webp',
   
   './assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png',
-  './assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png','./assets/atlases/archive-monsters-1-330.png','./assets/atlases/archive-monsters-2-330.png','./assets/atlases/archive-monsters-3-330.png','./assets/atlases/archive-monsters-4-330.png'
+  './assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png','./assets/atlases/archive-monsters-1-330.png','./assets/atlases/archive-monsters-2-330.png','./assets/atlases/archive-monsters-3-330.png','./assets/atlases/archive-monsters-4-330.png',
+  './assets/icons/classgear/berserker-amulet.png',
+  './assets/icons/classgear/berserker-armor.png',
+  './assets/icons/classgear/berserker-boots.png',
+  './assets/icons/classgear/berserker-gloves.png',
+  './assets/icons/classgear/berserker-helmet.png',
+  './assets/icons/classgear/berserker-ring.png',
+  './assets/icons/classgear/berserker-shield.png',
+  './assets/icons/classgear/hunter-amulet.png',
+  './assets/icons/classgear/hunter-armor.png',
+  './assets/icons/classgear/hunter-boots.png',
+  './assets/icons/classgear/hunter-gloves.png',
+  './assets/icons/classgear/hunter-helmet.png',
+  './assets/icons/classgear/hunter-offhand.png',
+  './assets/icons/classgear/hunter-ring.png',
+  './assets/icons/classgear/hunter-shield.png',
+  './assets/icons/classgear/knight-amulet.png',
+  './assets/icons/classgear/knight-armor.png',
+  './assets/icons/classgear/knight-boots.png',
+  './assets/icons/classgear/knight-gloves.png',
+  './assets/icons/classgear/knight-helmet.png',
+  './assets/icons/classgear/knight-offhand.png',
+  './assets/icons/classgear/knight-ring.png',
+  './assets/icons/classgear/knight-shield.png',
+  './assets/icons/classgear/mage-amulet.png',
+  './assets/icons/classgear/mage-armor.png',
+  './assets/icons/classgear/mage-boots.png',
+  './assets/icons/classgear/mage-gloves.png',
+  './assets/icons/classgear/mage-helmet.png',
+  './assets/icons/classgear/mage-offhand.png',
+  './assets/icons/classgear/mage-ring.png',
+  './assets/icons/classgear/mage-shield.png',
+  './assets/icons/classgear/ranger-amulet.png',
+  './assets/icons/classgear/ranger-armor.png',
+  './assets/icons/classgear/ranger-boots.png',
+  './assets/icons/classgear/ranger-gloves.png',
+  './assets/icons/classgear/ranger-helmet.png',
+  './assets/icons/classgear/ranger-offhand.png',
+  './assets/icons/classgear/ranger-ring.png',
+  './assets/icons/classgear/ranger-shield.png'
 ];
 
 self.addEventListener('install',event=>{
