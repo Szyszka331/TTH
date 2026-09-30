@@ -1,3 +1,52 @@
+## 3.9.9.8 — Fabuła, walka i ilustracje
+
+- Pierwszy rozdział łączy wilcze tropy, mapę z czarną pieczęcią, kuriera, atak na wioskę i wyznanie Eldrana. Wybory wpływają na późniejsze dialogi, zdarzenia na mapie i przygotowanie do walki. Nagroda za wybór wymagający starcia jest przyznawana dopiero po wygranej; przegrana pozwala spróbować ponownie.
+- Starcia fabularne mają cele: osłoń Tarena lub mieszkańców przed zapowiadanym ciosem albo przerwij alarm. Walka pokazuje cel i skutek, a po zwycięstwie zapisuje, czy ktoś został ranny i czy sygnał dotarł do patrolu. Skrócono nadmiernie długie wczesne walki.
+- Dodano sześć etapów śledztwa na północy między obozem, wieżą i mokradłami. Rozkazy, jeniec, runy i decyzje prowadzą do kolejnego rozdziału; cele potrzebne do zadań pojawiają się na mapie. Poziomy potworów i wieży dopasowano do kolejności fabuły.
+- Usunięto obowiązkowe czekanie na noc lub określoną pogodę w zadaniach o dzwonie, ołtarzu, sanktuarium popiołu i iglicy. Ślady pozwalają dotrzeć do nich także za dnia. Naprawiono liczenie dystansu w zadaniach marszu: decyzja odblokowuje się po pokonaniu pełnej wymaganej odległości.
+- Pięć biomów ma nowe malowane tła walki. Dodano portrety Nessy, Tarena, Torena i Eldrana. Sala gildii ma pełną ilustrację Edrina za stołem mapowym zamiast pustego pliku.
+- Starsze zapisy zachowują postęp po zmianach w etapach fabuły. Testy: `node tests/regression.mjs` (218 kontroli). Gra pozostaje statyczną aplikacją przeglądarkową; współdzielone konta i handel między graczami nadal wymagają serwera.
+
+## 3.9.9.7 — Wnętrza i NPC
+
+- Sklep, kuźnia, pracownia alchemiczna, dom aukcyjny i sala gildii otrzymały nowe malowane tła z postacią wkomponowaną za ladą, warsztatem, stołem lub mapą. Usunięto nakładany na środek wnętrza sprite, który miał inną skalę i zasłaniał wyposażenie pomieszczenia.
+- Selma, Ragor, Ilyra, Varo i Edrin mają czytelne, naturalne proporcje i pozostają widoczni w centralnej części kadru telefonu. Portrety w rozmowie i usługach pokazują tę samą postać co ilustracja wnętrza. Dorian w karczmie również korzysta z kadru swojej istniejącej sceny.
+- Aktywne miejsca rozmowy i usług nadal można kliknąć; dopasowano obszary dotykowe do narysowanych postaci i lad. Oryginalne tła pozostają w paczce, a nowe mają osobne pliki `assets/backgrounds/interior-*-3997.webp`.
+- Testy: `node tests/regression.mjs` (206 kontroli).
+
+## 3.9.9.6 — Gildia i sklepy
+
+- Sala gildii ma trzy dzienne propozycje kontraktów Edrina; można prowadzić dwa naraz, postęp liczy się za wskazane potwory, a nagrody XP, złota i reputacji odbiera się po wykonaniu. Przyjęty kontrakt pozostaje w zapisie po zmianie dnia.
+- Założyciel może przypiąć do trzech potrzeb na materiały. W tej wersji postać przyjmuje zlecenie i przekazuje łupy do lokalnego magazynu gildii; ukończenie daje reputację.
+- Sklep kupiecki sprzedaje podstawowy sprzęt bez dodatkowych statystyk dla każdej z pięciu klas na ośmiu progach poziomu. Kuźnia sprzedaje gotowy sprzęt klasowy od Zwykłego do Rzadkiego. Sprzęt z oferty jest jednorazowy na cykl, a nowa dostawa przychodzi co 6 godzin; zwykłe materiały i mikstury można kupować wielokrotnie.
+- Alchemik zachowuje pełną ofertę gotowych mikstur, a wyróżniona mikstura zyskuje rabat zmieniający się co 6 godzin. Receptury u kowala i alchemika pokazują źródła każdego składnika.
+- Przywrócono dostępność podstawowych materiałów rzemieślniczych w łupach konkretnych potworów, w tym wilczej skóry, pajęczego jedwabiu i kości. Test dostępności sprawdza wszystkie składniki receptur.
+- Dom aukcyjny ma codzienną gablotę ośmiu ofert dla klasy i poziomu postaci, wyszukiwarkę, filtr slotów, porównanie z założonym sprzętem i limit jednego zakupu każdego przedmiotu dziennie. Własne aukcje i tablica gildii nadal działają lokalnie; handel oraz zaproszenia między prawdziwymi graczami wymagają serwera.
+- Biblioteka grafik obejmuje 1143 osobne pliki WebP przedmiotów, w tym nowe podstawowe zestawy klasowe. Testy: `node tests/regression.mjs` (204 kontrole).
+
+## 3.9.9.5 — Ilustrowany plan miasta
+
+- Zakładka Miasto pokazuje jedną malowaną planszę z sześcioma budynkami: karczmą, sklepem, kuźnią, alchemikiem, domem aukcyjnym i salą gildii. Każdy budynek ma duży obszar do kliknięcia i prowadzi do istniejącego wnętrza oraz usług.
+- Na telefonie planszę można przesuwać i powiększać; lista budynków pod planszą pozwala szybko wyśrodkować wybrany obiekt. Niedostępne jeszcze budynki są oznaczone kłódką. Rozbudowa miasta pozostaje pod mapą.
+- Grafika `assets/backgrounds/city-map-3995.webp` jest oryginalną ilustracją stworzoną dla Time4Heroes z referencji układu miasta. Przyciski i napisy pozostają osobną warstwą HTML, więc działają również na małym ekranie.
+
+## 3.9.9.4 — Biomy, miasto i kapliczki
+
+- Biomy powstają jako nieregularne płaty o różnych rozmiarach. Ich wagi występowania są niezależne od procentu powierzchni: łąki 40, lasy 28, wzgórza 17, mokradła 10, ruiny 5. To wagi losowania miejsc, a nie gwarantowany podział mapy. Na mapie widać organiczne granice, a potwory są dobierane do biomu w punkcie pojawienia.
+- Miasto gracz stawia w wybranym miejscu po uruchomieniu GPS; ma widoczną strefę 180 m. Przeniesienie jest możliwe raz na 30 dni. Na telefonie wejście do usług wymaga bycia w strefie z aktualnym GPS; przeglądarka pozwala zarządzać miastem. Istniejące miasta zachowują miejsce wokół wcześniejszego punktu zakotwiczenia. Kopia testowa pozostaje dostępna bez GPS.
+- Na mapie powstają kapliczki o stałych pozycjach. W promieniu 60 m można zapłacić 1 monetę i rzucić raz dziennie przy każdej kapliczce. Orzeł przywraca pełne HP, reszka nie leczy. Wykorzystany rzut zachowuje się w zapisie także po ponownym uruchomieniu gry.
+
+## 3.9.9.3 — Handel, alchemia, łupy i grafiki przedmiotów
+
+- Plecak ma 36 miejsc dla nowych postaci i istniejących zapisów. Wysuwany plecak i ekran bohatera pozwalają przenieść sprzęt na slot wyposażenia; zajęty slot zamienia się z przedmiotem w plecaku.
+- Sklep ma regularny asortyment dla pięciu klas na poziomach 1/12/25/40/55/70/85/100. Można włączyć pełną ofertę, porównać statystyki zakładanego przedmiotu z kupowanym i sprawdzić wymagania klasy/poziomu. Trofea unikatowe, heroiczne i legendarne nadal pochodzą z łupów.
+- Kliknięcie przedmiotu do sprzedaży otwiera panel „Sprzedaj 1 / cały stos” u kupca, kowala i alchemika. Zakupy, sprzedaż, receptury i rzemiosło zachowują pozycję przewijania okna usługi.
+- Alchemik sprzedaje gotowe mikstury życia i many +50/+100/+150/+200 oraz silną miksturę życia +130. Receptury mają ograniczoną liczbę użyć, zużywają znalezione lub zdobyte składniki i są tańsze od gotowych mikstur także po uwzględnieniu wartości materiałów i licencji.
+- Regeneracja HP, many i staminy obejmuje czas poza grą (maksymalnie 24 godziny na jedno wczytanie). Postęp jest zapisywany po powrocie.
+- 117 potworów ma własne tabele łupów. Naprawiono brakujące i błędnie sklasyfikowane elementy sprzętu, rangi przedmiotów oraz dosłowne placeholdery. Gwarantowany łup Herosa/Legendy wybiera się z jego własnej tabeli; warianty i bossowie mogą dawać osobne premie materiałowe.
+- Każdy z 1063 zdefiniowanych przedmiotów ma odrębny plik WebP. Grafiki są wariantami trzech malowanych arkuszy źródłowych. Źródła i skrypt generujący znajdują się w `assets/item-art/source/` i `tools/generate_item_art.py`.
+- Uruchom `node tests/regression.mjs`, aby sprawdzić mechanikę. Grafiki można odtworzyć przez `node tests/dump-items.mjs assets/item-art/catalog.json` i `python tools/generate_item_art.py --force`.
+
 ## 3.9.9.2 — Szczęście i leczenie Maga
 
 - Dodano piątą podstawową statystykę: **Szczęście (LCK)**. Każda klasa startuje z 3 LCK i może rozwijać je punktami statystyk.

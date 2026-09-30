@@ -1,11 +1,12 @@
-const CACHE='time4heroes-3992';
+const CACHE='time4heroes-3998';
 const CORE=[
-  './','./index.html','./styles.css?v=3992','./app.js?v=3992','./data.js?v=3992','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3998','./app.js?v=3998','./data.js?v=3998','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
   './assets/characters/battle-backs/knight-back.png','./assets/characters/battle-backs/mage-back.png','./assets/characters/battle-backs/hunter-back.png','./assets/characters/battle-backs/berserker-back.png','./assets/characters/battle-backs/ranger-back.png',
-  './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png',
-  './assets/backgrounds/battle-meadow-380.webp','./assets/backgrounds/battle-forest-380.webp','./assets/backgrounds/battle-ruins-380.webp','./assets/backgrounds/battle-marsh-380.webp','./assets/backgrounds/battle-highlands-380.webp',
-  './assets/backgrounds/interior-shop-380.webp','./assets/backgrounds/interior-smith-380.webp','./assets/backgrounds/interior-alchemist-380.webp','./assets/backgrounds/interior-auction-380.webp','./assets/backgrounds/interior-guild-380.webp',
+  './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/backgrounds/city-map-3995.webp',
+  './assets/backgrounds/battle-meadow-3998.webp','./assets/backgrounds/battle-forest-3998.webp','./assets/backgrounds/battle-ruins-3998.webp','./assets/backgrounds/battle-marsh-3998.webp','./assets/backgrounds/battle-highlands-3998.webp',
+  './assets/story/nessa-3998.webp','./assets/story/eldran-3998.webp','./assets/story/taren-3998.webp','./assets/story/toren-3998.webp',
+  './assets/backgrounds/interior-shop-3997.webp','./assets/backgrounds/interior-smith-3997.webp','./assets/backgrounds/interior-alchemist-3997.webp','./assets/backgrounds/interior-auction-3997.webp','./assets/backgrounds/interior-guild-3998.webp',
   
   './assets/interior-questboard.png','./assets/interior-forge.png','./assets/interior-alchemist.png','./assets/interior-shop.png','./assets/interior-guild.png','./assets/interior-auction.png',
   './assets/atlases/item-atlas-320.png','./assets/atlases/monster-atlas-core-320.png','./assets/atlases/monster-atlas-new-320.png','./assets/atlases/archive-monsters-1-330.png','./assets/atlases/archive-monsters-2-330.png','./assets/atlases/archive-monsters-3-330.png','./assets/atlases/archive-monsters-4-330.png',

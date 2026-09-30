@@ -2000,3 +2000,105 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 /* 3.9.9.2 — HP sojuszników w rajdzie i wybór celu leczenia */
 .raid-party-strip span.down{opacity:.48;border-color:#733f3f;text-decoration:line-through;background:#1a0d0dcc}
 .heal-target-down{filter:grayscale(.65)}
+
+/* 3.9.9.3 — handel i czytelne zestawienie wyposażenia */
+.equipment-compare{width:100%;margin-top:9px;padding:10px;border:1px solid #9b7946;border-radius:9px;background:#17251c;color:#f4e9d0;font:12px/1.35 system-ui,sans-serif}
+.equipment-compare h4{margin:0 0 8px;color:#eac887;font:700 15px Georgia,serif}
+.equipment-compare-head,.equipment-compare-row{display:grid;grid-template-columns:minmax(74px,1fr) minmax(68px,1.2fr) minmax(68px,1.2fr) 48px;gap:5px;align-items:center}
+.equipment-compare-head{padding:0 0 5px;border-bottom:1px solid #77634a;color:#bdab89;font-size:10px}
+.equipment-compare-head span:not(:first-child),.equipment-compare-row b,.equipment-compare-row em{text-align:right}
+.equipment-compare-head span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.equipment-compare-row{padding-top:5px}.equipment-compare-row em{font-style:normal;color:#b8b7ac}.equipment-compare-row em.positive{color:#82d98b}.equipment-compare-row em.negative{color:#ec8e81}
+.comparison-warning{margin:8px 0 0;color:#e9ae7d}
+.merchant-sell-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:9px;margin:12px 0 18px}
+.merchant-sell-item{display:flex;align-items:center;gap:10px;text-align:left;min-height:72px;padding:8px;border:1px solid #705b3e;border-radius:8px;background:#1b241e;color:#f5e8cd}
+.merchant-sell-item .item-icon-shell{flex:none}.merchant-sell-item>span{min-width:0;overflow-wrap:anywhere;font-weight:700}.merchant-sell-item small{display:block;margin-top:4px;color:#bfae8c;font-weight:400}
+.merchant-sell-item:hover,.merchant-sell-item:focus-visible{border-color:#e0bc75;background:#263a2b}
+.drawer-equipment .slot-ring2,.dnd-paperdoll-grid .gear-slot[data-slot="ring2"]{grid-column:2}
+
+/* 3.9.9.4 — obszar miasta i kapliczki */
+.city-map-marker{width:62px!important;height:58px!important;border-color:#d8a752!important;background:linear-gradient(155deg,#43301a,#171009)!important;box-shadow:0 0 0 3px #e8ba6140,0 5px 18px #000b!important;display:flex;flex-direction:column;gap:0;font-size:30px}
+.city-map-marker small{font:700 9px Georgia,serif;letter-spacing:.5px;color:#ffe1a3;margin-top:-4px}
+.map-shrine-marker{border-color:#aab9bb!important;background:linear-gradient(155deg,#313c3b,#100e0b)!important;box-shadow:0 0 0 3px #80aaa62c,0 5px 16px #000b!important}
+
+/* 3.9.9.6 — kontrakty, tablica potrzeb i odnawiany asortyment */
+.guild-job-list{display:grid;gap:9px;margin:10px 0 18px}
+.guild-job-card{display:grid;grid-template-columns:45px minmax(0,1fr) auto;gap:11px;align-items:center;min-width:0;padding:11px;border:1px solid #685037;border-radius:12px;background:linear-gradient(135deg,#21180f,#0d0a07);box-shadow:inset 0 0 20px #0005}
+.guild-job-card.guild-job-done{opacity:.72}
+.guild-job-icon{display:grid;place-items:center;width:43px;height:43px;border:1px solid #7e633d;border-radius:10px;background:#100b07;font-size:23px}
+.guild-job-icon .item-icon-shell,.guild-job-icon img{width:38px;height:38px;object-fit:contain}
+.guild-job-copy{display:grid;gap:4px;min-width:0}.guild-job-copy b{color:#ead6a9;font:700 14px Georgia,serif}.guild-job-copy small{color:#b8aa91;font-size:10px}.guild-job-copy span{color:#d0b87e;font-size:9px;line-height:1.4}
+.guild-job-card>button{min-height:36px;min-width:115px;font-size:10px}
+.guild-request-form{display:flex;align-items:end;flex-wrap:wrap;gap:8px;margin:10px 0 12px;padding:10px;border:1px solid #614c34;border-radius:10px;background:#120d09}
+.guild-request-form label{display:grid;gap:5px;min-width:125px;color:#c3ac83;font-size:10px}
+.guild-request-form select,.auction-offer-filters input,.auction-offer-filters select{min-height:37px;min-width:0;padding:7px 9px;border:1px solid #725537;border-radius:7px;background:#130f0b;color:#f1dfb9}
+.guild-request-form button{min-height:37px}
+.ingredient-sources{margin:9px 0 0;padding:7px 9px;border:1px solid #51412b;border-radius:8px;background:#100d09;color:#bdad8d;font-size:10px;line-height:1.4}
+.ingredient-sources summary{cursor:pointer;color:#e1c583;font-weight:700}
+.ingredient-sources p{margin:6px 0 0}.ingredient-sources p b{color:#e8d5ac}
+.retro-shop-slot.merchant-sold-out{filter:grayscale(.8);opacity:.65}
+.retro-shop-slot.merchant-sold-out small{position:absolute;inset:auto 1px 1px;z-index:1;padding:2px;background:#29120de8;color:#ffb4a5;font:800 7px system-ui,sans-serif;letter-spacing:.2px}
+.smith-stock-grid .smith-stock-card{gap:8px}
+.smith-stock-card .equipment-compare{margin:0;padding:7px;font-size:10px}
+.smith-stock-card .equipment-compare h4{font-size:12px}
+.auction-offer-filters{display:flex;gap:8px;margin:10px 0}
+.auction-offer-filters input{flex:1 1 210px}.auction-offer-filters select{flex:0 1 175px}
+.auction-offer-wrapper{min-width:0;display:flex;flex-direction:column;gap:7px;padding:6px;border:1px solid #69512d;border-radius:14px;background:#0d0a07}
+.auction-offer-wrapper:first-child{border-color:#af8745;box-shadow:0 0 0 1px #d3a64d22}
+.auction-offer-wrapper[hidden]{display:none!important}
+.auction-offer-wrapper .market-card{flex:1}
+.auction-offer-wrapper .equipment-compare{margin-top:0;padding:7px;font-size:10px}
+.auction-offer-wrapper .equipment-compare h4{font-size:12px}
+@media(max-width:720px){.guild-job-card{grid-template-columns:38px minmax(0,1fr);gap:8px;padding:9px}.guild-job-icon{width:38px;height:38px}.guild-job-card>button{grid-column:2;justify-self:start}.guild-request-form label:first-child{flex:1 1 150px}.auction-offer-filters{flex-wrap:wrap}.auction-offer-filters select{flex:1 1 140px}}
+.map-shrine-marker.used{opacity:.68;filter:saturate(.6)}.map-shrine-marker small{position:absolute;right:-6px;top:-8px;padding:2px 5px;border:1px solid #8ead82;border-radius:50%;background:#172117;color:#b2d49e;font-size:12px}
+.city-range-status{display:inline-block;margin-top:12px;padding:9px 12px;border:1px solid #8c6938;border-radius:9px;background:#2b1c10;color:#f0d49d;font-size:12px;line-height:1.45}
+.city-place-button{display:block;margin-top:10px;min-height:39px}
+.shrine-prayer{text-align:center;max-width:460px;margin:auto;padding:8px 8px 20px}.shrine-prayer .modal-head{text-align:left}.shrine-prayer h2{font:700 25px Georgia,serif;color:#edd4a1}.shrine-prayer>p{line-height:1.55;color:#e1d3b9}.shrine-prayer-status{display:flex;justify-content:center;gap:24px;margin:12px 0 18px;color:#e2c38b;font-weight:700}.shrine-prayer .primary{min-width:215px;min-height:47px}.shrine-prayer>small{display:block;margin-top:9px;color:#dfb17a}
+.shrine-coin{display:grid;place-items:center;width:94px;height:94px;margin:16px auto;border:4px double #b38846;border-radius:50%;background:radial-gradient(circle at 32% 25%,#ffedaa,#bb8536 58%,#513318);box-shadow:inset 0 2px 10px #fff6,0 8px 18px #0009;color:#33200d;font-size:45px}.shrine-coin.tossed{animation:shrineFlip .75s ease-out}@keyframes shrineFlip{0%{transform:rotateY(0) translateY(0)}50%{transform:rotateY(540deg) translateY(-15px)}100%{transform:rotateY(1080deg) translateY(0)}}
+@media(prefers-reduced-motion:reduce){.shrine-coin.tossed{animation:none}}
+
+/* 3.9.9.5 — ilustrowany plan miasta z obszarami budynków */
+.city-atlas-panel{min-width:0;overflow:hidden;border:2px solid #765932;border-radius:15px;background:#100c08;box-shadow:0 15px 36px #0009,inset 0 0 0 1px #be95534a}
+.city-atlas-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 15px;background:linear-gradient(100deg,#28190d,#120d09);border-bottom:1px solid #765932;color:#e9d7b7}.city-atlas-toolbar>div:first-child{display:flex;flex-direction:column;gap:2px}.city-atlas-toolbar b{font:700 18px Georgia,serif}.city-atlas-toolbar small{font-size:11px;color:#bda986}.city-zoom-controls{display:flex;align-items:center;gap:7px;white-space:nowrap}.city-zoom-controls button{width:36px;height:34px;border:1px solid #8a673a;border-radius:7px;background:#382512;color:#f4d89f;font-size:21px}.city-zoom-controls button:hover:not(:disabled){background:#60401d}.city-zoom-controls button:disabled{opacity:.35;cursor:default}.city-zoom-controls span{min-width:44px;text-align:center;color:#dcc18e;font-size:12px}
+.city-map-viewport{width:100%;height:min(75dvh,790px);overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;scrollbar-color:#947344 #1b120b;background:#161910}.city-map-stage{position:relative;aspect-ratio:3/2;overflow:hidden;background:#293226;isolation:isolate}.city-map-stage>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+.city-map-hotspot{position:absolute;z-index:2;left:var(--spot-x);top:var(--spot-y);width:28%;height:43%;padding:0;transform:translate(-50%,-50%);border:2px solid transparent;border-radius:25%;background:transparent;color:#fff;cursor:pointer;text-align:center;transition:border-color .18s,background .18s}.city-map-hotspot:before{content:"";position:absolute;inset:2%;border-radius:32%;background:radial-gradient(ellipse,#eec56a16 20%,#eec56a40 58%,transparent 75%);opacity:0;transition:opacity .18s;pointer-events:none}.city-map-hotspot:hover:before,.city-map-hotspot:focus-visible:before{opacity:1}.city-map-hotspot:focus-visible{outline:3px solid #f7d074;outline-offset:-4px}.city-map-hotspot.city-map-locked{cursor:not-allowed}.city-map-hotspot.city-map-locked:before{opacity:.32;background:#07060466}
+.city-map-pin{position:absolute;top:27%;left:50%;display:grid;place-items:center;width:46px;height:46px;transform:translate(-50%,-50%);border:2px solid #c8984f;border-radius:50% 50% 50% 6px;background:linear-gradient(140deg,#30515a,#091519);box-shadow:0 0 0 3px #100d0aab,0 5px 14px #000a;text-shadow:0 2px 3px #000;font-size:22px;transition:transform .18s}.city-map-hotspot:hover .city-map-pin,.city-map-hotspot:focus-visible .city-map-pin{transform:translate(-50%,-58%) scale(1.1);border-color:#ffdb88}.city-map-locked .city-map-pin{filter:grayscale(1);opacity:.82}
+.city-map-plaque{position:absolute;left:50%;bottom:1%;display:flex;flex-direction:column;gap:2px;align-items:center;min-width:135px;max-width:88%;padding:6px 10px;transform:translateX(-50%);border:1px solid #b38b4e;border-radius:7px;background:#160f0bdc;box-shadow:0 3px 11px #000a;text-shadow:0 1px 3px #000;white-space:nowrap;pointer-events:none}.city-map-plaque b{font:700 13px Georgia,serif;color:#fff0c9}.city-map-plaque small{font-size:9px;color:#d7bc83}.city-map-locked .city-map-plaque{border-color:#77716b}.city-map-locked .city-map-plaque b{color:#d4d0ca}
+.city-map-shortcuts{display:flex;gap:7px;overflow-x:auto;padding:9px 11px;border-top:1px solid #765932;background:#1d140d;scrollbar-width:thin}.city-map-shortcuts button{flex:none;min-height:36px;padding:6px 10px;border:1px solid #705535;border-radius:8px;background:#302114;color:#e8d2a7;font:700 11px Georgia,serif}.city-map-shortcuts button:hover,.city-map-shortcuts button:focus-visible{border-color:#e1b86a;background:#4a3018}
+@media(max-width:900px){.city-map-viewport{height:min(60dvh,650px)}.city-atlas-toolbar{padding:8px 9px}.city-atlas-toolbar b{font-size:15px}.city-atlas-toolbar small{font-size:10px}.city-map-shortcuts button{font-size:10px}}
+
+/* 3.9.9.7 — the merchants are painted into their rooms, and their portraits use the same art. */
+.scene-npc-portrait{display:block;flex:none;overflow:hidden;border-radius:inherit;background-image:var(--portrait-image);background-repeat:no-repeat;background-size:var(--portrait-scale) auto;background-position:var(--portrait-x) var(--portrait-y);box-shadow:inset 0 0 12px #0008}
+.service-merchant .scene-npc-portrait{width:100%;height:100%;filter:none}
+.npc-portrait .scene-npc-portrait{width:96px;height:96px;max-width:100%;max-height:100%;filter:none}
+.clean-room-hotspot-npc,.room-shop .clean-room-hotspot-npc,.room-smith .clean-room-hotspot-npc,.room-alchemist .clean-room-hotspot-npc,.room-auction .clean-room-hotspot-npc,.room-guild .clean-room-hotspot-npc{left:39%;top:22%;width:23%;height:35%}
+.room-smith .clean-room-hotspot-npc{top:19%;height:42%}
+.room-alchemist .clean-room-hotspot-npc{left:40%;top:29%;height:32%}
+.room-auction .clean-room-hotspot-npc{left:40%;top:27%;height:32%}
+.room-guild .clean-room-hotspot-npc{left:37%;top:24%;width:26%;height:40%}
+@media(max-width:720px){
+ .npc-portrait .scene-npc-portrait{width:74px;height:74px}
+ .clean-room-hotspot-npc,.room-shop .clean-room-hotspot-npc,.room-smith .clean-room-hotspot-npc,.room-alchemist .clean-room-hotspot-npc,.room-auction .clean-room-hotspot-npc,.room-guild .clean-room-hotspot-npc{left:27%;top:19%;width:46%;height:34%}
+ .room-alchemist .clean-room-hotspot-npc{top:26%;height:31%}
+ .room-auction .clean-room-hotspot-npc{top:24%;height:29%}
+ .room-guild .clean-room-hotspot-npc{top:22%;height:38%}
+ .clean-room-hotspot-service,.room-shop .clean-room-hotspot-service,.room-smith .clean-room-hotspot-service,.room-alchemist .clean-room-hotspot-service,.room-auction .clean-room-hotspot-service,.room-guild .clean-room-hotspot-service{left:59%;right:auto;top:56%;width:37%;height:23%}
+}
+
+/* 3.9.9.8 — fabularne portrety, czytelny cel walki i reakcja na trafienie */
+.story-npc .story-painted-portrait{display:block;object-fit:contain;object-position:center bottom;width:138px;height:154px;max-width:100%;filter:drop-shadow(0 9px 9px #0009)}
+.story-npc .story-toren-portrait{object-fit:cover;object-position:center 24%}
+.story-npc .story-beast-portrait{display:block;object-fit:contain;min-height:118px}
+.story-echo-line{margin:10px 0 16px!important;padding:10px 13px;border-left:3px solid #b99258;border-radius:3px;background:#3326189c;color:#e3d0ae;font:italic 13px/1.5 Georgia,serif}
+.story-result p{line-height:1.5}.story-choice:focus-visible{outline:3px solid #f0c579;outline-offset:2px}
+.story-mission-banner{max-width:1500px;width:calc(100% - 28px);box-sizing:border-box;margin:-3px auto 10px;display:flex;align-items:center;gap:14px;padding:10px 14px;border:1px solid #c09b5a;border-radius:10px;background:linear-gradient(95deg,#4a3018ed,#1b160fe8);box-shadow:inset 0 0 0 1px #f3cc7933,0 6px 16px #0007;color:#f8e8c4}
+.story-mission-banner strong{font:700 14px Georgia,serif;white-space:nowrap}.story-mission-banner span{font-size:12px;line-height:1.35}
+.story-disrupt-action{display:block;width:100%;min-height:52px;margin-top:10px;padding:8px 14px;border:2px solid #efbb65;border-radius:8px;background:linear-gradient(#66401e,#302011);box-shadow:0 0 20px #e9a45338;color:#fff0cb;font-weight:850;font-size:13px;text-align:center;cursor:pointer;animation:storyAlarmPulse 1.3s ease-in-out infinite}
+.story-disrupt-action:focus-visible{outline:3px solid #fff1bb;outline-offset:3px}
+.battle-story-outcome{margin:10px 0 13px;padding:12px 14px;border:1px solid #a9824b;border-radius:10px;background:#322319;color:#f3deb3;font:600 13px/1.5 Georgia,serif}
+.battle-screen.fx-hit .enemy-side .battle-sprite::after,.battle-screen.fx-weak .enemy-side .battle-sprite::after,.battle-screen.fx-crit .enemy-side .battle-sprite::after{content:"";position:absolute;z-index:7;left:28%;top:28%;width:48%;height:42%;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#fff9d1a6 0%,#efba5e70 28%,transparent 70%);animation:questImpact .36s ease-out both}
+.battle-screen.fx-crit .enemy-side .battle-sprite::after{background:radial-gradient(circle,#fffaf3c2 0%,#f8d67988 30%,transparent 70%)}
+@keyframes storyAlarmPulse{50%{box-shadow:0 0 22px #f5b9678c}}
+@keyframes questImpact{from{opacity:0;transform:scale(.45)}38%{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.2)}}
+@media(max-width:720px){.story-npc .story-painted-portrait{width:82px;height:91px;grid-row:1/3}.story-mission-banner{align-items:flex-start;flex-direction:column;gap:4px;padding:8px 11px}.story-mission-banner strong{font-size:12px}.story-mission-banner span{font-size:11px}.story-disrupt-action{min-height:48px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.story-disrupt-action,.battle-screen.fx-hit .enemy-side .battle-sprite::after,.battle-screen.fx-weak .enemy-side .battle-sprite::after,.battle-screen.fx-crit .enemy-side .battle-sprite::after{animation:none}}
