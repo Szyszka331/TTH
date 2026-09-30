@@ -1,0 +1,5717 @@
+{
+  "tornRags": {
+    "file": "assets/item-art/tornRags.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "holeyBoots": {
+    "file": "assets/item-art/holeyBoots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shortBlade": {
+    "file": "assets/item-art/shortBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "willowStaff": {
+    "file": "assets/item-art/willowStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "primitiveBow": {
+    "file": "assets/item-art/primitiveBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "primitiveArrow": {
+    "file": "assets/item-art/primitiveArrow.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "tutorialKnightShield": {
+    "file": "assets/item-art/tutorialKnightShield.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "tutorialMageStaff": {
+    "file": "assets/item-art/tutorialMageStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "tutorialHunterBow": {
+    "file": "assets/item-art/tutorialHunterBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "tutorialBerserkerAxe": {
+    "file": "assets/item-art/tutorialBerserkerAxe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "tutorialRangerHood": {
+    "file": "assets/item-art/tutorialRangerHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "rustySword": {
+    "file": "assets/item-art/rustySword.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shortSword": {
+    "file": "assets/item-art/shortSword.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "ironAxe": {
+    "file": "assets/item-art/ironAxe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "warHammer": {
+    "file": "assets/item-art/warHammer.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "axe": {
+    "file": "assets/item-art/axe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "blueBlade": {
+    "file": "assets/item-art/blueBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "ravenBlade": {
+    "file": "assets/item-art/ravenBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "mistBlade": {
+    "file": "assets/item-art/mistBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "ashBlade": {
+    "file": "assets/item-art/ashBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "stormSpear": {
+    "file": "assets/item-art/stormSpear.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "noviceStaff": {
+    "file": "assets/item-art/noviceStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "apprenticeStaff": {
+    "file": "assets/item-art/apprenticeStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "emberWand": {
+    "file": "assets/item-art/emberWand.webp",
+    "sheet": 2,
+    "tile": 13
+  },
+  "arcaneStaff": {
+    "file": "assets/item-art/arcaneStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "mistStaff": {
+    "file": "assets/item-art/mistStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "ashStaff": {
+    "file": "assets/item-art/ashStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "stormStaff": {
+    "file": "assets/item-art/stormStaff.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "hunterBow": {
+    "file": "assets/item-art/hunterBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "yewBow": {
+    "file": "assets/item-art/yewBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "forestBow": {
+    "file": "assets/item-art/forestBow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "wildBow": {
+    "file": "assets/item-art/wildBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "mistBow": {
+    "file": "assets/item-art/mistBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "ashBow": {
+    "file": "assets/item-art/ashBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "stormBow": {
+    "file": "assets/item-art/stormBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "steelSaber": {
+    "file": "assets/item-art/steelSaber.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "watchmanMace": {
+    "file": "assets/item-art/watchmanMace.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "oathSword": {
+    "file": "assets/item-art/oathSword.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "ironVowHammer": {
+    "file": "assets/item-art/ironVowHammer.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "bastionBlade": {
+    "file": "assets/item-art/bastionBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "guardianSpear": {
+    "file": "assets/item-art/guardianSpear.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "mistBulwarkSword": {
+    "file": "assets/item-art/mistBulwarkSword.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "sentinelHammer": {
+    "file": "assets/item-art/sentinelHammer.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "ashOathSword": {
+    "file": "assets/item-art/ashOathSword.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "ashSentinelHammer": {
+    "file": "assets/item-art/ashSentinelHammer.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "stormHalberd": {
+    "file": "assets/item-art/stormHalberd.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "stormOathBlade": {
+    "file": "assets/item-art/stormOathBlade.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "raiderAxe": {
+    "file": "assets/item-art/raiderAxe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "cleaver": {
+    "file": "assets/item-art/cleaver.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "bloodAxe": {
+    "file": "assets/item-art/bloodAxe.webp",
+    "sheet": 2,
+    "tile": 4
+  },
+  "skullHammer": {
+    "file": "assets/item-art/skullHammer.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "ravenAxe": {
+    "file": "assets/item-art/ravenAxe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "executionerBlade": {
+    "file": "assets/item-art/executionerBlade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "mistReaver": {
+    "file": "assets/item-art/mistReaver.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "breakerMaul": {
+    "file": "assets/item-art/breakerMaul.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "ashReaver": {
+    "file": "assets/item-art/ashReaver.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "ashSkullMaul": {
+    "file": "assets/item-art/ashSkullMaul.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "stormGreatAxe": {
+    "file": "assets/item-art/stormGreatAxe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "stormBloodBlade": {
+    "file": "assets/item-art/stormBloodBlade.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "focusWand": {
+    "file": "assets/item-art/focusWand.webp",
+    "sheet": 1,
+    "tile": 8
+  },
+  "sparkRod": {
+    "file": "assets/item-art/sparkRod.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "frostStaff": {
+    "file": "assets/item-art/frostStaff.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "manaRod": {
+    "file": "assets/item-art/manaRod.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "emberStaff": {
+    "file": "assets/item-art/emberStaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "voidWand": {
+    "file": "assets/item-art/voidWand.webp",
+    "sheet": 1,
+    "tile": 8
+  },
+  "runeStaff20": {
+    "file": "assets/item-art/runeStaff20.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "mistWand": {
+    "file": "assets/item-art/mistWand.webp",
+    "sheet": 1,
+    "tile": 8
+  },
+  "frostScepter": {
+    "file": "assets/item-art/frostScepter.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "ashWand": {
+    "file": "assets/item-art/ashWand.webp",
+    "sheet": 2,
+    "tile": 13
+  },
+  "runicScepter": {
+    "file": "assets/item-art/runicScepter.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "tempestWand": {
+    "file": "assets/item-art/tempestWand.webp",
+    "sheet": 1,
+    "tile": 8
+  },
+  "stormScepter": {
+    "file": "assets/item-art/stormScepter.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "scoutLongbow": {
+    "file": "assets/item-art/scoutLongbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "quickBow": {
+    "file": "assets/item-art/quickBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "eagleBow": {
+    "file": "assets/item-art/eagleBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "piercingBow": {
+    "file": "assets/item-art/piercingBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "ravenLongbow": {
+    "file": "assets/item-art/ravenLongbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "beastmasterBow": {
+    "file": "assets/item-art/beastmasterBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "mistLongbow": {
+    "file": "assets/item-art/mistLongbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "falconBow": {
+    "file": "assets/item-art/falconBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "ashLongbow": {
+    "file": "assets/item-art/ashLongbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "marksmanBow": {
+    "file": "assets/item-art/marksmanBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "stormLongbow": {
+    "file": "assets/item-art/stormLongbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "skyPiercer": {
+    "file": "assets/item-art/skyPiercer.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "serpentBow": {
+    "file": "assets/item-art/serpentBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "trailBow": {
+    "file": "assets/item-art/trailBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "venomBow": {
+    "file": "assets/item-art/venomBow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "trapperBow": {
+    "file": "assets/item-art/trapperBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "wildVenomBow": {
+    "file": "assets/item-art/wildVenomBow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "beastBondBow": {
+    "file": "assets/item-art/beastBondBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "mistVenomBow": {
+    "file": "assets/item-art/mistVenomBow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "stalkerBow": {
+    "file": "assets/item-art/stalkerBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "ashVenomBow": {
+    "file": "assets/item-art/ashVenomBow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "shadowBow": {
+    "file": "assets/item-art/shadowBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "tempestTrackerBow": {
+    "file": "assets/item-art/tempestTrackerBow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "stormSerpentBow": {
+    "file": "assets/item-art/stormSerpentBow.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "leather": {
+    "file": "assets/item-art/leather.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "apprenticeRobe": {
+    "file": "assets/item-art/apprenticeRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "chainVest": {
+    "file": "assets/item-art/chainVest.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "rangerLeather": {
+    "file": "assets/item-art/rangerLeather.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "berserkerHarness": {
+    "file": "assets/item-art/berserkerHarness.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "ironArmor": {
+    "file": "assets/item-art/ironArmor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "runicRobe": {
+    "file": "assets/item-art/runicRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "ravenMail": {
+    "file": "assets/item-art/ravenMail.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "wildMail": {
+    "file": "assets/item-art/wildMail.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "arcaneRobe": {
+    "file": "assets/item-art/arcaneRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "mistMail": {
+    "file": "assets/item-art/mistMail.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "mistLeathers": {
+    "file": "assets/item-art/mistLeathers.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "mistRobe": {
+    "file": "assets/item-art/mistRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "ashMail": {
+    "file": "assets/item-art/ashMail.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "ashLeathers": {
+    "file": "assets/item-art/ashLeathers.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "ashRobe": {
+    "file": "assets/item-art/ashRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "stormMail": {
+    "file": "assets/item-art/stormMail.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "stormLeathers": {
+    "file": "assets/item-art/stormLeathers.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "stormRobe": {
+    "file": "assets/item-art/stormRobe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "scoutHood": {
+    "file": "assets/item-art/scoutHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "ironHelm": {
+    "file": "assets/item-art/ironHelm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "mageHood": {
+    "file": "assets/item-art/mageHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "leatherGloves": {
+    "file": "assets/item-art/leatherGloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "ironGauntlets": {
+    "file": "assets/item-art/ironGauntlets.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "trailBoots": {
+    "file": "assets/item-art/trailBoots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "ironBoots": {
+    "file": "assets/item-art/ironBoots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "mageShoes": {
+    "file": "assets/item-art/mageShoes.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "woodenShield": {
+    "file": "assets/item-art/woodenShield.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "ironShield": {
+    "file": "assets/item-art/ironShield.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "ravenHelm": {
+    "file": "assets/item-art/ravenHelm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "wildHood": {
+    "file": "assets/item-art/wildHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "wildBoots": {
+    "file": "assets/item-art/wildBoots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "mistHelm": {
+    "file": "assets/item-art/mistHelm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "mistHood": {
+    "file": "assets/item-art/mistHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "mistCirclet": {
+    "file": "assets/item-art/mistCirclet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "ashHelm": {
+    "file": "assets/item-art/ashHelm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "ashHood": {
+    "file": "assets/item-art/ashHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "ashCowl": {
+    "file": "assets/item-art/ashCowl.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "stormHelm": {
+    "file": "assets/item-art/stormHelm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "stormHood": {
+    "file": "assets/item-art/stormHood.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "stormCowl": {
+    "file": "assets/item-art/stormCowl.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "shadowRing": {
+    "file": "assets/item-art/shadowRing.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "emberRing": {
+    "file": "assets/item-art/emberRing.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "wolfCharm": {
+    "file": "assets/item-art/wolfCharm.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "oldTalisman": {
+    "file": "assets/item-art/oldTalisman.webp",
+    "sheet": 1,
+    "tile": 27
+  },
+  "boneRing": {
+    "file": "assets/item-art/boneRing.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "mireCharm": {
+    "file": "assets/item-art/mireCharm.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cinderCharm": {
+    "file": "assets/item-art/cinderCharm.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "tempestCharm": {
+    "file": "assets/item-art/tempestCharm.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "stormCrown": {
+    "file": "assets/item-art/stormCrown.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cryptHeart": {
+    "file": "assets/item-art/cryptHeart.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "potion": {
+    "file": "assets/item-art/potion.webp",
+    "sheet": 3,
+    "tile": 0
+  },
+  "strongPotion": {
+    "file": "assets/item-art/strongPotion.webp",
+    "sheet": 3,
+    "tile": 2
+  },
+  "manaPotion": {
+    "file": "assets/item-art/manaPotion.webp",
+    "sheet": 3,
+    "tile": 4
+  },
+  "potion100": {
+    "file": "assets/item-art/potion100.webp",
+    "sheet": 3,
+    "tile": 1
+  },
+  "potion150": {
+    "file": "assets/item-art/potion150.webp",
+    "sheet": 3,
+    "tile": 2
+  },
+  "potion200": {
+    "file": "assets/item-art/potion200.webp",
+    "sheet": 3,
+    "tile": 3
+  },
+  "manaPotion100": {
+    "file": "assets/item-art/manaPotion100.webp",
+    "sheet": 3,
+    "tile": 5
+  },
+  "manaPotion150": {
+    "file": "assets/item-art/manaPotion150.webp",
+    "sheet": 3,
+    "tile": 6
+  },
+  "manaPotion200": {
+    "file": "assets/item-art/manaPotion200.webp",
+    "sheet": 3,
+    "tile": 7
+  },
+  "antidote": {
+    "file": "assets/item-art/antidote.webp",
+    "sheet": 3,
+    "tile": 40
+  },
+  "wolfPelt": {
+    "file": "assets/item-art/wolfPelt.webp",
+    "sheet": 3,
+    "tile": 11
+  },
+  "rawMeat": {
+    "file": "assets/item-art/rawMeat.webp",
+    "sheet": 3,
+    "tile": 10
+  },
+  "ratTail": {
+    "file": "assets/item-art/ratTail.webp",
+    "sheet": 3,
+    "tile": 9
+  },
+  "slimeGel": {
+    "file": "assets/item-art/slimeGel.webp",
+    "sheet": 1,
+    "tile": 43
+  },
+  "beetleCarapace": {
+    "file": "assets/item-art/beetleCarapace.webp",
+    "sheet": 3,
+    "tile": 14
+  },
+  "wolfFang": {
+    "file": "assets/item-art/wolfFang.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "goblinEar": {
+    "file": "assets/item-art/goblinEar.webp",
+    "sheet": 3,
+    "tile": 8
+  },
+  "goblinMapScrap": {
+    "file": "assets/item-art/goblinMapScrap.webp",
+    "sheet": 3,
+    "tile": 16
+  },
+  "dentedBuckler": {
+    "file": "assets/item-art/dentedBuckler.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "goblinFocus": {
+    "file": "assets/item-art/goblinFocus.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "goblinBanner": {
+    "file": "assets/item-art/goblinBanner.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "hardenedMark": {
+    "file": "assets/item-art/hardenedMark.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "corruptedEssence": {
+    "file": "assets/item-art/corruptedEssence.webp",
+    "sheet": 1,
+    "tile": 43
+  },
+  "ancientRelic": {
+    "file": "assets/item-art/ancientRelic.webp",
+    "sheet": 3,
+    "tile": 47
+  },
+  "roughCloth": {
+    "file": "assets/item-art/roughCloth.webp",
+    "sheet": 3,
+    "tile": 19
+  },
+  "brokenBlade": {
+    "file": "assets/item-art/brokenBlade.webp",
+    "sheet": 3,
+    "tile": 17
+  },
+  "oldCoin": {
+    "file": "assets/item-art/oldCoin.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "ectoplasm": {
+    "file": "assets/item-art/ectoplasm.webp",
+    "sheet": 3,
+    "tile": 35
+  },
+  "graveDust": {
+    "file": "assets/item-art/graveDust.webp",
+    "sheet": 3,
+    "tile": 34
+  },
+  "stoneCore": {
+    "file": "assets/item-art/stoneCore.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "cultistSigil": {
+    "file": "assets/item-art/cultistSigil.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "demonHorn": {
+    "file": "assets/item-art/demonHorn.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "demonBlood": {
+    "file": "assets/item-art/demonBlood.webp",
+    "sheet": 3,
+    "tile": 44
+  },
+  "sulfur": {
+    "file": "assets/item-art/sulfur.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "hellhoundFang": {
+    "file": "assets/item-art/hellhoundFang.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "charredHide": {
+    "file": "assets/item-art/charredHide.webp",
+    "sheet": 1,
+    "tile": 35
+  },
+  "wyvernScale": {
+    "file": "assets/item-art/wyvernScale.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "wyvernClaw": {
+    "file": "assets/item-art/wyvernClaw.webp",
+    "sheet": 3,
+    "tile": 13
+  },
+  "shadowEssence": {
+    "file": "assets/item-art/shadowEssence.webp",
+    "sheet": 1,
+    "tile": 43
+  },
+  "spiderSilk": {
+    "file": "assets/item-art/spiderSilk.webp",
+    "sheet": 3,
+    "tile": 20
+  },
+  "venomGland": {
+    "file": "assets/item-art/venomGland.webp",
+    "sheet": 3,
+    "tile": 40
+  },
+  "ogreHide": {
+    "file": "assets/item-art/ogreHide.webp",
+    "sheet": 1,
+    "tile": 35
+  },
+  "ogreTooth": {
+    "file": "assets/item-art/ogreTooth.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "stormScale": {
+    "file": "assets/item-art/stormScale.webp",
+    "sheet": 2,
+    "tile": 43
+  },
+  "swampScale": {
+    "file": "assets/item-art/swampScale.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "rotSigil": {
+    "file": "assets/item-art/rotSigil.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "hagCharm": {
+    "file": "assets/item-art/hagCharm.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "ancientBark": {
+    "file": "assets/item-art/ancientBark.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "blackroot": {
+    "file": "assets/item-art/blackroot.webp",
+    "sheet": 3,
+    "tile": 28
+  },
+  "mireSilk": {
+    "file": "assets/item-art/mireSilk.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "scorchedBone": {
+    "file": "assets/item-art/scorchedBone.webp",
+    "sheet": 3,
+    "tile": 32
+  },
+  "fireWing": {
+    "file": "assets/item-art/fireWing.webp",
+    "sheet": 3,
+    "tile": 31
+  },
+  "ashScale": {
+    "file": "assets/item-art/ashScale.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "frostClaw": {
+    "file": "assets/item-art/frostClaw.webp",
+    "sheet": 3,
+    "tile": 13
+  },
+  "stormCore": {
+    "file": "assets/item-art/stormCore.webp",
+    "sheet": 3,
+    "tile": 37
+  },
+  "trollHide": {
+    "file": "assets/item-art/trollHide.webp",
+    "sheet": 1,
+    "tile": 35
+  },
+  "trollTooth": {
+    "file": "assets/item-art/trollTooth.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "skyScale": {
+    "file": "assets/item-art/skyScale.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "herb": {
+    "file": "assets/item-art/herb.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "moonHerb": {
+    "file": "assets/item-art/moonHerb.webp",
+    "sheet": 3,
+    "tile": 25
+  },
+  "bone": {
+    "file": "assets/item-art/bone.webp",
+    "sheet": 3,
+    "tile": 32
+  },
+  "scrap": {
+    "file": "assets/item-art/scrap.webp",
+    "sheet": 3,
+    "tile": 16
+  },
+  "crystal": {
+    "file": "assets/item-art/crystal.webp",
+    "sheet": 3,
+    "tile": 36
+  },
+  "blackMedallion": {
+    "file": "assets/item-art/blackMedallion.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "titanShard": {
+    "file": "assets/item-art/titanShard.webp",
+    "sheet": 1,
+    "tile": 40
+  },
+  "runeShard": {
+    "file": "assets/item-art/runeShard.webp",
+    "sheet": 3,
+    "tile": 39
+  },
+  "runePower": {
+    "file": "assets/item-art/runePower.webp",
+    "sheet": 2,
+    "tile": 38
+  },
+  "runeGuard": {
+    "file": "assets/item-art/runeGuard.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "runePrecision": {
+    "file": "assets/item-art/runePrecision.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "mireMoss": {
+    "file": "assets/item-art/mireMoss.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "bogAmber": {
+    "file": "assets/item-art/bogAmber.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "wraithEssence": {
+    "file": "assets/item-art/wraithEssence.webp",
+    "sheet": 1,
+    "tile": 43
+  },
+  "charredIron": {
+    "file": "assets/item-art/charredIron.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "ashGlass": {
+    "file": "assets/item-art/ashGlass.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "emberCore": {
+    "file": "assets/item-art/emberCore.webp",
+    "sheet": 3,
+    "tile": 38
+  },
+  "frostCrystal": {
+    "file": "assets/item-art/frostCrystal.webp",
+    "sheet": 3,
+    "tile": 36
+  },
+  "stormFeather": {
+    "file": "assets/item-art/stormFeather.webp",
+    "sheet": 3,
+    "tile": 31
+  },
+  "skySteel": {
+    "file": "assets/item-art/skySteel.webp",
+    "sheet": 1,
+    "tile": 40
+  },
+  "cg_knight_12_helmet": {
+    "file": "assets/item-art/cg_knight_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_12_armor": {
+    "file": "assets/item-art/cg_knight_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_12_gloves": {
+    "file": "assets/item-art/cg_knight_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_12_boots": {
+    "file": "assets/item-art/cg_knight_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_12_amulet": {
+    "file": "assets/item-art/cg_knight_12_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_12_ring": {
+    "file": "assets/item-art/cg_knight_12_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_12_offhand": {
+    "file": "assets/item-art/cg_knight_12_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_28_helmet": {
+    "file": "assets/item-art/cg_knight_28_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_28_armor": {
+    "file": "assets/item-art/cg_knight_28_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_28_gloves": {
+    "file": "assets/item-art/cg_knight_28_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_28_boots": {
+    "file": "assets/item-art/cg_knight_28_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_28_amulet": {
+    "file": "assets/item-art/cg_knight_28_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_28_ring": {
+    "file": "assets/item-art/cg_knight_28_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_28_offhand": {
+    "file": "assets/item-art/cg_knight_28_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_45_helmet": {
+    "file": "assets/item-art/cg_knight_45_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_45_armor": {
+    "file": "assets/item-art/cg_knight_45_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_45_gloves": {
+    "file": "assets/item-art/cg_knight_45_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_45_boots": {
+    "file": "assets/item-art/cg_knight_45_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_45_amulet": {
+    "file": "assets/item-art/cg_knight_45_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_45_ring": {
+    "file": "assets/item-art/cg_knight_45_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_45_offhand": {
+    "file": "assets/item-art/cg_knight_45_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_70_helmet": {
+    "file": "assets/item-art/cg_knight_70_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_knight_70_armor": {
+    "file": "assets/item-art/cg_knight_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_knight_70_gloves": {
+    "file": "assets/item-art/cg_knight_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_70_boots": {
+    "file": "assets/item-art/cg_knight_70_boots.webp",
+    "sheet": 2,
+    "tile": 28
+  },
+  "cg_knight_70_amulet": {
+    "file": "assets/item-art/cg_knight_70_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_70_ring": {
+    "file": "assets/item-art/cg_knight_70_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_70_offhand": {
+    "file": "assets/item-art/cg_knight_70_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_80_helmet": {
+    "file": "assets/item-art/cg_knight_80_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_80_armor": {
+    "file": "assets/item-art/cg_knight_80_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_80_gloves": {
+    "file": "assets/item-art/cg_knight_80_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_80_boots": {
+    "file": "assets/item-art/cg_knight_80_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_80_amulet": {
+    "file": "assets/item-art/cg_knight_80_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_80_ring": {
+    "file": "assets/item-art/cg_knight_80_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_80_offhand": {
+    "file": "assets/item-art/cg_knight_80_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_90_helmet": {
+    "file": "assets/item-art/cg_knight_90_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_90_armor": {
+    "file": "assets/item-art/cg_knight_90_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_90_gloves": {
+    "file": "assets/item-art/cg_knight_90_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_90_boots": {
+    "file": "assets/item-art/cg_knight_90_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_90_amulet": {
+    "file": "assets/item-art/cg_knight_90_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_90_ring": {
+    "file": "assets/item-art/cg_knight_90_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_90_offhand": {
+    "file": "assets/item-art/cg_knight_90_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_knight_100_helmet": {
+    "file": "assets/item-art/cg_knight_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_knight_100_armor": {
+    "file": "assets/item-art/cg_knight_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_knight_100_gloves": {
+    "file": "assets/item-art/cg_knight_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_knight_100_boots": {
+    "file": "assets/item-art/cg_knight_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_knight_100_amulet": {
+    "file": "assets/item-art/cg_knight_100_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_knight_100_ring": {
+    "file": "assets/item-art/cg_knight_100_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_knight_100_offhand": {
+    "file": "assets/item-art/cg_knight_100_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "cg_berserker_12_helmet": {
+    "file": "assets/item-art/cg_berserker_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_12_armor": {
+    "file": "assets/item-art/cg_berserker_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_12_gloves": {
+    "file": "assets/item-art/cg_berserker_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_12_boots": {
+    "file": "assets/item-art/cg_berserker_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_12_amulet": {
+    "file": "assets/item-art/cg_berserker_12_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_12_ring": {
+    "file": "assets/item-art/cg_berserker_12_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_28_helmet": {
+    "file": "assets/item-art/cg_berserker_28_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_28_armor": {
+    "file": "assets/item-art/cg_berserker_28_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_28_gloves": {
+    "file": "assets/item-art/cg_berserker_28_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_28_boots": {
+    "file": "assets/item-art/cg_berserker_28_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_28_amulet": {
+    "file": "assets/item-art/cg_berserker_28_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_28_ring": {
+    "file": "assets/item-art/cg_berserker_28_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_45_helmet": {
+    "file": "assets/item-art/cg_berserker_45_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_45_armor": {
+    "file": "assets/item-art/cg_berserker_45_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_45_gloves": {
+    "file": "assets/item-art/cg_berserker_45_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_45_boots": {
+    "file": "assets/item-art/cg_berserker_45_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_45_amulet": {
+    "file": "assets/item-art/cg_berserker_45_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_45_ring": {
+    "file": "assets/item-art/cg_berserker_45_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_70_helmet": {
+    "file": "assets/item-art/cg_berserker_70_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_berserker_70_armor": {
+    "file": "assets/item-art/cg_berserker_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_berserker_70_gloves": {
+    "file": "assets/item-art/cg_berserker_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_70_boots": {
+    "file": "assets/item-art/cg_berserker_70_boots.webp",
+    "sheet": 2,
+    "tile": 28
+  },
+  "cg_berserker_70_amulet": {
+    "file": "assets/item-art/cg_berserker_70_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_70_ring": {
+    "file": "assets/item-art/cg_berserker_70_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_80_helmet": {
+    "file": "assets/item-art/cg_berserker_80_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_80_armor": {
+    "file": "assets/item-art/cg_berserker_80_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_80_gloves": {
+    "file": "assets/item-art/cg_berserker_80_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_80_boots": {
+    "file": "assets/item-art/cg_berserker_80_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_80_amulet": {
+    "file": "assets/item-art/cg_berserker_80_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_80_ring": {
+    "file": "assets/item-art/cg_berserker_80_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_90_helmet": {
+    "file": "assets/item-art/cg_berserker_90_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_90_armor": {
+    "file": "assets/item-art/cg_berserker_90_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_90_gloves": {
+    "file": "assets/item-art/cg_berserker_90_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_90_boots": {
+    "file": "assets/item-art/cg_berserker_90_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_90_amulet": {
+    "file": "assets/item-art/cg_berserker_90_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_90_ring": {
+    "file": "assets/item-art/cg_berserker_90_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_berserker_100_helmet": {
+    "file": "assets/item-art/cg_berserker_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_berserker_100_armor": {
+    "file": "assets/item-art/cg_berserker_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_berserker_100_gloves": {
+    "file": "assets/item-art/cg_berserker_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_berserker_100_boots": {
+    "file": "assets/item-art/cg_berserker_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_berserker_100_amulet": {
+    "file": "assets/item-art/cg_berserker_100_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_berserker_100_ring": {
+    "file": "assets/item-art/cg_berserker_100_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_12_helmet": {
+    "file": "assets/item-art/cg_mage_12_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_12_armor": {
+    "file": "assets/item-art/cg_mage_12_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_12_gloves": {
+    "file": "assets/item-art/cg_mage_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_12_boots": {
+    "file": "assets/item-art/cg_mage_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_12_amulet": {
+    "file": "assets/item-art/cg_mage_12_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_12_ring": {
+    "file": "assets/item-art/cg_mage_12_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_12_offhand": {
+    "file": "assets/item-art/cg_mage_12_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_mage_28_helmet": {
+    "file": "assets/item-art/cg_mage_28_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_28_armor": {
+    "file": "assets/item-art/cg_mage_28_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_28_gloves": {
+    "file": "assets/item-art/cg_mage_28_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_28_boots": {
+    "file": "assets/item-art/cg_mage_28_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_28_amulet": {
+    "file": "assets/item-art/cg_mage_28_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_28_ring": {
+    "file": "assets/item-art/cg_mage_28_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_28_offhand": {
+    "file": "assets/item-art/cg_mage_28_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_mage_45_helmet": {
+    "file": "assets/item-art/cg_mage_45_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_mage_45_armor": {
+    "file": "assets/item-art/cg_mage_45_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_mage_45_gloves": {
+    "file": "assets/item-art/cg_mage_45_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_45_boots": {
+    "file": "assets/item-art/cg_mage_45_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_45_amulet": {
+    "file": "assets/item-art/cg_mage_45_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_45_ring": {
+    "file": "assets/item-art/cg_mage_45_ring.webp",
+    "sheet": 2,
+    "tile": 37
+  },
+  "cg_mage_45_offhand": {
+    "file": "assets/item-art/cg_mage_45_offhand.webp",
+    "sheet": 2,
+    "tile": 31
+  },
+  "cg_mage_70_helmet": {
+    "file": "assets/item-art/cg_mage_70_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_70_armor": {
+    "file": "assets/item-art/cg_mage_70_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_70_gloves": {
+    "file": "assets/item-art/cg_mage_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_70_boots": {
+    "file": "assets/item-art/cg_mage_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_70_amulet": {
+    "file": "assets/item-art/cg_mage_70_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_70_ring": {
+    "file": "assets/item-art/cg_mage_70_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_70_offhand": {
+    "file": "assets/item-art/cg_mage_70_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_mage_80_helmet": {
+    "file": "assets/item-art/cg_mage_80_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_80_armor": {
+    "file": "assets/item-art/cg_mage_80_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_80_gloves": {
+    "file": "assets/item-art/cg_mage_80_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_80_boots": {
+    "file": "assets/item-art/cg_mage_80_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_80_amulet": {
+    "file": "assets/item-art/cg_mage_80_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_80_ring": {
+    "file": "assets/item-art/cg_mage_80_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_80_offhand": {
+    "file": "assets/item-art/cg_mage_80_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_mage_90_helmet": {
+    "file": "assets/item-art/cg_mage_90_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_90_armor": {
+    "file": "assets/item-art/cg_mage_90_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_90_gloves": {
+    "file": "assets/item-art/cg_mage_90_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_90_boots": {
+    "file": "assets/item-art/cg_mage_90_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_90_amulet": {
+    "file": "assets/item-art/cg_mage_90_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_90_ring": {
+    "file": "assets/item-art/cg_mage_90_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_90_offhand": {
+    "file": "assets/item-art/cg_mage_90_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_mage_100_helmet": {
+    "file": "assets/item-art/cg_mage_100_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_mage_100_armor": {
+    "file": "assets/item-art/cg_mage_100_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "cg_mage_100_gloves": {
+    "file": "assets/item-art/cg_mage_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_mage_100_boots": {
+    "file": "assets/item-art/cg_mage_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_mage_100_amulet": {
+    "file": "assets/item-art/cg_mage_100_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_mage_100_ring": {
+    "file": "assets/item-art/cg_mage_100_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_mage_100_offhand": {
+    "file": "assets/item-art/cg_mage_100_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "cg_hunter_12_helmet": {
+    "file": "assets/item-art/cg_hunter_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_hunter_12_armor": {
+    "file": "assets/item-art/cg_hunter_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_hunter_12_gloves": {
+    "file": "assets/item-art/cg_hunter_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_12_boots": {
+    "file": "assets/item-art/cg_hunter_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_12_amulet": {
+    "file": "assets/item-art/cg_hunter_12_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_12_ring": {
+    "file": "assets/item-art/cg_hunter_12_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_hunter_12_offhand": {
+    "file": "assets/item-art/cg_hunter_12_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "cg_hunter_28_helmet": {
+    "file": "assets/item-art/cg_hunter_28_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_hunter_28_armor": {
+    "file": "assets/item-art/cg_hunter_28_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "cg_hunter_28_gloves": {
+    "file": "assets/item-art/cg_hunter_28_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_28_boots": {
+    "file": "assets/item-art/cg_hunter_28_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_28_amulet": {
+    "file": "assets/item-art/cg_hunter_28_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_28_ring": {
+    "file": "assets/item-art/cg_hunter_28_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_hunter_28_offhand": {
+    "file": "assets/item-art/cg_hunter_28_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "cg_hunter_45_helmet": {
+    "file": "assets/item-art/cg_hunter_45_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_hunter_45_armor": {
+    "file": "assets/item-art/cg_hunter_45_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_hunter_45_gloves": {
+    "file": "assets/item-art/cg_hunter_45_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_45_boots": {
+    "file": "assets/item-art/cg_hunter_45_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_45_amulet": {
+    "file": "assets/item-art/cg_hunter_45_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_45_ring": {
+    "file": "assets/item-art/cg_hunter_45_ring.webp",
+    "sheet": 2,
+    "tile": 37
+  },
+  "cg_hunter_45_offhand": {
+    "file": "assets/item-art/cg_hunter_45_offhand.webp",
+    "sheet": 2,
+    "tile": 31
+  },
+  "cg_hunter_70_helmet": {
+    "file": "assets/item-art/cg_hunter_70_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_hunter_70_armor": {
+    "file": "assets/item-art/cg_hunter_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_hunter_70_gloves": {
+    "file": "assets/item-art/cg_hunter_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_70_boots": {
+    "file": "assets/item-art/cg_hunter_70_boots.webp",
+    "sheet": 2,
+    "tile": 28
+  },
+  "cg_hunter_70_amulet": {
+    "file": "assets/item-art/cg_hunter_70_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_70_ring": {
+    "file": "assets/item-art/cg_hunter_70_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_hunter_70_offhand": {
+    "file": "assets/item-art/cg_hunter_70_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "cg_hunter_80_helmet": {
+    "file": "assets/item-art/cg_hunter_80_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_hunter_80_armor": {
+    "file": "assets/item-art/cg_hunter_80_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_hunter_80_gloves": {
+    "file": "assets/item-art/cg_hunter_80_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_80_boots": {
+    "file": "assets/item-art/cg_hunter_80_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_80_amulet": {
+    "file": "assets/item-art/cg_hunter_80_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_80_ring": {
+    "file": "assets/item-art/cg_hunter_80_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_hunter_80_offhand": {
+    "file": "assets/item-art/cg_hunter_80_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "cg_hunter_90_helmet": {
+    "file": "assets/item-art/cg_hunter_90_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_hunter_90_armor": {
+    "file": "assets/item-art/cg_hunter_90_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "cg_hunter_90_gloves": {
+    "file": "assets/item-art/cg_hunter_90_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_90_boots": {
+    "file": "assets/item-art/cg_hunter_90_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_90_amulet": {
+    "file": "assets/item-art/cg_hunter_90_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_90_ring": {
+    "file": "assets/item-art/cg_hunter_90_ring.webp",
+    "sheet": 2,
+    "tile": 37
+  },
+  "cg_hunter_90_offhand": {
+    "file": "assets/item-art/cg_hunter_90_offhand.webp",
+    "sheet": 2,
+    "tile": 31
+  },
+  "cg_hunter_100_helmet": {
+    "file": "assets/item-art/cg_hunter_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "cg_hunter_100_armor": {
+    "file": "assets/item-art/cg_hunter_100_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "cg_hunter_100_gloves": {
+    "file": "assets/item-art/cg_hunter_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_hunter_100_boots": {
+    "file": "assets/item-art/cg_hunter_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_hunter_100_amulet": {
+    "file": "assets/item-art/cg_hunter_100_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_hunter_100_ring": {
+    "file": "assets/item-art/cg_hunter_100_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_hunter_100_offhand": {
+    "file": "assets/item-art/cg_hunter_100_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "cg_ranger_12_helmet": {
+    "file": "assets/item-art/cg_ranger_12_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_12_armor": {
+    "file": "assets/item-art/cg_ranger_12_armor.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "cg_ranger_12_gloves": {
+    "file": "assets/item-art/cg_ranger_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_12_boots": {
+    "file": "assets/item-art/cg_ranger_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_12_amulet": {
+    "file": "assets/item-art/cg_ranger_12_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_12_ring": {
+    "file": "assets/item-art/cg_ranger_12_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_12_offhand": {
+    "file": "assets/item-art/cg_ranger_12_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "cg_ranger_28_helmet": {
+    "file": "assets/item-art/cg_ranger_28_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_28_armor": {
+    "file": "assets/item-art/cg_ranger_28_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "cg_ranger_28_gloves": {
+    "file": "assets/item-art/cg_ranger_28_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_28_boots": {
+    "file": "assets/item-art/cg_ranger_28_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_28_amulet": {
+    "file": "assets/item-art/cg_ranger_28_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_28_ring": {
+    "file": "assets/item-art/cg_ranger_28_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_28_offhand": {
+    "file": "assets/item-art/cg_ranger_28_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "cg_ranger_45_helmet": {
+    "file": "assets/item-art/cg_ranger_45_helmet.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "cg_ranger_45_armor": {
+    "file": "assets/item-art/cg_ranger_45_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "cg_ranger_45_gloves": {
+    "file": "assets/item-art/cg_ranger_45_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_45_boots": {
+    "file": "assets/item-art/cg_ranger_45_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_45_amulet": {
+    "file": "assets/item-art/cg_ranger_45_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_45_ring": {
+    "file": "assets/item-art/cg_ranger_45_ring.webp",
+    "sheet": 2,
+    "tile": 37
+  },
+  "cg_ranger_45_offhand": {
+    "file": "assets/item-art/cg_ranger_45_offhand.webp",
+    "sheet": 2,
+    "tile": 31
+  },
+  "cg_ranger_70_helmet": {
+    "file": "assets/item-art/cg_ranger_70_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_70_armor": {
+    "file": "assets/item-art/cg_ranger_70_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "cg_ranger_70_gloves": {
+    "file": "assets/item-art/cg_ranger_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_70_boots": {
+    "file": "assets/item-art/cg_ranger_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_70_amulet": {
+    "file": "assets/item-art/cg_ranger_70_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_70_ring": {
+    "file": "assets/item-art/cg_ranger_70_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_70_offhand": {
+    "file": "assets/item-art/cg_ranger_70_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "cg_ranger_80_helmet": {
+    "file": "assets/item-art/cg_ranger_80_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_80_armor": {
+    "file": "assets/item-art/cg_ranger_80_armor.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "cg_ranger_80_gloves": {
+    "file": "assets/item-art/cg_ranger_80_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_80_boots": {
+    "file": "assets/item-art/cg_ranger_80_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_80_amulet": {
+    "file": "assets/item-art/cg_ranger_80_amulet.webp",
+    "sheet": 2,
+    "tile": 32
+  },
+  "cg_ranger_80_ring": {
+    "file": "assets/item-art/cg_ranger_80_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_80_offhand": {
+    "file": "assets/item-art/cg_ranger_80_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "cg_ranger_90_helmet": {
+    "file": "assets/item-art/cg_ranger_90_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_90_armor": {
+    "file": "assets/item-art/cg_ranger_90_armor.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "cg_ranger_90_gloves": {
+    "file": "assets/item-art/cg_ranger_90_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_90_boots": {
+    "file": "assets/item-art/cg_ranger_90_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_90_amulet": {
+    "file": "assets/item-art/cg_ranger_90_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_90_ring": {
+    "file": "assets/item-art/cg_ranger_90_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_90_offhand": {
+    "file": "assets/item-art/cg_ranger_90_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "cg_ranger_100_helmet": {
+    "file": "assets/item-art/cg_ranger_100_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "cg_ranger_100_armor": {
+    "file": "assets/item-art/cg_ranger_100_armor.webp",
+    "sheet": 1,
+    "tile": 17
+  },
+  "cg_ranger_100_gloves": {
+    "file": "assets/item-art/cg_ranger_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "cg_ranger_100_boots": {
+    "file": "assets/item-art/cg_ranger_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "cg_ranger_100_amulet": {
+    "file": "assets/item-art/cg_ranger_100_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "cg_ranger_100_ring": {
+    "file": "assets/item-art/cg_ranger_100_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "cg_ranger_100_offhand": {
+    "file": "assets/item-art/cg_ranger_100_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "mud": {
+    "file": "assets/item-art/mud.webp",
+    "sheet": 3,
+    "tile": 21
+  },
+  "animalTail": {
+    "file": "assets/item-art/animalTail.webp",
+    "sheet": 3,
+    "tile": 9
+  },
+  "plantShoots": {
+    "file": "assets/item-art/plantShoots.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "roots": {
+    "file": "assets/item-art/roots.webp",
+    "sheet": 3,
+    "tile": 28
+  },
+  "wood": {
+    "file": "assets/item-art/wood.webp",
+    "sheet": 3,
+    "tile": 23
+  },
+  "hide": {
+    "file": "assets/item-art/hide.webp",
+    "sheet": 1,
+    "tile": 35
+  },
+  "drop_lis_sztylet_chytrusa": {
+    "file": "assets/item-art/drop_lis_sztylet_chytrusa.webp",
+    "sheet": 1,
+    "tile": 1
+  },
+  "mat_zom": {
+    "file": "assets/item-art/mat_zom.webp",
+    "sheet": 3,
+    "tile": 16
+  },
+  "feather": {
+    "file": "assets/item-art/feather.webp",
+    "sheet": 3,
+    "tile": 31
+  },
+  "beak": {
+    "file": "assets/item-art/beak.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "drop_zdziczalyPies_buty_zagina_ego_bohatera": {
+    "file": "assets/item-art/drop_zdziczalyPies_buty_zagina_ego_bohatera.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "furBundle": {
+    "file": "assets/item-art/furBundle.webp",
+    "sheet": 3,
+    "tile": 11
+  },
+  "mat_mikstura_zycia": {
+    "file": "assets/item-art/mat_mikstura_zycia.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "waterHerb": {
+    "file": "assets/item-art/waterHerb.webp",
+    "sheet": 3,
+    "tile": 27
+  },
+  "venomExtract": {
+    "file": "assets/item-art/venomExtract.webp",
+    "sheet": 2,
+    "tile": 45
+  },
+  "spike": {
+    "file": "assets/item-art/spike.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "fang": {
+    "file": "assets/item-art/fang.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "rareHerb": {
+    "file": "assets/item-art/rareHerb.webp",
+    "sheet": 3,
+    "tile": 26
+  },
+  "drop_sokol_pierscien_zwiadowcy": {
+    "file": "assets/item-art/drop_sokol_pierscien_zwiadowcy.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_sokol_rekawice_wzroku": {
+    "file": "assets/item-art/drop_sokol_rekawice_wzroku.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "ammo_strzay_szybkosci_100": {
+    "file": "assets/item-art/ammo_strzay_szybkosci_100.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "drop_plagueToad_zatrute_ostrze": {
+    "file": "assets/item-art/drop_plagueToad_zatrute_ostrze.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_plagueToad_kaptur_tropiciela": {
+    "file": "assets/item-art/drop_plagueToad_kaptur_tropiciela.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "runePoison": {
+    "file": "assets/item-art/runePoison.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_trzcinnik_uk_wygiecia": {
+    "file": "assets/item-art/drop_trzcinnik_uk_wygiecia.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_trzcinnik_kostur_powiewu": {
+    "file": "assets/item-art/drop_trzcinnik_kostur_powiewu.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "drop_trzcinnik_miecz_przeciecia": {
+    "file": "assets/item-art/drop_trzcinnik_miecz_przeciecia.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_mangradora_mot_wrzasku": {
+    "file": "assets/item-art/drop_mangradora_mot_wrzasku.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_mangradora_wocznia_echa": {
+    "file": "assets/item-art/drop_mangradora_wocznia_echa.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "drop_blackrootGuardian_czarne_ostrze": {
+    "file": "assets/item-art/drop_blackrootGuardian_czarne_ostrze.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_blackrootGuardian_zbroja_korzeni": {
+    "file": "assets/item-art/drop_blackrootGuardian_zbroja_korzeni.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_blackrootGuardian_kostur_ciemnosci": {
+    "file": "assets/item-art/drop_blackrootGuardian_kostur_ciemnosci.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "mat_pierscien_badzacego_wedrowca": {
+    "file": "assets/item-art/mat_pierscien_badzacego_wedrowca.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_placzacaWierzba_naszyjnik_lisci_wierzby": {
+    "file": "assets/item-art/drop_placzacaWierzba_naszyjnik_lisci_wierzby.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "runeLeaf": {
+    "file": "assets/item-art/runeLeaf.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_leszy_prawny_uk": {
+    "file": "assets/item-art/drop_leszy_prawny_uk.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_leszy_ostrze_podstepnego_kojarza": {
+    "file": "assets/item-art/drop_leszy_ostrze_podstepnego_kojarza.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "mat_kilka_itemkow_dla_kazdej_klasy": {
+    "file": "assets/item-art/mat_kilka_itemkow_dla_kazdej_klasy.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_beetle_pancerz": {
+    "file": "assets/item-art/drop_beetle_pancerz.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "weaverDust": {
+    "file": "assets/item-art/weaverDust.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "arcaneDust": {
+    "file": "assets/item-art/arcaneDust.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_graveMoth_hem_grozy": {
+    "file": "assets/item-art/drop_graveMoth_hem_grozy.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "drop_cmaUpiorna_rekawice_nocnej_zmory": {
+    "file": "assets/item-art/drop_cmaUpiorna_rekawice_nocnej_zmory.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "drop_komarzyca_ostrze_krwi": {
+    "file": "assets/item-art/drop_komarzyca_ostrze_krwi.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_komarzyca_mot_krwawego_oprawcy": {
+    "file": "assets/item-art/drop_komarzyca_mot_krwawego_oprawcy.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "ammo_strzay_wampiryczne_100": {
+    "file": "assets/item-art/ammo_strzay_wampiryczne_100.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "drop_fireWasp_tarcza_ognia": {
+    "file": "assets/item-art/drop_fireWasp_tarcza_ognia.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_fireWasp_buty_ognistego_tancerza": {
+    "file": "assets/item-art/drop_fireWasp_buty_ognistego_tancerza.webp",
+    "sheet": 2,
+    "tile": 28
+  },
+  "drop_fireWasp_wocznia_ognia": {
+    "file": "assets/item-art/drop_fireWasp_wocznia_ognia.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "runeFire": {
+    "file": "assets/item-art/runeFire.webp",
+    "sheet": 2,
+    "tile": 38
+  },
+  "ashPowder": {
+    "file": "assets/item-art/ashPowder.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "fireHerb": {
+    "file": "assets/item-art/fireHerb.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "drop_goblin_kaptur_goblina": {
+    "file": "assets/item-art/drop_goblin_kaptur_goblina.webp",
+    "sheet": 2,
+    "tile": 16
+  },
+  "drop_goblin_uk_goblina": {
+    "file": "assets/item-art/drop_goblin_uk_goblina.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "ammo_strzay_trucizny_100": {
+    "file": "assets/item-art/ammo_strzay_trucizny_100.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "goldPouch": {
+    "file": "assets/item-art/goldPouch.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "runeShadow": {
+    "file": "assets/item-art/runeShadow.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_kieszonkowiec_tarcza_najemnika": {
+    "file": "assets/item-art/drop_kieszonkowiec_tarcza_najemnika.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "oldPipes": {
+    "file": "assets/item-art/oldPipes.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_goblinWarrior_ciezki_miecz": {
+    "file": "assets/item-art/drop_goblinWarrior_ciezki_miecz.webp",
+    "sheet": 2,
+    "tile": 0
+  },
+  "drop_goblinWarrior_tarcza_wojownika": {
+    "file": "assets/item-art/drop_goblinWarrior_tarcza_wojownika.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_goblinWarrior_mot_goblina": {
+    "file": "assets/item-art/drop_goblinWarrior_mot_goblina.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_klusownik_buty_wedrowca": {
+    "file": "assets/item-art/drop_klusownik_buty_wedrowca.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_klusownik_zaginiony_kij_maga": {
+    "file": "assets/item-art/drop_klusownik_zaginiony_kij_maga.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "snareCord": {
+    "file": "assets/item-art/snareCord.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_rozbojnik_tarcza_wojownika": {
+    "file": "assets/item-art/drop_rozbojnik_tarcza_wojownika.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_rozbojnik_pancerz_szlaku": {
+    "file": "assets/item-art/drop_rozbojnik_pancerz_szlaku.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_goblinMage_pierscienie_i_naszyjnik_dla_kazdej_klasy": {
+    "file": "assets/item-art/drop_goblinMage_pierscienie_i_naszyjnik_dla_kazdej_klasy.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_najemnik_zbroja_czarnego_najemnika": {
+    "file": "assets/item-art/drop_najemnik_zbroja_czarnego_najemnika.webp",
+    "sheet": 2,
+    "tile": 23
+  },
+  "drop_najemnik_tarcza_ciemnosci": {
+    "file": "assets/item-art/drop_najemnik_tarcza_ciemnosci.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_ork_dwureczny_topor": {
+    "file": "assets/item-art/drop_ork_dwureczny_topor.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "drop_ork_tarcza_gupca": {
+    "file": "assets/item-art/drop_ork_tarcza_gupca.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_szaleniec_topor_szalenca": {
+    "file": "assets/item-art/drop_szaleniec_topor_szalenca.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "falseBanner": {
+    "file": "assets/item-art/falseBanner.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "prophecyScrap": {
+    "file": "assets/item-art/prophecyScrap.webp",
+    "sheet": 3,
+    "tile": 16
+  },
+  "drop_goblinChampion_zbroja": {
+    "file": "assets/item-art/drop_goblinChampion_zbroja.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_goblinChampion_rekawice_i_buty_heroiczne_dla_kazdej_klasy": {
+    "file": "assets/item-art/drop_goblinChampion_rekawice_i_buty_heroiczne_dla_kazdej_klasy.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "drop_goblinChampion_pierscien_i_naszyknik_dla_maga": {
+    "file": "assets/item-art/drop_goblinChampion_pierscien_i_naszyknik_dla_maga.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "stagSkull": {
+    "file": "assets/item-art/stagSkull.webp",
+    "sheet": 3,
+    "tile": 33
+  },
+  "prophecyBook": {
+    "file": "assets/item-art/prophecyBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_rotCultist_zatrute_ostrze": {
+    "file": "assets/item-art/drop_rotCultist_zatrute_ostrze.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_cinderCultist_naszyjnik_kultysta": {
+    "file": "assets/item-art/drop_cinderCultist_naszyjnik_kultysta.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_cinderCultist_kaptur_kultysta": {
+    "file": "assets/item-art/drop_cinderCultist_kaptur_kultysta.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "drop_cinderCultist_kontur_zaru": {
+    "file": "assets/item-art/drop_cinderCultist_kontur_zaru.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_ogre_mot_ogra": {
+    "file": "assets/item-art/drop_ogre_mot_ogra.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_ogre_tarcza_gupca": {
+    "file": "assets/item-art/drop_ogre_tarcza_gupca.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "runeLightning": {
+    "file": "assets/item-art/runeLightning.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_stormCultist_uk_burzy": {
+    "file": "assets/item-art/drop_stormCultist_uk_burzy.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "mat_kosc_nieumarego": {
+    "file": "assets/item-art/mat_kosc_nieumarego.webp",
+    "sheet": 3,
+    "tile": 32
+  },
+  "mat_py_grobowy": {
+    "file": "assets/item-art/mat_py_grobowy.webp",
+    "sheet": 3,
+    "tile": 34
+  },
+  "mat_odamek_runiczny": {
+    "file": "assets/item-art/mat_odamek_runiczny.webp",
+    "sheet": 3,
+    "tile": 39
+  },
+  "drop_graveColossus_mot_kurhanu": {
+    "file": "assets/item-art/drop_graveColossus_mot_kurhanu.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_graveColossus_tarcza_koscianego_kolosa": {
+    "file": "assets/item-art/drop_graveColossus_tarcza_koscianego_kolosa.webp",
+    "sheet": 2,
+    "tile": 30
+  },
+  "rottenMeat": {
+    "file": "assets/item-art/rottenMeat.webp",
+    "sheet": 3,
+    "tile": 10
+  },
+  "drop_zombie_napiersciennik_straznika": {
+    "file": "assets/item-art/drop_zombie_napiersciennik_straznika.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "rope": {
+    "file": "assets/item-art/rope.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "farewellLetter": {
+    "file": "assets/item-art/farewellLetter.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "paper": {
+    "file": "assets/item-art/paper.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_mumia_naszyjnik_piramidy": {
+    "file": "assets/item-art/drop_mumia_naszyjnik_piramidy.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_mumia_pierscien_mumii": {
+    "file": "assets/item-art/drop_mumia_pierscien_mumii.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_zniwiarzPol_kosa_zniwiarza": {
+    "file": "assets/item-art/drop_zniwiarzPol_kosa_zniwiarza.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "straw": {
+    "file": "assets/item-art/straw.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "drop_zniwiarzPol_lekkie_buty": {
+    "file": "assets/item-art/drop_zniwiarzPol_lekkie_buty.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_zniwiarzPol_pierscien_zbiorow": {
+    "file": "assets/item-art/drop_zniwiarzPol_pierscien_zbiorow.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_zniwiarzPol_naszyjnik_urodzaju": {
+    "file": "assets/item-art/drop_zniwiarzPol_naszyjnik_urodzaju.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "ammo_strzay_trucizny": {
+    "file": "assets/item-art/ammo_strzay_trucizny.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "runeIce": {
+    "file": "assets/item-art/runeIce.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_lichWarden_kostur_licza": {
+    "file": "assets/item-art/drop_lichWarden_kostur_licza.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "drop_lichWarden_ksiega_wiecznego_czuwania": {
+    "file": "assets/item-art/drop_lichWarden_ksiega_wiecznego_czuwania.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_lichWarden_pierscien_nekromanty": {
+    "file": "assets/item-art/drop_lichWarden_pierscien_nekromanty.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "mat_unikat_tarczy_i_vos_dla_maga": {
+    "file": "assets/item-art/mat_unikat_tarczy_i_vos_dla_maga.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_strachNaWroble_kapelusz_maga": {
+    "file": "assets/item-art/drop_strachNaWroble_kapelusz_maga.webp",
+    "sheet": 1,
+    "tile": 14
+  },
+  "runeLuck": {
+    "file": "assets/item-art/runeLuck.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "fairyDust": {
+    "file": "assets/item-art/fairyDust.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "wishScrap": {
+    "file": "assets/item-art/wishScrap.webp",
+    "sheet": 3,
+    "tile": 16
+  },
+  "spellBook": {
+    "file": "assets/item-art/spellBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_poltergeist_kontur_telepatii": {
+    "file": "assets/item-art/drop_poltergeist_kontur_telepatii.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "mat_spodnie_tropiciela": {
+    "file": "assets/item-art/mat_spodnie_tropiciela.webp",
+    "sheet": 2,
+    "tile": 25
+  },
+  "drop_poludnica_nasyznik_poudnia": {
+    "file": "assets/item-art/drop_poludnica_nasyznik_poudnia.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_poludnica_pierscien_kompasu": {
+    "file": "assets/item-art/drop_poludnica_pierscien_kompasu.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "ghostCoin": {
+    "file": "assets/item-art/ghostCoin.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "knowledgeBook": {
+    "file": "assets/item-art/knowledgeBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_mistStag_zbroja_mgy": {
+    "file": "assets/item-art/drop_mistStag_zbroja_mgy.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_mistStag_buty_mgy": {
+    "file": "assets/item-art/drop_mistStag_buty_mgy.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_mistStag_rekawice_mgy": {
+    "file": "assets/item-art/drop_mistStag_rekawice_mgy.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "mat_zgnile_mieso": {
+    "file": "assets/item-art/mat_zgnile_mieso.webp",
+    "sheet": 3,
+    "tile": 10
+  },
+  "telepathyBook": {
+    "file": "assets/item-art/telepathyBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_ghost_tarcza_widmo": {
+    "file": "assets/item-art/drop_ghost_tarcza_widmo.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "forestBook": {
+    "file": "assets/item-art/forestBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "mat_jakies_unikaty_dla_maga": {
+    "file": "assets/item-art/mat_jakies_unikaty_dla_maga.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "runeWater": {
+    "file": "assets/item-art/runeWater.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_placzacaPanna_ostrze_fali": {
+    "file": "assets/item-art/drop_placzacaPanna_ostrze_fali.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_placzacaPanna_mot_posejdona": {
+    "file": "assets/item-art/drop_placzacaPanna_mot_posejdona.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "waterCoin": {
+    "file": "assets/item-art/waterCoin.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "dreamBook": {
+    "file": "assets/item-art/dreamBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "mat_nszyjnik_nocy": {
+    "file": "assets/item-art/mat_nszyjnik_nocy.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "fireBook": {
+    "file": "assets/item-art/fireBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_iceWraith_tarcza_lodu": {
+    "file": "assets/item-art/drop_iceWraith_tarcza_lodu.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_iceWraith_buty_lodu": {
+    "file": "assets/item-art/drop_iceWraith_buty_lodu.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "ammo_strzay_lodu": {
+    "file": "assets/item-art/ammo_strzay_lodu.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "drop_iceWraith_kontur_lodu": {
+    "file": "assets/item-art/drop_iceWraith_kontur_lodu.webp",
+    "sheet": 2,
+    "tile": 1
+  },
+  "frostCoin": {
+    "file": "assets/item-art/frostCoin.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "drop_widmowyJezdziec_miecz_widmo": {
+    "file": "assets/item-art/drop_widmowyJezdziec_miecz_widmo.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_widmowyJezdziec_buty_widmo": {
+    "file": "assets/item-art/drop_widmowyJezdziec_buty_widmo.webp",
+    "sheet": 2,
+    "tile": 29
+  },
+  "mat_spodnie_widmo": {
+    "file": "assets/item-art/mat_spodnie_widmo.webp",
+    "sheet": 2,
+    "tile": 24
+  },
+  "mat_zioa_lasu": {
+    "file": "assets/item-art/mat_zioa_lasu.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "windBook": {
+    "file": "assets/item-art/windBook.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_wir_kaptur_wiarru": {
+    "file": "assets/item-art/drop_wir_kaptur_wiarru.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "runeWind": {
+    "file": "assets/item-art/runeWind.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "windCoin": {
+    "file": "assets/item-art/windCoin.webp",
+    "sheet": 3,
+    "tile": 18
+  },
+  "drop_elemental_mot_tektoniczny": {
+    "file": "assets/item-art/drop_elemental_mot_tektoniczny.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_elemental_pierscien_granitu": {
+    "file": "assets/item-art/drop_elemental_pierscien_granitu.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "mat_rozdzka_zaru": {
+    "file": "assets/item-art/mat_rozdzka_zaru.webp",
+    "sheet": 2,
+    "tile": 13
+  },
+  "drop_plomyk_amulet_pomienia": {
+    "file": "assets/item-art/drop_plomyk_amulet_pomienia.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_slagGolem_tarcza_zuzlowa": {
+    "file": "assets/item-art/drop_slagGolem_tarcza_zuzlowa.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_slagGolem_mot_kuzniczego_zaru": {
+    "file": "assets/item-art/drop_slagGolem_mot_kuzniczego_zaru.webp",
+    "sheet": 2,
+    "tile": 5
+  },
+  "drop_zywiolakCienia_kostur_cienia": {
+    "file": "assets/item-art/drop_zywiolakCienia_kostur_cienia.webp",
+    "sheet": 2,
+    "tile": 12
+  },
+  "drop_zywiolakCienia_pierscien_pustki": {
+    "file": "assets/item-art/drop_zywiolakCienia_pierscien_pustki.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_obsidianSentinel_ostrze_obsydianu": {
+    "file": "assets/item-art/drop_obsidianSentinel_ostrze_obsydianu.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_obsidianSentinel_pancerz_obsydianowego_straznika": {
+    "file": "assets/item-art/drop_obsidianSentinel_pancerz_obsydianowego_straznika.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_thunderGolem_rekawice_piorunow": {
+    "file": "assets/item-art/drop_thunderGolem_rekawice_piorunow.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "drop_thunderGolem_mot_gromu": {
+    "file": "assets/item-art/drop_thunderGolem_mot_gromu.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_lodowyGolem_tarcza_szronu": {
+    "file": "assets/item-art/drop_lodowyGolem_tarcza_szronu.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_lodowyGolem_kostur_wiecznej_zimy": {
+    "file": "assets/item-art/drop_lodowyGolem_kostur_wiecznej_zimy.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "runeLight": {
+    "file": "assets/item-art/runeLight.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "drop_zywiolakSwiatla_amulet_swiata": {
+    "file": "assets/item-art/drop_zywiolakSwiatla_amulet_swiata.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "mat_bero_swietliste": {
+    "file": "assets/item-art/mat_bero_swietliste.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "drop_tempestLord_wocznia_wadcy_nawanicy": {
+    "file": "assets/item-art/drop_tempestLord_wocznia_wadcy_nawanicy.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "mat_korona_nawanicy": {
+    "file": "assets/item-art/mat_korona_nawanicy.webp",
+    "sheet": 1,
+    "tile": 15
+  },
+  "drop_marshHag_kostur_wiedzmy_moczaru": {
+    "file": "assets/item-art/drop_marshHag_kostur_wiedzmy_moczaru.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "drop_marshHag_pierscien_bagien": {
+    "file": "assets/item-art/drop_marshHag_pierscien_bagien.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_latawiec_uk_ognistego_wiatru": {
+    "file": "assets/item-art/drop_latawiec_uk_ognistego_wiatru.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_latawiec_amulet_zaru": {
+    "file": "assets/item-art/drop_latawiec_amulet_zaru.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "mat_trojzab_rozlewiska": {
+    "file": "assets/item-art/mat_trojzab_rozlewiska.webp",
+    "sheet": 2,
+    "tile": 7
+  },
+  "drop_wodnik_paszcz_wodnika": {
+    "file": "assets/item-art/drop_wodnik_paszcz_wodnika.webp",
+    "sheet": 2,
+    "tile": 34
+  },
+  "drop_bies_topor_biesa": {
+    "file": "assets/item-art/drop_bies_topor_biesa.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "drop_bies_amulet_boru": {
+    "file": "assets/item-art/drop_bies_amulet_boru.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_diabel_miecz_popielnego_diaba": {
+    "file": "assets/item-art/drop_diabel_miecz_popielnego_diaba.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_diabel_kaptur_popiou": {
+    "file": "assets/item-art/drop_diabel_kaptur_popiou.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "drop_voidHound_naszyjnik_ka_pustki": {
+    "file": "assets/item-art/drop_voidHound_naszyjnik_ka_pustki.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_voidHound_buty_pustki": {
+    "file": "assets/item-art/drop_voidHound_buty_pustki.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_cinderMatriarch_szata_matki_zaru": {
+    "file": "assets/item-art/drop_cinderMatriarch_szata_matki_zaru.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_cinderMatriarch_pierscien_matki_zaru": {
+    "file": "assets/item-art/drop_cinderMatriarch_pierscien_matki_zaru.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_demon_rogate_ostrze": {
+    "file": "assets/item-art/drop_demon_rogate_ostrze.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_demon_pancerz_rogatego_demona": {
+    "file": "assets/item-art/drop_demon_pancerz_rogatego_demona.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_demon_amulet_otchani": {
+    "file": "assets/item-art/drop_demon_amulet_otchani.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_hellhound_buty_piekielnego_ogara": {
+    "file": "assets/item-art/drop_hellhound_buty_piekielnego_ogara.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_hellhound_naszyjnik_piekielnych_kow": {
+    "file": "assets/item-art/drop_hellhound_naszyjnik_piekielnych_kow.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "mat_kie_hydry": {
+    "file": "assets/item-art/mat_kie_hydry.webp",
+    "sheet": 3,
+    "tile": 12
+  },
+  "drop_abyssHydra_pancerz_hydry_otchani": {
+    "file": "assets/item-art/drop_abyssHydra_pancerz_hydry_otchani.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_abyssHydra_pierscien_trzech_gow": {
+    "file": "assets/item-art/drop_abyssHydra_pierscien_trzech_gow.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "bloodBottle": {
+    "file": "assets/item-art/bloodBottle.webp",
+    "sheet": 1,
+    "tile": 40
+  },
+  "batWing": {
+    "file": "assets/item-art/batWing.webp",
+    "sheet": 3,
+    "tile": 31
+  },
+  "drop_stormDrake_miecz_smoczego_wadcy": {
+    "file": "assets/item-art/drop_stormDrake_miecz_smoczego_wadcy.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "drop_stormDrake_kaptur_smoczego_zwiadowcy": {
+    "file": "assets/item-art/drop_stormDrake_kaptur_smoczego_zwiadowcy.webp",
+    "sheet": 2,
+    "tile": 17
+  },
+  "drop_stormDrake_kostur_mroku": {
+    "file": "assets/item-art/drop_stormDrake_kostur_mroku.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "drop_stormDrake_buty_smoczego_jezdzca": {
+    "file": "assets/item-art/drop_stormDrake_buty_smoczego_jezdzca.webp",
+    "sheet": 2,
+    "tile": 28
+  },
+  "drop_stormDrake_pierscien_smoczego_rodu": {
+    "file": "assets/item-art/drop_stormDrake_pierscien_smoczego_rodu.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_rys_czapka_owcy": {
+    "file": "assets/item-art/drop_rys_czapka_owcy.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "mat_spodnie_pregowanego_tropiciela": {
+    "file": "assets/item-art/mat_spodnie_pregowanego_tropiciela.webp",
+    "sheet": 2,
+    "tile": 25
+  },
+  "drop_harpia_wocznia_lotu": {
+    "file": "assets/item-art/drop_harpia_wocznia_lotu.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "drop_harpia_zbroja_husarii": {
+    "file": "assets/item-art/drop_harpia_zbroja_husarii.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_harpia_rekawice_szelestu": {
+    "file": "assets/item-art/drop_harpia_rekawice_szelestu.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "drop_niedzwiedz_naszyjnik_niedzwiedziej_sily": {
+    "file": "assets/item-art/drop_niedzwiedz_naszyjnik_niedzwiedziej_sily.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_niedzwiedz_tarcza_niedzwiedziej_siy": {
+    "file": "assets/item-art/drop_niedzwiedz_tarcza_niedzwiedziej_siy.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_wilkolak_hem_nocy": {
+    "file": "assets/item-art/drop_wilkolak_hem_nocy.webp",
+    "sheet": 2,
+    "tile": 19
+  },
+  "drop_wilkolak_zbroja_ksiezyca": {
+    "file": "assets/item-art/drop_wilkolak_zbroja_ksiezyca.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_wilkolak_uk_nocnego_wilka": {
+    "file": "assets/item-art/drop_wilkolak_uk_nocnego_wilka.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_wilkolak_pierscien_zrecznosci": {
+    "file": "assets/item-art/drop_wilkolak_pierscien_zrecznosci.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_wilkolak_naszyjnik_peni": {
+    "file": "assets/item-art/drop_wilkolak_naszyjnik_peni.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_fenStalker_sztylet_tropicela": {
+    "file": "assets/item-art/drop_fenStalker_sztylet_tropicela.webp",
+    "sheet": 1,
+    "tile": 1
+  },
+  "fin": {
+    "file": "assets/item-art/fin.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "tentacle": {
+    "file": "assets/item-art/tentacle.webp",
+    "sheet": 2,
+    "tile": 41
+  },
+  "drop_mlodyKraken_rekawice_wody": {
+    "file": "assets/item-art/drop_mlodyKraken_rekawice_wody.webp",
+    "sheet": 2,
+    "tile": 27
+  },
+  "drop_mlodyKraken_zbroja_wodnego_krakena": {
+    "file": "assets/item-art/drop_mlodyKraken_zbroja_wodnego_krakena.webp",
+    "sheet": 2,
+    "tile": 21
+  },
+  "drop_mlodyKraken_kostur_wody": {
+    "file": "assets/item-art/drop_mlodyKraken_kostur_wody.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "mat_dopisz_jeszcze_kilka": {
+    "file": "assets/item-art/mat_dopisz_jeszcze_kilka.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_mireMother_kaptur_matki_mgy": {
+    "file": "assets/item-art/drop_mireMother_kaptur_matki_mgy.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "drop_mireMother_pancerz_matki_mgy": {
+    "file": "assets/item-art/drop_mireMother_pancerz_matki_mgy.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_mireMother_pierscien_mgy": {
+    "file": "assets/item-art/drop_mireMother_pierscien_mgy.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_ashScavenger_ostrze_padlinozercy": {
+    "file": "assets/item-art/drop_ashScavenger_ostrze_padlinozercy.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_ashScavenger_amulet_popiou": {
+    "file": "assets/item-art/drop_ashScavenger_amulet_popiou.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_ashDrake_wocznia_popielnego_draka": {
+    "file": "assets/item-art/drop_ashDrake_wocznia_popielnego_draka.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "drop_ashDrake_pancerz_draka": {
+    "file": "assets/item-art/drop_ashDrake_pancerz_draka.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_frostRaptor_buty_raptora": {
+    "file": "assets/item-art/drop_frostRaptor_buty_raptora.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "drop_frostRaptor_rekawice_mrozu": {
+    "file": "assets/item-art/drop_frostRaptor_rekawice_mrozu.webp",
+    "sheet": 2,
+    "tile": 27
+  },
+  "drop_frostRaptor_ostrze_lodowego_szponu": {
+    "file": "assets/item-art/drop_frostRaptor_ostrze_lodowego_szponu.webp",
+    "sheet": 2,
+    "tile": 1
+  },
+  "mat_rog_gromu": {
+    "file": "assets/item-art/mat_rog_gromu.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_kozica_amulet_gromowej_kozicy": {
+    "file": "assets/item-art/drop_kozica_amulet_gromowej_kozicy.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_mountainTroll_mot_skalnego_trolla": {
+    "file": "assets/item-art/drop_mountainTroll_mot_skalnego_trolla.webp",
+    "sheet": 1,
+    "tile": 3
+  },
+  "drop_mountainTroll_amulet_trolla": {
+    "file": "assets/item-art/drop_mountainTroll_amulet_trolla.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_skySerpent_wocznia_niebios": {
+    "file": "assets/item-art/drop_skySerpent_wocznia_niebios.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "drop_skySerpent_pierscien_niebios": {
+    "file": "assets/item-art/drop_skySerpent_pierscien_niebios.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "drop_skySerpent_zbroja_niebios": {
+    "file": "assets/item-art/drop_skySerpent_zbroja_niebios.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "mat_oko_bazyliszka": {
+    "file": "assets/item-art/mat_oko_bazyliszka.webp",
+    "sheet": 3,
+    "tile": 15
+  },
+  "mat_uska_bazyliszka": {
+    "file": "assets/item-art/mat_uska_bazyliszka.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "drop_bazyliszek_tarcza_bazyliszka": {
+    "file": "assets/item-art/drop_bazyliszek_tarcza_bazyliszka.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "drop_bazyliszek_ostrze_bazyliszka": {
+    "file": "assets/item-art/drop_bazyliszek_ostrze_bazyliszka.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_bazyliszek_pierscien_skamienienia": {
+    "file": "assets/item-art/drop_bazyliszek_pierscien_skamienienia.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "mat_pioro_gryfa": {
+    "file": "assets/item-art/mat_pioro_gryfa.webp",
+    "sheet": 2,
+    "tile": 42
+  },
+  "drop_gryf_uk_gryfa": {
+    "file": "assets/item-art/drop_gryf_uk_gryfa.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_gryf_pancerz_skalnego_gniazda": {
+    "file": "assets/item-art/drop_gryf_pancerz_skalnego_gniazda.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_gryf_amulet_gryfa": {
+    "file": "assets/item-art/drop_gryf_amulet_gryfa.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_stormGriffin_uk_gromu": {
+    "file": "assets/item-art/drop_stormGriffin_uk_gromu.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "mat_korona_gryfa_nawanicy": {
+    "file": "assets/item-art/mat_korona_gryfa_nawanicy.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "drop_stormGriffin_pierscien_burzy": {
+    "file": "assets/item-art/drop_stormGriffin_pierscien_burzy.webp",
+    "sheet": 2,
+    "tile": 37
+  },
+  "drop_wyvern_wocznia_wywerny": {
+    "file": "assets/item-art/drop_wyvern_wocznia_wywerny.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "drop_wyvern_pancerz_wywerny": {
+    "file": "assets/item-art/drop_wyvern_pancerz_wywerny.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "stormHorn": {
+    "file": "assets/item-art/stormHorn.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "basiliskEye": {
+    "file": "assets/item-art/basiliskEye.webp",
+    "sheet": 3,
+    "tile": 15
+  },
+  "basiliskScale": {
+    "file": "assets/item-art/basiliskScale.webp",
+    "sheet": 1,
+    "tile": 39
+  },
+  "gryphonFeather": {
+    "file": "assets/item-art/gryphonFeather.webp",
+    "sheet": 2,
+    "tile": 42
+  },
+  "gryphonSeal": {
+    "file": "assets/item-art/gryphonSeal.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "stormSigil": {
+    "file": "assets/item-art/stormSigil.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "eternalCore": {
+    "file": "assets/item-art/eternalCore.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "krakenPearl": {
+    "file": "assets/item-art/krakenPearl.webp",
+    "sheet": 3,
+    "tile": 41
+  },
+  "basiliskHeart": {
+    "file": "assets/item-art/basiliskHeart.webp",
+    "sheet": 3,
+    "tile": 46
+  },
+  "end_knight_80": {
+    "file": "assets/item-art/end_knight_80.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "end_knight_90": {
+    "file": "assets/item-art/end_knight_90.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "end_knight_100": {
+    "file": "assets/item-art/end_knight_100.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "end_berserker_80": {
+    "file": "assets/item-art/end_berserker_80.webp",
+    "sheet": 2,
+    "tile": 4
+  },
+  "end_berserker_90": {
+    "file": "assets/item-art/end_berserker_90.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "end_berserker_100": {
+    "file": "assets/item-art/end_berserker_100.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "end_mage_80": {
+    "file": "assets/item-art/end_mage_80.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "end_mage_90": {
+    "file": "assets/item-art/end_mage_90.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "end_mage_100": {
+    "file": "assets/item-art/end_mage_100.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "end_hunter_80": {
+    "file": "assets/item-art/end_hunter_80.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "end_hunter_90": {
+    "file": "assets/item-art/end_hunter_90.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "end_hunter_100": {
+    "file": "assets/item-art/end_hunter_100.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "end_ranger_80": {
+    "file": "assets/item-art/end_ranger_80.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "end_ranger_90": {
+    "file": "assets/item-art/end_ranger_90.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "end_ranger_100": {
+    "file": "assets/item-art/end_ranger_100.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "boss_leszy_crown": {
+    "file": "assets/item-art/boss_leszy_crown.webp",
+    "sheet": 1,
+    "tile": 15
+  },
+  "boss_leszy_cloak": {
+    "file": "assets/item-art/boss_leszy_cloak.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "boss_leszy_amulet": {
+    "file": "assets/item-art/boss_leszy_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "boss_leszy_quiver": {
+    "file": "assets/item-art/boss_leszy_quiver.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "boss_unicorn_staff": {
+    "file": "assets/item-art/boss_unicorn_staff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "boss_unicorn_circlet": {
+    "file": "assets/item-art/boss_unicorn_circlet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "boss_unicorn_robe": {
+    "file": "assets/item-art/boss_unicorn_robe.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "boss_unicorn_ring": {
+    "file": "assets/item-art/boss_unicorn_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "boss_kosciej_bow": {
+    "file": "assets/item-art/boss_kosciej_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "boss_kosciej_shield": {
+    "file": "assets/item-art/boss_kosciej_shield.webp",
+    "sheet": 2,
+    "tile": 30
+  },
+  "boss_kosciej_focus": {
+    "file": "assets/item-art/boss_kosciej_focus.webp",
+    "sheet": 2,
+    "tile": 30
+  },
+  "boss_kosciej_ring": {
+    "file": "assets/item-art/boss_kosciej_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "boss_wolf_claws": {
+    "file": "assets/item-art/boss_wolf_claws.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "boss_wolf_quiver": {
+    "file": "assets/item-art/boss_wolf_quiver.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "boss_kraken_staff": {
+    "file": "assets/item-art/boss_kraken_staff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "boss_kraken_shield": {
+    "file": "assets/item-art/boss_kraken_shield.webp",
+    "sheet": 2,
+    "tile": 31
+  },
+  "boss_kraken_bow": {
+    "file": "assets/item-art/boss_kraken_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "boss_kraken_amulet": {
+    "file": "assets/item-art/boss_kraken_amulet.webp",
+    "sheet": 2,
+    "tile": 34
+  },
+  "boss_drake_knight": {
+    "file": "assets/item-art/boss_drake_knight.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "boss_drake_berserker": {
+    "file": "assets/item-art/boss_drake_berserker.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "boss_drake_mage": {
+    "file": "assets/item-art/boss_drake_mage.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "boss_drake_hunter": {
+    "file": "assets/item-art/boss_drake_hunter.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "boss_drake_ranger": {
+    "file": "assets/item-art/boss_drake_ranger.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "boss_basilisk_blade": {
+    "file": "assets/item-art/boss_basilisk_blade.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "boss_basilisk_shield": {
+    "file": "assets/item-art/boss_basilisk_shield.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "boss_basilisk_staff": {
+    "file": "assets/item-art/boss_basilisk_staff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "boss_basilisk_bow": {
+    "file": "assets/item-art/boss_basilisk_bow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "boss_basilisk_ring": {
+    "file": "assets/item-art/boss_basilisk_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "boss_serpent_spear": {
+    "file": "assets/item-art/boss_serpent_spear.webp",
+    "sheet": 1,
+    "tile": 4
+  },
+  "boss_serpent_staff": {
+    "file": "assets/item-art/boss_serpent_staff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "boss_serpent_bow": {
+    "file": "assets/item-art/boss_serpent_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "boss_serpent_venom": {
+    "file": "assets/item-art/boss_serpent_venom.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "boss_serpent_axe": {
+    "file": "assets/item-art/boss_serpent_axe.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "boss_griffin90_knight": {
+    "file": "assets/item-art/boss_griffin90_knight.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "boss_griffin90_berserker": {
+    "file": "assets/item-art/boss_griffin90_berserker.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "boss_griffin90_mage": {
+    "file": "assets/item-art/boss_griffin90_mage.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "boss_griffin90_hunter": {
+    "file": "assets/item-art/boss_griffin90_hunter.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "boss_griffin90_ranger": {
+    "file": "assets/item-art/boss_griffin90_ranger.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "drop_rusalka_diadem_topieli": {
+    "file": "assets/item-art/drop_rusalka_diadem_topieli.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "drop_rusalka_fokus_zielonej_fali": {
+    "file": "assets/item-art/drop_rusalka_fokus_zielonej_fali.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "drop_rusalka_pierscien_glebiny": {
+    "file": "assets/item-art/drop_rusalka_pierscien_glebiny.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "curedLeather": {
+    "file": "assets/item-art/curedLeather.webp",
+    "sheet": 1,
+    "tile": 35
+  },
+  "bonePlate": {
+    "file": "assets/item-art/bonePlate.webp",
+    "sheet": 3,
+    "tile": 32
+  },
+  "spiritDust": {
+    "file": "assets/item-art/spiritDust.webp",
+    "sheet": 3,
+    "tile": 8
+  },
+  "toxinConcentrate": {
+    "file": "assets/item-art/toxinConcentrate.webp",
+    "sheet": 2,
+    "tile": 40
+  },
+  "demonAlloy": {
+    "file": "assets/item-art/demonAlloy.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "frostAlloy": {
+    "file": "assets/item-art/frostAlloy.webp",
+    "sheet": 1,
+    "tile": 40
+  },
+  "stormAlloy": {
+    "file": "assets/item-art/stormAlloy.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "abyssThread": {
+    "file": "assets/item-art/abyssThread.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "runicComposite": {
+    "file": "assets/item-art/runicComposite.webp",
+    "sheet": 1,
+    "tile": 41
+  },
+  "herbalExtract": {
+    "file": "assets/item-art/herbalExtract.webp",
+    "sheet": 3,
+    "tile": 24
+  },
+  "arcaneResin": {
+    "file": "assets/item-art/arcaneResin.webp",
+    "sheet": 1,
+    "tile": 42
+  },
+  "craft_boneguard_shield": {
+    "file": "assets/item-art/craft_boneguard_shield.webp",
+    "sheet": 2,
+    "tile": 30
+  },
+  "craft_fangcleaver": {
+    "file": "assets/item-art/craft_fangcleaver.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "craft_spiritstaff": {
+    "file": "assets/item-art/craft_spiritstaff.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "craft_stalkerbow": {
+    "file": "assets/item-art/craft_stalkerbow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "craft_venombow": {
+    "file": "assets/item-art/craft_venombow.webp",
+    "sheet": 2,
+    "tile": 8
+  },
+  "craft_demonward": {
+    "file": "assets/item-art/craft_demonward.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "craft_hellreaver": {
+    "file": "assets/item-art/craft_hellreaver.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "craft_frostcore_staff": {
+    "file": "assets/item-art/craft_frostcore_staff.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "craft_stormhunt_bow": {
+    "file": "assets/item-art/craft_stormhunt_bow.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "craft_abyss_bow": {
+    "file": "assets/item-art/craft_abyss_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "craft_skywall": {
+    "file": "assets/item-art/craft_skywall.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "craft_titanreaver": {
+    "file": "assets/item-art/craft_titanreaver.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "craft_arcane_scepter": {
+    "file": "assets/item-art/craft_arcane_scepter.webp",
+    "sheet": 2,
+    "tile": 14
+  },
+  "craft_gryphon_bow": {
+    "file": "assets/item-art/craft_gryphon_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "craft_serpentfang_bow": {
+    "file": "assets/item-art/craft_serpentfang_bow.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_knight_1_weapon": {
+    "file": "assets/item-art/city_basic_knight_1_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_1_armor": {
+    "file": "assets/item-art/city_basic_knight_1_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_12_weapon": {
+    "file": "assets/item-art/city_basic_knight_12_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_12_armor": {
+    "file": "assets/item-art/city_basic_knight_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_25_weapon": {
+    "file": "assets/item-art/city_basic_knight_25_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_25_armor": {
+    "file": "assets/item-art/city_basic_knight_25_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_40_weapon": {
+    "file": "assets/item-art/city_basic_knight_40_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_40_armor": {
+    "file": "assets/item-art/city_basic_knight_40_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_55_weapon": {
+    "file": "assets/item-art/city_basic_knight_55_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_55_armor": {
+    "file": "assets/item-art/city_basic_knight_55_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_70_weapon": {
+    "file": "assets/item-art/city_basic_knight_70_weapon.webp",
+    "sheet": 2,
+    "tile": 2
+  },
+  "city_basic_knight_70_armor": {
+    "file": "assets/item-art/city_basic_knight_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "city_basic_knight_85_weapon": {
+    "file": "assets/item-art/city_basic_knight_85_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_85_armor": {
+    "file": "assets/item-art/city_basic_knight_85_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_knight_100_weapon": {
+    "file": "assets/item-art/city_basic_knight_100_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "city_basic_knight_100_armor": {
+    "file": "assets/item-art/city_basic_knight_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_mage_1_weapon": {
+    "file": "assets/item-art/city_basic_mage_1_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_1_armor": {
+    "file": "assets/item-art/city_basic_mage_1_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_12_weapon": {
+    "file": "assets/item-art/city_basic_mage_12_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_12_armor": {
+    "file": "assets/item-art/city_basic_mage_12_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_25_weapon": {
+    "file": "assets/item-art/city_basic_mage_25_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_25_armor": {
+    "file": "assets/item-art/city_basic_mage_25_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_40_weapon": {
+    "file": "assets/item-art/city_basic_mage_40_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_40_armor": {
+    "file": "assets/item-art/city_basic_mage_40_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_55_weapon": {
+    "file": "assets/item-art/city_basic_mage_55_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_55_armor": {
+    "file": "assets/item-art/city_basic_mage_55_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_70_weapon": {
+    "file": "assets/item-art/city_basic_mage_70_weapon.webp",
+    "sheet": 2,
+    "tile": 11
+  },
+  "city_basic_mage_70_armor": {
+    "file": "assets/item-art/city_basic_mage_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "city_basic_mage_85_weapon": {
+    "file": "assets/item-art/city_basic_mage_85_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_85_armor": {
+    "file": "assets/item-art/city_basic_mage_85_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_mage_100_weapon": {
+    "file": "assets/item-art/city_basic_mage_100_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "city_basic_mage_100_armor": {
+    "file": "assets/item-art/city_basic_mage_100_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "city_basic_hunter_1_weapon": {
+    "file": "assets/item-art/city_basic_hunter_1_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_1_armor": {
+    "file": "assets/item-art/city_basic_hunter_1_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_12_weapon": {
+    "file": "assets/item-art/city_basic_hunter_12_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_12_armor": {
+    "file": "assets/item-art/city_basic_hunter_12_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_25_weapon": {
+    "file": "assets/item-art/city_basic_hunter_25_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_25_armor": {
+    "file": "assets/item-art/city_basic_hunter_25_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_40_weapon": {
+    "file": "assets/item-art/city_basic_hunter_40_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_40_armor": {
+    "file": "assets/item-art/city_basic_hunter_40_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_55_weapon": {
+    "file": "assets/item-art/city_basic_hunter_55_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_55_armor": {
+    "file": "assets/item-art/city_basic_hunter_55_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_70_weapon": {
+    "file": "assets/item-art/city_basic_hunter_70_weapon.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "city_basic_hunter_70_armor": {
+    "file": "assets/item-art/city_basic_hunter_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "city_basic_hunter_85_weapon": {
+    "file": "assets/item-art/city_basic_hunter_85_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_85_armor": {
+    "file": "assets/item-art/city_basic_hunter_85_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_hunter_100_weapon": {
+    "file": "assets/item-art/city_basic_hunter_100_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_hunter_100_armor": {
+    "file": "assets/item-art/city_basic_hunter_100_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_berserker_1_weapon": {
+    "file": "assets/item-art/city_basic_berserker_1_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_1_armor": {
+    "file": "assets/item-art/city_basic_berserker_1_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_12_weapon": {
+    "file": "assets/item-art/city_basic_berserker_12_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_12_armor": {
+    "file": "assets/item-art/city_basic_berserker_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_25_weapon": {
+    "file": "assets/item-art/city_basic_berserker_25_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_25_armor": {
+    "file": "assets/item-art/city_basic_berserker_25_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_40_weapon": {
+    "file": "assets/item-art/city_basic_berserker_40_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_40_armor": {
+    "file": "assets/item-art/city_basic_berserker_40_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_55_weapon": {
+    "file": "assets/item-art/city_basic_berserker_55_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_55_armor": {
+    "file": "assets/item-art/city_basic_berserker_55_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_70_weapon": {
+    "file": "assets/item-art/city_basic_berserker_70_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_70_armor": {
+    "file": "assets/item-art/city_basic_berserker_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "city_basic_berserker_85_weapon": {
+    "file": "assets/item-art/city_basic_berserker_85_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_85_armor": {
+    "file": "assets/item-art/city_basic_berserker_85_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_berserker_100_weapon": {
+    "file": "assets/item-art/city_basic_berserker_100_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "city_basic_berserker_100_armor": {
+    "file": "assets/item-art/city_basic_berserker_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "city_basic_ranger_1_weapon": {
+    "file": "assets/item-art/city_basic_ranger_1_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_1_armor": {
+    "file": "assets/item-art/city_basic_ranger_1_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_12_weapon": {
+    "file": "assets/item-art/city_basic_ranger_12_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_12_armor": {
+    "file": "assets/item-art/city_basic_ranger_12_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_25_weapon": {
+    "file": "assets/item-art/city_basic_ranger_25_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_25_armor": {
+    "file": "assets/item-art/city_basic_ranger_25_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_40_weapon": {
+    "file": "assets/item-art/city_basic_ranger_40_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_40_armor": {
+    "file": "assets/item-art/city_basic_ranger_40_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_55_weapon": {
+    "file": "assets/item-art/city_basic_ranger_55_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_55_armor": {
+    "file": "assets/item-art/city_basic_ranger_55_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_70_weapon": {
+    "file": "assets/item-art/city_basic_ranger_70_weapon.webp",
+    "sheet": 2,
+    "tile": 9
+  },
+  "city_basic_ranger_70_armor": {
+    "file": "assets/item-art/city_basic_ranger_70_armor.webp",
+    "sheet": 2,
+    "tile": 20
+  },
+  "city_basic_ranger_85_weapon": {
+    "file": "assets/item-art/city_basic_ranger_85_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_85_armor": {
+    "file": "assets/item-art/city_basic_ranger_85_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "city_basic_ranger_100_weapon": {
+    "file": "assets/item-art/city_basic_ranger_100_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "city_basic_ranger_100_armor": {
+    "file": "assets/item-art/city_basic_ranger_100_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "drop_skorpion_naszyjnik_trucizny": {
+    "file": "assets/item-art/drop_skorpion_naszyjnik_trucizny.webp",
+    "sheet": 2,
+    "tile": 32
+  },
+  "boss_goblinChampion_knight_armor": {
+    "file": "assets/item-art/boss_goblinChampion_knight_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "boss_goblinChampion_knight_gloves": {
+    "file": "assets/item-art/boss_goblinChampion_knight_gloves.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "boss_goblinChampion_knight_boots": {
+    "file": "assets/item-art/boss_goblinChampion_knight_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "boss_goblinChampion_mage_armor": {
+    "file": "assets/item-art/boss_goblinChampion_mage_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "boss_goblinChampion_mage_gloves": {
+    "file": "assets/item-art/boss_goblinChampion_mage_gloves.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "boss_goblinChampion_mage_boots": {
+    "file": "assets/item-art/boss_goblinChampion_mage_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "boss_goblinChampion_hunter_armor": {
+    "file": "assets/item-art/boss_goblinChampion_hunter_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "boss_goblinChampion_hunter_gloves": {
+    "file": "assets/item-art/boss_goblinChampion_hunter_gloves.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "boss_goblinChampion_hunter_boots": {
+    "file": "assets/item-art/boss_goblinChampion_hunter_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "boss_goblinChampion_berserker_armor": {
+    "file": "assets/item-art/boss_goblinChampion_berserker_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "boss_goblinChampion_berserker_gloves": {
+    "file": "assets/item-art/boss_goblinChampion_berserker_gloves.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "boss_goblinChampion_berserker_boots": {
+    "file": "assets/item-art/boss_goblinChampion_berserker_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "boss_goblinChampion_ranger_armor": {
+    "file": "assets/item-art/boss_goblinChampion_ranger_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "boss_goblinChampion_ranger_gloves": {
+    "file": "assets/item-art/boss_goblinChampion_ranger_gloves.webp",
+    "sheet": 2,
+    "tile": 26
+  },
+  "boss_goblinChampion_ranger_boots": {
+    "file": "assets/item-art/boss_goblinChampion_ranger_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "boss_goblinChampion_mage_ring": {
+    "file": "assets/item-art/boss_goblinChampion_mage_ring.webp",
+    "sheet": 2,
+    "tile": 36
+  },
+  "boss_goblinChampion_mage_amulet": {
+    "file": "assets/item-art/boss_goblinChampion_mage_amulet.webp",
+    "sheet": 1,
+    "tile": 26
+  },
+  "drop_pyreKnight_ostrze_stosu": {
+    "file": "assets/item-art/drop_pyreKnight_ostrze_stosu.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "drop_pyreKnight_pancerz_stosu": {
+    "file": "assets/item-art/drop_pyreKnight_pancerz_stosu.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "drop_frozenKnight_mroczny_helm": {
+    "file": "assets/item-art/drop_frozenKnight_mroczny_helm.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_1_weapon": {
+    "file": "assets/item-art/shop_knight_1_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_1_armor": {
+    "file": "assets/item-art/shop_knight_1_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_1_helmet": {
+    "file": "assets/item-art/shop_knight_1_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_1_gloves": {
+    "file": "assets/item-art/shop_knight_1_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_1_boots": {
+    "file": "assets/item-art/shop_knight_1_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_1_offhand": {
+    "file": "assets/item-art/shop_knight_1_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_1_weapon": {
+    "file": "assets/item-art/shop_mage_1_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_1_armor": {
+    "file": "assets/item-art/shop_mage_1_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_1_helmet": {
+    "file": "assets/item-art/shop_mage_1_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_1_gloves": {
+    "file": "assets/item-art/shop_mage_1_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_1_boots": {
+    "file": "assets/item-art/shop_mage_1_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_1_offhand": {
+    "file": "assets/item-art/shop_mage_1_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_1_weapon": {
+    "file": "assets/item-art/shop_hunter_1_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_1_armor": {
+    "file": "assets/item-art/shop_hunter_1_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_1_helmet": {
+    "file": "assets/item-art/shop_hunter_1_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_1_gloves": {
+    "file": "assets/item-art/shop_hunter_1_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_1_boots": {
+    "file": "assets/item-art/shop_hunter_1_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_1_offhand": {
+    "file": "assets/item-art/shop_hunter_1_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_1_weapon": {
+    "file": "assets/item-art/shop_berserker_1_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_1_armor": {
+    "file": "assets/item-art/shop_berserker_1_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_1_helmet": {
+    "file": "assets/item-art/shop_berserker_1_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_1_gloves": {
+    "file": "assets/item-art/shop_berserker_1_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_1_boots": {
+    "file": "assets/item-art/shop_berserker_1_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_1_offhand": {
+    "file": "assets/item-art/shop_berserker_1_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_1_weapon": {
+    "file": "assets/item-art/shop_ranger_1_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_1_armor": {
+    "file": "assets/item-art/shop_ranger_1_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_1_helmet": {
+    "file": "assets/item-art/shop_ranger_1_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_1_gloves": {
+    "file": "assets/item-art/shop_ranger_1_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_1_boots": {
+    "file": "assets/item-art/shop_ranger_1_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_1_offhand": {
+    "file": "assets/item-art/shop_ranger_1_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_12_weapon": {
+    "file": "assets/item-art/shop_knight_12_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_12_armor": {
+    "file": "assets/item-art/shop_knight_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_12_helmet": {
+    "file": "assets/item-art/shop_knight_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_12_gloves": {
+    "file": "assets/item-art/shop_knight_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_12_boots": {
+    "file": "assets/item-art/shop_knight_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_12_offhand": {
+    "file": "assets/item-art/shop_knight_12_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_12_weapon": {
+    "file": "assets/item-art/shop_mage_12_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_12_armor": {
+    "file": "assets/item-art/shop_mage_12_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_12_helmet": {
+    "file": "assets/item-art/shop_mage_12_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_12_gloves": {
+    "file": "assets/item-art/shop_mage_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_12_boots": {
+    "file": "assets/item-art/shop_mage_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_12_offhand": {
+    "file": "assets/item-art/shop_mage_12_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_12_weapon": {
+    "file": "assets/item-art/shop_hunter_12_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_12_armor": {
+    "file": "assets/item-art/shop_hunter_12_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_12_helmet": {
+    "file": "assets/item-art/shop_hunter_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_12_gloves": {
+    "file": "assets/item-art/shop_hunter_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_12_boots": {
+    "file": "assets/item-art/shop_hunter_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_12_offhand": {
+    "file": "assets/item-art/shop_hunter_12_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_12_weapon": {
+    "file": "assets/item-art/shop_berserker_12_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_12_armor": {
+    "file": "assets/item-art/shop_berserker_12_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_12_helmet": {
+    "file": "assets/item-art/shop_berserker_12_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_12_gloves": {
+    "file": "assets/item-art/shop_berserker_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_12_boots": {
+    "file": "assets/item-art/shop_berserker_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_12_offhand": {
+    "file": "assets/item-art/shop_berserker_12_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_12_weapon": {
+    "file": "assets/item-art/shop_ranger_12_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_12_armor": {
+    "file": "assets/item-art/shop_ranger_12_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_12_helmet": {
+    "file": "assets/item-art/shop_ranger_12_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_12_gloves": {
+    "file": "assets/item-art/shop_ranger_12_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_12_boots": {
+    "file": "assets/item-art/shop_ranger_12_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_12_offhand": {
+    "file": "assets/item-art/shop_ranger_12_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_25_weapon": {
+    "file": "assets/item-art/shop_knight_25_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_25_armor": {
+    "file": "assets/item-art/shop_knight_25_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_25_helmet": {
+    "file": "assets/item-art/shop_knight_25_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_25_gloves": {
+    "file": "assets/item-art/shop_knight_25_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_25_boots": {
+    "file": "assets/item-art/shop_knight_25_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_25_offhand": {
+    "file": "assets/item-art/shop_knight_25_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_25_weapon": {
+    "file": "assets/item-art/shop_mage_25_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_25_armor": {
+    "file": "assets/item-art/shop_mage_25_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_25_helmet": {
+    "file": "assets/item-art/shop_mage_25_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_25_gloves": {
+    "file": "assets/item-art/shop_mage_25_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_25_boots": {
+    "file": "assets/item-art/shop_mage_25_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_25_offhand": {
+    "file": "assets/item-art/shop_mage_25_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_25_weapon": {
+    "file": "assets/item-art/shop_hunter_25_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_25_armor": {
+    "file": "assets/item-art/shop_hunter_25_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_25_helmet": {
+    "file": "assets/item-art/shop_hunter_25_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_25_gloves": {
+    "file": "assets/item-art/shop_hunter_25_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_25_boots": {
+    "file": "assets/item-art/shop_hunter_25_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_25_offhand": {
+    "file": "assets/item-art/shop_hunter_25_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_25_weapon": {
+    "file": "assets/item-art/shop_berserker_25_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_25_armor": {
+    "file": "assets/item-art/shop_berserker_25_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_25_helmet": {
+    "file": "assets/item-art/shop_berserker_25_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_25_gloves": {
+    "file": "assets/item-art/shop_berserker_25_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_25_boots": {
+    "file": "assets/item-art/shop_berserker_25_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_25_offhand": {
+    "file": "assets/item-art/shop_berserker_25_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_25_weapon": {
+    "file": "assets/item-art/shop_ranger_25_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_25_armor": {
+    "file": "assets/item-art/shop_ranger_25_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_25_helmet": {
+    "file": "assets/item-art/shop_ranger_25_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_25_gloves": {
+    "file": "assets/item-art/shop_ranger_25_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_25_boots": {
+    "file": "assets/item-art/shop_ranger_25_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_25_offhand": {
+    "file": "assets/item-art/shop_ranger_25_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_40_weapon": {
+    "file": "assets/item-art/shop_knight_40_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_40_armor": {
+    "file": "assets/item-art/shop_knight_40_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_40_helmet": {
+    "file": "assets/item-art/shop_knight_40_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_40_gloves": {
+    "file": "assets/item-art/shop_knight_40_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_40_boots": {
+    "file": "assets/item-art/shop_knight_40_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_40_offhand": {
+    "file": "assets/item-art/shop_knight_40_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_40_weapon": {
+    "file": "assets/item-art/shop_mage_40_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_40_armor": {
+    "file": "assets/item-art/shop_mage_40_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_40_helmet": {
+    "file": "assets/item-art/shop_mage_40_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_40_gloves": {
+    "file": "assets/item-art/shop_mage_40_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_40_boots": {
+    "file": "assets/item-art/shop_mage_40_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_40_offhand": {
+    "file": "assets/item-art/shop_mage_40_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_40_weapon": {
+    "file": "assets/item-art/shop_hunter_40_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_40_armor": {
+    "file": "assets/item-art/shop_hunter_40_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_40_helmet": {
+    "file": "assets/item-art/shop_hunter_40_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_40_gloves": {
+    "file": "assets/item-art/shop_hunter_40_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_40_boots": {
+    "file": "assets/item-art/shop_hunter_40_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_40_offhand": {
+    "file": "assets/item-art/shop_hunter_40_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_40_weapon": {
+    "file": "assets/item-art/shop_berserker_40_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_40_armor": {
+    "file": "assets/item-art/shop_berserker_40_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_40_helmet": {
+    "file": "assets/item-art/shop_berserker_40_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_40_gloves": {
+    "file": "assets/item-art/shop_berserker_40_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_40_boots": {
+    "file": "assets/item-art/shop_berserker_40_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_40_offhand": {
+    "file": "assets/item-art/shop_berserker_40_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_40_weapon": {
+    "file": "assets/item-art/shop_ranger_40_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_40_armor": {
+    "file": "assets/item-art/shop_ranger_40_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_40_helmet": {
+    "file": "assets/item-art/shop_ranger_40_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_40_gloves": {
+    "file": "assets/item-art/shop_ranger_40_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_40_boots": {
+    "file": "assets/item-art/shop_ranger_40_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_40_offhand": {
+    "file": "assets/item-art/shop_ranger_40_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_55_weapon": {
+    "file": "assets/item-art/shop_knight_55_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_55_armor": {
+    "file": "assets/item-art/shop_knight_55_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_55_helmet": {
+    "file": "assets/item-art/shop_knight_55_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_55_gloves": {
+    "file": "assets/item-art/shop_knight_55_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_55_boots": {
+    "file": "assets/item-art/shop_knight_55_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_55_offhand": {
+    "file": "assets/item-art/shop_knight_55_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_55_weapon": {
+    "file": "assets/item-art/shop_mage_55_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_55_armor": {
+    "file": "assets/item-art/shop_mage_55_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_55_helmet": {
+    "file": "assets/item-art/shop_mage_55_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_55_gloves": {
+    "file": "assets/item-art/shop_mage_55_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_55_boots": {
+    "file": "assets/item-art/shop_mage_55_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_55_offhand": {
+    "file": "assets/item-art/shop_mage_55_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_55_weapon": {
+    "file": "assets/item-art/shop_hunter_55_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_55_armor": {
+    "file": "assets/item-art/shop_hunter_55_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_55_helmet": {
+    "file": "assets/item-art/shop_hunter_55_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_55_gloves": {
+    "file": "assets/item-art/shop_hunter_55_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_55_boots": {
+    "file": "assets/item-art/shop_hunter_55_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_55_offhand": {
+    "file": "assets/item-art/shop_hunter_55_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_55_weapon": {
+    "file": "assets/item-art/shop_berserker_55_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_55_armor": {
+    "file": "assets/item-art/shop_berserker_55_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_55_helmet": {
+    "file": "assets/item-art/shop_berserker_55_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_55_gloves": {
+    "file": "assets/item-art/shop_berserker_55_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_55_boots": {
+    "file": "assets/item-art/shop_berserker_55_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_55_offhand": {
+    "file": "assets/item-art/shop_berserker_55_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_55_weapon": {
+    "file": "assets/item-art/shop_ranger_55_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_55_armor": {
+    "file": "assets/item-art/shop_ranger_55_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_55_helmet": {
+    "file": "assets/item-art/shop_ranger_55_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_55_gloves": {
+    "file": "assets/item-art/shop_ranger_55_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_55_boots": {
+    "file": "assets/item-art/shop_ranger_55_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_55_offhand": {
+    "file": "assets/item-art/shop_ranger_55_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_70_weapon": {
+    "file": "assets/item-art/shop_knight_70_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_70_armor": {
+    "file": "assets/item-art/shop_knight_70_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_70_helmet": {
+    "file": "assets/item-art/shop_knight_70_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_70_gloves": {
+    "file": "assets/item-art/shop_knight_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_70_boots": {
+    "file": "assets/item-art/shop_knight_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_70_offhand": {
+    "file": "assets/item-art/shop_knight_70_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_70_weapon": {
+    "file": "assets/item-art/shop_mage_70_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_70_armor": {
+    "file": "assets/item-art/shop_mage_70_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_70_helmet": {
+    "file": "assets/item-art/shop_mage_70_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_70_gloves": {
+    "file": "assets/item-art/shop_mage_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_70_boots": {
+    "file": "assets/item-art/shop_mage_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_70_offhand": {
+    "file": "assets/item-art/shop_mage_70_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_70_weapon": {
+    "file": "assets/item-art/shop_hunter_70_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_70_armor": {
+    "file": "assets/item-art/shop_hunter_70_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_70_helmet": {
+    "file": "assets/item-art/shop_hunter_70_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_70_gloves": {
+    "file": "assets/item-art/shop_hunter_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_70_boots": {
+    "file": "assets/item-art/shop_hunter_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_70_offhand": {
+    "file": "assets/item-art/shop_hunter_70_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_70_weapon": {
+    "file": "assets/item-art/shop_berserker_70_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_70_armor": {
+    "file": "assets/item-art/shop_berserker_70_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_70_helmet": {
+    "file": "assets/item-art/shop_berserker_70_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_70_gloves": {
+    "file": "assets/item-art/shop_berserker_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_70_boots": {
+    "file": "assets/item-art/shop_berserker_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_70_offhand": {
+    "file": "assets/item-art/shop_berserker_70_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_70_weapon": {
+    "file": "assets/item-art/shop_ranger_70_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_70_armor": {
+    "file": "assets/item-art/shop_ranger_70_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_70_helmet": {
+    "file": "assets/item-art/shop_ranger_70_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_70_gloves": {
+    "file": "assets/item-art/shop_ranger_70_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_70_boots": {
+    "file": "assets/item-art/shop_ranger_70_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_70_offhand": {
+    "file": "assets/item-art/shop_ranger_70_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_85_weapon": {
+    "file": "assets/item-art/shop_knight_85_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_85_armor": {
+    "file": "assets/item-art/shop_knight_85_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_85_helmet": {
+    "file": "assets/item-art/shop_knight_85_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_85_gloves": {
+    "file": "assets/item-art/shop_knight_85_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_85_boots": {
+    "file": "assets/item-art/shop_knight_85_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_85_offhand": {
+    "file": "assets/item-art/shop_knight_85_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_85_weapon": {
+    "file": "assets/item-art/shop_mage_85_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_85_armor": {
+    "file": "assets/item-art/shop_mage_85_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_85_helmet": {
+    "file": "assets/item-art/shop_mage_85_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_85_gloves": {
+    "file": "assets/item-art/shop_mage_85_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_85_boots": {
+    "file": "assets/item-art/shop_mage_85_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_85_offhand": {
+    "file": "assets/item-art/shop_mage_85_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_85_weapon": {
+    "file": "assets/item-art/shop_hunter_85_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_85_armor": {
+    "file": "assets/item-art/shop_hunter_85_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_85_helmet": {
+    "file": "assets/item-art/shop_hunter_85_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_85_gloves": {
+    "file": "assets/item-art/shop_hunter_85_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_85_boots": {
+    "file": "assets/item-art/shop_hunter_85_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_85_offhand": {
+    "file": "assets/item-art/shop_hunter_85_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_85_weapon": {
+    "file": "assets/item-art/shop_berserker_85_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_85_armor": {
+    "file": "assets/item-art/shop_berserker_85_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_85_helmet": {
+    "file": "assets/item-art/shop_berserker_85_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_85_gloves": {
+    "file": "assets/item-art/shop_berserker_85_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_85_boots": {
+    "file": "assets/item-art/shop_berserker_85_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_85_offhand": {
+    "file": "assets/item-art/shop_berserker_85_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_85_weapon": {
+    "file": "assets/item-art/shop_ranger_85_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_85_armor": {
+    "file": "assets/item-art/shop_ranger_85_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_85_helmet": {
+    "file": "assets/item-art/shop_ranger_85_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_85_gloves": {
+    "file": "assets/item-art/shop_ranger_85_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_85_boots": {
+    "file": "assets/item-art/shop_ranger_85_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_85_offhand": {
+    "file": "assets/item-art/shop_ranger_85_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  },
+  "shop_knight_100_weapon": {
+    "file": "assets/item-art/shop_knight_100_weapon.webp",
+    "sheet": 1,
+    "tile": 0
+  },
+  "shop_knight_100_armor": {
+    "file": "assets/item-art/shop_knight_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_knight_100_helmet": {
+    "file": "assets/item-art/shop_knight_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_knight_100_gloves": {
+    "file": "assets/item-art/shop_knight_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_knight_100_boots": {
+    "file": "assets/item-art/shop_knight_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_knight_100_offhand": {
+    "file": "assets/item-art/shop_knight_100_offhand.webp",
+    "sheet": 1,
+    "tile": 9
+  },
+  "shop_mage_100_weapon": {
+    "file": "assets/item-art/shop_mage_100_weapon.webp",
+    "sheet": 1,
+    "tile": 7
+  },
+  "shop_mage_100_armor": {
+    "file": "assets/item-art/shop_mage_100_armor.webp",
+    "sheet": 1,
+    "tile": 18
+  },
+  "shop_mage_100_helmet": {
+    "file": "assets/item-art/shop_mage_100_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_mage_100_gloves": {
+    "file": "assets/item-art/shop_mage_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_mage_100_boots": {
+    "file": "assets/item-art/shop_mage_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_mage_100_offhand": {
+    "file": "assets/item-art/shop_mage_100_offhand.webp",
+    "sheet": 2,
+    "tile": 15
+  },
+  "shop_hunter_100_weapon": {
+    "file": "assets/item-art/shop_hunter_100_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_hunter_100_armor": {
+    "file": "assets/item-art/shop_hunter_100_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_hunter_100_helmet": {
+    "file": "assets/item-art/shop_hunter_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_hunter_100_gloves": {
+    "file": "assets/item-art/shop_hunter_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_hunter_100_boots": {
+    "file": "assets/item-art/shop_hunter_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_hunter_100_offhand": {
+    "file": "assets/item-art/shop_hunter_100_offhand.webp",
+    "sheet": 1,
+    "tile": 10
+  },
+  "shop_berserker_100_weapon": {
+    "file": "assets/item-art/shop_berserker_100_weapon.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_berserker_100_armor": {
+    "file": "assets/item-art/shop_berserker_100_armor.webp",
+    "sheet": 1,
+    "tile": 16
+  },
+  "shop_berserker_100_helmet": {
+    "file": "assets/item-art/shop_berserker_100_helmet.webp",
+    "sheet": 1,
+    "tile": 12
+  },
+  "shop_berserker_100_gloves": {
+    "file": "assets/item-art/shop_berserker_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_berserker_100_boots": {
+    "file": "assets/item-art/shop_berserker_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_berserker_100_offhand": {
+    "file": "assets/item-art/shop_berserker_100_offhand.webp",
+    "sheet": 1,
+    "tile": 2
+  },
+  "shop_ranger_100_weapon": {
+    "file": "assets/item-art/shop_ranger_100_weapon.webp",
+    "sheet": 1,
+    "tile": 5
+  },
+  "shop_ranger_100_armor": {
+    "file": "assets/item-art/shop_ranger_100_armor.webp",
+    "sheet": 2,
+    "tile": 22
+  },
+  "shop_ranger_100_helmet": {
+    "file": "assets/item-art/shop_ranger_100_helmet.webp",
+    "sheet": 1,
+    "tile": 13
+  },
+  "shop_ranger_100_gloves": {
+    "file": "assets/item-art/shop_ranger_100_gloves.webp",
+    "sheet": 1,
+    "tile": 19
+  },
+  "shop_ranger_100_boots": {
+    "file": "assets/item-art/shop_ranger_100_boots.webp",
+    "sheet": 1,
+    "tile": 21
+  },
+  "shop_ranger_100_offhand": {
+    "file": "assets/item-art/shop_ranger_100_offhand.webp",
+    "sheet": 1,
+    "tile": 11
+  }
+}
