@@ -655,8 +655,9 @@ body.building-open .shell{visibility:hidden!important;pointer-events:none!import
    Mapa + zwinięty pasek zadań wykorzystują całe miejsce nad dolną nawigacją.
    ======================================================================= */
 @media(max-width:900px){
-  html,body,#app{height:100%;min-height:100%;}
-  body{overflow:hidden;}
+  html,body,#app{min-height:100%;}
+  body{height:auto;overflow-x:hidden;overflow-y:auto;}
+  body.map-view-active{overflow:hidden;}
   .shell-21{
     height:100dvh!important;
     min-height:100dvh!important;

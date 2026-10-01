@@ -1,3 +1,13 @@
+## 3.9.9.8.3 — Poprawka przewijania przesłanej wersji 3.9.9.8
+
+Poprawka została nałożona bezpośrednio na przesłany plik Time4Heroes_3998_FABULA_WALKA_GRAFIKI.zip.
+
+- Na telefonie blokada przewijania dotyczy tylko widoku mapy, a nie całej strony.
+- Ekrany tworzenia bohatera i wprowadzenia zwalniają blokadę mapy, również przy tworzeniu kolejnej postaci.
+- Zmieniono identyfikator pamięci podręcznej, aby przeglądarka pobrała poprawione pliki po aktualizacji.
+- Pozostała zawartość i mechanika pochodzą z przesłanej wersji 3.9.9.8.
+- Testy: node tests/regression.mjs. Nie przeprowadzono testu gestem na fizycznym telefonie.
+
 ## 3.9.9.8 — Fabuła, walka i ilustracje
 
 - Pierwszy rozdział łączy wilcze tropy, mapę z czarną pieczęcią, kuriera, atak na wioskę i wyznanie Eldrana. Wybory wpływają na późniejsze dialogi, zdarzenia na mapie i przygotowanie do walki. Nagroda za wybór wymagający starcia jest przyznawana dopiero po wygranej; przegrana pozwala spróbować ponownie.

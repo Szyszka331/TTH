@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3998';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3998-scroll3';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
@@ -9,7 +9,7 @@ let characterSlotTransition=false;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.9.8';
+const BUILD_VERSION='3.9.9.8.3';
 // 3.9.9.3 — handel, 36 slotów, alchemia, offline regen i indywidualna grafika przedmiotów.
 // 3.9.9.2 — Szczęście jako statystyka + leczenie Maga siebie/sojuszników.
 // 3.9.9.1 — crafting maks. Rzadki; Unikatowe/Heroiczne/Legendarne tylko z dropu.
@@ -2528,6 +2528,7 @@ function checkQuestProgress(type,target,amount=1){
 
 function render(){if(!state){renderCreate();return}if(battleResult){showBattleVictory(battleResult);return}if(combat){openCombat();return}if(dungeonRun){renderShell();openDungeonCrawler();return}ensureCoreState();hideStoryUntilTutorial();ensureStoryQuestContinuity(false);syncQuestWorld();if(!state.tutorial?.introSeen){renderPrologueScreen();return}renderShell()}
 function renderPrologueScreen(){
+ document.body.classList.remove('map-view-active');document.body.classList.add('scroll-view-active');
  destroyRealMap();
  const p=state.player,c=CLASSES[p.class];
  app.innerHTML=`<div class="onboarding-screen"><div class="onboarding-card"><div class="onboarding-hero">${classVisual(p.class,'sprite-hero')}</div><div class="prologue-mark">ROZDZIAŁ I</div><h1>Cienie nad Doliną</h1><p>Budzi Cię bicie dzwonu z małej wioski. Na drogach pojawiają się potwory, ludzie znikają, a stare znaki wracają na kamienie, na których nie powinno ich być.</p><div class="prologue-grid"><div><b>🗺️ Odkrywaj</b><small>Mapa pojawi się dopiero po rozpoczęciu przygody.</small></div><div><b>⚔️ Walcz</b><small>Rozwijaj ${c.name.toLowerCase()}, sprzęt i własny styl walki.</small></div><div><b>📜 Decyduj</b><small>Śledztwa i wybory zmieniają historię.</small></div></div><div class="test-note"><b>🧪 Testowanie bez GPS</b><span>W Menu możesz otworzyć osobną kopię do testów i poruszać się strzałkami. Główna przygoda korzysta z GPS.</span></div><button class="primary large" data-prologue-start>Wyrusz z wioski</button></div></div>`;
@@ -2537,6 +2538,7 @@ function renderPrologueScreen(){
 
 
 function renderCreate(){
+ document.body.classList.remove('map-view-active');document.body.classList.add('scroll-view-active');
  let selected='knight';
  app.innerHTML=`<div class="boot mobile-boot"><section class="mobile-brand"><div class="brand-badge">BUILD 3.0.7 • BIOME ZONES</div><h1 class="time4-logo"><span>TIME</span><strong>4</strong><span>HEROES</span></h1><p>Świat jest bliżej niż myślisz.</p><div class="hero-lineup">${classVisual('hunter','lineup side')}${classVisual('knight','lineup main')}${classVisual('mage','lineup side')}</div><div class="mobile-ready">📱 GPS RPG • osobna przygoda testowa bez GPS</div><button class="secondary install-cta" data-install-create>📲 Zainstaluj Time4Heroes</button></section><div class="card create create-mobile"><div class="create-slot-kicker">SLOT ${activeCharacterSlot()}/${CHARACTER_LIMIT}</div><h2>Stwórz bohatera</h2><div class="form-row"><label>Imię</label><input id="heroName" maxlength="18" value="Krzysztof" autocomplete="off"></div><div class="class-grid">${Object.entries(CLASSES).map(([id,c])=>`<button class="class-btn ${id===selected?'active':''}" data-class="${id}"><span class="class-icon">${classVisual(id,'sprite-class-btn')}</span><b>${c.name}</b><div class="tiny">${c.desc}</div></button>`).join('')}</div><div id="classDesc" class="panel-item hero-preview" style="margin:12px 0"></div><button id="startGame" class="primary large">Rozpocznij przygodę</button>${characterCount()?`<button class="secondary character-list-create" data-character-list>👥 Wybierz inną postać (${characterCount()}/${CHARACTER_LIMIT})</button>`:''} </div></div>`;
  const desc=()=>{const c=CLASSES[selected];const target=document.querySelector('#classDesc');if(target)target.innerHTML=`<div class="preview-avatar">${classVisual(selected,'sprite-preview')}</div><div><b>${c.name}</b><div class="muted">STR ${c.base.str} • AGI ${c.base.agi} • INT ${c.base.int} • VIT ${c.base.vit}</div><div>${c.desc}</div>${['hunter','ranger'].includes(selected)?'<div class="gold">🐺 Startujesz z chowańcem: Młody Wilk.</div>':''}</div>`};
