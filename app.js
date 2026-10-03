@@ -1,4 +1,4 @@
-import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3998-scroll3';
+import {CLASSES,MONSTERS,MONSTER_LOOT,ITEMS,QUESTS,SKILLS,PETS,RECIPES,DUNGEONS,BUILDINGS} from './data.js?v=3998-polish5';
 
 const REAL_SAVE_KEY='time4heroes_build_390', DEMO_SAVE_KEY='time4heroes_build_390_sandbox', MODE_KEY='time4heroes_mode';
 let SAVE_KEY=localStorage.getItem(MODE_KEY)==='sandbox'?DEMO_SAVE_KEY:REAL_SAVE_KEY;
@@ -9,7 +9,7 @@ let characterSlotTransition=false;
 const MIGRATION_KEYS=['time4heroes_build_380','time4heroes_build_370','time4heroes_build_360','time4heroes_build_350','time4heroes_build_340','time4heroes_build_330','time4heroes_build_320','time4heroes_build_311','time4heroes_build_310','time4heroes_build_290','time4heroes_build_270','time4heroes_build_251','time4heroes_build_257','time4heroes_build_25','time4heroes_build_24','time4heroes_build_23','time4heroes_build_232','time4heroes_build_22','time4heroes_build_21','time4heroes_build_115','time4heroes_build_114','time4heroes_build_111','time4heroes_build_110','time4heroes_build_19','time4heroes_build_18','time4heroes_build_17','time4heroes_build_16','time4heroes_build_15','time4heroes_build_14','time4heroes_build_13','time4heroes_build_12_core','time4heroes_build_11','time4heroes_build_10','time4heroes_build_09','time4heroes_build_08','georpg_build_07','georpg_build_06','georpg_build_05','georpg_build_04','georpg_build_03','georpg_build_02','georpg_build_01'];
 const app=document.querySelector('#app');
 const toastEl=document.querySelector('#toast');
-const BUILD_VERSION='3.9.9.8.3';
+const BUILD_VERSION='3.9.9.8.5';
 // 3.9.9.3 — handel, 36 slotów, alchemia, offline regen i indywidualna grafika przedmiotów.
 // 3.9.9.2 — Szczęście jako statystyka + leczenie Maga siebie/sojuszników.
 // 3.9.9.1 — crafting maks. Rzadki; Unikatowe/Heroiczne/Legendarne tylko z dropu.
@@ -670,6 +670,13 @@ let lastAcceptedFix=null;
 let lastGpsWarningAt=0;
 let dungeonTimerId=null;
 let gpsWatch=null;
+let gpsRequested=false;
+let gpsSession=0;
+let gpsPreview=null;
+let gpsIssue='';
+let gpsStatusTimer=null;
+let gpsCenterPending=false;
+const GPS_ACCURACY_LIMIT=50, GPS_FIX_MAX_AGE=15000, GPS_INTERACTION_MAX_AGE=30000;
 let currentTab='map';
 let installPromptEvent=null;
 let realMap=null;
@@ -687,7 +694,8 @@ let leafletDecorLayers=[];
 let lastGpsTick=0;
 let gpsPausedByBackground=false;
 let playerWalkStopTimer=null;
-const playerMotion={heading:180,speed:0,moving:false,movingUntil:0,lastAt:0};
+const playerMotion={heading:180,known:false,speed:0,moving:false,movingUntil:0,lastAt:0};
+const deviceCompass={heading:null,lastAt:0,listening:false,permission:"prompt",session:0};
 let isOnline=navigator.onLine;
 function connectionBanner(){return isOnline?'':'<div class=\"offline-banner\" data-offline-banner>📴 Tryb offline — zapis i większość gry działa, ale OpenStreetMap może być niedostępny.</div>'}
 function refreshConnectionBanner(){const old=document.querySelector('[data-offline-banner]');if(!isOnline&&!old)document.querySelector('.shell')?.insertAdjacentHTML('afterbegin',connectionBanner());if(isOnline&&old)old.remove()}
@@ -746,6 +754,7 @@ function placeCityHere(){
  if(state.player.position.virtualTravel)return toast('Nie można postawić miasta w trybie podróży domowej.');
  if(!gpsInteractionReady())return;
  ensureCityState();
+ if(!state.city.placed&&!confirm('Postawić miasto tutaj? Usługi na telefonie będą dostępne w promieniu 180 m. Zmiana miejsca miasta: raz na 30 dni. Fabularne cele możesz niezależnie przenosić przyciskiem „Kontynuuj tutaj” w Zadaniach.'))return;
  if(state.city.placed){const remaining=CITY_MOVE_COOLDOWN-(Date.now()-state.city.placedAt);if(remaining>0)return toast(`Miasto można przenieść za ${Math.ceil(remaining/86400000)} dni.`);if(!confirm('Przenieść miasto w bieżące miejsce? Kolejna zmiana będzie możliwa za 30 dni.'))return}
  state.city.x=state.player.position.x;state.city.y=state.player.position.y;state.city.placed=true;state.city.placedAt=Date.now();state.world.living.spawnKey='';ensureLivingWorld();save();toast('🏰 Miasto zostało oznaczone na mapie. Zasięg usług: 180 m.');
  if(currentTab==='town')renderTown(document.querySelector('#viewport'));else if(currentTab==='map')rebuildGameLayers();
@@ -925,7 +934,13 @@ function alchemyRecipeOffer(id){return ALCHEMY_RECIPE_OFFERS[id]||{uses:5,price:
 function alchemyRecipePrice(id){return Math.max(1,Math.ceil(alchemyRecipeOffer(id).price*(1-cityDiscount('alchemist'))))}
 function alchemyCraftFee(r){return Math.max(1,Math.ceil(craftFee(r)*.32))}
 function alchemyRecipeUses(id){ensureAlchemyState();return Math.max(0,Number(state.alchemy.recipeUses[id]||0))}
-function buyAlchemyRecipe(id){ensureAlchemyState();const r=RECIPES.find(x=>x.id===id&&x.station==='alchemist');if(!r)return;const offer=alchemyRecipeOffer(id),price=alchemyRecipePrice(id);if(state.player.gold<price)return toast(`Potrzebujesz ${price} 🪙.`);state.player.gold-=price;state.alchemy.recipeUses[id]=alchemyRecipeUses(id)+offer.uses+guildAlchemyExtraUses();save();openBuilding('alchemist','service');toast(`Kupiono recepturę: ${r.name} • +${offer.uses+guildAlchemyExtraUses()} użyć • -${price} 🪙`)}
+function buyAlchemyRecipe(id,qty=1){
+ if(!Number.isInteger(qty)||qty<1||qty>99)return false;
+ ensureAlchemyState();const r=RECIPES.find(x=>x.id===id&&x.station==='alchemist');if(!r)return false;
+ const uses=(alchemyRecipeOffer(id).uses+guildAlchemyExtraUses())*qty,price=alchemyRecipePrice(id)*qty;
+ if(state.player.gold<price){toast(`Potrzebujesz ${price} 🪙.`);return false}
+ state.player.gold-=price;state.alchemy.recipeUses[id]=alchemyRecipeUses(id)+uses;save();openBuilding('alchemist','service');refreshTopbar();toast(`Kupiono: ${qty}× receptura ${r.name} • +${uses} użyć • -${price} 🪙`);return true;
+}
 function guildPartyMembers(){ensureSocialState();return state.social.party.members}
 function guildPartySize(){return 1+guildPartyMembers().length}
 function addTestPartyMember(){ensureSocialState();const have=new Set(guildPartyMembers().map(x=>x.id)),next=TEST_PARTY_CANDIDATES.find(x=>!have.has(x.id));if(!next)return toast('Drużyna testowa jest już pełna (4/4).');state.social.party.members.push({...next,level:state.player.level,ai:true});save();openBuilding('guild','service');toast(`${next.name} dołącza do drużyny testowej.`)}
@@ -1429,8 +1444,7 @@ function persistCurrentCharacterSlot(){
 function prepareCharacterChange(){
  if(combat||dungeonRun||battleResult){toast('Najpierw zakończ walkę lub wyprawę.');return false}
  if(state&&!persistCurrentCharacterSlot())return toast('Nie udało się zapisać bieżącej postaci.'),false;
- try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}
- gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();return true;
+ stopGps({keepPreference:true});stopAmbient();clearDungeonTimer();destroyRealMap();return true;
 }
 function switchCharacterSlot(slot){
  slot=Math.max(1,Math.min(CHARACTER_LIMIT,Number(slot)||1));
@@ -1462,7 +1476,7 @@ function removeCharacterSlot(slot){
  const isActive=slot===activeCharacterSlot();
  if(isActive){
   characterSlotTransition=true;
-  try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
+  stopGps({keepPreference:true});stopAmbient();clearDungeonTimer();destroyRealMap();
   localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
   let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
   if(replacement){setActiveCharacterSlot(replacement.slot);localStorage.setItem(SAVE_KEY,JSON.stringify(replacement.save))}else setActiveCharacterSlot(1);
@@ -1657,11 +1671,11 @@ function switchPlayMode(){
   const copy=JSON.parse(JSON.stringify(state));copy.settings.demo=true;copy.playMode='sandbox';copy.session={};copy.player.position.gps=false;copy.player.position.receivedAt=0;
   localStorage.setItem(DEMO_SAVE_KEY,JSON.stringify(copy));localStorage.setItem(CHARACTER_META_TEST,String(currentSlot));
  }
- localStorage.setItem(MODE_KEY,goingToTest?'sandbox':'gps');location.reload();
+ stopGps({keepPreference:true});localStorage.setItem(MODE_KEY,goingToTest?'sandbox':'gps');location.reload();
 }
 function gpsInteractionReady(){
  if(SAVE_KEY===DEMO_SAVE_KEY&&state.settings.demo)return true;
- const p=state.player.position,ok=p.gps&&gpsWatch!==null&&p.receivedAt&&Date.now()-p.receivedAt<=30000&&p.accuracy<=50;
+ const ok=hasFreshGpsFix();
  if(!ok)toast('Poczekaj na aktualny GPS z dokładnością do 50 m.');
  return !!ok;
 }
@@ -1796,11 +1810,69 @@ const BOUNTY_POOL=[
  {id:'ogres',name:'Łowca olbrzymów',icon:'👹',type:'kill',target:'ogre',need:2,minLevel:25,xp:520,gold:100,rep:8}
 ];
 function makeDailyBounties(day,level=state?.player?.level||1){let pool=BOUNTY_POOL.filter(b=>(b.minLevel||1)<=level+1);if(pool.length<3)pool=[...BOUNTY_POOL].slice(0,3);const out=[];for(let i=0;i<Math.min(3,pool.length);i++){const idx=Math.floor(seeded(day+711+i*83)*pool.length),b=pool.splice(idx,1)[0];out.push({...b,progress:0,claimed:false,accepted:false})}return out}
-function ensureAdventureState(s=state){if(!s)return; s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};if(s.adventure.day!==daySeed()){s.adventure.day=daySeed();s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1)}if(!s.adventure.bounties?.length)s.adventure.bounties=makeDailyBounties(daySeed(),s.player?.level||1);for(const b of s.adventure.bounties||[])b.accepted ??= false;s.adventure.achievements ||= {};s.adventure.reputation ||= 0;s.adventure.worldBossDay ||= 0}
+function replenishBounties(s=state){
+ const a=s.adventure,level=s.player?.level||1;a.offerSerial=Math.max(0,Number(a.offerSerial)||0);
+ const pool=BOUNTY_POOL.filter(b=>(b.minLevel||1)<=level+1);
+ while(a.bounties.length<3){
+  const used=new Set(a.bounties.map(b=>b.templateId||b.id.split('_')[0])),choices=pool.filter(b=>!used.has(b.id));
+  const options=choices.length?choices:pool;if(!options.length)break;
+  const serial=++a.offerSerial,base=options[Math.floor(seeded(a.day+serial*137)*options.length)],scale=1+Math.max(0,level-1)*.06;
+  a.bounties.push({...base,id:`${base.id}_${a.day}_${serial}`,templateId:base.id,need:base.need+Math.min(3,Math.floor(level/15)),xp:Math.round(base.xp*scale),gold:Math.round(base.gold*scale),progress:0,accepted:false,claimed:false});
+ }
+}
+function bountyActionsHTML(b){
+ if(!b.accepted)return `<button class="secondary" data-accept-bounty="${b.id}" ${canAcceptTask()?'':'disabled'}>Przyjmij</button>`;
+ return `<div class="bounty-actions">${b.progress>=b.need?`<button class="primary" data-claim-bounty="${b.id}">Odbierz nagrodę</button>`:`<button class="secondary" data-show-bounty="${b.id}">Pokaż cel</button><button class="ghost" data-cancel-bounty="${b.id}">Anuluj zlecenie</button>`}</div>`;
+}
+function refreshTaskViews(){
+ refreshTopbar();
+ const modal=document.querySelector('.modal');
+ if(modal?.dataset.buildingId==='tavern'&&modal.dataset.buildingView==='board'){openBuilding('tavern','board');return}
+ if(currentTab==='map'){
+  const center=realMap?.getCenter?.(),zoom=realMap?.getZoom?.(),following=followGps;
+  selectNav('map');if(center&&realMap)realMap.setView(center,zoom,{animate:false});followGps=following;
+ }else if(currentTab==='adventureHub')selectNav('adventureHub');
+}
+function cancelBounty(id){
+ ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);
+ if(!b?.accepted||b.claimed)return false;
+ if(b.progress>=b.need){toast('Zlecenie jest ukończone — odbierz nagrodę.');return false}
+ if(!confirm(`Anulować „${b.name}”? Postęp tego zlecenia przepadnie. Nie otrzymasz nagrody.`))return false;
+ state.adventure.bounties=state.adventure.bounties.filter(x=>x.id!==id);
+ state.world.entities=state.world.entities.filter(e=>e.bountyId!==id);replenishBounties();save();refreshTaskViews();toast('Zlecenie anulowane. Na tablicy czeka nowa oferta.');return true;
+}
+function bindQuestActions(root=document){
+ root.querySelectorAll('[data-cancel-bounty]').forEach(b=>b.onclick=()=>cancelBounty(b.dataset.cancelBounty));
+ root.querySelectorAll('[data-claim-bounty]').forEach(b=>b.onclick=()=>claimBounty(b.dataset.claimBounty));
+ root.querySelectorAll('[data-show-bounty]').forEach(button=>button.onclick=()=>{
+  const b=state.adventure.bounties.find(x=>x.id===button.dataset.showBounty);if(!b?.accepted)return;
+  spawnBountyTargets(b);save();closeModal();selectNav('map');
+  const e=state.world.entities.find(e=>e.bountyId===b.id&&!e.done&&(e.type!=='monster'||e.alive)),ll=e&&worldToLatLng(e.x,e.y);
+  if(ll&&realMap){followGps=false;realMap.setView(ll,18,{animate:true})}toast(bountyObjective(b));
+ });
+ root.querySelectorAll('[data-story-here]').forEach(b=>b.onclick=()=>continueStoryHere(b.dataset.storyHere));
+}
+
+function ensureAdventureState(s=state){
+ if(!s)return;s.adventure ||= {day:daySeed(),reputation:0,bounties:[],worldBossDay:0,achievements:{}};
+ const a=s.adventure;a.bounties ||= [];
+ if(a.day!==daySeed()){a.day=daySeed();a.bounties=a.bounties.filter(b=>b.accepted&&!b.claimed)}
+ a.bounties=a.bounties.filter(b=>!b.claimed&&!b.cancelled);
+ for(const b of a.bounties)b.accepted ??= false;
+ replenishBounties(s);
+ if(s.world?.entities){const active=new Set(a.bounties.filter(b=>b.accepted).map(b=>b.id));s.world.entities=s.world.entities.filter(e=>!e.bountyId||active.has(e.bountyId))}
+ a.achievements ||= {};a.reputation ||= 0;a.worldBossDay ||= 0;
+}
 function monsterTargetMatches(target,monsterId){return target==='any'||target===monsterId||(target==='goblin'&&String(monsterId).startsWith('goblin'))}
 function progressBounties(type,target,amount=1){ensureAdventureState();for(const b of state.adventure.bounties){if(!b.accepted||b.claimed)continue;const matches=b.type==='gather'?b.target===target:monsterTargetMatches(b.target,target);if(!matches)continue;if((b.type==='gather'&&type==='item')||((b.type||'kill')==='kill'&&type==='kill'))b.progress=Math.min(b.need,(b.progress||0)+amount)}updateAchievements()}
 function updateAchievements(){if(!state?.adventure)return;const a=state.adventure.achievements,p=state.player;a.firstBlood ||= p.kills>=1;a.hunter ||= p.kills>=25;a.explorer ||= p.discovered.length>=6;a.delver ||= Object.values(p.dungeonClears||{}).reduce((x,y)=>x+y,0)>=3;a.veteran ||= p.level>=10;a.north ||= state.quests.done.includes('q15')}
-function claimBounty(id){ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||!b.accepted||b.claimed||b.progress<b.need)return; b.claimed=true;state.world.entities=state.world.entities.filter(e=>e.bountyId!==b.id);state.player.gold+=b.gold;const rep=Math.max(1,Math.round(b.rep*guildRepMultiplier()));state.adventure.reputation+=rep;gainXp(b.xp);save();renderShell();toast(`Kontrakt wykonany: +${b.xp} XP • +${b.gold} 🪙 • +${rep} reputacji`)}
+function claimBounty(id){
+ ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||!b.accepted||b.claimed||b.progress<b.need)return false;
+ b.claimed=true;state.world.entities=state.world.entities.filter(e=>e.bountyId!==b.id);
+ state.player.gold+=b.gold;const rep=Math.max(1,Math.round(b.rep*guildRepMultiplier()));state.adventure.reputation+=rep;gainXp(b.xp);
+ state.adventure.bounties=state.adventure.bounties.filter(x=>x.id!==id);state.adventure.completed=(state.adventure.completed||0)+1;replenishBounties();save();refreshTaskViews();
+ toast(`Kontrakt wykonany: +${b.xp} XP • +${b.gold} 🪙 • +${rep} reputacji. Nowe zlecenie czeka na tablicy.`);return true;
+}
 function worldBossDef(){const list=[MONSTERS.find(m=>m.id==='graveColossus'),MONSTERS.find(m=>m.id==='stormDrake')].filter(Boolean);return list[daySeed()%list.length]||MONSTERS.find(m=>m.id==='ogre')}
 function startWorldBoss(){ensureAdventureState();if(state.adventure.worldBossDay===daySeed())return toast('Dzisiejszy boss świata został już pokonany.');if(state.player.level<8)return toast('Boss świata wymaga co najmniej 8 poziomu.');const m=worldBossDef(),e={id:`worldboss_${daySeed()}`,type:'monster',template:m.id,x:0,y:0,alive:true,elite:true,synthetic:true};startCombat(e,{level:Math.max(m.min,state.player.level+3),worldBoss:true})}
 
@@ -2229,7 +2301,7 @@ function discoverSecret(e){
 function availableTravelNodes(){
  ensureExplorationState();const out=[];
  for(const n of FAST_TRAVEL_BASE){if(n.always){out.push(n);continue}const ent=(state.world.entities||[]).find(e=>e.id===n.id);if(ent&&(state.player.discovered.includes(n.id)||state.player.dungeons.includes(n.id)))out.push({...n,x:ent.x,y:ent.y})}
- for(const id of state.player.dungeons){const d=DUNGEONS.find(x=>x.id===id);if(d)out.push({id:d.id,name:d.name,icon:d.icon,x:d.x,y:d.y,dungeon:true})}
+ for(const id of state.player.dungeons){const d=DUNGEONS.find(x=>x.id===id);if(d)out.push({id:d.id,name:d.name,icon:d.icon,x:(questEntityById(d.id)||d).x,y:(questEntityById(d.id)||d).y,dungeon:true})}
  return out.filter((v,i,a)=>a.findIndex(x=>x.id===v.id)===i);
 }
 function openExplorerJournal(){
@@ -2339,13 +2411,13 @@ function resetCharacter(){
  const slot=activeCharacterSlot(),name=state?.player?.name||'postać';
  if(!confirm(`Usunąć bieżącą postać „${name}” ze slotu ${slot}? Pozostałe postacie zostaną zachowane.`))return;
  characterSlotTransition=true;
- try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;stopAmbient();clearDungeonTimer();destroyRealMap();
+ stopGps({keepPreference:true});stopAmbient();clearDungeonTimer();destroyRealMap();
  localStorage.removeItem(characterSlotKey(slot));localStorage.removeItem(SAVE_KEY);
  let replacement=null;for(let i=1;i<=CHARACTER_LIMIT;i++){if(i===slot)continue;const candidate=rawLoad(characterSlotKey(i));if(candidate?.player){replacement={slot:i,save:candidate};break}}
  if(replacement){setActiveCharacterSlot(replacement.slot);localStorage.setItem(SAVE_KEY,JSON.stringify(replacement.save))}else setActiveCharacterSlot(1);
  state=null;combat=null;dungeonRun=null;battleResult=null;currentTab='map';location.reload();
 }
-function centerMapOnPlayer(){selectNav('map');setTimeout(()=>{if(realMap&&state?.player?.position?.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],18,{animate:true})}},120)}
+function centerMapOnPlayer(){selectNav('map');centerGpsMap()}
 function openQuestView(){state.ui.adventureView='quests';save();selectNav('adventureHub')}
 
 function rareZones(){const s=daySeed();return {yellow:{x:(seeded(s+1)-.5)*420,y:(seeded(s+2)-.5)*420,r:200},red:{x:(seeded(s+3)-.5)*560,y:(seeded(s+4)-.5)*560,r:100},black:{x:(seeded(s+5)-.5)*650,y:(seeded(s+6)-.5)*650,r:50}}}
@@ -2406,7 +2478,7 @@ function syncNorthQuestWorld(){
   }
  }
 }
-function bountyWorldId(b,i){return `bounty_${b.id}_${state.adventure.day}_${i}`}
+function bountyWorldId(b,i){b.spawnSerial=Math.max(0,Number(b.spawnSerial)||0);let id;do{id=`bounty_${b.id}_target_${++b.spawnSerial}`}while(state.world.entities.some(e=>e.id===id));return id}
 function bountySpawnPoint(i,total){const p=state.player.position||{x:0,y:0},a=(i/Math.max(1,total))*Math.PI*2+.55,r=75+(i%3)*38;return questSpawnPoint(p.x||0,p.y||0,r,a)}
 function bountyMonsterTemplate(b,index){if(b?.target!=='goblin')return b?.target;const level=state.player.level||1,pool=['goblin','goblinWarrior','goblinMage','goblinChampion'].filter(id=>(MONSTERS.find(m=>m.id===id)?.min||1)<=level+3);return pool[Math.floor(seeded(state.adventure.day+index*67)*pool.length)]||'goblin'}
 function spawnBountyTargets(b){
@@ -2420,8 +2492,64 @@ function spawnBountyTargets(b){
   else state.world.entities.push({id:bountyWorldId(b,idx),type:'monster',template:bountyMonsterTemplate(b,idx),variant:monsterVariantFromRoll(seeded(state.adventure.day+idx*113+41),state.player.level),bountyId:b.id,x:pt.x,y:pt.y,alive:true,respawn:Number.MAX_SAFE_INTEGER,elite:false});
  }
 }
+function beginStoryRoute(qid){ensureStoryState();state.story.routes ||= {};state.story.routes[qid] ||= {stage:-1}}
+function storyRouteAnchor(qid,index){
+ const p=state.player.position,old=state.story.routes[qid]||{};
+ return {...old,stage:index,x:p.x||0,y:p.y||0,moveBase:Number(state.quests.progress[qid]?.[index])||0};
+}
+function positionStoryTargets(qid,route){
+ const cur=currentQuestStep(qid);if(!cur)return;
+ const {step,index}=cur,point=i=>questSpawnPoint(route.x,route.y,120+i*30,.45+i*.85);
+ if(['discover','questInteract','dungeon'].includes(step.type)){
+  if(step.type==='dungeon'&&dungeonAccess(step.target).guardianDefeated)return;
+  const e=questEntityById(step.target);if(e){Object.assign(e,point(0));route.positioned=true}
+ }else if(step.type==='kill'){
+  const remaining=Math.max(0,questStepNeed(step)-(Number(state.quests.progress[qid]?.[index])||0));
+  const living=state.world.entities.filter(e=>e.questId===qid&&e.questStage===index&&e.type==='monster'&&e.alive&&!e.done);
+  for(let i=living.length;i<remaining;i++){
+   let serial=Number(route.spawnSerial)||0,id;do{id=`story_${qid}_${index}_${++serial}`}while(questEntityById(id));route.spawnSerial=serial;
+   const template=step.target==='any'?(MONSTERS.filter(m=>m.zone==='green'&&m.min<=state.player.level&&m.max>=state.player.level)[0]?.id||'rat'):step.target;
+   const e=spawnQuestEntity({id,questId:qid,questStage:index,type:'monster',template,variant:'normal',alive:true,elite:false,respawn:Number.MAX_SAFE_INTEGER,...point(i)});living.push(e);
+  }
+  living.forEach((e,i)=>{Object.assign(e,point(i));e.respawn=Number.MAX_SAFE_INTEGER});route.positioned=true;
+ }else route.positioned=true;
+}
+function syncPortableStoryRoutes(){
+ if(!state?.story?.routes||(!state.world.gpsOrigin&&SAVE_KEY!==DEMO_SAVE_KEY))return;
+ const active=new Set(state.quests.active);
+ state.world.entities=state.world.entities.filter(e=>!(e.questOnly&&state.story.routes[e.questId]&&!active.has(e.questId)));
+ for(const qid of state.quests.active){
+  let route=state.story.routes[qid];const cur=currentQuestStep(qid);if(!route||!cur)continue;
+  if(route.stage!==cur.index){route=storyRouteAnchor(qid,cur.index);route.positioned=false;state.story.routes[qid]=route}
+  if(!route.positioned)positionStoryTargets(qid,route);
+ }
+}
+function storyHereHTML(q){
+ if(!state.quests.active.includes(q.id))return '';
+ const cur=currentQuestStep(q.id);if(!cur)return '';
+ if(cur.step.type==='dungeon'&&dungeonAccess(cur.step.target).guardianDefeated)return `<p class="story-location-note">Ten loch jest odblokowany — możesz wejść do niego z dowolnego miejsca przez Wyprawy.</p>`;
+ if(!['discover','questInteract','kill','move','dungeon'].includes(cur.step.type))return '';
+ return `<div class="story-location-note"><p>Fabuła nie jest przypisana do miasta. Zmień okolicę celu, gdy grasz w innym miejscu. Postęp zostanie zachowany.</p><button class="secondary" data-story-here="${q.id}">📍 Kontynuuj tutaj</button></div>`;
+}
+function continueStoryHere(qid){
+ if(combat||dungeonRun||battleResult){toast('Najpierw zakończ walkę lub wyprawę.');return false}
+ const cur=currentQuestStep(qid);
+ if(!state.quests.active.includes(qid)||!cur||!['discover','questInteract','kill','move','dungeon'].includes(cur.step.type))return false;
+ if(state.player.position.virtualTravel){toast('Kontynuowanie w nowej okolicy wymaga fizycznej lokalizacji.');return false}
+ if(!gpsInteractionReady())return false;
+ if(cur.step.type==='dungeon'&&dungeonAccess(cur.step.target).guardianDefeated){toast('Ten loch jest odblokowany. Wejdź do niego przez Wyprawy.');return false}
+ beginStoryRoute(qid);const route=storyRouteAnchor(qid,cur.index);route.positioned=false;state.story.routes[qid]=route;
+ syncQuestWorld();state.ui.questGuideId=qid;save();closeModal();selectNav('map');toast('Cel fabuły przeniesiony w tę okolicę. Zachowano postęp — podejdź do nowego celu.');return true;
+}
+function storyMoveProgress(qid,amount){
+ const cur=currentQuestStep(qid);let route=state.story?.routes?.[qid];
+ if(!cur||!route)return amount;
+ if(route.stage!==cur.index){route=storyRouteAnchor(qid,cur.index);route.positioned=false;state.story.routes[qid]=route}
+ return route.moveBase+dist(state.player.position,route);
+}
+
 function syncQuestWorld(){
- if(!state?.world)return;state.world.entities=(state.world.entities||[]).filter(e=>e.id!=='pasture');syncQ2World();syncNorthQuestWorld();ensureAdventureState();for(const b of state.adventure.bounties||[])if(b.accepted&&!b.claimed)spawnBountyTargets(b);
+ if(!state?.world)return;state.world.entities=(state.world.entities||[]).filter(e=>e.id!=='pasture');syncQ2World();syncNorthQuestWorld();syncPortableStoryRoutes();ensureAdventureState();for(const b of state.adventure.bounties||[])if(b.accepted&&!b.claimed)spawnBountyTargets(b);
 }
 function questEvidenceModal(title,icon,text,next){openModal(`<div class="quest-evidence-modal"><div class="quest-evidence-icon">${icon}</div><span class="eyebrow">ŚLAD QUESTOWY</span><h2>${title}</h2><p>${text}</p>${next?`<div class="evidence-next">🧭 ${next}</div>`:''}<button class="primary" data-close>Kontynuuj śledztwo</button></div>`);document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeModal)}
 function interactQuestEntity(e){
@@ -2518,7 +2646,7 @@ function checkQuestProgress(type,target,amount=1){
   const prog=state.quests.progress[qid] ||= q.steps.map(()=>0),i=currentQuestStepIndex(qid);if(i<0)continue;
   const s=q.steps[i];if(s.type!==type)continue;
   if(type==='kill'&&monsterTargetMatches(s.target,target))prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
-  else if(type==='move')prog[i]=Math.min(questStepNeed(s),Math.max(prog[i]||0,amount));
+  else if(type==='move')prog[i]=Math.min(questStepNeed(s),Math.max(prog[i]||0,storyMoveProgress(qid,amount)));
   else if(type==='story'&&s.target===target)prog[i]=1;
   else if(s.target===target)prog[i]=Math.min(s.count||1,(prog[i]||0)+amount);
   if(q.steps.every((step,idx)=>questStepDone(step,prog[idx])))rewardQuest(q);
@@ -2671,7 +2799,7 @@ function ensureStoryQuestContinuity(announce=false){
  if(!state?.quests||tutorialLocksStory())return null;
  const active=activeMainStoryQuest();if(active)return active;
  const next=firstPendingStoryQuest();if(!next||next.level>state.player.level+1)return null;
- state.quests.active.push(next.id);state.quests.progress[next.id] ||= next.steps.map(()=>0);syncQuestWorld();save();
+ state.quests.active.push(next.id);state.quests.progress[next.id] ||= next.steps.map(()=>0);beginStoryRoute(next.id);syncQuestWorld();save();
  if(announce)toast(`📜 Główny wątek trwa dalej: ${next.name} • nowy cel pojawił się na mapie`);
  return next;
 }
@@ -2685,7 +2813,7 @@ function nextStoryQuestAvailable(){
  }
  return null;
 }
-function acceptStoryQuest(qid){if(tutorialLocksStory())return toast('Najpierw ukończ samouczek.');const q=QUESTS.find(x=>x.id===qid);if(!q||state.quests.done.includes(qid)||state.quests.active.includes(qid))return;if(!canAcceptTask())return toast(`Możesz mieć maksymalnie ${activeTaskLimit()} aktywnych questów. Samouczek nie liczy się do limitu.`);state.quests.active.push(qid);state.quests.progress[qid] ||= q.steps.map(()=>0);syncQuestWorld();save();toast(`Przyjęto: ${q.name} • cel pojawił się na mapie`);closeModal();state.ui.adventureView='quests';currentTab='adventureHub';selectNav('adventureHub')}
+function acceptStoryQuest(qid){if(tutorialLocksStory())return toast('Najpierw ukończ samouczek.');const q=QUESTS.find(x=>x.id===qid);if(!q||state.quests.done.includes(qid)||state.quests.active.includes(qid))return;if(!canAcceptTask())return toast(`Możesz mieć maksymalnie ${activeTaskLimit()} aktywnych questów. Samouczek nie liczy się do limitu.`);state.quests.active.push(qid);state.quests.progress[qid] ||= q.steps.map(()=>0);beginStoryRoute(qid);syncQuestWorld();save();toast(`Przyjęto: ${q.name} • cel pojawił się na mapie`);closeModal();state.ui.adventureView='quests';currentTab='adventureHub';selectNav('adventureHub')}
 function acceptBounty(id){if(tutorialLocksStory())return toast('Najpierw ukończ samouczek.');ensureAdventureState();const b=state.adventure.bounties.find(x=>x.id===id);if(!b||b.claimed||b.accepted)return;if(!canAcceptTask())return toast(`Możesz mieć maksymalnie ${activeTaskLimit()} aktywnych questów. Samouczek nie liczy się do limitu.`);b.accepted=true;b.progress=0;spawnBountyTargets(b);save();toast(`Przyjęto zlecenie: ${b.name} • cele pojawiły się na mapie`);openBuilding('tavern','board')}
 function tavernAnecdote(){const known=Object.keys(state.player.bestiary||{}).filter(id=>state.player.bestiary[id]>0);const id=known.length?pick(known):pick(['wolf','goblin','skeleton','spider','ghost']);const m=MONSTERS.find(x=>x.id===id)||MONSTERS[0];const lines={wolf:'„Wilk nigdy nie patrzy tylko na ciebie. Zawsze patrzy też, którędy będziesz uciekał.”',goblin:'„Goblin z nożem to problem. Goblin, którego nie widzisz, to większy problem.”',skeleton:'„Kości nie mają płuc. Nie próbuj ich zmęczyć — rozbij je.”',spider:'„Pająk przegrał ze mną raz. Drugi siedział na suficie. Dlatego patrzę też w górę.”',ghost:'„Na zjawy stal działa gorzej niż odwaga. A jeszcze lepiej działa arkanum.”'};return `${m.icon} ${m.name}: ${lines[id]||'„Każdy potwór ma nawyk. Przeżyjesz, jeśli zauważysz go przed pierwszym ciosem.”'}`}
 function ensureTavernDaily(target=state){if(!target?.player)return {day:daySeed(),fireplaceUses:0,mealUses:0};const today=daySeed(),p=target.player;p.tavernDaily ||= {day:today,fireplaceUses:0,mealUses:0};if(p.tavernDaily.day!==today)p.tavernDaily={day:today,fireplaceUses:0,mealUses:0};p.tavernDaily.fireplaceUses=Math.max(0,Number(p.tavernDaily.fireplaceUses)||0);p.tavernDaily.mealUses=Math.max(0,Number(p.tavernDaily.mealUses)||0);return p.tavernDaily}
@@ -2791,9 +2919,13 @@ function renderHeroHub(el){
  else renderHeroStats(body);
  el.querySelectorAll('[data-hero-view]').forEach(b=>b.onclick=()=>{state.ui.heroView=b.dataset.heroView;save();renderHeroHub(el)});
 }
+function heroExperienceHTML(){
+ const p=state.player,max=p.level>=100,need=xpNeed(p.level),xp=Math.max(0,Number(p.xp)||0),remaining=Math.max(0,need-xp),percent=max?100:Math.min(100,xp/need*100);
+ return `<div class="hero-experience"><div><b>Doświadczenie</b><span>${max?'Poziom 100':`${xp} / ${need} XP`}</span></div><div class="hero-xp-track" role="progressbar" aria-label="Postęp do kolejnego poziomu" aria-valuemin="0" aria-valuemax="${max?100:need}" aria-valuenow="${max?100:Math.min(need,xp)}" aria-valuetext="${max?'Maksymalny poziom':`Do poziomu ${p.level+1} brakuje ${remaining} XP`}"><i style="width:${percent}%"></i></div><p>${max?'Maksymalny poziom':`Do poziomu <strong>${p.level+1}</strong> brakuje <strong>${remaining} XP</strong>`}</p></div>`;
+}
 function renderHeroStats(el){
  const p=state.player,c=CLASSES[p.class],pet=petInstance();
- el.innerHTML=`<div class="hero-stats-page"><section class="hero-stat-card hero-profile-card"><div class="hero-profile-art">${classVisual(p.class,'sprite-hero')}</div><div><span class="eyebrow">POSTAĆ</span><h2>${p.name}</h2><p>${c.name} • poziom ${p.level}</p><div class="hero-vitals"><span>❤️ ${p.hp}/${p.maxHp}</span><span>🔷 ${p.mana}/${p.maxMana}</span><span>⚡ ${p.stamina??100}/${p.maxStamina??100}</span></div></div></section><section class="hero-stat-card"><div class="section-title"><div><span class="eyebrow">STATYSTYKI</span><h3>Cechy bohatera</h3></div><span class="pill">${p.statPoints||0} pkt</span></div><div class="hero-base-stats">${Object.entries(p.stats).map(([k,v])=>`<div class="hero-base-stat"><span>${({str:'Siła',agi:'Zręczność',int:'Inteligencja',vit:'Witalność',lck:'Szczęście'})[k]||k.toUpperCase()}</span><b>${v}${gearStat(k)?` <small>+${gearStat(k)} EQ</small>`:''}</b>${p.statPoints?`<button class="secondary mini" data-stat="${k}">+1</button>`:''}</div>`).join('')}</div></section><section class="hero-stat-card"><span class="eyebrow">PARAMETRY BOJOWE</span><div class="hero-derived-stats"><div><b>${attackPower()}</b><span>Atak</span></div><div><b>${armorPower()}</b><span>Pancerz</span></div><div><b>${critChance().toFixed(0)}%</b><span>Krytyk</span></div><div><b>${totalLuck()}</b><span>🍀 Szczęście</span></div><div><b>+${luckLootBonusPct().toFixed(1)}%</b><span>Lepszy łup</span></div><div><b>${dodgeChance().toFixed(0)}%</b><span>Unik</span></div><div><b>${blockChance().toFixed(0)}%</b><span>Blok</span></div><div><b>${p.skillPoints}</b><span>Pkt umiejętności</span></div><div><b>${inventoryUsedSlots()}/${inventoryCapacity()}</b><span>Plecak</span></div><div><b>${pet?pet.level:'—'}</b><span>Chowaniec</span></div></div></section>${pet?`<section class="hero-stat-card"><span class="eyebrow">CHOWANIEC</span><div class="hero-pet-summary"><span class="pet-portrait">${petDef(pet.id).icon}</span><div><b>${petDef(pet.id).name}</b><small>Poziom ${pet.level}</small></div></div></section>`:''}</div>`;
+ el.innerHTML=`<div class="hero-stats-page"><section class="hero-stat-card hero-profile-card"><div class="hero-profile-art">${classVisual(p.class,'sprite-hero')}</div><div><span class="eyebrow">POSTAĆ</span><h2>${p.name}</h2><p>${c.name} • poziom ${p.level}</p>${heroExperienceHTML()}<div class="hero-vitals"><span>❤️ ${p.hp}/${p.maxHp}</span><span>🔷 ${p.mana}/${p.maxMana}</span><span>⚡ ${p.stamina??100}/${p.maxStamina??100}</span></div></div></section><section class="hero-stat-card"><div class="section-title"><div><span class="eyebrow">STATYSTYKI</span><h3>Cechy bohatera</h3></div><span class="pill">${p.statPoints||0} pkt</span></div><div class="hero-base-stats">${Object.entries(p.stats).map(([k,v])=>`<div class="hero-base-stat"><span>${({str:'Siła',agi:'Zręczność',int:'Inteligencja',vit:'Witalność',lck:'Szczęście'})[k]||k.toUpperCase()}</span><b>${v}${gearStat(k)?` <small>+${gearStat(k)} EQ</small>`:''}</b>${p.statPoints?`<button class="secondary mini" data-stat="${k}">+1</button>`:''}</div>`).join('')}</div></section><section class="hero-stat-card"><span class="eyebrow">PARAMETRY BOJOWE</span><div class="hero-derived-stats"><div><b>${attackPower()}</b><span>Atak</span></div><div><b>${armorPower()}</b><span>Pancerz</span></div><div><b>${critChance().toFixed(0)}%</b><span>Krytyk</span></div><div><b>${totalLuck()}</b><span>🍀 Szczęście</span></div><div><b>+${luckLootBonusPct().toFixed(1)}%</b><span>Lepszy łup</span></div><div><b>${dodgeChance().toFixed(0)}%</b><span>Unik</span></div><div><b>${blockChance().toFixed(0)}%</b><span>Blok</span></div><div><b>${p.skillPoints}</b><span>Pkt umiejętności</span></div><div><b>${inventoryUsedSlots()}/${inventoryCapacity()}</b><span>Plecak</span></div><div><b>${pet?pet.level:'—'}</b><span>Chowaniec</span></div></div></section>${pet?`<section class="hero-stat-card"><span class="eyebrow">CHOWANIEC</span><div class="hero-pet-summary"><span class="pet-portrait">${petDef(pet.id).icon}</span><div><b>${petDef(pet.id).name}</b><small>Poziom ${pet.level}</small></div></div></section>`:''}</div>`;
  el.querySelectorAll('[data-stat]').forEach(b=>b.onclick=()=>{if(p.statPoints<=0)return;p.stats[b.dataset.stat]++;p.statPoints--;if(b.dataset.stat==='vit'){p.maxHp+=5;p.hp+=5}if(b.dataset.stat==='int'){p.maxMana+=4;p.mana+=4}save();renderHeroStats(el)});
 }
 function renderSkillsTree(el){
@@ -3027,36 +3159,91 @@ function movementBearing(from,to){
  return to?.heading!=null&&Number.isFinite(Number(to.heading))&&Number(to.heading)>=0?Number(to.heading)%360:playerMotion.heading;
 }
 function playerFacing(heading=0){const h=(heading+360)%360;if(h>=45&&h<135)return'right';if(h>=225&&h<315)return'left';if(h>=135&&h<225)return'down';return'up'}
+function compassScreenAngle(){return Number(window.screen?.orientation?.angle??window.orientation)||0}
+function compassHeadingFromEvent(event){
+ let heading=null;
+ if(Number.isFinite(event.webkitCompassHeading)&&event.webkitCompassHeading>=0&&(!Number.isFinite(event.webkitCompassAccuracy)||event.webkitCompassAccuracy>=0))heading=event.webkitCompassHeading;
+ else if(event.absolute===true&&Number.isFinite(event.alpha))heading=360-event.alpha;
+ return heading===null?null:((heading+compassScreenAngle())%360+360)%360;
+}
+function playerDirection(){
+ if(deviceCompass.heading!==null&&Date.now()-deviceCompass.lastAt<15000)return {heading:deviceCompass.heading,source:'compass',label:'Kierunek telefonu — kompas'};
+ if(playerMotion.known)return {heading:playerMotion.heading,source:'movement',label:'Kierunek ostatniego ruchu'};
+ return {heading:0,source:'unknown',label:'Kierunek nieznany — włącz kompas lub rusz się'};
+}
+function updateDirectionUI(){
+ const direction=playerDirection();
+ document.querySelectorAll('[data-map-direction-source]').forEach(el=>{el.textContent=direction.source==='compass'?'Kompas':direction.source==='movement'?'Kierunek ruchu':'Brak kierunku';el.title=direction.label});
+ document.querySelectorAll('[data-map-compass]').forEach(el=>{el.title=direction.label+' • włącz kompas';el.setAttribute('aria-label',el.title);el.classList.toggle('active',direction.source==='compass')});
+}
+function handleDeviceOrientation(event){
+ if(document.hidden||!deviceCompass.listening)return;
+ const heading=compassHeadingFromEvent(event);if(heading===null)return;
+ deviceCompass.heading=heading;deviceCompass.lastAt=Date.now();syncPlayerMarkerMotion();
+}
+function startDeviceCompass(){
+ if(document.hidden||deviceCompass.listening||!window.DeviceOrientationEvent)return;
+ if(typeof window.DeviceOrientationEvent.requestPermission==='function'&&deviceCompass.permission!=='granted')return;
+ if(deviceCompass.permission==='denied')return;
+ window.addEventListener('deviceorientationabsolute',handleDeviceOrientation);
+ window.addEventListener('deviceorientation',handleDeviceOrientation);
+ deviceCompass.listening=true;
+}
+function stopDeviceCompass(){
+ window.removeEventListener?.('deviceorientationabsolute',handleDeviceOrientation);
+ window.removeEventListener?.('deviceorientation',handleDeviceOrientation);
+ deviceCompass.listening=false;deviceCompass.heading=null;deviceCompass.lastAt=0;deviceCompass.session++;
+}
+async function enableDeviceCompass(){
+ const api=window.DeviceOrientationEvent,session=deviceCompass.session;
+ if(!api){toast('Kompas nie jest dostępny. Strzałka pokaże kierunek ostatniego ruchu.');return false}
+ try{
+  if(typeof api.requestPermission==='function'){
+   const permission=await api.requestPermission(true);deviceCompass.permission=permission;
+   if(permission!=='granted'){toast('Brak zgody na kompas. GPS nadal działa; strzałka pokaże kierunek ruchu.');return false}
+  }else deviceCompass.permission='granted';
+  if(session!==deviceCompass.session||document.hidden)return false;
+  startDeviceCompass();updateDirectionUI();
+  toast('Kompas włączony. Strzałka wskaże kierunek telefonu po otrzymaniu odczytu.');return true;
+ }catch{toast('Nie udało się włączyć kompasu. Strzałka pokaże kierunek ostatniego ruchu.');return false}
+}
 function playerMarkerHTML(){
- const facing=playerFacing(playerMotion.heading),cycle=playerMotion.speed>2.8?300:520;
- return `<div class="leaflet-player-marker rpg-player-marker ${playerMotion.moving?'walking':''} ${playerMotion.speed>2.8?'moving-fast':''}" data-player-walker data-facing="${facing}" style="--walk-heading:${playerMotion.heading||0}deg;--walk-cycle:${cycle}ms"><div class="player-heading-arrow"></div><i class="player-walk-shadow"></i><b class="player-step-dust"></b><div class="player-facing"><div class="player-walk-avatar">${directionalHeroVisual(state.player.class)}</div></div><span class="player-pin-tip"></span></div>`;
+ const direction=playerDirection();
+ return `<div class="gps-player-dot ${direction.source==='unknown'?'':'has-direction'}" data-player-dot data-direction-source="${direction.source}" role="img" aria-label="Twoja pozycja. ${direction.label}" style="--player-heading:${direction.heading}deg"><span class="gps-facing-arrow" aria-hidden="true"></span><span class="gps-player-core" aria-hidden="true"></span></div>`;
 }
 function syncPlayerMarkerMotion(){
- const markerEl=playerMapMarker?.getElement?.(),walker=markerEl?.querySelector?.('[data-player-walker]');if(!walker)return;
- const moving=playerMotion.moving&&Date.now()<playerMotion.movingUntil,facing=playerFacing(playerMotion.heading),fast=playerMotion.speed>2.8;
- walker.classList.toggle('walking',moving);walker.classList.toggle('moving-fast',moving&&fast);walker.dataset.facing=facing;
- walker.style.setProperty('--walk-heading',`${playerMotion.heading||0}deg`);walker.style.setProperty('--walk-cycle',`${fast?300:Math.round(clamp(620-playerMotion.speed*55,380,570))}ms`);
+ updateDirectionUI();
+ const markerEl=playerMapMarker?.getElement?.(),dot=markerEl?.querySelector?.('[data-player-dot]');if(!dot)return;
+ const direction=playerDirection();
+ dot.classList.toggle('has-direction',direction.source!=='unknown');dot.dataset.directionSource=direction.source;
+ dot.setAttribute('aria-label',`Twoja pozycja. ${direction.label}`);dot.style.setProperty('--player-heading',`${direction.heading}deg`);
  markerEl.style.setProperty('--marker-move-ms',`${Math.round(clamp((playerMotion.lastStepSeconds||.8)*1000,420,1400))}ms`);
 }
+
 function registerPlayerMovement(from,to){
  const now=Date.now(),distance=geoDistance(from,to),elapsed=playerMotion.lastAt?Math.max(.25,(now-playerMotion.lastAt)/1000):1,threshold=to?.testWalk ? .5 : Math.max(1.8,Math.min(7,(Number(to?.accuracy)||10)*.18));
  const moved=from?.lat!=null&&from?.lng!=null&&to?.lat!=null&&to?.lng!=null&&Number.isFinite(distance)&&distance>=threshold;
- if(moved){playerMotion.heading=movementBearing(from,to);state.ui.mapHeading=playerMotion.heading;playerMotion.speed=to?.testWalk?1.55:clamp(distance/elapsed,.2,18);playerMotion.movingUntil=now+(to?.testWalk?720:Math.round(clamp(900+elapsed*520,1100,2600)));playerMotion.lastStepSeconds=elapsed}
+ if(moved){playerMotion.known=true;playerMotion.heading=movementBearing(from,to);state.ui.mapHeading=playerMotion.heading;playerMotion.speed=to?.testWalk?1.55:clamp(distance/elapsed,.2,18);playerMotion.movingUntil=now+(to?.testWalk?720:Math.round(clamp(900+elapsed*520,1100,2600)));playerMotion.lastStepSeconds=elapsed}
  playerMotion.moving=moved||now<playerMotion.movingUntil;playerMotion.lastAt=now;
  clearTimeout(playerWalkStopTimer);if(playerMotion.moving)playerWalkStopTimer=setTimeout(()=>{playerMotion.moving=false;playerMotion.speed=0;syncPlayerMarkerMotion()},Math.max(80,playerMotion.movingUntil-Date.now()));
 }
 function updateLiveMapPosition(){
- if(!realMap||!state.player.position.lat)return;
- const p=state.player.position,ll=[p.lat,p.lng];
+ updateGpsUI();
+ const p=gpsMapPosition();if(!realMap||!hasMapCoordinates(p))return;
+ const ll=[p.lat,p.lng],preview=p===gpsPreview;
+ if(playerMapMarker&&playerMapMarker.gpsPreview!==preview){realMap.removeLayer(playerMapMarker);playerMapMarker=null}
  if(!playerMapMarker){
-  const html=playerMarkerHTML();
-  playerMapMarker=L.marker(ll,{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[64,80],[32,74]),zIndexOffset:1000}).addTo(realMap);
- }else{playerMapMarker.setLatLng(ll);requestAnimationFrame(syncPlayerMarkerMotion)}
+  const html=preview?'<span class="gps-location-dot" aria-label="Przybliżona lokalizacja"></span>':playerMarkerHTML();
+  playerMapMarker=L.marker(ll,{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',preview?[20,20]:[44,44],preview?[10,10]:[22,22]),zIndexOffset:1000}).addTo(realMap);
+  playerMapMarker.gpsPreview=preview;
+ }else{playerMapMarker.setLatLng(ll);if(!preview)requestAnimationFrame(syncPlayerMarkerMotion)}
  if(accuracyCircle){realMap.removeLayer(accuracyCircle);accuracyCircle=null}
- if(!interactionCircle)interactionCircle=L.circle(ll,{pane:'overlayPane',radius:guildMonsterAttackRadius(),color:'#67c6c5',weight:2,fillColor:'#67c6c5',fillOpacity:.025,interactive:false}).addTo(realMap);
- else{interactionCircle.setLatLng(ll);interactionCircle.setRadius(guildMonsterAttackRadius())}
+ if(preview)accuracyCircle=L.circle(ll,{pane:'overlayPane',radius:p.accuracy,color:'#d3ae65',weight:1,dashArray:'5 5',fillOpacity:.07,interactive:false}).addTo(realMap);
+ if(!preview&&(hasFreshGpsFix()||p.testWalk)){
+  if(!interactionCircle)interactionCircle=L.circle(ll,{pane:'overlayPane',radius:guildMonsterAttackRadius(),color:'#67c6c5',weight:2,fillColor:'#67c6c5',fillOpacity:.025,interactive:false}).addTo(realMap);
+  else{interactionCircle.setLatLng(ll);interactionCircle.setRadius(guildMonsterAttackRadius())}
+ }else if(interactionCircle){realMap.removeLayer(interactionCircle);interactionCircle=null}
  if(followGps)realMap.panTo(ll,{animate:true,duration:.25});
- const hud=document.querySelector('[data-live-gps]');if(hud){const motion=playerMotion.moving?(playerMotion.speed>2.8?'🏃':'🚶'):'📍';hud.textContent=p.testWalk?`${motion} TEST • strzałki`:`${motion} GPS ±${Math.round(p.accuracy||0)} m`}
  refreshNearbyTray();refreshQuestGuide();rebuildQuestGuideLayer();
 }
 function initRealMap(){
@@ -3071,20 +3258,15 @@ function initRealMap(){
  realMap.createPane('gamePane');realMap.getPane('gamePane').style.zIndex=620;
  realMap.createPane('playerPane');realMap.getPane('playerPane').style.zIndex=700;
  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors',updateWhenIdle:true,keepBuffer:2,className:'rpg-osm-tiles'}).addTo(realMap);
- const p=state.player.position,origin=state.world.gpsOrigin;
- const center=p.lat?[p.lat,p.lng]:origin?[origin.lat,origin.lng]:[52.1,19.4];
- realMap.setView(center,p.lat?18:origin?17:7);
+ const p=gpsMapPosition(),origin=state.world.gpsOrigin,hasPosition=hasMapCoordinates(p);
+ const center=hasPosition?[p.lat,p.lng]:origin?[origin.lat,origin.lng]:[52.1,19.4];
+ realMap.setView(center,hasPosition?gpsMapZoom(p):origin?17:7);
  if(origin){rebuildGameLayers();rebuildQuestGuideLayer()}
- if(p.lat){
-  const html=playerMarkerHTML();
-  playerMapMarker=L.marker([p.lat,p.lng],{pane:'playerPane',icon:makeLeafletIcon(html,'player-leaflet-icon',[64,80],[32,74]),zIndexOffset:1000}).addTo(realMap);
-  accuracyCircle=null;
-  interactionCircle=L.circle([p.lat,p.lng],{pane:'overlayPane',radius:guildMonsterAttackRadius(),color:'#67c6c5',weight:2,fillColor:'#67c6c5',fillOpacity:.025,interactive:false}).addTo(realMap);
- }
+ updateLiveMapPosition();
  realMap.on('dragstart',()=>{followGps=false});
  realMap.on('moveend',()=>{rebuildGameLayers()});
  realMap.on('zoomend',()=>{rebuildGameLayers()});
- setTimeout(()=>realMap.invalidateSize(),100);
+ const map=realMap;setTimeout(()=>{if(realMap===map)map.invalidateSize()},100);
 }
 
 function mapPoint(x,y,radius=500){return {left:50+(x-state.player.position.x)/(radius*2)*100,top:50-(y-state.player.position.y)/(radius*2)*100}}
@@ -3112,7 +3294,7 @@ function dashboardMapEntityHTML(e){
 }
 function mapQuickActionsHTML(){
  const p=state.player,hasGeo=!!(p.position.lat&&p.position.lng),virtual=!!p.position.virtualTravel;
- return `<div class="map-quick-actions"><button class="secondary" data-map-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-map-center>🎯 Do mnie</button><button class="secondary" data-shortcut="quests">${tutorialLocksStory()?'🎓 Samouczek':'📜 Zadania'}</button><button class="secondary" data-nav="town">🏰 Miasto</button><span class="map-status-chip">${p.position.testWalk?'🧪 TEST • strzałki':virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span></div>`;
+ return `<div class="map-quick-actions"><button class="secondary" data-map-gps>${gpsRequested?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-map-center>🎯 Do mnie</button><button class="secondary" data-shortcut="quests">${tutorialLocksStory()?'🎓 Samouczek':'📜 Zadania'}</button><button class="secondary" data-nav="town">🏰 Miasto</button><span class="map-status-chip">${gpsStatusText()}</span></div>`;
 }
 function activeGuideQuest(){
  const active=state.quests.active||[];
@@ -3128,13 +3310,13 @@ function questGuideTarget(q=activeGuideQuest()){
  let entity=null;
  if(step.type==='discover'||step.type==='dungeon'||step.type==='questInteract')entity=state.world.entities.find(e=>e.id===step.target&&questWorldEntityVisible(e))||null;
  else if(step.type==='kill'){
- const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&monsterTargetMatches(step.target,e.template));
+ const pool=state.world.entities.filter(e=>e.type==='monster'&&e.alive&&questWorldEntityVisible(e)&&monsterTargetMatches(step.target,e.template));
   entity=pool.sort((a,b)=>dist(a,state.player.position)-dist(b,state.player.position))[0]||null;
  }
  if(entity){return {q,step,stepIndex,x:entity.x,y:entity.y,name:entity.type==='monster'?monsterTemplate(entity).name:(entity.name||step.label),distance:Math.round(dist(entity,state.player.position)),entityId:entity.id}}
  if(step.type==='move'){
-  const needed=Number(step.target)||Number(step.count)||60,p=state.player.position||{x:0,y:0},r=Math.hypot(p.x||0,p.y||0),remain=Math.max(0,Math.ceil(needed-r));
-  let ux=0,uy=1;if(r>5){ux=(p.x||0)/r;uy=(p.y||0)/r}
+  const needed=Number(step.target)||Number(step.count)||60,p=state.player.position||{x:0,y:0},route=state.story?.routes?.[q.id],anchor=route?.stage===stepIndex?route:{x:0,y:0},r=dist(p,anchor),done=Math.max(prog[stepIndex]||0,(route?.stage===stepIndex?route.moveBase:0)+r),remain=Math.max(0,Math.ceil(needed-done));
+  let ux=0,uy=1;if(r>5){ux=((p.x||0)-anchor.x)/r;uy=((p.y||0)-anchor.y)/r}
   return {q,step,stepIndex,x:(p.x||0)+ux*Math.max(remain,30),y:(p.y||0)+uy*Math.max(remain,30),name:step.label||q.name,distance:remain,moveGoal:true};
  }
  return {q,step,stepIndex,name:step.label||q.name,distance:null,noMapTarget:true};
@@ -3166,8 +3348,8 @@ function mapSideTabsHTML(){const cur=mapSideTab();const tabs=[['quests','Zadania
 function mapQuestPanelHTML(){
  const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean).slice(0,4),bounties=(state.adventure?.bounties||[]).filter(b=>b.accepted&&!b.claimed).slice(0,4),guided=activeGuideQuest();const next=nextStoryQuestAvailable();
  const tutorialHtml=tutorialLocksStory()?`<div class="quest-entry tutorial-task-entry"><div><b>🎓 Samouczek</b><small>${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}</small></div><p>${tutorialInfo()?.title||'Dokończ samouczek'}</p><button class="secondary" data-tutorial-go>${tutorialActionLabel(tutorialInfo())}</button></div>`:'';
- const storyHtml=active.map(q=>{const prog=state.quests.progress[q.id]||[],done=q.steps.reduce((n,s,i)=>n+(questStepDone(s,prog[i])?1:0),0),total=q.steps?.length||1,idx=currentQuestStepIndex(q.id),step=idx>=0?q.steps[idx]:null,current=idx>=0?(prog[idx]||0):0,need=step?questStepNeed(step):1;return `<div class="quest-entry ${guided?.id===q.id?'guided':''}"><div><b>${q.name}</b><small>${q.chapter||'Przygoda'} • lvl ${q.level}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,done/total*100)}%"></span></div><p>${step?.label||q.desc||'Kontynuuj zadanie na mapie.'}${need>1?` <strong>${Math.min(current,need)}/${need}</strong>`:''}</p><button class="secondary quest-guide-btn ${guided?.id===q.id?'active':''}" data-guide-quest="${q.id}">${guided?.id===q.id?'🧭 Prowadzenie włączone':'➤ Prowadź do celu'}</button></div>`}).join('');
- const bountyHtml=bounties.length?`<div class="map-task-subtitle">ZLECENIA Z KARCZMY</div>${bounties.map(b=>`<div class="quest-entry bounty-task-entry"><div><b>📌 ${b.name}</b><small>Zlecenie • ${Math.min(b.progress||0,b.need)}/${b.need}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,(b.progress||0)/Math.max(1,b.need)*100)}%"></span></div><p>${b.type==='gather'?`Zbierz: ${itemDef(b.target)?.name||b.target}`:`Pokonaj: ${MONSTERS.find(m=>m.id===b.target)?.name||b.target}`}</p></div>`).join('')}`:'';
+ const storyHtml=active.map(q=>{const prog=state.quests.progress[q.id]||[],done=q.steps.reduce((n,s,i)=>n+(questStepDone(s,prog[i])?1:0),0),total=q.steps?.length||1,idx=currentQuestStepIndex(q.id),step=idx>=0?q.steps[idx]:null,current=idx>=0?(prog[idx]||0):0,need=step?questStepNeed(step):1;return `<div class="quest-entry ${guided?.id===q.id?'guided':''}"><div><b>${q.name}</b><small>${q.chapter||'Przygoda'} • lvl ${q.level}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,done/total*100)}%"></span></div><p>${step?.label||q.desc||'Kontynuuj zadanie na mapie.'}${need>1?` <strong>${Math.min(current,need)}/${need}</strong>`:''}</p><button class="secondary quest-guide-btn ${guided?.id===q.id?'active':''}" data-guide-quest="${q.id}">${guided?.id===q.id?'🧭 Prowadzenie włączone':'➤ Prowadź do celu'}</button>${storyHereHTML(q)}</div>`}).join('');
+ const bountyHtml=bounties.length?`<div class="map-task-subtitle">ZLECENIA Z KARCZMY</div>${bounties.map(b=>`<div class="quest-entry bounty-task-entry"><div><b>📌 ${b.name}</b><small>Zlecenie • ${Math.min(b.progress||0,b.need)}/${b.need}</small></div><div class="quest-progress-mini"><span style="width:${Math.min(100,(b.progress||0)/Math.max(1,b.need)*100)}%"></span></div><p>${b.type==='gather'?`Zbierz: ${itemDef(b.target)?.name||b.target}`:`Pokonaj: ${MONSTERS.find(m=>m.id===b.target)?.name||b.target}`}</p>${bountyActionsHTML(b)}</div>`).join('')}`:'';
  const empty=!tutorialHtml&&!storyHtml&&!bountyHtml?'<div class="panel-empty">Brak aktywnych zadań.</div>':'';
  return `<div class="parchment-panel-v2"><div class="panel-heading"><h3>Zadania</h3><span>${activeTaskCount()}/${activeTaskLimit()}</span></div>${tutorialHtml}${storyHtml}${bountyHtml}${empty}${next?`<div class="quest-entry available"><div><b>Dostępne dalej</b><small>${next.chapter||'Przygoda'} • lvl ${next.level}</small></div><p>${next.name}</p><button class="secondary" data-open-quests>Otwórz dziennik</button></div>`:''}</div>`;
 }
@@ -3199,13 +3381,14 @@ function renderMap(el){
  for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true;
  const tutorial=tutorialMapOverlay(),region=biomeInfoAtPlayer(),habitat=habitatInfoAtPlayer(),cl=climate();
  const weatherSlug=cl.weather.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replaceAll('ł','l'),phaseSlug=cl.phase.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
- el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard living-world-dashboard clean-map-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card clean-map-card"><div class="real-map-rpg-frame weather-frame-${weatherSlug} phase-frame-${phaseSlug}"><div id="realMap" class="real-map real-map-rpg"></div>${mapAmbientFxHTML()}<div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><button class="map-biome-button" data-biome-info title="${habitat.name} • ${region.name} — kliknij po informacje" aria-label="Informacje o biomie: ${region.name}"><span>${region.icon}</span></button>${questGuideHTML()}${biomeInfoSheetHTML()}${biomeLegendHTML()}<div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-map-gps title="${gpsWatch!==null?'Wyłącz GPS':'Włącz GPS'}">📍</button><button class="map-ui-btn" data-map-sheet-toggle>📜</button></div>${tutorial}${testMovePadHTML()}<div class="osm-map-footer"><span class="map-status-chip" data-live-gps>${p.position.testWalk?'🧪 TEST • strzałki':virtual?'TRYB DOMOWY':hasGeo?`GPS ±${Math.round(p.position.accuracy||0)} m`:'GPS wyłączony'}</span><span class="interaction-badge">⚔️ ${guildMonsterAttackRadius()} m</span></div></div>${mobileMapSheetToggleHTML()}</section><aside class="dashboard-side-card fantasy-card map-journal-sheet ${state.ui.mapSheetOpen?'open':''}" data-map-journal-sheet>${mapRightPanelHTML()}</aside></div>`;
+ el.innerHTML=`<div class="world-dashboard osm-rpg-dashboard living-world-dashboard clean-map-dashboard"><section class="dashboard-main-card fantasy-card osm-rpg-card clean-map-card"><div class="real-map-rpg-frame weather-frame-${weatherSlug} phase-frame-${phaseSlug}"><div id="realMap" class="real-map real-map-rpg"></div>${mapAmbientFxHTML()}<div class="rpg-map-vignette"></div><div class="rpg-map-compass">N</div><button class="map-biome-button" data-biome-info title="${habitat.name} • ${region.name} — kliknij po informacje" aria-label="Informacje o biomie: ${region.name}"><span>${region.icon}</span></button>${questGuideHTML()}${biomeInfoSheetHTML()}${biomeLegendHTML()}<div class="map-ui-stack osm-controls"><button class="map-ui-btn" data-osm-zoom="in">＋</button><button class="map-ui-btn" data-osm-zoom="out">－</button><button class="map-ui-btn" data-osm-center>◎</button><button class="map-ui-btn" data-map-gps title="${gpsRequested?'Wyłącz GPS':'Włącz GPS'}" aria-label="${gpsRequested?'Wyłącz GPS':'Włącz GPS'}" aria-pressed="${gpsRequested}">📍</button><button class="map-ui-btn" data-map-compass title="Włącz kompas" aria-label="Włącz kompas">🧭</button><button class="map-ui-btn" data-map-sheet-toggle>📜</button></div>${tutorial}${testMovePadHTML()}<div class="osm-map-footer"><button class="map-status-chip gps-status-button" data-live-gps aria-live="polite">${gpsStatusText()}</button><span class="map-direction-status" data-map-direction-source title="${playerDirection().label}">${playerDirection().source==='compass'?'Kompas':playerDirection().source==='movement'?'Kierunek ruchu':'Brak kierunku'}</span><span class="interaction-badge">⚔️ ${guildMonsterAttackRadius()} m</span></div></div>${mobileMapSheetToggleHTML()}</section><aside class="dashboard-side-card fantasy-card map-journal-sheet ${state.ui.mapSheetOpen?'open':''}" data-map-journal-sheet>${mapRightPanelHTML()}</aside></div>`;
  el.querySelectorAll('[data-map-side-tab]').forEach(b=>b.onclick=()=>{state.ui.mapPanelTab=b.dataset.mapSideTab;save();renderMap(el)});
  el.querySelectorAll('[data-map-demo-step]').forEach(b=>b.onclick=()=>{const step=b.dataset.mapDemoStep,delta={up:[0,30],down:[0,-30],left:[-30,0],right:[30,0]}[step];if(delta)moveDemo(delta[0],delta[1])});
  el.querySelectorAll('[data-map-gps]').forEach(b=>b.addEventListener('click',toggleGps));
+ el.querySelectorAll('[data-map-compass]').forEach(b=>b.addEventListener('click',enableDeviceCompass));
  el.querySelectorAll('[data-osm-zoom]').forEach(b=>b.onclick=()=>{if(!realMap)return;b.dataset.osmZoom==='in'?realMap.zoomIn():realMap.zoomOut()});
- const centerNow=()=>{if(realMap&&state.player.position.lat){followGps=true;realMap.setView([state.player.position.lat,state.player.position.lng],Math.max(18,realMap.getZoom()),{animate:true})}else toast('Włącz GPS, aby wyśrodkować mapę.')};
- el.querySelector('[data-osm-center]')?.addEventListener('click',centerNow);
+ el.querySelector('[data-osm-center]')?.addEventListener('click',centerGpsMap);
+ el.querySelector('[data-live-gps]')?.addEventListener('click',gpsStatusAction);
  el.querySelectorAll('[data-map-sheet-toggle]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=!state.ui.mapSheetOpen;save();renderMap(el)});
  el.querySelectorAll('[data-map-sheet-collapse]').forEach(b=>b.onclick=()=>{state.ui.mapSheetOpen=false;save();renderMap(el)});
  el.querySelector('[data-biome-info]')?.addEventListener('click',()=>{state.ui.biomeInfoOpen=!state.ui.biomeInfoOpen;save();renderMap(el)});
@@ -3214,13 +3397,13 @@ function renderMap(el){
  el.querySelector('[data-guide-stop]')?.addEventListener('click',()=>{state.ui.questGuideId=null;save();renderMap(el)});
  el.querySelector('[data-open-quests]')?.addEventListener('click',openQuestView);
  el.querySelectorAll('[data-world-event]').forEach(b=>b.onclick=()=>{const e=eventById(b.dataset.worldEvent);if(!e)return;const d=dist(e,state.player.position);if(d<=60&&gpsInteractionReady())openWorldEvent(e);else toast(`${e.signal||e.name} • ${Math.round(d)} m`)});
- bindNearbyTray(el);bindShellControls(el);bindTutorialControls(el);initRealMap();
+ bindNearbyTray(el);bindShellControls(el);bindTutorialControls(el);bindQuestActions(el);initRealMap();
 }
 
 function entityHTML(e,radius){const pt=mapPoint(e.x,e.y,radius),d=dist(e,state.player.position);if(pt.left<-10||pt.left>110||pt.top<-10||pt.top>110)return'';if(e.type==='monster'){const m=monsterTemplate(e);return `<button class="entity monster ${e.elite?'elite':''} variant-marker-${m.variantId}" style="left:${pt.left}%;top:${pt.top}%" title="${m.name} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${e.elite?'<b class="elite-star">⭐</b>':m.variantId!=='normal'?`<b class="variant-entity-star">${m.variantIcon}</b>`:''}${monsterVisual(m.id,'sprite-entity',m.variantId)}</span><small>${Math.round(d)}m</small></button>`}const discovered=state.player.discovered.includes(e.id)||state.player.dungeons.includes(e.id);const icon=e.type==='dungeon'&&!discovered?'❓':e.icon;return `<button class="entity ${e.type}" style="left:${pt.left}%;top:${pt.top}%" title="${discovered?e.name:'Nieznane miejsce'} • ${Math.round(d)} m" data-entity="${e.id}"><span class="entity-sprite">${icon}</span><small>${Math.round(d)}m</small></button>`}
 function moveDemo(dx,dy){
  if(SAVE_KEY!==DEMO_SAVE_KEY||!state.settings.demo)return toast('Strzałki działają tylko w osobnej przygodzie testowej.');
- if(gpsWatch!==null){try{navigator.geolocation?.clearWatch(gpsWatch)}catch{}gpsWatch=null;gpsPausedByBackground=false}
+ if(gpsRequested||gpsWatch!==null||gpsPausedByBackground)stopGps();
  state.world ||= {};state.world.explored ||= [];
  if(!state.world.gpsOrigin){
   const c=realMap?.getCenter?.();
@@ -3284,33 +3467,156 @@ function interactEntity(e){
 }
 
 
+function hasMapCoordinates(p){return Number.isFinite(p?.lat)&&Math.abs(p.lat)<=90&&Number.isFinite(p?.lng)&&Math.abs(p.lng)<=180}
+function hasFreshGpsFix(){
+ const p=state?.player?.position,at=p?.sampleAt??p?.receivedAt,age=Date.now()-at;
+ return !!(p?.gps&&gpsWatch!==null&&at&&age>=-1000&&age<=GPS_INTERACTION_MAX_AGE&&Number.isFinite(p.accuracy)&&p.accuracy>=0&&p.accuracy<=GPS_ACCURACY_LIMIT);
+}
+function gpsMapPosition(){
+ if(gpsRequested&&gpsPreview&&Date.now()-gpsPreview.sampleAt<=60000&&!hasFreshGpsFix())return gpsPreview;
+ return state?.player?.position;
+}
+function gpsMapZoom(p=gpsMapPosition()){return p===gpsPreview?(p.accuracy>10000?9:p.accuracy>1000?13:15):18}
+function gpsEnvironmentIssue(){
+ if(window.isSecureContext===false)return 'insecure';
+ if(!navigator.geolocation?.watchPosition||!navigator.geolocation?.getCurrentPosition)return 'unsupported';
+ try{const policy=document.permissionsPolicy||document.featurePolicy;if(policy?.allowsFeature('geolocation')===false)return 'policy'}catch{}
+ return '';
+}
+function gpsStatusText(){
+ if(state?.player?.position?.testWalk&&!gpsRequested)return '🧪 TEST • strzałki';
+ if(gpsPausedByBackground)return '📍 GPS wstrzymany w tle';
+ if(gpsIssue==='insecure')return '📍 GPS wymaga HTTPS • pomoc';
+ if(gpsIssue==='unsupported'||gpsIssue==='policy')return '📍 GPS niedostępny • pomoc';
+ if(gpsIssue==='denied')return '📍 Brak zgody na lokalizację • pomoc';
+ if(gpsIssue==='unavailable'&&!gpsRequested)return '📍 Brak sygnału GPS • ponów';
+ if(!gpsRequested)return state?.player?.position?.virtualTravel?'TRYB DOMOWY • GPS wyłączony':'📍 Włącz GPS • ustal pozycję';
+ if(hasFreshGpsFix())return `📍 GPS ±${Math.round(state.player.position.accuracy)} m`;
+ if(gpsPreview&&gpsMapPosition()===gpsPreview)return `📍 Przybliżona ±${Math.round(gpsPreview.accuracy)} m • szukam GPS`;
+ if(gpsIssue==='timeout')return '📍 Wciąż szukam GPS • pomoc';
+ if(gpsIssue==='unavailable')return '📍 Brak sygnału GPS • ponów';
+ return '📍 Ustalam pozycję… • pomoc';
+}
+function updateGpsUI(){
+ syncPlayerMarkerMotion();
+ const label=gpsStatusText();
+ document.querySelectorAll('[data-live-gps]').forEach(el=>{el.textContent=label;el.title='Lokalizacja — status i pomoc'});
+ document.querySelectorAll('[data-map-gps], [data-menu-gps]').forEach(el=>{
+  const action=gpsRequested?'Wyłącz GPS':'Włącz GPS';el.title=action;el.setAttribute('aria-label',action);el.setAttribute('aria-pressed',String(gpsRequested));
+  if(!el.classList.contains('map-ui-btn'))el.textContent=`📍 ${action}`;
+ });
+ const status=document.querySelector('[data-gps-help-status]');if(status)status.textContent=label;
+ if(interactionCircle&&!hasFreshGpsFix()&&!state?.player?.position?.testWalk){realMap?.removeLayer(interactionCircle);interactionCircle=null}
+}
+function openGpsHelp(){
+ const inApp=/FBAN|FBAV|Instagram|Messenger|; wv\)/i.test(navigator.userAgent||'');
+ const explanations={insecure:'Lokalizacja wymaga bezpiecznego adresu. Otwórz grę przez jej adres HTTPS, np. na GitHub Pages.',unsupported:'Ta przeglądarka nie udostępnia lokalizacji. Otwórz link do gry w Chrome, Safari lub Firefox.',policy:'Ten widok blokuje lokalizację. Otwórz adres gry bezpośrednio w pełnej przeglądarce.',denied:'W ustawieniach tej strony zezwól na lokalizację. Sprawdź też, czy lokalizacja urządzenia jest włączona i czy przeglądarka ma do niej dostęp.',timeout:'Ustalenie pozycji trwa dłużej. Śledzenie pozostaje włączone. Sprawdź lokalizację urządzenia i spróbuj przy oknie lub na zewnątrz.',unavailable:'Urządzenie nie podało pozycji. Włącz lokalizację urządzenia, sprawdź uprawnienia przeglądarki i spróbuj ponownie.'};
+ openModal(`<div class="modal-head"><h2>📍 Lokalizacja</h2><button class="close" data-close>×</button></div><p data-gps-help-status>${gpsStatusText()}</p><p>${explanations[gpsIssue]||'Zezwól przeglądarce na lokalizację. Mapa może najpierw pokazać pozycję przybliżoną; do walk i odkrywania potrzebny jest świeży sygnał z dokładnością do 50 m.'}</p>${inApp?'<p>Link jest otwarty wewnątrz innej aplikacji. Jeśli nie pojawia się pytanie o lokalizację, użyj jej menu „Otwórz w przeglądarce”.</p>':''}<div class="gps-help-actions"><button class="primary" data-gps-retry>Ponów lokalizowanie</button>${gpsRequested?'<button class="secondary" data-gps-stop>Wyłącz GPS</button>':''}</div>`);
+ document.querySelector('[data-gps-retry]')?.addEventListener('click',()=>{closeModal();startGps({restart:true})});
+ document.querySelector('[data-gps-stop]')?.addEventListener('click',()=>{stopGps();save();closeModal();updateGpsUI()});
+}
+function showGpsProblem(silent){if(silent)return;if(combat||dungeonRun||battleResult)toast(gpsStatusText());else openGpsHelp()}
+function gpsStatusAction(){if(!gpsRequested&&!gpsIssue)startGps();else openGpsHelp()}
+function stopGps({pause=false,keepPreference=false}={}){
+ stopDeviceCompass();
+ ++gpsSession;
+ try{if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch)}catch{}
+ gpsWatch=null;gpsRequested=false;gpsPausedByBackground=pause;gpsPreview=null;gpsIssue='';gpsCenterPending=false;
+ clearInterval(gpsStatusTimer);gpsStatusTimer=null;
+ lastAcceptedFix=null;lastGpsTick=0;
+ if(state?.player?.position){state.player.position.gps=false;state.player.position.receivedAt=0;state.player.position.sampleAt=0}
+ if(state?.settings&&!keepPreference)state.settings.gpsEnabled=pause;
+ if(realMap){
+  if(accuracyCircle){realMap.removeLayer(accuracyCircle);accuracyCircle=null}
+  if(playerMapMarker?.gpsPreview){realMap.removeLayer(playerMapMarker);playerMapMarker=null}
+  if(interactionCircle){realMap.removeLayer(interactionCircle);interactionCircle=null}
+ }
+}
 function toggleGps(){
- if(gpsWatch!==null){navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;if(state?.player?.position)state.player.position.gps=false;save();toast('GPS wyłączony.');if(currentTab==='map')selectNav('map');return}
- if(!navigator.geolocation)return toast('Ta przeglądarka nie udostępnia GPS.');
- followGps=true;toast('Uruchamiam dokładny GPS…');
+ if(gpsRequested||gpsWatch!==null||gpsPausedByBackground){stopGps();save();updateGpsUI();toast('GPS wyłączony.');return}
+ startGps();
+}
+function startGps({restart=false,silent=false}={}){
+ if(!state?.player||document.hidden)return;
+ if(gpsRequested&&!restart)return;
+ stopGps({keepPreference:true});
+ gpsIssue=gpsEnvironmentIssue();
+ if(gpsIssue){state.settings.gpsEnabled=false;save();updateGpsUI();showGpsProblem(silent);return}
+ gpsRequested=true;state.settings.gpsEnabled=true;followGps=true;gpsCenterPending=true;startDeviceCompass();
+ const session=gpsSession,owner=state,mode=SAVE_KEY;
+ const active=()=>gpsRequested&&session===gpsSession&&state===owner&&SAVE_KEY===mode&&!document.hidden;
+ const warn=msg=>{if(Date.now()-lastGpsWarningAt>8000){toast(msg);lastGpsWarningAt=Date.now()}};
+ const refreshMap=()=>{
+  updateGpsUI();
+  if(currentTab!=='map'||combat||dungeonRun||battleResult)return;
+  if(!realMap)initRealMap();
+  updateLiveMapPosition();
+ };
  const handlePosition=pos=>{
-  const now=Date.now();if(now-lastGpsTick<800)return;
-  const {latitude:lat,longitude:lng,accuracy=Infinity,heading=null}=pos.coords;
-  const warn=msg=>{if(now-lastGpsWarningAt>8000){toast(msg);lastGpsWarningAt=now}};
-  if(!Number.isFinite(lat)||!Number.isFinite(lng)||!Number.isFinite(accuracy)||accuracy<0||accuracy>50||!pos.timestamp||now-pos.timestamp>15000){warn('GPS jest niedokładny. Poczekaj na sygnał do 50 m.');return}
-  if(lastAcceptedFix){const seconds=(now-lastAcceptedFix.at)/1000,meters=geoDistance({lat,lng},lastAcceptedFix);if(seconds<30&&meters>Math.max(80,seconds*12+accuracy)){warn('Duży skok GPS — czekam na stabilną pozycję.');return}}
-  lastAcceptedFix={lat,lng,at:now};lastGpsTick=now;
-  const hadMapPosition=!!state.player.position.lat;
-  const firstOrigin=!state.world.gpsOrigin;
-  if(firstOrigin)state.world.gpsOrigin={lat,lng};
+  if(!active())return;
+  const now=Date.now(),coords=pos?.coords||{},lat=coords.latitude,lng=coords.longitude,accuracy=coords.accuracy,stamp=pos?.timestamp;
+  if(!hasMapCoordinates({lat,lng})||!Number.isFinite(accuracy)||accuracy<0||!Number.isFinite(stamp)||stamp<=0||now-stamp>GPS_FIX_MAX_AGE||stamp>now+1000){warn('Czekam na aktualny odczyt lokalizacji.');return}
+  // An approximate fix only moves the map. It never anchors the world or grants progress.
+  if(accuracy>GPS_ACCURACY_LIMIT){
+   if(hasFreshGpsFix())return;
+   if(gpsPreview&&stamp<gpsPreview.sampleAt)return;
+   const firstPreview=!gpsPreview;gpsPreview={lat,lng,accuracy,sampleAt:stamp};gpsIssue='';
+   refreshMap();if(firstPreview&&realMap&&followGps)realMap.setView([lat,lng],gpsMapZoom(gpsPreview),{animate:true});return;
+  }
+  if(lastAcceptedFix){
+   if(stamp<lastAcceptedFix.sampleAt||stamp===lastAcceptedFix.sampleAt&&accuracy>=lastAcceptedFix.accuracy)return;
+   const seconds=(now-lastAcceptedFix.at)/1000,meters=geoDistance({lat,lng},lastAcceptedFix);
+   if(seconds<30&&meters>Math.max(80,seconds*12+accuracy)){warn('Duży skok GPS — czekam na stabilną pozycję.');return}
+  }
+  lastAcceptedFix={lat,lng,at:now,sampleAt:stamp,accuracy};lastGpsTick=now;gpsPreview=null;gpsIssue='';
+  if(!state.world.gpsOrigin)state.world.gpsOrigin={lat,lng};
   const o=state.world.gpsOrigin,dy=(lat-o.lat)*111320,dx=(lng-o.lng)*111320*Math.cos(o.lat*Math.PI/180);
-  const nextPosition={x:dx,y:dy,lat,lng,gps:true,accuracy,heading,receivedAt:now,virtualTravel:false,testWalk:false};registerPlayerMovement(state.player.position,nextPosition);state.player.position=nextPosition;
-  const revealed=addExploredPoint(lat,lng,accuracy),newSectors=accuracy<=120?markExplorationArea(dx,dy):0;
+  const nextPosition={x:dx,y:dy,lat,lng,gps:true,accuracy,heading:Number.isFinite(coords.heading)?coords.heading:null,receivedAt:now,sampleAt:stamp,virtualTravel:false,testWalk:false};
+  registerPlayerMovement(state.player.position,nextPosition);state.player.position=nextPosition;
+  const revealed=addExploredPoint(lat,lng,accuracy),newSectors=markExplorationArea(dx,dy);
   if(newSectors>0)registerExplorationProgress(dx,dy);
   const away=Math.hypot(dx,dy);checkQuestProgress('move',null,away);tutorialEvent('move',away);notifyNearbyWorldEvents();if(revealed||newSectors)checkRegionRewards();save();
-  if(currentTab==='map'&&!combat&&!dungeonRun&&!battleResult){
-   if(!realMap||!hadMapPosition){selectNav('map');setTimeout(()=>{followGps=true;updateLiveMapPosition()},120)}
-   else{updateLiveMapPosition();rebuildGameLayers()}
+  refreshMap();
+  if(currentTab==='map'&&realMap&&!combat&&!dungeonRun&&!battleResult){
+   if(gpsCenterPending&&followGps)realMap.setView([lat,lng],18,{animate:true});gpsCenterPending=false;rebuildGameLayers();
   }else if(currentTab==='town'&&!combat&&!dungeonRun&&!battleResult)renderTown(document.querySelector('#viewport'));
  };
- const handleError=err=>{if(err.code!==1&&lastAcceptedFix&&Date.now()-lastAcceptedFix.at<30000)return;const msg=err.code===1?'Brak zgody na lokalizację. Włącz dostęp do lokalizacji dla tej strony.':err.code===2?'Nie udało się ustalić pozycji GPS.':err.code===3?'GPS nie odpowiedział na czas. Spróbuj ponownie.':err.message;toast(`GPS: ${msg}`);if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;if(state?.player?.position)state.player.position.gps=false;save();if(currentTab==='map')selectNav('map')};
- navigator.geolocation.getCurrentPosition(handlePosition,handleError,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
- gpsWatch=navigator.geolocation.watchPosition(handlePosition,handleError,{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
+ const handleError=(err,initial=false)=>{
+  if(!active())return;
+  if(err?.code===1||err?.name==='SecurityError'){
+   stopGps();gpsIssue='denied';save();updateGpsUI();showGpsProblem(silent);return;
+  }
+  // A timeout/unavailable result must not cancel the still-running accurate watch.
+  if(hasFreshGpsFix())return;
+  if(!initial||!gpsIssue)gpsIssue=err?.code===3?'timeout':'unavailable';
+  updateGpsUI();
+ };
+ updateGpsUI();if(!silent)toast('Ustalam lokalizację — zezwól na dostęp w przeglądarce.');save();
+ gpsStatusTimer=setInterval(()=>{if(active())updateGpsUI()},5000);
+ try{
+  const watch=navigator.geolocation.watchPosition(handlePosition,err=>handleError(err),{enableHighAccuracy:true,maximumAge:0,timeout:60000});
+  if(!active()){navigator.geolocation.clearWatch(watch);return}gpsWatch=watch;
+  navigator.geolocation.getCurrentPosition(handlePosition,err=>handleError(err,true),{enableHighAccuracy:false,maximumAge:10000,timeout:12000});
+ }catch(err){
+  if(!active())return;
+  stopGps();gpsIssue=err?.name==='SecurityError'?'denied':'unavailable';save();updateGpsUI();showGpsProblem(silent);
+ }
+}
+function centerGpsMap(){
+ followGps=true;gpsCenterPending=true;
+ if(!gpsRequested&&!state?.player?.position?.testWalk)startGps();
+ const p=gpsMapPosition();if(realMap&&hasMapCoordinates(p))realMap.setView([p.lat,p.lng],gpsMapZoom(p),{animate:true});
+}
+function handleGpsVisibility(){
+ if(document.hidden){
+  stopDeviceCompass();
+  if(gpsRequested||gpsWatch!==null)stopGps({pause:true});
+  save();
+ }else{
+  passiveRegenTick();
+  if(gpsPausedByBackground&&state?.settings?.gpsEnabled)startGps({silent:true});
+  updateGpsUI();
+ }
 }
 
 
@@ -3421,7 +3727,7 @@ function questHTML(q){
 function questDetailHTML(q){
  if(!q)return `<div class="quest-detail-card empty"><div class="quest-seal">📜</div><h3>Wybierz zadanie</h3><p>Wybierz wpis z dziennika, aby zobaczyć szczegóły.</p></div>`;
  const active=state.quests.active.includes(q.id),done=state.quests.done.includes(q.id),pct=questProgressPercent(q),scene=storyScene(q.id),chosen=storyChoiceFor(q.id);
- return `<article class="quest-detail-card"><div class="quest-detail-head"><div><span>${q.chapter||'Przygoda'}</span><h3>${q.name}</h3><small>Poziom ${q.level}</small></div><div class="quest-seal">${done?'✓':'📜'}</div></div><p class="quest-description">${q.desc||''}</p><div class="quest-detail-progress"><b>Postęp</b><span>${pct}%</span><div><i style="width:${pct}%"></i></div></div><div class="quest-step-list">${(q.steps||[]).map((s,i)=>{const st=questStepState(q,s,i);return `<div class="quest-step ${st.done?'done':''}"><span>${st.done?'✓':'○'}</span><div><b>${s.label||s.desc||'Cel zadania'}</b><small>${st.done?'Wykonano':`${Math.floor(st.cur)}/${st.target}`}</small></div></div>`}).join('')}</div><div class="quest-reward-box"><span>🎁 Nagroda</span><b>${q.xp||0} XP • ${q.gold||0} 🪙</b></div>${scene&&active?(chosen?`<button class="secondary quest-story-action" data-story-scene="${q.id}">📖 Zobacz swój wybór</button>`:`<div class="quest-auto-scene-note">🗺️ Scena uruchomi się automatycznie przy właściwym celu na mapie.</div>`):''}${done?'<div class="quest-complete-stamp">UKOŃCZONO</div>':''}</article>`;
+ return `<article class="quest-detail-card"><div class="quest-detail-head"><div><span>${q.chapter||'Przygoda'}</span><h3>${q.name}</h3><small>Poziom ${q.level}</small></div><div class="quest-seal">${done?'✓':'📜'}</div></div><p class="quest-description">${q.desc||''}</p><div class="quest-detail-progress"><b>Postęp</b><span>${pct}%</span><div><i style="width:${pct}%"></i></div></div><div class="quest-step-list">${(q.steps||[]).map((s,i)=>{const st=questStepState(q,s,i);return `<div class="quest-step ${st.done?'done':''}"><span>${st.done?'✓':'○'}</span><div><b>${s.label||s.desc||'Cel zadania'}</b><small>${st.done?'Wykonano':`${Math.floor(st.cur)}/${st.target}`}</small></div></div>`}).join('')}</div><div class="quest-reward-box"><span>🎁 Nagroda</span><b>${q.xp||0} XP • ${q.gold||0} 🪙</b></div>${scene&&active?(chosen?`<button class="secondary quest-story-action" data-story-scene="${q.id}">📖 Zobacz swój wybór</button>`:`<div class="quest-auto-scene-note">🗺️ Scena uruchomi się automatycznie przy właściwym celu na mapie.</div>`):''}${active?storyHereHTML(q):''}${done?'<div class="quest-complete-stamp">UKOŃCZONO</div>':''}</article>`;
 }
 function bountyTargetName(b){return b.type==='gather'?itemDef(b.target).name:(MONSTERS.find(m=>m.id===b.target)?.name||b.target)}
 function bountyVerb(b){return b.type==='gather'?'Zbierz':'Pokonaj'}
@@ -3436,11 +3742,10 @@ function renderQuests(el){
  const active=state.quests.active.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean),done=state.quests.done.map(id=>QUESTS.find(q=>q.id===id)).filter(Boolean).slice().reverse(),contracts=(state.adventure.bounties||[]).filter(b=>b.accepted&&!b.claimed);
  const selectable=[...active,...done];state.ui.questFocus ||= selectable[0]?.id||null;if(state.ui.questFocus&&!selectable.some(q=>q.id===state.ui.questFocus))state.ui.questFocus=selectable[0]?.id||null;
  const focus=QUESTS.find(q=>q.id===state.ui.questFocus);
- el.innerHTML=`<div class="quest-journal-23"><section class="quest-journal-side"><div class="journal-summary"><div><b>${active.length}</b><span>Fabularne</span></div><div><b>${contracts.length}</b><span>Kontrakty</span></div><div><b>${done.length}</b><span>Ukończone</span></div></div>${tutorialJournalHTML()}<div class="quest-section-label">AKTYWNE</div><div class="quest-list">${active.map(questHTML).join('')||'<div class="journal-empty">Brak aktywnych zadań fabularnych.</div>'}</div>${contracts.length?`<div class="quest-section-label">KONTRAKTY</div><div class="bounty-list-23">${contracts.map(b=>`<div class="bounty-card-23"><div><b>${b.icon} ${b.name}</b><small>${bountyTargetName(b)} • ${b.progress||0}/${b.need}</small></div><div class="quest-mini-bar"><i style="width:${Math.min(100,(b.progress||0)/b.need*100)}%"></i></div><div class="bounty-reward">${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</div>${(b.progress||0)>=b.need?`<button class="secondary" data-claim-bounty="${b.id}">Odbierz</button>`:`<button class="ghost" data-show-bounty="${b.id}">Pokaż cel na mapie</button>`}</div>`).join('')}</div>`:''}${done.length?`<details class="completed-quests"><summary>Ukończone (${done.length})</summary><div class="quest-list">${done.slice(0,12).map(questHTML).join('')}</div></details>`:''}</section><section class="quest-journal-main">${questDetailHTML(focus)}${storyProfileHTML()}</section></div><div class="quest-limit-note">Samouczek nie zajmuje miejsca. Maksymalnie ${activeTaskLimit()} aktywnych zadań i kontraktów.</div>`;
+ el.innerHTML=`<div class="quest-journal-23"><section class="quest-journal-side"><div class="journal-summary"><div><b>${active.length}</b><span>Fabularne</span></div><div><b>${contracts.length}</b><span>Kontrakty</span></div><div><b>${done.length}</b><span>Ukończone</span></div></div>${tutorialJournalHTML()}<div class="quest-section-label">AKTYWNE</div><div class="quest-list">${active.map(questHTML).join('')||'<div class="journal-empty">Brak aktywnych zadań fabularnych.</div>'}</div>${contracts.length?`<div class="quest-section-label">KONTRAKTY</div><div class="bounty-list-23">${contracts.map(b=>`<div class="bounty-card-23"><div><b>${b.icon} ${b.name}</b><small>${bountyTargetName(b)} • ${b.progress||0}/${b.need}</small></div><div class="quest-mini-bar"><i style="width:${Math.min(100,(b.progress||0)/b.need*100)}%"></i></div><div class="bounty-reward">${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</div>${bountyActionsHTML(b)}</div>`).join('')}</div>`:''}${done.length?`<details class="completed-quests"><summary>Ukończone (${done.length})</summary><div class="quest-list">${done.slice(0,12).map(questHTML).join('')}</div></details>`:''}</section><section class="quest-journal-main">${questDetailHTML(focus)}${storyProfileHTML()}</section></div><div class="quest-limit-note">Samouczek nie zajmuje miejsca. Maksymalnie ${activeTaskLimit()} aktywnych zadań i kontraktów.</div>`;
  el.querySelectorAll('[data-focus-quest]').forEach(b=>b.onclick=()=>{state.ui.questFocus=b.dataset.focusQuest;save();renderQuests(el)});
  el.querySelectorAll('[data-story-scene]').forEach(b=>b.onclick=()=>openStoryScene(b.dataset.storyScene));
- el.querySelectorAll('[data-claim-bounty]').forEach(b=>b.onclick=()=>claimBounty(b.dataset.claimBounty));
- el.querySelectorAll('[data-show-bounty]').forEach(btn=>btn.onclick=()=>{const b=state.adventure.bounties.find(x=>x.id===btn.dataset.showBounty);if(!b)return;spawnBountyTargets(b);save();selectNav('map');toast(`${bountyObjective(b)} • cele są zaznaczone na mapie`) });bindTutorialControls(el)
+ bindTutorialControls(el);bindQuestActions(el)
 }
 function eventTimeLabel(e){if(e.persistent)return 'Skutek decyzji';const left=Math.max(0,(e.expiresAt||0)-Date.now());if(!left)return 'do końca dnia';const h=Math.floor(left/3600000),m=Math.floor(left%3600000/60000);return h?`${h} h ${m} min`:`${Math.max(1,m)} min`}
 function renderEvents(el){
@@ -3492,7 +3797,7 @@ const CITY_MAP_ZOOMS=[.7,1,1.25,1.5];
 function renderTown(el){
  setAmbient('town');ensureCityState();
  const cl=climate(),distance=Math.round(cityDistance());
- const cityStatus=!state.city.placed?'Wybierz bezpieczne miejsce i postaw miasto, używając aktualnego GPS.':mobileCityServices()?(insideCity()?`Jesteś w obszarze miasta (${distance} m od centrum). Aktualny GPS odblokowuje usługi.`:`Usługi działają na telefonie w promieniu ${CITY_RADIUS} m od miasta. Pozostało ${Math.max(0,distance-CITY_RADIUS)} m.`):`Miasto ma na mapie własny obszar o promieniu ${CITY_RADIUS} m.`;
+ const cityStatus=!state.city.placed?'Wybierz miejsce, do którego chcesz wracać: miasto udostępnia usługi w promieniu 180 m, a przenieść je można raz na 30 dni. Fabuła ma osobne cele — w Zadaniach użyj „Kontynuuj tutaj”, gdy grasz w innej okolicy.':mobileCityServices()?(insideCity()?`Jesteś w obszarze miasta (${distance} m od centrum). Aktualny GPS odblokowuje usługi.`:`Usługi działają na telefonie w promieniu ${CITY_RADIUS} m od miasta. Pozostało ${Math.max(0,distance-CITY_RADIUS)} m.`):`Miasto ma na mapie własny obszar o promieniu ${CITY_RADIUS} m.`;
  const canMove=state.city.placed&&Date.now()-state.city.placedAt>=CITY_MOVE_COOLDOWN;
  const cityPlacement=(!state.city.placed||canMove)&&SAVE_KEY!==DEMO_SAVE_KEY?`<button class="secondary city-place-button" data-city-place>${state.city.placed?'📍 Przenieś miasto tutaj':'📍 Postaw miasto tutaj'}</button>`:'';
  const zoom=CITY_MAP_ZOOMS.includes(Number(state.ui.cityZoom))?Number(state.ui.cityZoom):1;
@@ -3556,15 +3861,19 @@ function buildingSceneHTML(id,view='scene'){
    ${hotspots}${sheet}
  </div>`;
 }
-function tavernBoardHTML(){ensureAdventureState();if(tutorialLocksStory()){const t=tutorialInfo();return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Zadania jeszcze czekają</h2></div><b>🔒</b></div><article class="quest-paper tutorial-board-lock"><i></i><span>SAMOUCZEK ${state.tutorial.stage+1}/${TUTORIAL_STEPS.length}</span><h3>${t?.title||'Poznaj podstawy'}</h3><p>Najpierw ukończ samouczek. Po nim tablica odblokuje główną fabułę i kontrakty.</p><button class="primary" data-tutorial-go>${tutorialActionLabel(t)}</button></article></div>`}const story=nextStoryQuestAvailable(),bounties=state.adventure.bounties||[],active=activeTaskCount();return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Kartki przypięte do desek</h2></div><b>${active}/${activeTaskLimit()} aktywne</b></div><div class="quest-board">${story?`<article class="quest-paper story-paper"><i></i><span>GŁÓWNY SZLAK • lvl ${story.level}</span><h3>${story.name}</h3><p>${story.desc}</p><strong>${story.xp} XP • ${story.gold} 🪙</strong><button class="secondary" data-accept-story="${story.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':`Limit ${activeTaskLimit()}/${activeTaskLimit()}`}</button></article>`:`<article class="quest-paper"><i></i><h3>Główny wątek jest w toku</h3><p>Kolejne etapy fabuły uruchamiają się automatycznie. Do karczmy nie musisz wracać po każdą część historii.</p></article>`}${bounties.map(b=>`<article class="quest-paper contract-paper ${b.accepted?'accepted-paper':''}"><i></i><span>KONTRAKT DNIA</span><h3>${b.icon} ${b.name}</h3><p>${bountyObjective(b)}. Cel zostanie wygenerowany na mapie po przyjęciu.</p><strong>${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</strong>${b.claimed?'<button disabled>Wykonano</button>':b.accepted?`<button disabled>Przyjęte • ${b.progress||0}/${b.need}</button>`:`<button class="secondary" data-accept-bounty="${b.id}" ${canAcceptTask()?'':'disabled'}>${canAcceptTask()?'Przyjmij':`Limit ${activeTaskLimit()}/${activeTaskLimit()}`}</button>`}</article>`).join('')}</div><div class="quest-board-foot">Samouczek jest osobny i nie zajmuje miejsca w limicie zadań.</div></div>`}
+function tavernBoardHTML(){
+ ensureAdventureState();
+ if(tutorialLocksStory())return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><h2>🔒 Zadania jeszcze czekają</h2><p>Najpierw ukończ samouczek.</p><button class="primary" data-tutorial-go>${tutorialActionLabel(tutorialInfo())}</button></div>`;
+ return `<div class="building-panel parchment-panel"><button class="ghost panel-back" data-building-home>← Wróć do karczmy</button><div class="board-head"><div><span>TABLICA OGŁOSZEŃ</span><h2>📌 Zlecenia mieszkańców</h2></div><b>${activeTaskCount()}/${activeTaskLimit()} aktywne</b></div><p>Przyjęte zlecenia nie wygasają. Możesz je anulować w dzienniku albo tutaj. Po odebraniu nagrody tablica od razu uzupełnia ofertę. Główna fabuła jest w Zadaniach.</p><div class="quest-board">${state.adventure.bounties.map(b=>`<article class="quest-paper contract-paper ${b.accepted?'accepted-paper':''}"><i></i><span>${b.accepted?'PRZYJĘTE • BEZ LIMITU CZASU':'NOWE ZLECENIE'}</span><h3>${b.icon} ${b.name}</h3><p>${bountyObjective(b)}${b.accepted?` • ${Math.min(b.progress||0,b.need)}/${b.need}`:'. Cele pojawią się w okolicy, w której przyjmiesz zlecenie.'}</p><strong>${b.xp} XP • ${b.gold} 🪙 • ${b.rep} rep.</strong>${bountyActionsHTML(b)}</article>`).join('')}</div></div>`;
+}
 function tavernKeeperHTML(){ensureStaminaCap();const p=state.player,daily=ensureTavernDaily(),st=p.stamina??100,max=p.maxStamina??100,limit=daily.mealUses>=2;return `<div class="building-panel"><button class="ghost panel-back" data-building-home>← Wróć do sali</button>${npcCard('Dorian','Karczmarz • były wojownik','knight','Dorian walczył kiedyś na północy. Zna nawyki potworów, a dziś pilnuje, żeby podróżni wracali na szlak w jednym kawałku.')}<div class="dialogue-bubble">${tavernAnecdote()}</div><div class="stamina-card"><b>⚡ Stamina ${st}/${max}</b><div class="mini-progress"><span style="width:${st/max*100}%"></span></div><small>Posiłki i napitki: ${daily.mealUses}/2 dzisiaj. Każda walka zużywa 3 staminy.</small></div><div class="tavern-menu"><button class="secondary" data-anecdote>🗣️ Kolejna anegdota</button><button class="secondary" data-stamina="10" data-cost="10" data-label="Piwo" ${limit?'disabled':''}>🍺 Piwo • +10 staminy • 10 🪙</button><button class="secondary" data-stamina="25" data-cost="25" data-label="Solidny posiłek" ${limit?'disabled':''}>🍲 Posiłek • +25 • 25 🪙</button><button class="secondary" data-stamina="50" data-cost="50" data-label="Karczemna uczta" ${limit?'disabled':''}>🍗 Uczta • +50 • 50 🪙</button></div></div>`}
 function tavernFireplaceHTML(){ensureStaminaCap();const daily=ensureTavernDaily(),cost=Math.min(70,15+state.player.level*3),used=daily.fireplaceUses,blocked=used>=2;return `<div class="building-panel hearth-panel"><button class="ghost panel-back" data-building-home>← Wróć do sali</button><div class="big-hearth">🔥</div><h2>Kominek</h2><p>Siadasz przy ogniu. Ciepło rozluźnia mięśnie, a przez kilka minut świat może poczekać.</p><div class="rest-summary"><span>❤️ Pełne HP</span><span>🔷 Pełna mana</span><span>⚡ +25 staminy</span></div><div class="daily-tavern-limit">Odpoczynki dzisiaj: <b>${used}/2</b></div><button class="primary" data-fire-rest ${blocked?'disabled':''}>${blocked?'Limit wykorzystany':'Odpocznij • '+cost+' 🪙'}</button></div>`}
-function buildingServiceHTML(id){const labels={shop:'sklepu',smith:'kuźni',alchemist:'pracowni',auction:'domu aukcyjnego',guild:'sali gildii'};const body=id==='shop'?shopHTML():id==='smith'?smithHTML():id==='alchemist'?alchemistHTML():id==='auction'?auctionHTML():id==='guild'?guildHTML():'';return `<div class="market-service market-${id}"><button class="ghost panel-back" data-building-home>← Wróć do ${labels[id]||'wnętrza'}</button>${body}</div>`}
+function buildingServiceHTML(id){const labels={shop:'sklepu',smith:'kuźni',alchemist:'pracowni',auction:'domu aukcyjnego',guild:'sali gildii'};const body=id==='shop'?shopHTML():id==='smith'?smithHTML():id==='alchemist'?alchemistHTML():id==='auction'?auctionHTML():id==='guild'?guildHTML():'';return `<div class="market-service market-${id}"><button class="ghost panel-back" data-building-home>← Wróć do ${labels[id]||'wnętrza'}</button>${body}<div class="shop-sell-sheet" data-merchant-buy-sheet></div></div>`}
 function buildingTalkHTML(id){const c=CITY_INTERIORS[id];const extra={shop:'Selma słyszy większość plotek od handlarzy, zanim dotrą do karczmy.',smith:'Ragor najpierw ogląda materiał, dopiero potem pyta, co chcesz z niego zrobić.',alchemist:'Ilyra potrafi rozpoznać zioło po zapachu i truciznę po kolorze osadu.',auction:'Varo twierdzi, że na każdą rzecz znajdzie się kupiec — trzeba tylko poczekać.',guild:'Edrin pamięta nazwiska tych, którzy dotrzymują słowa.'}[id]||'Dorian opowiada o dawnych wyprawach.';return `<div class="building-panel"><button class="ghost panel-back" data-building-home>← Wróć do wnętrza</button>${npcCard(c.npc,c.role,c.classId,c.quote)}<div class="dialogue-bubble">${extra}</div>${id==='tavern'?'<button class="secondary" data-building-action="keeper">Porozmawiaj dłużej</button>':`<button class="secondary" data-building-action="service">Przejdź do usług</button>`}</div>`}
 function buildingGlobalNavHTML(){return `<nav class="building-global-nav"><button data-building-nav="map">🗺️ <span>Mapa</span></button><button data-building-nav="hero">🛡️ <span>Bohater</span></button><button data-building-nav="town">🏰 <span>Miasto</span></button><button data-building-nav="quests">📜 <span>Zadania</span></button><button data-building-nav="menu">☰ <span>Menu</span></button></nav>`}
 function openBuilding(id,view='scene'){
  if(!cityServiceAccess())return;
- const oldModal=document.querySelector('.modal'),keepScroll=view==='service'&&!!oldModal?.querySelector(`.market-${id}`),savedScroll=keepScroll?oldModal.scrollTop:0;
+ const oldModal=document.querySelector('.modal'),sameView=oldModal?.dataset.buildingId===id&&oldModal?.dataset.buildingView===view,keepScroll=sameView||(view==='service'&&!!oldModal?.querySelector(`.market-${id}`)),savedScroll=keepScroll?oldModal.scrollTop:0,savedLeft=keepScroll?oldModal.scrollLeft||0:0,bodyHost=sameView?oldModal.querySelector('#buildingBody'):null;
  setAmbient(id==='tavern'?'tavern':'town');
  const unlock=buildingUnlock(id);if(!unlock.ok)return toast(`Odblokujesz to: ${unlock.reason}.`);
  if(id==='tavern')tutorialEvent('tavern');
@@ -3574,8 +3883,9 @@ function openBuilding(id,view='scene'){
  const top=id==='tavern'
    ? `<div class="tavern-chrome"><div><b>Karczma „Pod Krukiem”</b><small>Dorian • kominek • tablica ogłoszeń</small></div><button class="close tavern-close" data-close title="Zamknij">×</button></div>${buildingGlobalNavHTML()}`
    : `<div class="tavern-chrome clean-room-chrome"><div><b>${c.title}</b><small>${c.npc} • ${c.role}</small></div><button class="close tavern-close" data-close title="Zamknij">×</button></div>${buildingGlobalNavHTML()}`;
- openModal(`<div class="location-scene scene-${id} city-modal ${id==='tavern'?'tavern-modal-clean':'clean-room-modal'}"><div class="location-overlay">${top}<div id="buildingBody">${body}</div></div></div>`);
- bindBuilding(id,view);if(keepScroll){const next=document.querySelector('.modal');if(next)next.scrollTop=savedScroll}
+ if(bodyHost)bodyHost.innerHTML=body;else openModal(`<div class="location-scene scene-${id} city-modal ${id==='tavern'?'tavern-modal-clean':'clean-room-modal'}"><div class="location-overlay">${top}<div id="buildingBody">${body}</div></div></div>`);
+ const next=document.querySelector('.modal');if(next){next.dataset.buildingId=id;next.dataset.buildingView=view}
+ bindBuilding(id,view);if(keepScroll)restoreBuildingScroll(next,savedScroll,savedLeft);
 }
 
 function tavernHTML(){return tavernKeeperHTML()}
@@ -3808,6 +4118,7 @@ function guildRequestsHTML(){
 function guildHTML(){ensureSocialState();const rep=state.adventure.reputation||0,member=guildMemberRankInfo(),rec=ensureGuildMembershipProgress(),progress=member.progress;return `${serviceHeroHTML('guild','SALA GILDII','Bractwo Edrina','Podejmuj kontrakty Edrina, zbieraj łupy na potrzeby gildii i rozwijaj własną siedzibę.')}<div class="guild-banner guild-rank-banner rank-${member.rank}"><span>🛡️</span><div><small>RANGA GILDYJNA • POTWORY OD DOŁĄCZENIA</small><h3>${member.rank}</h3><div class="guild-rep-track"><i style="width:${progress}%"></i></div><em>${member.nextRank?`${member.kills} / ${member.nextKills} • następna ranga ${member.nextRank}`:`${member.kills} zabitych • najwyższa ranga SS`}${rec?` • Herosi ${rec.heroKills} • Legendy ${rec.legendKills}`:''}</em></div></div><div class="guild-services"><button class="secondary" data-guild-service="smith">⚒️ Kuźnia gildyjna</button><button class="secondary" data-guild-service="alchemist">⚗️ Alchemik gildyjny</button><button class="secondary" data-guild-service="auction">🔨 Dom aukcyjny</button></div><div class="guild-create-card"><span class="guild-wax">⚜️</span><div><small>${state.player.guild?'TWOJA GILDIA':'ZAŁÓŻ WŁASNĄ GILDIĘ'}</small><h3>${state.player.guild||'Napisz pierwszy rozdział'}</h3><p>${state.player.guild?'Rozwój gildii jest zapisany przy tej postaci. Ranga członka rośnie za potwory zabite od chwili dołączenia do gildii.':'Wybierz nazwę, pod którą będą znane Twoje przyszłe czyny.'}</p>${!state.player.guild?'<div class="guild-name-row"><input id="guildName" placeholder="Nazwa gildii" maxlength="28"><button class="secondary" data-create-guild>Utwórz gildię</button></div>':`<div class="guild-member-line">🛡️ ${state.player.name} • ranga <b>${member.rank}</b> • ${member.kills} zabitych • ${rep} reputacji</div>`}</div></div>${guildContractsHTML()}${guildRequestsHTML()}${guildDevelopmentHTML()}${guildPartyHTML()}${sectionTitleHTML('👑','Herosi i Legendy','Drużyna pomaga, ale nie jest wymagana — solo możesz spróbować na własne ryzyko')}<div class="guild-raids">${guildRaidCardHTML('hero')}${guildRaidCardHTML('legend')}</div>`}
 
 function bindBuilding(id,view){
+ bindQuestActions(document);
  document.querySelectorAll('[data-building-nav]').forEach(b=>b.onclick=()=>{const target=b.dataset.buildingNav;closeModal();if(target==='quests'){state.ui.adventureView='quests';save();currentTab='adventureHub';selectNav('adventureHub');return}currentTab=target;selectNav(target)});
  document.querySelectorAll('[data-building-map]').forEach(b=>b.onclick=()=>{closeModal();currentTab='map';selectNav('map')});
  document.querySelectorAll('[data-building-exit]').forEach(b=>b.onclick=()=>{closeModal();currentTab='town';selectNav('town')});
@@ -3818,8 +4129,8 @@ function bindBuilding(id,view){
  document.querySelector('[data-fire-rest]')?.addEventListener('click',restByFire);
  document.querySelectorAll('[data-accept-story]').forEach(b=>b.onclick=()=>acceptStoryQuest(b.dataset.acceptStory));
  document.querySelectorAll('[data-accept-bounty]').forEach(b=>b.onclick=()=>acceptBounty(b.dataset.acceptBounty));
- document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buyItem(b.dataset.buy,id,Number(b.dataset.price)));
- document.querySelectorAll('[data-buy-smith]').forEach(b=>b.onclick=()=>buyItem(b.dataset.buySmith,'smith',smithOfferPrice(b.dataset.buySmith)));
+ document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>openMerchantPurchase(b.dataset.buy,id,Number(b.dataset.price)));
+ document.querySelectorAll('[data-buy-smith]').forEach(b=>b.onclick=()=>openMerchantPurchase(b.dataset.buySmith,'smith',smithOfferPrice(b.dataset.buySmith)));
  document.querySelectorAll('[data-merchant-select-sell]').forEach(b=>b.onclick=()=>openMerchantSellSheet(id,Number(b.dataset.merchantSelectSell))); 
  document.querySelectorAll('[data-shop-sell]:not([data-shop-select-sell])').forEach(b=>b.onclick=()=>sellAtShop(Number(b.dataset.shopSell),1));
  document.querySelectorAll('[data-shop-sell-all]').forEach(b=>b.onclick=()=>{const idx=Number(b.dataset.shopSellAll),item=state.player.inventory[idx];sellAtShop(idx,item?.qty||1)});
@@ -3827,15 +4138,15 @@ function bindBuilding(id,view){
  document.querySelectorAll('[data-shop-select-sell]').forEach(b=>b.onclick=()=>{ensureShopUiState();state.ui.shopMode='sell';state.ui.shopSelectedSell=Number(b.dataset.shopSelectSell);save();openShopSellSheet(Number(b.dataset.shopSelectSell))});
  document.querySelectorAll('[data-shop-page]').forEach(b=>b.onclick=()=>{ensureShopUiState();state.ui.shopPage=String(b.dataset.shopPage);save();openBuilding('shop','service')});
  document.querySelector('[data-shop-options]')?.addEventListener('click',()=>{ensureShopUiState();state.ui.shopClassOnly=!state.ui.shopClassOnly;save();openBuilding('shop','service')});
- document.querySelector('[data-shop-accept]')?.addEventListener('click',()=>{ensureShopUiState();if(state.ui.shopMode==='sell'&&state.ui.shopSelectedSell!=null){sellAtShop(Number(state.ui.shopSelectedSell),1);return}const id=state.ui.shopSelectedBuy;if(id)buyItem(id,'shop',merchantBuyPrice(id))});
+ document.querySelector('[data-shop-accept]')?.addEventListener('click',()=>{ensureShopUiState();if(state.ui.shopMode==='sell'&&state.ui.shopSelectedSell!=null){sellAtShop(Number(state.ui.shopSelectedSell),1);return}const id=state.ui.shopSelectedBuy;if(id)openMerchantPurchase(id,'shop',merchantBuyPrice(id))});
  document.querySelector('[data-shop-accept-all]')?.addEventListener('click',()=>{ensureShopUiState();const idx=Number(state.ui.shopSelectedSell);const item=state.player.inventory[idx];if(item)sellAtShop(idx,item.qty||1)});
  document.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>upgradeItem(b.dataset.upgrade));
  document.querySelectorAll('[data-enchant]').forEach(b=>b.onclick=()=>enchantItem(b.dataset.enchant));
  document.querySelectorAll('[data-socket]').forEach(b=>b.onclick=()=>socketRune(b.dataset.socket,b.dataset.rune));
  document.querySelectorAll('[data-unsocket]').forEach(b=>b.onclick=()=>unsocketRune(b.dataset.unsocket));
  document.querySelectorAll('[data-craft]').forEach(b=>b.onclick=()=>craftRecipe(b.dataset.craft));
- document.querySelectorAll('[data-buy-alchemy-recipe]').forEach(b=>b.onclick=()=>buyAlchemyRecipe(b.dataset.buyAlchemyRecipe));
- document.querySelectorAll('[data-auction-buy]').forEach(b=>b.onclick=()=>{buyItem(b.dataset.auctionBuy,'auction',Number(b.dataset.price))});
+ document.querySelectorAll('[data-buy-alchemy-recipe]').forEach(b=>b.onclick=()=>openMerchantPurchase(b.dataset.buyAlchemyRecipe,'alchemist',null,'recipe'));
+ document.querySelectorAll('[data-auction-buy]').forEach(b=>b.onclick=()=>{openMerchantPurchase(b.dataset.auctionBuy,'auction',Number(b.dataset.price))});
  document.querySelector('#auctionListItem')?.addEventListener('change',e=>{ensureAuctionUiState();state.ui.auctionSelectedIndex=Number(e.target.value);save();openBuilding('auction','service')});
  document.querySelector('[data-auction-list]')?.addEventListener('click',()=>{const idx=Number(document.querySelector('#auctionListItem')?.value),qty=Number(document.querySelector('#auctionListQty')?.value||1),price=Number(document.querySelector('#auctionListPrice')?.value||0),duration=Number(document.querySelector('#auctionListDuration')?.value||12);listAuctionItem(idx,qty,price,duration)});
  document.querySelectorAll('[data-auction-cancel]').forEach(b=>b.onclick=()=>cancelAuctionListing(b.dataset.auctionCancel));
@@ -3858,19 +4169,56 @@ function bindBuilding(id,view){
  document.querySelectorAll('[data-start-guild-raid]').forEach(b=>b.onclick=()=>{closeModal();startGuildRaid(b.dataset.startGuildRaid)});
 }
 
-function buyItem(id,building,forcedPrice){
- if(!ITEMS[id])return;
+function merchantUnitPrice(id,building,forcedPrice){
+ if(building==='smith')return smithOfferPrice(id);
+ if(building==='auction')return auctionOfferPrice(id);
+ if(building==='alchemist'){const row=ALCHEMY_READY_STOCK.find(x=>x.id===id);if(row)return alchemyReadyPrice(row)}
+ return Number.isFinite(forcedPrice)&&forcedPrice>0?forcedPrice:merchantBuyPrice(id);
+}
+function purchaseQuantityLimit(id,building,price,kind='item'){
+ const stock=kind==='recipe'?99:(itemDef(id).slot||building==='auction'?1:999);
+ let low=0,high=Math.min(stock,Math.floor(state.player.gold/price));
+ while(low<high){const mid=Math.ceil((low+high)/2);if(kind==='recipe'||canReceiveItems([{id,qty:mid}]))low=mid;else high=mid-1}
+ return low;
+}
+function openMerchantPurchase(id,building,forcedPrice,kind='item'){
+ const sheet=document.querySelector('[data-merchant-buy-sheet]');if(!sheet||!ITEMS[id])return;
+ const d=itemDef(id),price=kind==='recipe'?alchemyRecipePrice(id):merchantUnitPrice(id,building,forcedPrice),max=purchaseQuantityLimit(id,building,price,kind);
+ if(max<1)return toast('Za mało złota lub miejsca w plecaku.');
+ const uses=kind==='recipe'?alchemyRecipeOffer(id).uses+guildAlchemyExtraUses():0;
+ sheet.innerHTML=`<div class="shop-sell-sheet-card merchant-buy-card" role="dialog" aria-modal="true" aria-label="Zakup przedmiotu"><button class="shop-sell-sheet-close" data-buy-close aria-label="Zamknij">×</button><div class="shop-sell-sheet-item"><div class="market-product-icon">${itemIconVisual(id,'shop-item-svg')}</div><div><small>ZAKUP ${kind==='recipe'?'RECEPTURY':''}</small><b>${d.name}</b><span>${price} 🪙 / ${kind==='recipe'?'recepturę':'szt.'}</span></div></div>${kind==='recipe'?`<p>Jedna receptura daje ${uses} użyć.</p>`:equipmentCompareHTML(id)}<div class="purchase-quantity"><label for="merchantQuantity">Ile ${kind==='recipe'?'receptur':'sztuk'} kupić?</label><span><button class="secondary" data-buy-minus aria-label="Zmniejsz ilość">−</button><input id="merchantQuantity" data-buy-quantity type="number" inputmode="numeric" min="1" max="${max}" step="1" value="1" aria-label="Liczba kupowanych przedmiotów"><button class="secondary" data-buy-plus aria-label="Zwiększ ilość">+</button><button class="ghost" data-buy-max>Maks. ${max}</button></span></div><p class="purchase-total" data-buy-total aria-live="polite"></p><div class="shop-sell-sheet-actions"><button class="primary" data-buy-confirm>Kup</button><button class="ghost" data-buy-close>Anuluj</button></div></div>`;
+ sheet.classList.add('open');
+ const input=sheet.querySelector('[data-buy-quantity]'),total=sheet.querySelector('[data-buy-total]'),button=sheet.querySelector('[data-buy-confirm]');
+ const update=()=>{const qty=Number(input.value),ok=Number.isInteger(qty)&&qty>=1&&qty<=max;button.disabled=!ok;total.textContent=ok?`Razem: ${price*qty} 🪙${uses?' • '+uses*qty+' użyć':''}`:`Wpisz liczbę od 1 do ${max}.`;return ok};
+ input.addEventListener('input',update);update();
+ sheet.querySelector('[data-buy-minus]').onclick=()=>{input.value=Math.max(1,(Number(input.value)||1)-1);update()};
+ sheet.querySelector('[data-buy-plus]').onclick=()=>{input.value=Math.min(max,(Number(input.value)||1)+1);update()};
+ sheet.querySelector('[data-buy-max]').onclick=()=>{input.value=max;update()};
+ sheet.querySelectorAll('[data-buy-close]').forEach(b=>b.onclick=()=>{sheet.classList.remove('open');sheet.innerHTML=''});
+ button.onclick=()=>{if(!update())return;const qty=Number(input.value);if(kind==='recipe')buyAlchemyRecipe(id,qty);else buyItem(id,building,price,qty)};
+ (window.matchMedia?.('(pointer: fine)').matches?input:button).focus({preventScroll:true});
+}
+function restoreBuildingScroll(modal,top,left){
+ if(!modal)return;
+ const restore=()=>{if(document.querySelector('.modal')!==modal)return;modal.scrollTop=top;modal.scrollLeft=left};
+ restore();requestAnimationFrame(restore);
+}
+
+function buyItem(id,building,forcedPrice,qty=1){
+ if(!ITEMS[id]||!Number.isInteger(qty)||qty<1||qty>999)return false;
  const d=itemDef(id),tracked=['shop','smith'].includes(building)&&!!d.slot;
- if(building==='smith'&&!smithStockIds().includes(id))return toast('Tego przedmiotu nie ma w bieżącej dostawie kowala.');
- if(building==='auction'&&(!auctionOfferIds().includes(id)||ensureAuctionVendorState().includes(id)))return toast('Ta oferta Vara nie jest już dostępna.');
- if(tracked&&merchantSoldOut(id,building))return toast('Przedmiot wyprzedany. Następna dostawa za '+merchantRefreshLabel()+'.');
- if(!requireItemRoom([{id,qty:1}]))return;
- const price=building==='smith'?smithOfferPrice(id):building==='auction'?auctionOfferPrice(id):Number.isFinite(forcedPrice)&&forcedPrice>0?forcedPrice:merchantBuyPrice(id);
- if(state.player.gold<price)return toast('Za mało złota.');
- state.player.gold-=price;addItem(id);
+ if((d.slot||building==='auction')&&qty!==1){toast('Ta oferta zawiera jedną sztukę.');return false}
+ if(building==='smith'&&!smithStockIds().includes(id)){toast('Tego przedmiotu nie ma w bieżącej dostawie kowala.');return false}
+ if(building==='auction'&&(!auctionOfferIds().includes(id)||ensureAuctionVendorState().includes(id))){toast('Ta oferta Vara nie jest już dostępna.');return false}
+ if(tracked&&merchantSoldOut(id,building)){toast('Przedmiot wyprzedany. Następna dostawa za '+merchantRefreshLabel()+'.');return false}
+ const price=merchantUnitPrice(id,building,forcedPrice),total=price*qty;
+ if(!Number.isSafeInteger(total)||total<1)return false;
+ if(state.player.gold<total){toast('Za mało złota.');return false}
+ if(!requireItemRoom([{id,qty}]))return false;
+ state.player.gold-=total;addItem(id,qty);
  if(tracked&&((building==='smith'&&smithStockIds().includes(id))||(building==='shop'&&currentShopStockIds().includes(id))))ensureMerchantStockState()[building][id]=1;
  if(building==='auction')ensureAuctionVendorState().push(id);
- save();openBuilding(building,'service');toast(`Kupiono: ${d.name} • -${price} 🪙`)
+ save();openBuilding(building,'service');refreshTopbar();toast(`Kupiono: ${qty}× ${d.name} • -${total} 🪙`);return true;
 }
 function upgradeItem(uidv){const i=state.player.inventory.find(x=>x.uid===uidv);if(!i)return;const up=i.upgrade||0,cap=itemUpgradeCap(i);if(up>=cap)return toast(`Ten przedmiot osiągnął limit +${cap}.`);const q=upgradeQuote(i);if(state.player.gold<q.gold)return toast(`Potrzebujesz ${q.gold} złota.`);if(countItem('scrap')<q.scrap)return toast(`Potrzebujesz ${q.scrap}× Żelazny złom.`);if(q.crystal&&countItem('crystal')<q.crystal)return toast(`Potrzebujesz ${q.crystal}× Odłamek kryształu.`);if(q.shard&&countItem('runeShard')<q.shard)return toast(`Potrzebujesz ${q.shard}× Odłamek runiczny.`);state.player.gold-=q.gold;if(q.scrap)removeItem('scrap',q.scrap);if(q.crystal)removeItem('crystal',q.crystal);if(q.shard)removeItem('runeShard',q.shard);i.upgrade=up+1;save();openBuilding('smith','service');toast(`${itemDef(i.id).name} ulepszono do +${i.upgrade} • -${q.gold} 🪙`)}
 function enchantItem(uidv){const i=state.player.inventory.find(x=>x.uid===uidv);if(!i)return;const reroll=!!i.enchant,wait=reroll?enchantRerollRemaining(i):0;if(wait)return toast(`Przerzut będzie dostępny za ${forgeWaitLabel(wait)}.`);const q=enchantQuote(i,reroll);if(state.player.gold<q.gold)return toast(`Potrzebujesz ${q.gold} złota.`);if(countItem('crystal')<q.crystal)return toast(`Potrzebujesz ${q.crystal}× Odłamek kryształu.`);if(q.shard&&countItem('runeShard')<q.shard)return toast(`Potrzebujesz ${q.shard}× Odłamek runiczny.`);let pool=enchantPoolFor(i);if(i.enchant)pool=pool.filter(x=>x.name!==i.enchant.name);if(!pool.length)return toast('Brak pasujących zaklęć dla tego slotu.');state.player.gold-=q.gold;removeItem('crystal',q.crystal);if(q.shard)removeItem('runeShard',q.shard);i.enchant=JSON.parse(JSON.stringify(pick(pool)));if(reroll){i.enchantRolls=(i.enchantRolls||0)+1;i.enchantRerollAt=Date.now()+ENCHANT_REROLL_COOLDOWN}else{i.enchantRolls=i.enchantRolls||0;i.enchantRerollAt=0}save();openBuilding('smith','service');toast(`${reroll?'Przerzucono':'Zaklęto'}: ${itemDef(i.id).name} • ${i.enchant.name} (${enchantEffectText(i.enchant)})`)}
@@ -3893,8 +4241,8 @@ async function installPwa(){
 }
 
 
-function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build ${BUILD_VERSION}</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsWatch!==null?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>👥 Postacie</b><div class="muted">Możesz prowadzić maksymalnie 5 niezależnych bohaterów. Aktualnie: slot ${activeCharacterSlot()} • ${state.player.name} (${CLASSES[state.player.class]?.name||state.player.class}, lvl ${state.player.level}).</div><button class="secondary" data-character-manager>Wybierz postać • ${characterCount()}/${CHARACTER_LIMIT}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>${SAVE_KEY===DEMO_SAVE_KEY?'🧪 Osobna przygoda testowa':'📍 Przygoda GPS'}</b><p class="muted">Testy mają osobny zapis. Strzałki i symulacja nocy nie zmieniają postępu przygody GPS.</p><button class="secondary" data-play-mode>${SAVE_KEY===DEMO_SAVE_KEY?'Wróć do przygody GPS':'Otwórz kopię do testów'}</button><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🗑️ Usuń bieżącą postać</b><div class="muted">Usuwa tylko aktualnie wybraną postać. Pozostałe sloty zostają bez zmian.</div><button class="danger" data-reset-character>Usuń tę postać</button></div></div>`;
- el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-character-manager]')?.addEventListener('click',openCharacterManager);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-play-mode]').onclick=switchPlayMode;el.querySelector('[data-night]').disabled=SAVE_KEY!==DEMO_SAVE_KEY;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};hideStoryUntilTutorial();save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
+function renderMore(el){ensureCoreState();const soundOn=!!state.settings.masterSound;el.innerHTML=`<div class="section-title"><h2>☰ Menu</h2><span class="pill">Build ${BUILD_VERSION}</span></div><div class="panel-list"><div class="panel-item"><b>🗺️ Mapa i eksploracja</b><p data-live-gps aria-live="polite">${gpsStatusText()}</p><div class="muted">Narzędzia mapy są tutaj, żeby ekran rozgrywki został czysty.</div><div class="settings-toggles"><button class="secondary" data-menu-gps>${gpsRequested?'📍 Wyłącz GPS':'📍 Włącz GPS'}</button><button class="secondary" data-menu-center>🎯 Do mnie</button><button class="secondary" data-menu-gps-help>Pomoc GPS</button><button class="secondary" data-map-mode>👁️ Widok: ${state.settings.mapMode==='focused'?'Skupiony':'Pełny'}</button><button class="secondary" data-explorer-journal>🧭 Dziennik odkrywcy</button><button class="secondary" data-fast-travel>⚡ Podróż</button></div><details class="menu-map-layers"><summary>Warstwy mapy</summary><div class="settings-toggles">${[['monster','👹 Potwory'],['poi','📌 Miejsca'],['dungeon','🕳️ Lochy'],['event','✨ Eventy'],['biome','🌿 Biomy'],['trail','👣 Ślad']].map(([k,n])=>`<button class="filter-btn ${state.settings.mapFilters[k]?'active':''}" data-filter="${k}">${n}</button>`).join('')}</div></details></div><div class="panel-item"><b>📜 Przygoda</b><div class="muted">Zadania, wydarzenia, wyprawy i bestiariusz są zebrane w jednym dzienniku.</div><div class="settings-toggles"><button class="secondary" data-menu-quests>📜 Questy</button><button class="secondary" data-menu-events>✨ Wydarzenia</button><button class="secondary" data-menu-trips>🧭 Wyprawy</button><button class="secondary" data-menu-bestiary>📖 Bestiariusz</button></div></div><div class="panel-item"><b>🔊 Dźwięk</b><div class="muted">Jeden główny przełącznik wycisza jednocześnie efekty i ambient.</div><div class="settings-toggles"><button class="secondary ${soundOn?'active':''}" data-master-sound>${soundOn?'🔊 Dźwięk: WŁ.':'🔇 Dźwięk: WYŁ.'}</button><button class="secondary" data-haptics>${state.settings.haptics?'📳 Wibracje: WŁ.':'📴 Wibracje: WYŁ.'}</button></div></div><div class="panel-item"><b>🎓 Samouczek</b><div class="muted">Wskazówka pojawia się na mapie i można ją zamknąć bez wyłączania samouczka. Pełny postęp jest w Questach.</div><button class="secondary" data-restart-tutorial>Uruchom od początku</button></div><div class="panel-item mobile-install-card"><b>📲 Time4Heroes na telefonie</b><button class="secondary" data-install-app>${isStandalone()?'✅ Aplikacja zainstalowana':'Zainstaluj na telefonie'}</button></div><div class="panel-item"><b>👥 Postacie</b><div class="muted">Możesz prowadzić maksymalnie 5 niezależnych bohaterów. Aktualnie: slot ${activeCharacterSlot()} • ${state.player.name} (${CLASSES[state.player.class]?.name||state.player.class}, lvl ${state.player.level}).</div><button class="secondary" data-character-manager>Wybierz postać • ${characterCount()}/${CHARACTER_LIMIT}</button></div><div class="panel-item"><b>💾 Zapis gry</b><div class="tabs" style="margin-top:8px"><button class="secondary" data-export>Eksportuj</button><button class="secondary" data-import>Importuj</button><input type="file" id="saveFile" accept="application/json" hidden></div></div><div class="panel-item"><b>${SAVE_KEY===DEMO_SAVE_KEY?'🧪 Osobna przygoda testowa':'📍 Przygoda GPS'}</b><p class="muted">Testy mają osobny zapis. Strzałki i symulacja nocy nie zmieniają postępu przygody GPS.</p><button class="secondary" data-play-mode>${SAVE_KEY===DEMO_SAVE_KEY?'Wróć do przygody GPS':'Otwórz kopię do testów'}</button><button class="secondary" data-night>${state.settings.forceNight?'Wyłącz symulację nocy':'Włącz symulację nocy'}</button></div><div class="panel-item reset-character-card"><b>🗑️ Usuń bieżącą postać</b><div class="muted">Usuwa tylko aktualnie wybraną postać. Pozostałe sloty zostają bez zmian.</div><button class="danger" data-reset-character>Usuń tę postać</button></div></div>`;
+ el.querySelector('[data-install-app]')?.addEventListener('click',installPwa);el.querySelector('[data-character-manager]')?.addEventListener('click',openCharacterManager);el.querySelector('[data-export]').onclick=exportSave;el.querySelector('[data-import]').onclick=()=>document.querySelector('#saveFile').click();document.querySelector('#saveFile').onchange=importSave;el.querySelector('[data-play-mode]').onclick=switchPlayMode;el.querySelector('[data-night]').disabled=SAVE_KEY!==DEMO_SAVE_KEY;el.querySelector('[data-night]').onclick=()=>{state.settings.forceNight=!state.settings.forceNight;save();renderMore(el)};el.querySelector('[data-master-sound]').onclick=()=>{toggleMasterSound();renderMore(el)};el.querySelector('[data-haptics]').onclick=()=>{state.settings.haptics=!state.settings.haptics;save();renderMore(el)};el.querySelector('[data-restart-tutorial]').onclick=()=>{state.tutorial={stage:0,complete:false,rewardGiven:true,flags:{},introSeen:true,finishReward:true,mapDismissedStage:-1};hideStoryUntilTutorial();save();selectNav('map')};el.querySelector('[data-reset-character]').onclick=resetCharacter;el.querySelector('[data-menu-gps]').onclick=()=>{toggleGps();setTimeout(()=>{if(currentTab==='menu')renderMore(el)},120)};el.querySelector('[data-menu-center]').onclick=centerMapOnPlayer;el.querySelector('[data-menu-gps-help]').onclick=openGpsHelp;el.querySelector('[data-map-mode]').onclick=()=>{state.settings.mapMode=state.settings.mapMode==='focused'?'full':'focused';save();renderMore(el)};el.querySelector('[data-explorer-journal]').onclick=openExplorerJournal;el.querySelector('[data-fast-travel]').onclick=openFastTravel;el.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{state.settings.mapFilters[b.dataset.filter]=!state.settings.mapFilters[b.dataset.filter];save();renderMore(el)});el.querySelector('[data-menu-quests]').onclick=openQuestView;el.querySelector('[data-menu-events]').onclick=()=>{state.ui.adventureView='events';save();selectNav('adventureHub')};el.querySelector('[data-menu-trips]').onclick=()=>{state.ui.adventureView='trips';save();selectNav('adventureHub')};el.querySelector('[data-menu-bestiary]').onclick=()=>{state.ui.adventureView='bestiary';save();selectNav('adventureHub')}}
 
 function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`time4heroes-${BUILD_VERSION}-${SAVE_KEY===DEMO_SAVE_KEY?'TEST':'GPS'}-save.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function validateSessionSave(raw){
@@ -3909,7 +4257,7 @@ function importSave(e){
  const f=e.target.files?.[0];if(!f)return;if(f.size>5*1024*1024)return toast('Plik zapisu jest zbyt duży.');
  const r=new FileReader();r.onload=()=>{try{
   const raw=JSON.parse(r.result);if(!raw?.player||!CLASSES[raw.player.class]||!Array.isArray(raw.player.inventory)||!Number.isFinite(raw.player.level)||raw.player.level<1||raw.player.level>100)throw Error('Nieprawidłowa postać');
-  if(SAVE_KEY===REAL_SAVE_KEY&&raw.playMode==='sandbox')return toast('To zapis testowy. Otwórz kopię testową w Menu, aby go importować.');validateSessionSave(raw);const next=normalizeState(raw);if(combat)combat.turnToken++;clearDungeonTimer();if(gpsWatch!==null)navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;
+  if(SAVE_KEY===REAL_SAVE_KEY&&raw.playMode==='sandbox')return toast('To zapis testowy. Otwórz kopię testową w Menu, aby go importować.');validateSessionSave(raw);const next=normalizeState(raw);if(combat)combat.turnToken++;clearDungeonTimer();stopGps({keepPreference:true});
   combat=null;dungeonRun=null;battleResult=null;closeModal();state=next;restoreSession();save();render();resumeSession();toast('Zapis zaimportowany.');
  }catch{toast('Nieprawidłowy plik zapisu — bieżący postęp zachowano.')}};r.readAsText(f);
 }
@@ -4312,14 +4660,12 @@ function closeModal(){document.querySelector('.modal-back')?.remove();document.b
 document.addEventListener('keydown',e=>{const m=document.querySelector('.modal-back');if(e.key==='Escape'&&m&&m.dataset.locked!=='1'&&combat===null&&dungeonRun===null)closeModal()});
 
 // Mobile 1.10: oszczędzanie baterii w tle.
-window.addEventListener('pagehide',()=>save());
-document.addEventListener('visibilitychange',()=>{
- if(document.hidden)save();
- if(document.hidden&&gpsWatch!==null){navigator.geolocation?.clearWatch(gpsWatch);gpsWatch=null;gpsPausedByBackground=true}
- else if(!document.hidden){passiveRegenTick();if(gpsPausedByBackground){gpsPausedByBackground=false;setTimeout(()=>{if(gpsWatch===null)toggleGps()},650)}}
-});
+window.addEventListener('pagehide',()=>{if(gpsRequested||gpsWatch!==null)stopGps({pause:true});save()});
+window.addEventListener('pageshow',handleGpsVisibility);
+document.addEventListener('visibilitychange',handleGpsVisibility);
 
 // Save one coherent snapshot after each synchronous action.
+claimBounty=atomicAction(claimBounty);cancelBounty=atomicAction(cancelBounty);buyAlchemyRecipe=atomicAction(buyAlchemyRecipe);
 newGame=atomicAction(newGame);buyItem=atomicAction(buyItem);craftRecipe=atomicAction(craftRecipe);unsocketRune=atomicAction(unsocketRune);
 playerAction=atomicAction(playerAction);enemyTurn=atomicAction(enemyTurn);combatPotion=atomicAction(combatPotion);useItem=atomicAction(useItem);
 applyStoryChoice=atomicAction(applyStoryChoice);chooseWorldEvent=atomicAction(chooseWorldEvent);
@@ -4327,7 +4673,10 @@ winCombat=atomicAction(winCombat);loseCombat=atomicAction(loseCombat);finishBatt
 salvageIndex=atomicAction(salvageIndex);sellIndex=atomicAction(sellIndex);equipIndexToSlot=atomicAction(equipIndexToSlot);
 startDungeon=atomicAction(startDungeon);moveDungeon=atomicAction(moveDungeon);completeDungeon=atomicAction(completeDungeon);resolveDungeonRoom=atomicAction(resolveDungeonRoom);
 state=load();restoreSession();if(applyPassiveRegen(Date.now()))save();startPassiveRegen();if(Number.isFinite(state?.ui?.mapHeading))playerMotion.heading=state.ui.mapHeading;
-const resumeGpsAfterLaunch=!!state?.player?.position?.gps;
+const resumeGpsAfterLaunch=state?.settings?.gpsEnabled??!!state?.player?.position?.gps;
 if(state?.world?.entities){for(const e of state.world.entities)if(e.type==='monster'&&!e.alive&&e.respawn<=Date.now())e.alive=true}
 render();resumeSession();
-if(resumeGpsAfterLaunch&&navigator.geolocation)setTimeout(()=>{if(state&&gpsWatch===null)toggleGps()},650);
+if(resumeGpsAfterLaunch&&navigator.geolocation){
+ const launchState=state,launchSession=gpsSession;
+ setTimeout(()=>{if(state===launchState&&gpsSession===launchSession&&!gpsRequested){if(document.hidden){gpsPausedByBackground=true;state.settings.gpsEnabled=true}else startGps({silent:true})}},650);
+}

@@ -1,3 +1,35 @@
+## 3.9.9.8.5 — Przenoszenie fabuły, zakupy i odnawiane zlecenia
+
+Pełna paczka gry z grafikami, oparta na wersji 3.9.9.8.4. Zachowuje dotychczasowy zapis postaci.
+
+- **Fabuła:** przy fizycznym celu w Zadaniach i panelu mapy jest przycisk „Kontynuuj tutaj”. Świeży GPS przenosi nieukończony cel w okolice gracza i zachowuje postęp. Kolejne etapy nowych zadań powstają w aktualnej okolicy; starsze aktywne zadanie można przenieść tym przyciskiem. Cele nie przesuwają się przy każdym kroku. Już odblokowane lochy zachowują położenie i dostęp z Wypraw.
+- **Miasto:** przed postawieniem gra wyjaśnia zasięg usług 180 m, zmianę lokalizacji raz na 30 dni i niezależność fabuły od miasta. Rozpoczęcie gry w pracy nie wymaga rozgrywania tam całego wątku.
+- **Zakupy:** sklep, kowal, alchemik i aukcje korzystają z potwierdzenia z ilością, przyciskami − / + / Maks. i łączną ceną. Limit uwzględnia złoto i wolne miejsce. Sprzęt i pojedyncze aukcje nadal mają limit jednej sztuki; mikstury, materiały i receptury można kupować partiami. Receptury pokazują sumę zakupionych użyć. Sprzęt zachowuje porównanie z wyposażeniem.
+- **Przewijanie:** po kupnie lub sprzedaży odświeża się zawartość sklepu z zachowaniem jego okna i przewinięcia. Na telefonie potwierdzenie zakupu nie otwiera automatycznie klawiatury.
+- **Tablica w karczmie:** niedokończone zlecenie można anulować na tablicy, w dzienniku lub panelu mapy. Po anulowaniu jego cele znikają. Po odebraniu nagrody lub anulowaniu pojawia się nowa oferta, bez czekania do następnego dnia. Przyjęte zlecenia nie wygasają o północy. Nagrodę można odebrać tylko raz.
+- **Mapa:** bohatera zastępuje wyraźna kropka ze strzałką. Przycisk 🧭 włącza kompas; niektóre telefony poproszą o zgodę. Przy poprawnym odczycie strzałka pokazuje kierunek telefonu. Bez kompasu wskazuje ostatni kierunek przemieszczania, z etykietą „Kierunek ruchu”; przed pierwszym odczytem lub ruchem strzałka jest ukryta. Odmowa zgody na kompas nie wyłącza GPS.
+- **Bohater:** pasek doświadczenia pokazuje obecne XP, próg awansu i dokładną liczbę XP brakującą do następnego poziomu. Na poziomie 100 pokazuje osiągnięty limit.
+
+Aktualizacja: rozpakuj całe archiwum i zastąp pliki pod dotychczasowym adresem HTTPS. Otwórz grę ponownie; ekran powinien pokazać Build 3.9.9.8.5. Nie czyść danych strony — tam znajduje się lokalny zapis. Zmieniono wersję pamięci podręcznej i adresy plików aplikacji.
+
+Weryfikacja: `node --check app.js`, `node --check data.js`, `node --check sw.js` oraz `node tests/regression.mjs` — **269 kontroli**. Testy obejmują model DOM, zakupy i sprzedaż w trzech sklepach, bilans transakcji, zlecenia, przenoszenie celów oraz symulowane odczyty GPS i kompasu. Nie przeprowadzono pełnego testu w przeglądarce ani gestów i czujników na fizycznym telefonie.
+
+## 3.9.9.8.4 — GPS w przeglądarce
+
+Wersja zawiera poprzednią poprawkę przewijania i nową obsługę lokalizacji.
+
+- Mapa pokazuje przybliżoną lokalizację osobnym punktem i obszarem dokładności. Dopiero świeży odczyt do 50 m ustawia bohatera, kotwiczy świat i zalicza postęp. Przybliżony odczyt nie odkrywa miejsc, nie zalicza kroków ani nie odblokowuje walk lub usług miasta.
+- Pierwszy odczyt korzysta z szybkiego ustalenia lokalizacji, a równolegle działa dokładne śledzenie. Timeout lub chwilowy brak sygnału nie kończy śledzenia.
+- Przycisk „Do mnie” / ◎ uruchamia lokalizowanie, jeśli GPS był wyłączony. Status na mapie otwiera pomoc i ponowienie próby; pomoc jest także w Menu.
+- Gra osobno wyjaśnia brak zgody, brak HTTPS, brak obsługi lokalizacji oraz blokadę w osadzonym widoku. Nie zmienia ustawień uprawnień użytkownika.
+- Po powrocie z tła GPS wznawia się, jeśli był włączony. Wyłączenie GPS, zmiana postaci i ponowienie żądania unieważniają spóźnione odczyty z poprzedniej sesji.
+- Wersja i pamięć podręczna zostały zaktualizowane. Zapisy postaci pozostają zgodne.
+
+Uruchomienie: opublikuj całą zawartość paczki pod dotychczasowym adresem gry HTTPS, otwórz ten adres, kliknij 📍 lub ◎ na mapie i zezwól na lokalizację. Lokalizacja urządzenia i uprawnienie przeglądarki również muszą być włączone. W przeglądarce wewnątrz komunikatora użyj opcji „Otwórz w przeglądarce”, jeśli lokalizacja jest blokowana. Na komputerze odczyt może być mniej dokładny niż na telefonie.
+
+Weryfikacja: `node --check app.js` oraz `node tests/regression.mjs` (239 kontroli, w tym symulowane próbki, błędy GPS i wywołania mapy). Nie przeprowadzono testu na fizycznym telefonie ani pełnego testu w przeglądarce.
+Dokumentacja interfejsu: https://www.w3.org/TR/geolocation/ .
+
 ## 3.9.9.8.3 — Poprawka przewijania przesłanej wersji 3.9.9.8
 
 Poprawka została nałożona bezpośrednio na przesłany plik Time4Heroes_3998_FABULA_WALKA_GRAFIKI.zip.

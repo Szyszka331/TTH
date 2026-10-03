@@ -2103,3 +2103,37 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 @keyframes questImpact{from{opacity:0;transform:scale(.45)}38%{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.2)}}
 @media(max-width:720px){.story-npc .story-painted-portrait{width:82px;height:91px;grid-row:1/3}.story-mission-banner{align-items:flex-start;flex-direction:column;gap:4px;padding:8px 11px}.story-mission-banner strong{font-size:12px}.story-mission-banner span{font-size:11px}.story-disrupt-action{min-height:48px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.story-disrupt-action,.battle-screen.fx-hit .enemy-side .battle-sprite::after,.battle-screen.fx-weak .enemy-side .battle-sprite::after,.battle-screen.fx-crit .enemy-side .battle-sprite::after{animation:none}}
+
+/* 3.9.9.8.4: status lokalizacji i pozycja przybliżona. */
+.gps-location-dot{display:block;width:20px;height:20px;border:3px solid #fff3cf;border-radius:50%;background:#bb9650;box-shadow:0 0 0 5px #bb965040,0 2px 8px #0008}
+
+/* 3.9.9.8.5: readable position, progress and merchant controls. */
+.gps-player-dot{position:relative;width:44px;height:44px;pointer-events:none}
+.gps-player-core{position:absolute;left:13px;top:13px;width:18px;height:18px;border:3px solid #fff5d9;border-radius:50%;background:#4dcad1;box-shadow:0 0 0 5px #4dcad136,0 2px 8px #000b}
+.gps-facing-arrow{display:none;position:absolute;inset:0;transform:rotate(var(--player-heading,0deg))}
+.gps-facing-arrow::before{content:"";position:absolute;left:15px;top:-7px;width:14px;height:21px;background:#fff0be;clip-path:polygon(50% 0,100% 100%,50% 77%,0 100%);filter:drop-shadow(0 1px 2px #000)}
+.gps-player-dot.has-direction .gps-facing-arrow{display:block}
+.gps-player-dot[data-direction-source="movement"] .gps-facing-arrow::before{background:#a5c9cb}
+.map-ui-btn[data-map-compass].active{border-color:#71cbd0;box-shadow:0 0 0 1px #71cbd066}
+.osm-map-footer{flex-wrap:wrap;max-width:calc(100% - 16px)}
+.osm-map-footer .map-direction-status{font-size:10px;align-self:center}
+.hero-profile-card>div{min-width:0}
+.hero-experience{margin:12px 0 15px;max-width:560px}
+.hero-experience>div:first-child{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12px;color:#ebd2a0}
+.hero-xp-track{height:10px;margin:7px 0;border:1px solid #80603b;border-radius:99px;overflow:hidden;background:#080b0d}
+.hero-xp-track>i{display:block;height:100%;background:linear-gradient(90deg,#307e83,#77d7cb);border-radius:inherit}
+.hero-experience p{margin:0;font-size:12px;line-height:1.5}.hero-experience strong{color:#f1d699}
+.bounty-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.bounty-actions button{min-height:40px}
+.story-location-note{margin:12px 0;padding:12px;border:1px solid #675133;border-radius:10px;background:#15110bd9}.story-location-note p{margin:0 0 9px;font-size:12px;line-height:1.5}
+[data-merchant-buy-sheet],[data-merchant-sell-sheet],[data-shop-sell-sheet]{position:fixed;overflow:auto;overscroll-behavior:contain}
+.shop-sell-sheet-card{max-height:calc(100dvh - 40px);overflow:auto;overscroll-behavior:contain}
+.purchase-quantity{display:block;margin:18px 0 10px;color:#e8d3ae;font-size:13px}
+.purchase-quantity>span{display:grid;grid-template-columns:42px minmax(56px,1fr) 42px auto;gap:6px;margin-top:8px;align-items:center}
+.purchase-quantity button{min-height:44px;padding:6px}
+.purchase-quantity input{width:100%;min-width:0;height:44px;font-size:16px;text-align:center;color:#f6e2b9;background:#090b0d;border:1px solid #80603b;border-radius:8px}
+.purchase-total{min-height:22px;color:#f1d699;font-weight:700;font-size:16px}
+.merchant-buy-card .shop-sell-sheet-actions{grid-template-columns:1fr 1fr}.merchant-buy-card .shop-sell-sheet-actions .ghost:last-child{grid-column:auto}
+@media(max-width:520px){.hero-experience>div:first-child,.hero-experience p{font-size:11px}.shop-sell-sheet-card{max-height:calc(100dvh - 24px - env(safe-area-inset-bottom))}.purchase-quantity>span{grid-template-columns:40px minmax(50px,1fr) 40px auto}}
+.osm-map-footer .gps-status-button{pointer-events:auto;cursor:pointer;min-height:36px;max-width:min(420px,calc(100vw - 32px));white-space:normal;text-align:left;line-height:1.3}
+.gps-help-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+[data-gps-help-status]{color:#e3c887;font-weight:700}
