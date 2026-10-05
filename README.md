@@ -1,3 +1,68 @@
+## 3.9.9.8.9 — Ceny łupów i zlecenia mieszkańców
+
+Pełna paczka na bazie 3.9.9.8.8 ze wszystkimi dotychczasowymi grafikami i poprawkami.
+
+- 148 materiałów ma określone ceny skupu. Przykłady: wilcza skóra 6, skóra 8, futra 10, wyprawiona skóra 20 złota za sztukę. Plecak pokazuje cenę jednostkową i wartość stosu, a łupy po walce — cenę bazową.
+- 18 nowych zleceń i przebudowane zamówienie zielarskie: mieszkańcy proszą o rzeczy wypadające z potworów, materiały oraz produkty kowala. Dwie historie mają wybory i cztery różne kontynuacje. Są również zlecenia łączące dostawę z walką.
+- Gra podpowiada źródła materiałów. „Pokaż tropy” wskazuje potwory odpowiednie dla poziomu, korzystające ze zwykłych tabel łupów. Nie gwarantuje otrzymania materiału z każdej walki.
+- Oddanie wymaga przedmiotów w plecaku i osobnego potwierdzenia. Zużywa dokładne ilości, zapisuje wybrane zakończenie oraz przyznaje nagrodę raz. Materiały można wcześniej sprzedać lub zużyć, co zmniejszy gotowość dostawy.
+- Anulowanie nie odbiera rzeczy. Tablica uzupełnia oferty. Przyjęte zadania, zakończenia i wybory pozostają w zapisie postaci; wcześniejsze przyjęte zlecenia zachowano.
+
+**Szczegóły, wszystkie ceny i lista zadań:** `CENY_I_ZLECENIA_3998_9.md`.
+
+**Weryfikacja:** 352 kontrole regresji i 8 kontroli instalacji/cache. Przetestowano także rzeczywiste funkcje obsługi kliknięć w modelu DOM, zmianę zawartości plecaka przed potwierdzeniem oraz ochronę przed podwójną nagrodą. Nie wykonano testu w pełnej przeglądarce ani na fizycznym telefonie. Historyczne raporty balansu .8 pozostają dołączone; w .9 nie przeprowadzano nowej symulacji wszystkich klas.
+
+**Aktualizacja:** wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS. Otwórz grę online i użyj „Zapisz i aktualizuj”, gdy pojawi się komunikat. Sprawdź numer **3.9.9.8.9**. Nie kasuj danych witryny — przechowują postacie. W razie starej wersji zamknij wszystkie okna gry oraz zainstalowaną aplikację i otwórz ją ponownie online.
+
+---
+
+## 3.9.9.8.8 — Większe znaczenie ekwipunku
+
+Pełna paczka oparta na 3.9.9.8.7, ze wszystkimi dotychczasowymi grafikami i poprawkami.
+
+- Broń i jej moc mają większy wpływ na obrażenia. Główna cecha wzmacnia oręż; sam poziom nie zastępuje już dobrego sprzętu. Ulepszenia, runy, zaklęcia i afiksy pozostają zachowane.
+- Rycerz otrzymuje premię do obrażeń broni. Pancerze u kowala mają różne profile dla klas, a bonusy Zręczności do krytyka i uniku rosną coraz wolniej.
+- Porównanie przed zakupem pokazuje rzeczywistą zmianę parametrów bohatera, z premiami zestawów i ulepszeniami założonego sprzętu. Porównuje oba pierścienie i obie ręce Berserkera. Informuje o limitach krytyka i uniku.
+- Kowal ma pełniejszy asortyment, użyteczne części na bieżący poziom i istniejące bronie wczesnych poziomów. Zachowano strzały, potwierdzenia i pozycję przewinięcia.
+
+**Wyniki i ograniczenia:** `BALANS_EKWIPUNKU_3998_8.md`. 324 kontrole regresji, 8 kontroli instalacji/cache, 25 440 walk i 960 prób wypraw w nowej wersji oraz 19 680 osobnych walk badających znaczenie sprzętu. Wersję .7 przeliczono ponownie jako punkt odniesienia. Nie wykonano testów na fizycznym telefonie ani pełnego testu w przeglądarce. Mag nadal dobrze radzi sobie w długich wyprawach; ekonomia zasobów klas walczących wręcz wymaga dalszych testów graczy.
+
+**Aktualizacja:** wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS, otwórz grę online i wybierz „Zapisz i aktualizuj”, jeśli pojawi się komunikat. Sprawdź numer **3.9.9.8.8**. Gdy widzisz starą wersję, zamknij wszystkie okna gry i zainstalowaną aplikację, następnie otwórz ją ponownie online. Nie kasuj danych witryny — zawierają postacie.
+
+---
+
+## 3.9.9.8.7 — Strzały, poziomy w walce, gildia i awans
+
+Pełna paczka oparta na zweryfikowanej wersji 3.9.9.8.6. Zachowuje zapis postaci, grafiki, questy, GPS, wcześniejsze poprawki zakupów i balansu.
+
+- Łowca i Tropiciel mają widoczną ofertę prymitywnych strzał w sklepie oraz u kowala. Paczka zawiera 100 sztuk; okno zakupu wybiera liczbę paczek i pokazuje łączną liczbę strzał oraz cenę. Dostawa amunicji jest stała, niezależna od rotacji sprzętu. Zakup uwzględnia złoto i miejsce w plecaku, a sklep zachowuje pozycję przewinięcia.
+- W walce obok nazw widoczne są osobne oznaczenia poziomu bohatera i przeciwnika. Mobilny styl nie ukrywa już tej informacji; kolumny dopasowują się do szerokości ekranu.
+- Gildia jest dostępna od poziomu 1. Na telefonie obowiązuje dotychczasowy wymóg wejścia do strefy miasta. Kontrakty na początku gry wybierają wczesnych przeciwników.
+- Awans ma trwały komunikat z informacją o poziomie, punktach statystyk i umiejętności oraz przyciskami rozwoju bohatera. Jednoczesne awanse sumują nagrody. Komunikat jest zapisany z daną postacią. W wyniku walki widać awans, ale przejście do rozwoju jest dostępne po odebraniu lub świadomym pozostawieniu łupów; w lochu po zakończeniu wyprawy. „Później” zamyka informację bez utraty punktów.
+- Analiza znaczenia wyposażenia i propozycja dalszych zmian: `EKWIPUNEK_I_ROZWOJ_3998_7.md`. Ta wersja nie przebudowuje globalnie wzorów obrażeń ani wszystkich przedmiotów. Poprzedni pełny audyt klas znajduje się w `BALANS_3998_6.md`.
+
+**Aktualizacja:** wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS. Otwórz grę online i użyj „Zapisz i aktualizuj”, jeżeli pojawi się komunikat. Sprawdź numer **3.9.9.8.7** w grze. W razie wyświetlania starej wersji zamknij wszystkie okna gry, także zainstalowanej aplikacji, i otwórz ją ponownie online. Nie kasuj danych witryny — przechowują lokalne postacie.
+
+**Weryfikacja:** 305 kontroli regresji (`node tests/regression.mjs`), 8 kontroli instalacji i pamięci podręcznej (`node tests/service-worker.mjs`), składnia JavaScript, zgodność wersji plików. Testy obejmują faktyczne funkcje zakupu i zużywania strzał, zachowanie przewinięcia w modelu DOM, dostęp do gildii, awanse, izolację zapisów i ochronę nieodebranych łupów. Nie wykonano pełnego testu w przeglądarce ani na fizycznym telefonie. Historyczne wyniki 25 440 walk z wersji .6 są dołączone; nie przedstawiamy ich jako nowego audytu wersji .7.
+
+---
+
+## 3.9.9.8.6 — Portrety klas, czytelne statystyki i poprawki balansu
+
+Pełna paczka oparta na wersji 3.9.9.8.5; zachowuje poprzednie poprawki zakupów, zleceń, GPS i zapis postaci.
+
+- Naprawiono portret Tropiciela: odwołanie do brakującego `assets/ranger.png` zastępuje jego istniejąca grafika z arkusza postaci. Wszystkie pięć klas używa spójnych portretów z tego samego arkusza, z zachowaniem proporcji. Tropiciel ma własny wygląd z ziołami i fiolkami, różny od Łowcy.
+- Wybór klasy pokazuje pełne nazwy: Siła, Zręczność, Inteligencja, Witalność, Szczęście. Rozwijane „Co dają statystyki?” działa także dotykiem i jest dostępne na ekranie Bohatera. Uproszczono opisy klas.
+- Ukończenie instalacji wymaga pobrania podstawowych plików gry i portretów. Błąd pobrania portretów nie aktywuje niepełnej nowej wersji. Wersjonowane pliki kodu korzystają ze zgodnej pamięci podręcznej. Nowe aktualizacje mają komunikat „Zapisz i aktualizuj”; błąd zapisu blokuje przeładowanie.
+- Mag: poprawiono nadmierną wydajność leczenia. Koszt to 6% maksymalnej many (minimum 18), moc jest oparta na możliwościach rzucającego, a leczenie nie zwiększa przełamania bossa. Obrażenia zaklęć zachowano.
+- Rycerz: poprawiono jednostki procentowych premii bloku z wyposażenia.
+- Naprawiono osłabienie i zamrożenie przy atakach dystansowych wrogów oraz działanie Obrony przeciw obu uderzeniom Szału bossa.
+- Pełny audyt pięciu klas, przyczyny nierównowagi i propozycje dalszych zmian są w `BALANS_3998_6.md`. Mag nadal jest mocny; Łowca i Tropiciel również. Rycerz i Berserker tracą na tempie oraz kosztach wielu kolejnych walk. To nie jest deklaracja zamkniętego balansu.
+
+Aktualizacja: wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS. Odśwież grę i użyj „Zapisz i aktualizuj”, jeżeli pojawi się komunikat. Jeżeli instalacja nadal pokazuje starszą wersję, zamknij wszystkie jej okna i zakładki, a potem otwórz ją ponownie online. Sprawdź numer 3.9.9.8.6. Nie kasuj danych strony, bo przechowują lokalne postacie.
+
+Weryfikacja: 284 kontrole regresji, 8 kontroli pamięci podręcznej/instalacji, kontrola składni oraz końcowy audyt 25 440 pojedynczych walk i 960 prób wypraw. Pełne wyniki: `tests/class-balance-39986.json`; odtworzenie: `node tests/class-balance.mjs wynik.json`. Wykorzystano model DOM i zdarzeń instalacji; nie przeprowadzono pełnego testu przeglądarki ani testu na fizycznym iPhonie. Dokumentacja wykorzystanych interfejsów: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register oraz https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/install_event .
+
 ## 3.9.9.8.5 — Przenoszenie fabuły, zakupy i odnawiane zlecenia
 
 Pełna paczka gry z grafikami, oparta na wersji 3.9.9.8.4. Zachowuje dotychczasowy zapis postaci.

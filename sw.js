@@ -1,6 +1,6 @@
-const CACHE='time4heroes-3998-polish5';
+const CACHE='time4heroes-3998-quests9';
 const CORE=[
-  './','./index.html','./styles.css?v=3998-polish5','./app.js?v=3998-polish5','./data.js?v=3998-polish5','./manifest.webmanifest',
+  './','./index.html','./styles.css?v=3998-quests9','./app.js?v=3998-quests9','./data.js?v=3998-quests9','./manifest.webmanifest',
   './assets/icon-192.png','./assets/icon-512.png','./assets/characters/heroes-directions-391.png',
   './assets/characters/battle-backs/knight-back.png','./assets/characters/battle-backs/mage-back.png','./assets/characters/battle-backs/hunter-back.png','./assets/characters/battle-backs/berserker-back.png','./assets/characters/battle-backs/ranger-back.png',
   './assets/tavern-scene-desktop.png','./assets/tavern-scene-mobile.png','./assets/backgrounds/city-map-3995.webp',
@@ -51,57 +51,40 @@ const CORE=[
   './assets/icons/classgear/ranger-shield.png'
 ];
 
-self.addEventListener('install',event=>{
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(cache=>Promise.allSettled(CORE.map(async url=>{
-        try{
-          const res=await fetch(url,{cache:'no-store'});
-          if(!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
-          await cache.put(url,res.clone());
-        }catch(err){
-          console.warn('[T4H SW] Pominięto zasób podczas precache:',url,err);
-        }
-      })))
-      .then(()=>self.skipWaiting())
-  );
-});
-
+// Installation is complete only when the app and all five class portraits are available.
+const REQUIRED=CORE.slice(0,9);
+async function fetchGameResource(request){
+ const res=await fetch(request,{cache:'no-store'});
+ if(!res.ok)throw new Error('HTTP '+res.status);
+ const url=new URL(typeof request==='string'?request:request.url,self.location.href);
+ if(/\.(png|webp|jpe?g|svg)$/.test(url.pathname)&&/text\/html/i.test(res.headers.get('content-type')||''))throw new Error('Image returned HTML');
+ return res;
+}
+async function installGame(){
+ const cache=await caches.open(CACHE);
+ // A failed shell download must keep the previous working worker active.
+ await Promise.all(REQUIRED.map(async url=>{const res=await fetchGameResource(url);await cache.put(url,res)}));
+ await Promise.allSettled(CORE.filter(url=>!REQUIRED.includes(url)).map(async url=>{const res=await fetchGameResource(url);await cache.put(url,res)}));
+}
+self.addEventListener('install',event=>event.waitUntil(installGame()));
+self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_GAME_UPDATE')event.waitUntil(self.skipWaiting())});
 self.addEventListener('activate',event=>{
-  event.waitUntil(
-    caches.keys()
-      .then(keys=>Promise.all(keys.filter(k=>k.startsWith('time4heroes-')&&k!==CACHE).map(k=>caches.delete(k))))
-      .then(()=>self.clients.claim())
-  );
+ event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('time4heroes-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
-
+async function cacheFirst(request){
+ const cache=await caches.open(CACHE),hit=await cache.match(request);if(hit)return hit;
+ const response=await fetchGameResource(request);await cache.put(request,response.clone());return response;
+}
+async function networkFirst(request){
+ const cache=await caches.open(CACHE);
+ try{const response=await fetchGameResource(request);await cache.put(request,response.clone());return response}
+ catch{const hit=await cache.match(request);return hit||(request.mode==='navigate'?await cache.match('./index.html'):null)||Response.error()}
+}
 self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET') return;
-  const url=new URL(event.request.url);
-  if(url.origin!==self.location.origin) return;
-
-  const isCode = event.request.mode==='navigate' || /\.(?:html|js|css)$/.test(url.pathname);
-
-  if(isCode){
-    // Network first for code so GitHub Pages updates cannot mix old JS/CSS with a new index.html.
-    event.respondWith(
-      fetch(event.request,{cache:'no-store'})
-        .then(res=>{
-          if(!res.ok)throw new Error('HTTP '+res.status);const copy=res.clone();
-          caches.open(CACHE).then(c=>c.put(event.request,copy));
-          return res;
-        })
-        .catch(()=>caches.match(event.request).then(hit=>hit||(event.request.mode==='navigate'?caches.match('./index.html'):Response.error())))
-    );
-    return;
-  }
-
-  // Cache-first is fine for heavy immutable-ish art/audio assets.
-  event.respondWith(
-    caches.match(event.request).then(hit=>hit||fetch(event.request).then(res=>{
-      if(!res.ok)throw new Error('HTTP '+res.status);const copy=res.clone();
-      caches.open(CACHE).then(c=>c.put(event.request,copy));
-      return res;
-    }))
-  );
+ if(event.request.method!=='GET')return;
+ const url=new URL(event.request.url);if(url.origin!==self.location.origin)return;
+ const isCode=event.request.mode==='navigate'||/\.(html|js|css)$/.test(url.pathname);
+ // Keep versioned application modules together; navigation still checks for a new release.
+ const versionedCore=CORE.some(path=>new URL(path,self.location.href).href===url.href)&&url.searchParams.has('v');
+ event.respondWith(isCode&&!versionedCore?networkFirst(event.request):cacheFirst(event.request).catch(()=>Response.error()));
 });

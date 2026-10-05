@@ -1,8 +1,8 @@
 export const CLASSES = {
-  knight:{name:'Ciężki Rycerz',icon:'🛡️',accent:'stal',desc:'Tank. Blok, pancerz, tarcza i kontrola przeciwnika.',base:{str:7,agi:3,int:2,vit:9,lck:3},hp:150,mana:45},
+  knight:{name:'Ciężki Rycerz',icon:'🛡️',accent:'stal',desc:'Wytrzymały obrońca. Korzysta z tarczy, pancerza i ogłuszeń.',base:{str:7,agi:3,int:2,vit:9,lck:3},hp:150,mana:45},
   mage:{name:'Mag',icon:'🔮',accent:'arkanum',desc:'Silne zaklęcia, mana i efekty żywiołów.',base:{str:2,agi:4,int:10,vit:5,lck:3},hp:95,mana:125},
-  hunter:{name:'Łowca',icon:'🏹',accent:'las',desc:'Krytyki, podwójny strzał i współpraca z chowańcem.',base:{str:4,agi:10,int:3,vit:5,lck:3},hp:108,mana:75},
-  berserker:{name:'Berserker',icon:'🪓',accent:'krew',desc:'Ogromne obrażenia, furia i premie przy niskim HP.',base:{str:10,agi:5,int:1,vit:7,lck:3},hp:138,mana:40},
+  hunter:{name:'Łowca',icon:'🏹',accent:'las',desc:'Celny strzelec. Podwójne strzały, trafienia krytyczne i wsparcie chowańca.',base:{str:4,agi:10,int:3,vit:5,lck:3},hp:108,mana:75},
+  berserker:{name:'Berserker',icon:'🪓',accent:'krew',desc:'Walczy dwiema broniami. Im mniej życia, tym silniejsza furia.',base:{str:10,agi:5,int:1,vit:7,lck:3},hp:138,mana:40},
   ranger:{name:'Tropiciel',icon:'🌿',accent:'natura',desc:'Trucizny, pułapki, mobilność i chowaniec.',base:{str:4,agi:8,int:6,vit:5,lck:3},hp:112,mana:90}
 };
 
@@ -502,7 +502,7 @@ const CLASS_GEAR_META={
   setTwo:{crit:3},setThree:{power:4,armor:3}
  }
 };
-function classGearScaleStats(base,mult){const out={};for(const [k,v] of Object.entries(base||{}))out[k]=Math.max(1,Math.round(v*mult));return out}
+function classGearScaleStats(base,mult){const out={};for(const [k,v] of Object.entries(base||{}))out[k]=Math.max(1,Math.round(v*(k==='crit'?.8*Math.sqrt(mult):mult)));return out}
 function classGearSetId(cls,level){return `class_${cls}_${level}`}
 function classGearArtFile(cls,slot){const artSlot=slot==='offhand'?'offhand':slot;return `assets/icons/classgear/${cls}-${artSlot}.png`}
 function buildClassGearItems(){
@@ -542,7 +542,7 @@ export const SKILLS = {
   {id:'spark',branch:'Arkanum',name:'Łańcuch Iskier',icon:'⚡',req:4,cost:1,mana:15,kind:'multi',hits:2,mult:.9,cooldown:1,desc:'Dwa magiczne trafienia po 90%.'},
   {id:'arcaneSurge',branch:'Arkanum',name:'Przypływ Arkanum',icon:'🔷',req:9,cost:2,mana:18,kind:'buff',buff:'crit',value:22,turns:3,cooldown:4,requires:'spark',desc:'Przez 3 tury mocno zwiększa szansę na krytyczne czary.'},
   {id:'arcaneRift',branch:'Arkanum',name:'Szczelina Arkanum',icon:'🌀',req:16,cost:3,mana:40,kind:'damage',mult:2.65,cooldown:5,requires:'arcaneSurge',status:'stun',statusChance:.5,desc:'265% obrażeń i szansa na ogłuszenie przeciwnika.'},
-  {id:'heal',branch:'Odnowa',name:'Uzdrowienie',icon:'✨',req:3,cost:1,mana:18,kind:'heal',healPct:.16,healInt:.8,cooldown:2,desc:'Leczy Ciebie albo wybranego sojusznika. Siła leczenia rośnie z Inteligencją.'}
+  {id:'heal',branch:'Odnowa',name:'Uzdrowienie',icon:'✨',req:3,cost:1,mana:18,manaPct:.06,kind:'heal',healPct:.12,healInt:.55,cooldown:2,desc:'Leczy Ciebie lub sojusznika. Moc zależy od Twojego maksymalnego życia i Inteligencji. Koszt: 6% maksymalnej many, co najmniej 18.'}
  ],
  hunter:[
   {id:'double',branch:'Strzelectwo',name:'Podwójny strzał',icon:'🏹',req:1,cost:1,mana:10,kind:'multi',hits:2,mult:0.82,cooldown:0,desc:'Dwa trafienia po 82% obrażeń.'},

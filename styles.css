@@ -2134,6 +2134,71 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 .purchase-total{min-height:22px;color:#f1d699;font-weight:700;font-size:16px}
 .merchant-buy-card .shop-sell-sheet-actions{grid-template-columns:1fr 1fr}.merchant-buy-card .shop-sell-sheet-actions .ghost:last-child{grid-column:auto}
 @media(max-width:520px){.hero-experience>div:first-child,.hero-experience p{font-size:11px}.shop-sell-sheet-card{max-height:calc(100dvh - 24px - env(safe-area-inset-bottom))}.purchase-quantity>span{grid-template-columns:40px minmax(50px,1fr) 40px auto}}
+
+/* One complete character atlas gives every class a consistent portrait. */
+.class-portrait{display:block;flex-shrink:0;overflow:hidden;image-rendering:auto!important}
+.class-btn .class-icon{height:106px;min-width:0}
+.class-btn .class-portrait{width:98px;height:98px;max-width:100%}
+.class-btn{min-width:0}.class-btn .tiny{line-height:1.45;font-size:12px;color:#c2b39c}
+.hero-preview{grid-template-columns:90px minmax(0,1fr);align-items:start;gap:14px}
+.hero-preview .preview-avatar{width:90px;height:100px;min-width:0}
+.hero-preview .class-portrait{width:88px;height:98px;max-width:100%}
+.class-preview-copy{min-width:0}.class-preview-copy>p{margin:5px 0 12px;line-height:1.45}
+.class-base-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:10px 0}
+.class-base-stats>div{display:flex;justify-content:space-between;align-items:center;gap:5px;padding:7px 8px;border:1px solid #5b452c;border-radius:6px;background:#100d09}
+.class-base-stats dt{font-size:12px;overflow-wrap:anywhere;color:#d9c9af}.class-base-stats dd{margin:0;color:#f2d397;font-weight:700;font-size:16px}
+.class-start-resources{font-size:12px;color:#cfbf9f;line-height:1.5}
+.stat-help{margin-top:12px;padding-top:10px;border-top:1px solid #51402b}
+.stat-help summary{cursor:pointer;min-height:36px;display:list-item;color:#e1c58a;line-height:1.5;font-size:13px}
+.stat-help dl{margin:4px 0;display:grid;gap:10px}.stat-help dt{font-weight:700;font-size:13px;color:#e9d6af}.stat-help dd{margin:3px 0 0;font-size:12px;line-height:1.5;color:#beaf96}
+.app-update-notice{position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:10000;display:flex;align-items:center;gap:12px;width:min(520px,calc(100% - 24px));padding:12px 15px;background:#19150ef5;border:1px solid #c69b50;border-radius:10px;box-shadow:0 8px 25px #000a;color:#f1dfbd}
+.app-update-notice span{flex:1;font-size:13px;line-height:1.4}.app-update-notice button{min-height:44px;font-size:12px}
+@media(max-width:520px){.hero-preview{grid-template-columns:1fr}.hero-preview .preview-avatar{width:96px;height:108px;justify-self:center}.hero-preview .class-portrait{width:94px;height:106px}.class-preview-copy>b{display:block;text-align:center;font-size:19px}.class-base-stats{gap:6px}.class-btn .class-icon{height:92px}.class-btn .class-portrait{width:88px;height:88px}.class-btn{padding:10px!important}}
 .osm-map-footer .gps-status-button{pointer-events:auto;cursor:pointer;min-height:36px;max-width:min(420px,calc(100vw - 32px));white-space:normal;text-align:left;line-height:1.3}
 .gps-help-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 [data-gps-help-status]{color:#e3c887;font-weight:700}
+
+/* 3.9.9.8.7 — widoczna amunicja, trwały awans i poziomy obu stron walki. */
+.merchant-ammo-offer{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:12px;margin:12px;padding:14px;border:1px solid #a38044;border-radius:12px;background:linear-gradient(120deg,#302514,#17120c);color:#f2dfb5}
+.merchant-ammo-offer .market-product-icon{width:56px;height:56px}
+.merchant-ammo-copy{min-width:0}.merchant-ammo-copy h3{margin:0 0 5px;font-size:17px}.merchant-ammo-copy p{margin:0 0 5px;font-size:13px}.merchant-ammo-copy small{font-size:12px;color:#d1c19e}
+.merchant-ammo-buy{display:grid;gap:7px;text-align:center}.merchant-ammo-buy b{font-size:14px}.merchant-ammo-buy small{max-width:180px;font-size:12px}.merchant-ammo-buy button{min-height:44px}
+[data-level-up-host]{flex:0 0 auto;min-width:0}
+.level-up-notice{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:8px 12px;padding:12px 14px;border:1px solid #d8b566;border-radius:12px;background:linear-gradient(110deg,#43331a,#19150e);color:#f9e4b2;box-shadow:0 3px 12px #0005}
+.level-up-copy{min-width:0}.level-up-copy>strong{font-size:20px;color:#ffe7a8}.level-up-copy p{margin:5px 0;font-size:14px}.level-up-copy small{font-size:12px;line-height:1.4;color:#e1d1af}
+.level-up-actions{display:flex;flex-wrap:wrap;gap:7px;flex-shrink:0}.level-up-actions button{min-height:44px;font-size:13px}
+.level-up-compact{display:block;text-align:center}.level-up-compact .level-up-copy>strong{font-size:19px}
+.battle-screen .combat-name{display:block!important}
+.battle-screen .combat-name .combat-details{display:flex!important;align-items:center;justify-content:center;gap:6px;min-width:0;margin-top:3px;line-height:1.4}
+.battle-screen .combat-name .combat-level{display:inline-block!important;flex:0 0 auto;white-space:nowrap;font-size:12px!important;font-weight:700;color:#ffe3a0;background:#171107;border:1px solid #a48448;border-radius:5px;padding:1px 5px}
+.battle-screen .combat-name .combat-details em{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-style:normal;color:#ecdfc7}
+@media(max-width:720px){
+ .merchant-ammo-offer{grid-template-columns:48px minmax(0,1fr);gap:10px;margin:8px;padding:11px}
+ .merchant-ammo-offer .market-product-icon{width:46px;height:46px}.merchant-ammo-copy h3{font-size:15px}.merchant-ammo-buy{grid-column:1/-1;grid-template-columns:1fr 1fr;align-items:center}.merchant-ammo-buy small{grid-column:1/-1;max-width:none}
+ .level-up-notice{flex-wrap:wrap;gap:7px;margin:6px 8px;padding:10px;max-height:34dvh;overflow:auto}
+ .level-up-copy>strong{font-size:18px}.level-up-copy p{font-size:12px}.level-up-copy small{font-size:11px}.level-up-actions{flex-shrink:1;gap:5px}.level-up-actions button{font-size:11px;padding:7px 9px}
+ .battle-screen .hero-side .combat-name,.battle-screen .hero-side .battle-bars,.battle-screen .enemy-side .combat-name,.battle-screen .enemy-side .battle-bars{width:calc(50% - 18px)!important;box-sizing:border-box!important}
+ .battle-screen .combat-name b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .battle-screen .hero-side .combat-name .combat-details{justify-content:flex-start!important}
+ .battle-screen .enemy-side .combat-name .combat-details{justify-content:flex-end!important}
+ .battle-screen .combat-name .combat-level{font-size:11px!important}
+ .battle-screen .combat-name .combat-details em{font-size:10px}
+}
+
+/* 3.9.9.8.8 — equipment comparison fits narrow purchase dialogs. */
+.equipment-compare{box-sizing:border-box;min-width:0}
+.equipment-compare-head,.equipment-compare-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(44px,.65fr);gap:5px}
+.equipment-compare-head span{white-space:normal;overflow-wrap:anywhere}
+.equipment-compare-row>*{min-width:0;overflow-wrap:anywhere}
+.comparison-detail,.gear-formula-hint{margin:9px 0 0;font-size:11px;line-height:1.5;color:#c4bda7}
+.equipment-cap-note{margin:8px 0 0;padding:7px;border-left:3px solid #dbba76;background:#dbba7612;color:#efd49c;font-size:11px;line-height:1.4}
+.merchant-buy-card .equipment-compare{flex:none}
+@media(max-width:400px){.equipment-compare{padding:8px;font-size:11px}.equipment-compare h4{font-size:13px}.equipment-compare-head{font-size:10px}.equipment-compare-row em{font-size:10px}}
+
+/* 3.9.9.8.9 — ceny materiałów i dostawy mieszkańców. */
+.item-sale-value{display:flex;flex-direction:column;gap:4px;margin:10px 0;padding:9px;border:1px solid #99783d;border-radius:8px;background:#b48c2512;color:#e8ca85}
+.item-sale-value small{color:#c7bda9}.item-quest-use{margin:8px 0;padding:7px 10px;border-left:3px solid #c9a85b;font-size:12px;line-height:1.45}
+.bounty-client{font-size:12px;color:#af8540}.bounty-story{line-height:1.5}.delivery-requirements{display:grid;gap:7px;margin:10px 0}
+.delivery-requirement{display:flex;align-items:center;gap:8px;padding:7px;border:1px solid #99856566;border-radius:7px;background:#a3937012}.delivery-requirement.ready{border-color:#6a985a88}.delivery-requirement>div{min-width:0;overflow-wrap:anywhere}.delivery-requirement b,.delivery-requirement small{display:block}.delivery-requirement small{font-size:12px;line-height:1.45;margin-top:3px}.delivery-item-icon{width:34px;height:34px;object-fit:contain;flex-shrink:0}
+.delivery-choice-hint,.delivery-consent{padding:8px 10px;border-left:3px solid #c9a85b;line-height:1.5}.delivery-dialog,.delivery-outcome{padding:12px;line-height:1.5}.delivery-options{display:grid;gap:10px}.delivery-options button{white-space:normal;text-align:left;min-height:48px}.delivery-options b,.delivery-options small{display:block}.delivery-options small{margin-top:5px}
+.delivery-history{margin:14px 0;padding:10px;border:1px solid #99856566;border-radius:8px}.delivery-history summary{cursor:pointer;min-height:30px}.delivery-history article{padding:10px 0;border-top:1px solid #99856544;line-height:1.5}.bounty-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.bounty-actions button{min-height:36px;white-space:normal}
