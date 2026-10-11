@@ -1,3 +1,42 @@
+## 3.9.9.8.11 — Bossowie i animacje walki
+
+Pełna paczka na bazie 3.9.9.8.10, ze wszystkimi dotychczasowymi grafikami i zgodnym zapisem postaci.
+
+- Dodano ruch przy podejściu i ataku, lot strzał/czarów, trafienia, obronę, leczenie oraz wejście i zakończenie starcia. Efekty korzystają z obecnych ilustracji; nie wykonano ponownego docięcia plików graficznych.
+- Bossowie zapowiadają techniki i leczenie. Są przerwania, obrona przed odrzuceniem, limit prób odnowy oraz poprawiona premia po przełamaniu. Dopasowano naturalne bossy do rzeczywistych poziomów.
+- Przed bossem jest ekran przygotowania i podgląd nagrody. Naturalne bossy gwarantują odłamki runy; złoto i XP uwzględniają rangę oraz poziom.
+- Zamrożenie słabiej kontroluje bossów. Naturalni Herosi i Legendy po 20 akcjach zyskują narastający Gniew, zapowiedziany przed walką i widoczny podczas niej. Dobre wyposażenie ma większe znaczenie w trudnych starciach.
+
+**Weryfikacja:** 396 kontroli regresji, 8 kontroli instalacji/cache oraz 8 560 symulowanych walk końcowej .11 i tyle samo porównawczych .10. Nie przeprowadzono testu w pełnej przeglądarce ani na fizycznym telefonie. Klasy nadal mają różne mocne strony; wyniki nie oznaczają idealnego balansu.
+
+**Szczegóły, wyniki klas i ograniczenia:** BOSSOWIE_I_ANIMACJE_3998_11.md.
+
+**Aktualizacja:** wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS. Otwórz grę online, wybierz „Zapisz i aktualizuj” i sprawdź numer **3.9.9.8.11**. Nie kasuj danych witryny — przechowują postacie.
+
+---
+
+Poniżej historia wcześniejszych wydań. Ich wyniki dotyczą wskazanych wersji.
+
+## 3.9.9.8.10 — Statystyki wyposażenia i koszty wypraw
+
+Pełna paczka na bazie 3.9.9.8.9, ze wszystkimi dotychczasowymi grafikami i funkcjami.
+
+- Witalność sprzętu daje +5 maksymalnego życia na punkt, Inteligencja +4 maksymalnej many. Porównanie przed zakupem pokazuje oba limity. Starsze zapisy otrzymują brakujące premie raz, bez utraty rozwoju i bez darmowego leczenia przy zamianie sprzętu.
+- 100 strzał kosztuje 100 złota w sklepie i u kowala. Mikstury u alchemika są tańsze; mała mikstura życia w zwykłym sklepie zachowuje cenę 14 złota.
+- Receptury mają dopracowane ceny, jawny koszt jednego użycia i większe partie wybranych mikstur. Pozostają ograniczone użycia i wymagania składników. Zachowane są dotychczas posiadane użycia.
+- Regeneracja życia wzrasta do 2% na minutę. Mana pozostaje przy 2%, stamina przy 1 punkcie na 3 minuty. Działa także podczas nieobecności.
+- Rycerz i Berserker dostają jednorazową osłonę przy pierwszym podejściu na BLISKO: najbliższy zwykły cios zadaje o 45% mniej obrażeń.
+
+**Wyniki i ograniczenia:** `STATYSTYKI_I_WYPRAWY_3998_10.md`. Koszty zapasów spadły w badanych wyprawach poziomów 5–25 o około 38–55%. Mag nadal jest oszczędny w długich wyprawach, a różnice w walkach z bossami wymagają osobnego strojenia. Pełny serwer MMO i końcówka poziomów 90–100 pozostają dalszym etapem.
+
+**Weryfikacja:** 377 kontroli regresji, 8 kontroli instalacji/cache, 5760 prób walk w wyprawach oraz 2040 dodatkowych pojedynczych walk z kompletami klasowymi w .10. Odtworzono też wyniki .9. Początkową ścieżkę sprawdzono dla każdej z pięciu klas. Są to testy rzeczywistych funkcji silnika i modelu DOM; nie przeprowadzono testu w pełnej przeglądarce ani na fizycznym telefonie.
+
+**Aktualizacja:** wgraj całą zawartość ZIP-a pod dotychczasowy adres HTTPS. Otwórz grę online i użyj „Zapisz i aktualizuj”. Sprawdź numer **3.9.9.8.10**. Nie kasuj danych witryny — przechowują postacie. Przy starej wersji zamknij wszystkie okna gry oraz zainstalowaną aplikację i otwórz ją ponownie online.
+
+---
+
+Poniżej historia wcześniejszych wydań. Ich wyniki i ceny dotyczą wskazanych wersji.
+
 ## 3.9.9.8.9 — Ceny łupów i zlecenia mieszkańców
 
 Pełna paczka na bazie 3.9.9.8.8 ze wszystkimi dotychczasowymi grafikami i poprawkami.

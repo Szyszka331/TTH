@@ -2202,3 +2202,76 @@ body.modal-open .map-biome-button{pointer-events:none!important}
 .delivery-requirement{display:flex;align-items:center;gap:8px;padding:7px;border:1px solid #99856566;border-radius:7px;background:#a3937012}.delivery-requirement.ready{border-color:#6a985a88}.delivery-requirement>div{min-width:0;overflow-wrap:anywhere}.delivery-requirement b,.delivery-requirement small{display:block}.delivery-requirement small{font-size:12px;line-height:1.45;margin-top:3px}.delivery-item-icon{width:34px;height:34px;object-fit:contain;flex-shrink:0}
 .delivery-choice-hint,.delivery-consent{padding:8px 10px;border-left:3px solid #c9a85b;line-height:1.5}.delivery-dialog,.delivery-outcome{padding:12px;line-height:1.5}.delivery-options{display:grid;gap:10px}.delivery-options button{white-space:normal;text-align:left;min-height:48px}.delivery-options b,.delivery-options small{display:block}.delivery-options small{margin-top:5px}
 .delivery-history{margin:14px 0;padding:10px;border:1px solid #99856566;border-radius:8px}.delivery-history summary{cursor:pointer;min-height:30px}.delivery-history article{padding:10px 0;border-top:1px solid #99856544;line-height:1.5}.bounty-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.bounty-actions button{min-height:36px;white-space:normal}
+
+/* 3.9.9.8.10: readable resource and recipe notes on narrow cards. */
+.equipment-vitals-note,.alchemy-batch-info{margin:10px 0;color:var(--muted);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.equipment-vitals-note b,.alchemy-batch-info b{color:var(--text)}
+
+/* 3.9.9.8.11 — motion on independent wrappers preserves atlas cells and proportions. */
+.boss-preparation{font-size:14px;line-height:1.5}
+.boss-preparation h3{margin:8px 0 12px;color:var(--gold)}
+.boss-readiness{display:grid;gap:8px;padding:0;list-style:none}
+.boss-readiness li{padding:8px 10px;border-left:3px solid #bc9050;background:#151511;border-radius:4px}
+.boss-readiness li.ready{border-left-color:#63a778}.boss-readiness li.missing{color:#e6c58e}
+.boss-tactics,.boss-reward-preview{display:grid;gap:6px;margin:14px 0;padding:12px;border:1px solid #584731;border-radius:8px;background:#17130f}
+.boss-reward-preview small,.boss-preparation p{color:#bfb3a2}
+.boss-preparation-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.boss-preparation-actions button{min-height:44px;flex:1 1 145px}
+.battle-screen .battle-arena{--battle-step:clamp(14px,4vw,36px);--battle-lunge:clamp(16px,5vw,42px)}
+.battle-screen .battle-arena[data-distance="0"] .hero-sprite{transform:translateX(var(--battle-step))!important}
+.battle-screen .battle-arena[data-distance="0"] .enemy-sprite{transform:translateX(calc(var(--battle-step) * -1))!important}
+.battle-screen .battle-arena[data-distance="2"] .hero-sprite{transform:translateX(calc(var(--battle-step) * -.65))!important}
+.battle-screen .battle-arena[data-distance="2"] .enemy-sprite{transform:translateX(calc(var(--battle-step) * .65))!important}
+.battle-screen .battle-sprite{overflow:visible!important}
+.battle-screen .battle-sprite>.battle-motion-actor{position:relative;display:flex;align-items:flex-end;justify-content:center;max-width:100%;height:100%;line-height:0;filter:none!important;transform-origin:50% 90%;animation:b11Breathe 3s ease-in-out infinite!important}
+.battle-screen .battle-motion-actor>.sprite-battle,.battle-screen .battle-motion-actor>.pokemon-back{animation:none!important}
+.battle-screen .battle-motion-actor img{object-fit:contain!important;object-position:center bottom!important;max-width:100%!important}
+.battle-screen .battle-motion-actor::after{content:"";position:absolute;inset:25% 8% 5%;border-radius:50%;pointer-events:none;opacity:0}
+.battle-screen .hero-motion{--attack-direction:1}.battle-screen .enemy-motion{--attack-direction:-1}
+.battle-screen[data-motion="melee"][data-motion-actor="hero"] .hero-motion,
+.battle-screen[data-motion="melee"][data-motion-actor="enemy"] .enemy-motion{animation:b11Lunge var(--motion-duration) var(--motion-delay) cubic-bezier(.2,.7,.2,1) both!important}
+.battle-screen[data-motion="shot"][data-motion-actor="hero"] .hero-motion,
+.battle-screen[data-motion="cast"][data-motion-actor="hero"] .hero-motion,
+.battle-screen[data-motion="cast"][data-motion-actor="enemy"] .enemy-motion{animation:b11Cast var(--motion-duration) var(--motion-delay) ease-out both!important}
+.battle-screen[data-motion="move"][data-motion-actor="hero"] .hero-motion,
+.battle-screen[data-motion="move"][data-motion-actor="enemy"] .enemy-motion{animation:b11Step var(--motion-duration) var(--motion-delay) ease-in-out both!important}
+.battle-screen[data-motion-hit="enemy"] .enemy-side:not(.enemy-defeated) .enemy-motion,
+.battle-screen[data-motion-hit="hero"] .hero-motion{animation:b11Recoil var(--motion-duration) var(--motion-delay) ease-out both!important}
+.battle-screen[data-motion-hit="enemy"] .enemy-side:not(.enemy-defeated) .enemy-motion::after,
+.battle-screen[data-motion-hit="hero"] .hero-motion::after{background:radial-gradient(ellipse,rgba(255,229,178,.75),rgba(240,120,48,.15) 30%,transparent 62%);animation:b11Impact var(--motion-duration) var(--motion-delay) ease-out both}
+.battle-screen[data-motion="guard"] .hero-motion::after{border:3px solid #8bcde0;box-shadow:inset 0 0 20px #4ac8f255,0 0 18px #7de0ff66;animation:b11Aura var(--motion-duration) var(--motion-delay) ease-out both}
+.battle-screen[data-motion="heal"][data-motion-actor="hero"] .hero-motion::after,
+.battle-screen[data-motion="heal"][data-motion-actor="enemy"] .enemy-motion::after{background:radial-gradient(ellipse,#a0fdb270,transparent 65%);border-bottom:4px solid #b7fac3;animation:b11Aura var(--motion-duration) var(--motion-delay) ease-out both}
+.battle-screen[data-motion="charge"][data-motion-actor="hero"] .hero-motion::after,
+.battle-screen[data-motion="charge"][data-motion-actor="enemy"] .enemy-motion::after{border:2px solid #e5b35c;box-shadow:0 0 18px #ff993333;animation:b11Aura var(--motion-duration) var(--motion-delay) ease-out both}
+.battle-screen[data-motion="enter"] .battle-motion-actor{animation:b11Enter var(--motion-duration) var(--motion-delay) ease-out both!important}
+.battle-screen .combat-projectile{position:absolute;z-index:6;pointer-events:none;left:25%;top:74%;width:24px;height:24px;opacity:0;--bolt-color:#a8a0f8;--projectile-distance:48vw;--projectile-rise:-90px;container-type:normal}
+.battle-screen .battle-arena{container-type:size}
+.battle-screen[data-spell-tone="fire"] .combat-projectile{--bolt-color:#ffc177}
+.battle-screen[data-spell-tone="ice"] .combat-projectile{--bolt-color:#a5efff}
+.battle-screen[data-spell-tone="poison"] .combat-projectile{--bolt-color:#b0ea77}
+.battle-screen[data-spell-tone="light"] .combat-projectile{--bolt-color:#fff6bf}
+.battle-screen[data-projectile="orb"] .combat-projectile{border-radius:50%;background:radial-gradient(circle,#fff 4%,var(--bolt-color) 35%,transparent 72%);filter:drop-shadow(0 0 8px var(--bolt-color));animation:b11Projectile var(--motion-duration) var(--motion-delay) ease-in both}
+.battle-screen[data-projectile="arrow"] .combat-projectile{width:35px;height:3px;background:#dfc697;box-shadow:-13px 0 8px #ffe9af70;animation:b11Projectile var(--motion-duration) var(--motion-delay) ease-in both}
+.battle-screen[data-projectile="arrow"] .combat-projectile::after{content:"";position:absolute;right:-7px;top:-4px;border-left:9px solid #d4dbe0;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.battle-screen[data-motion-actor="enemy"] .combat-projectile{left:73%;top:49%;--projectile-distance:-48vw;--projectile-rise:90px}
+.battle-screen .enemy-side.enemy-defeated .enemy-sprite>.battle-motion-actor{animation:b11Defeat .42s ease-in forwards!important}
+@keyframes b11Breathe{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-2px) scaleY(1.01)}}
+@keyframes b11Lunge{0%,100%{transform:translateX(0)}15%{transform:translateX(calc(var(--attack-direction) * -5px)) rotate(calc(var(--attack-direction) * -2deg))}38%{transform:translateX(calc(var(--attack-direction) * var(--battle-lunge))) rotate(calc(var(--attack-direction) * 4deg))}65%{transform:translateX(calc(var(--attack-direction) * 16px))}}
+@keyframes b11Cast{0%,100%{transform:translateY(0)}18%{transform:translateY(3px) rotate(calc(var(--attack-direction) * -3deg))}40%{transform:translateY(-4px) rotate(calc(var(--attack-direction) * 2deg))}}
+@keyframes b11Step{0%{transform:translateX(calc(var(--battle-step) * var(--motion-offset)))}28%{transform:translateX(calc(var(--battle-step) * var(--motion-offset) * .7)) translateY(-4px)}55%{transform:translateX(calc(var(--battle-step) * var(--motion-offset) * .4)) translateY(0)}78%{transform:translateX(calc(var(--battle-step) * var(--motion-offset) * .15)) translateY(-3px)}100%{transform:translateX(0)}}
+@keyframes b11Recoil{0%,30%,100%{transform:translateX(0)}40%{transform:translateX(calc(var(--attack-direction) * -11px)) rotate(calc(var(--attack-direction) * -3deg))}53%{transform:translateX(calc(var(--attack-direction) * 4px))}65%{transform:translateX(0)}}
+@keyframes b11Impact{0%,28%,75%,100%{opacity:0;transform:scale(.5)}40%{opacity:.85;transform:scale(1.05)}58%{opacity:.2;transform:scale(1.25)}}
+@keyframes b11Aura{0%,100%{opacity:0;transform:scale(.8)}25%{opacity:.85;transform:scale(.95)}70%{opacity:.3;transform:scale(1.1)}}
+@keyframes b11Enter{0%{opacity:0;transform:translateX(calc(var(--attack-direction) * -24px))}100%{opacity:1;transform:translateX(0)}}
+@keyframes b11Projectile{0%,18%{opacity:0;transform:translateX(0) scale(.5)}24%{opacity:1;transform:translateX(0) scale(.85)}52%{opacity:1;transform:translate(var(--projectile-distance),var(--projectile-rise)) scale(1)}62%,100%{opacity:0;transform:translate(var(--projectile-distance),var(--projectile-rise)) scale(.3)}}
+@keyframes b11Defeat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(22px) scale(.92);filter:grayscale(1)}}
+@media(max-width:600px){.battle-screen[data-motion="melee"] .battle-motion-actor{--attack-direction:1}.battle-screen[data-motion="melee"] .enemy-motion{--attack-direction:-1}.boss-preparation{font-size:13px}.boss-preparation-actions{position:sticky;bottom:0;background:#15120ff2;padding:8px 0}}
+@media(prefers-reduced-motion:reduce){.battle-screen .battle-motion-actor,.battle-screen .battle-motion-actor::after,.battle-screen .enemy-side.enemy-defeated .enemy-sprite>.battle-motion-actor{animation:none!important;transform:none!important}.battle-screen .combat-projectile{display:none!important}.battle-screen .enemy-side.enemy-defeated .enemy-motion{opacity:0!important}}
+
+@supports(width:1cqw){.battle-screen .combat-projectile{--projectile-distance:48cqw;--projectile-rise:-25cqh}.battle-screen[data-motion-actor="enemy"] .combat-projectile{--projectile-distance:-48cqw;--projectile-rise:25cqh}}
+
+/* Replace the old immediate flash with the effect synchronized to the action. */
+.battle-screen.fx-hit .enemy-side .battle-sprite::after,.battle-screen.fx-weak .enemy-side .battle-sprite::after,.battle-screen.fx-crit .enemy-side .battle-sprite::after{content:none}
+
+.battle-screen .boss-pressure{display:block;margin-top:6px;color:#cdb58f;font-size:12px;line-height:1.4}.battle-screen .boss-pressure.is-active{color:#ffb689}

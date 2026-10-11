@@ -1,7 +1,7 @@
 {
   "name": "Time4Heroes",
   "short_name": "Time4Heroes",
-  "description": "Time4Heroes — mobilne GPS RPG. Build 3.9.9.8.9: ceny łupów, dostawy dla mieszkańców i historie z wyborami.",
+  "description": "Time4Heroes — mobilne GPS RPG. Build 3.9.9.8.11: animacje walki, zapowiedzi technik bossów, przygotowanie i nagrody.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
