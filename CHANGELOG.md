@@ -1,3 +1,15 @@
+# 4.2.0 alpha — W drodze
+
+- Sterowanie na mapie: strzałki i WASD, przyciski kierunku na telefonie oraz kliknięcie drogi lub miejsca.
+- Ruch po ścieżkach z kolizjami. Automatyczne trasy obchodzą przeszkody, a rzekę przekraczają mostem. Wejście do spotkania z mapy wymaga podejścia do punktu dostępu.
+- Animacje chodu wszystkich pięciu klas: przód, tył, lewo i prawo. Klatki zmieniają się wraz z przebytym dystansem; zatrzymanie przy przeszkodzie wygasza animację. Ograniczenie animacji w systemie wyświetla spokojną pozę.
+- Przytrzymanie kierunku przerywa automatyczną trasę. Escape, przełączenie zakładki, dialog, zmiana klasy, ukrycie okna i utrata fokusu zatrzymują marsz. Pozycja jest zapisywana w trakcie ruchu i po zatrzymaniu.
+- 12 różnych wzorów broni (po trzy dla miecza, kostura, łuku i topora), trzy różne pancerze oraz tarcza. Grafiki w plecaku, sklepie i łupach wskazują ten sam model. Statystyki sprzętu zachowano.
+- Kamera podąża za bohaterem na telefonie. Dotychczasowe zapisy zachowują sprzęt i zadania; pozycja poza drogą trafia na najbliższą ścieżkę.
+- Zaktualizowany cache offline i pełny ZIP z kodem, grafikami, testami i dokumentacją.
+
+Walidacja: 91 testów silnika, nawigacji i kontrolera w uproszczonym DOM. Obejmuje wszystkie 144 pary miejsc docelowych, bariery, most, klawiaturę, zapis oraz zachowanie istniejącej walki i handlu. Nie wykonano testu wizualnego w prawdziwej przeglądarce ani na telefonie.
+
 # 4.1.0 alpha — Szlak łowców
 
 - **Czytelne tury:** cios bohatera, efekty i odpowiedź przeciwnika są pokazywane kolejno. Paski życia oraz many odpowiadają poszczególnym etapom. Skrócony przebieg przy ograniczeniu animacji.

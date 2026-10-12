@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Time4Heroes — Pikselowe Pogranicze",
+  "short_name": "Time4Heroes",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#171e1d",
+  "theme_color": "#171e1d",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
